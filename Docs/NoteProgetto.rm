@@ -12,4 +12,4 @@ in maniera concorrente.
 
 Bisogna applicare un layer di astrazione per renderli indifferenti al progetto (interfaccia per chiamare metodi principali + serializzazione dati su Socket?)
 
-3. La consegna è l'ultima lezione di teoria di Lab
+3. La consegna Ã¨ l'ultima lezione di teoria di Lab
