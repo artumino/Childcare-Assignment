@@ -23,6 +23,9 @@
 .idea/**/gradle.xml
 .idea/**/libraries
 
+!.idea/libraries
+!.idea/libraries/libs.xml
+
 # CMake
 cmake-build-debug/
 
