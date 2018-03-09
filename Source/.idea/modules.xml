@@ -5,6 +5,15 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ChildCare.iml" filepath="$PROJECT_DIR$/.idea/modules/ChildCare.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ChildCare_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ChildCare_main.iml" group="ChildCare" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ChildCare_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ChildCare_test.iml" group="ChildCare" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-client.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-client.iml" group="childcare-client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-client/childcare-client_main.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-client/childcare-client_main.iml" group="childcare-client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-client/childcare-client_test.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-client/childcare-client_test.iml" group="childcare-client" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-server.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-server.iml" group="childcare-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-server/childcare-server_main.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-server/childcare-server_main.iml" group="childcare-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-server/childcare-server_test.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-server/childcare-server_test.iml" group="childcare-server" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-shared.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-shared.iml" group="childcare-shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-shared/childcare-shared_main.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-shared/childcare-shared_main.iml" group="childcare-shared" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/childcare-shared/childcare-shared_test.iml" filepath="$PROJECT_DIR$/.idea/modules/childcare-shared/childcare-shared_test.iml" group="childcare-shared" />
     </modules>
   </component>
 </project>
