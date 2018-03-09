@@ -21,10 +21,15 @@
 
 # Gradle:
 .idea/**/gradle.xml
-.idea/**/libraries
+.idea/**/libraries/**
+.gradle/
+gradlew
+gradlew.bat
 
 !.idea/libraries
 !.idea/libraries/libs.xml
+
+build/
 
 # CMake
 cmake-build-debug/
