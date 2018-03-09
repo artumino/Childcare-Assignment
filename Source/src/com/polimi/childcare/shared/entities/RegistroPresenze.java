@@ -1,10 +1,8 @@
-package com.childcare.shared.entities;
+package com.polimi.childcare.shared.entities;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.util.Date;
 
 @DatabaseTable(tableName = "RegistroPresenze")
 public class RegistroPresenze

@@ -1,4 +1,4 @@
-package com.childcare.client;
+package com.polimi.childcare.client;
 
 import javafx.application.Application;
 import javafx.application.Platform;
