@@ -4,9 +4,12 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import java.util.Date;
 
 @DatabaseTable(tableName = "Persona")
+@DiscriminatorColumn(name = "TipoPersona", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class Persona
 {
     @DatabaseField(generatedId = true) protected Long ID;
@@ -20,9 +23,6 @@ public abstract class Persona
     @DatabaseField(dataType = DataType.STRING, canBeNull = false) protected String Cittadinanza;
     @DatabaseField(dataType = DataType.STRING, canBeNull = false) protected String Residenza;
     @DatabaseField(dataType = DataType.BYTE, canBeNull = false)   protected byte Sesso;
-
-    //Generalizzazione
-    @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false)   protected TipoPersona Tipo;
 
     //TODO: Gestire l'istanziazione (Decorator??)
     public enum TipoPersona
