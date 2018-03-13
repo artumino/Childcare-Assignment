@@ -11,8 +11,8 @@ import java.io.Serializable;
 @Entity
 @Table(name = "Contatto")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(columnDefinition = "Pediatra", discriminatorType = DiscriminatorType.INTEGER)
-@DiscriminatorValue(value = "1")
+@DiscriminatorColumn(name = "Pediatra", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue(value = "0")
 public class Contatto implements Serializable
 {
     @DatabaseField(generatedId = true)
