@@ -23,7 +23,7 @@ public class Contatto implements Serializable
     private String Telefono;
 
     @DatabaseField(dataType = DataType.STRING)
-    @Column(nullable = true, length = 45)
+    @Column(length = 45)   //Di default è nullable
     private String Descrizione;
 
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)

@@ -4,15 +4,36 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
 @DatabaseTable(tableName = "RegistroPresenze")
-public class RegistroPresenze
+@Entity
+@Table(name = "ReazioneAvverse")
+public class RegistroPresenze implements Serializable
 {
-    @DatabaseField(generatedId = true) private Long ID;
-    @DatabaseField(foreign = true, foreignColumnName = "ID", canBeNull = false) private Persona Persona;
-    @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false) private StatoPresenza Stato;
-    @DatabaseField(dataType = DataType.DATE, canBeNull = false) private java.util.Date Date;
-    @DatabaseField(dataType = DataType.DATE_TIME, canBeNull = false) private java.util.Date TimeStamp;
-    @DatabaseField(dataType = DataType.SHORT, canBeNull = false) private short Ora;
+    @DatabaseField(generatedId = true)
+    @Id
+    private Long ID;
+
+    @DatabaseField(foreign = true, foreignColumnName = "ID", canBeNull = false) //TODO: Foreing in hibernate
+    private Persona Persona;
+
+    @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false) //TODO: Enum in hibernate
+    private StatoPresenza Stato;
+
+    @DatabaseField(dataType = DataType.DATE, canBeNull = false)
+    @Column(nullable = false)
+    private Date Date;
+
+    @DatabaseField(dataType = DataType.DATE_TIME, canBeNull = false)
+    @Column(nullable = false)
+    private Date TimeStamp;
+
+    @DatabaseField(dataType = DataType.SHORT, canBeNull = false)
+    @Column(nullable = false)
+    private short Ora;
 
     public enum StatoPresenza
     {
