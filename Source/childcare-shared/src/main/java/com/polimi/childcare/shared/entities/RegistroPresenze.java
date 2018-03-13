@@ -10,7 +10,7 @@ import java.util.Date;
 
 @DatabaseTable(tableName = "RegistroPresenze")
 @Entity
-@Table(name = "ReazioneAvverse")
+@Table(name = "RegistroPresenza")
 public class RegistroPresenze implements Serializable
 {
     @DatabaseField(generatedId = true)
