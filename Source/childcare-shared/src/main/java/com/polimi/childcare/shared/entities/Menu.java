@@ -18,6 +18,7 @@ public class Menu implements Serializable
 
     @DatabaseField(dataType = DataType.DATE, canBeNull = false)
     @Column(nullable = false)
+    @Temporal(value = TemporalType.DATE)
     private Date DataInizio;
 
     @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)

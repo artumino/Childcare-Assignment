@@ -18,10 +18,12 @@ public class Gita implements Serializable
 
     @DatabaseField(dataType = DataType.DATE, canBeNull = false)
     @Column(nullable = false)
+    @Temporal(value = TemporalType.DATE)
     private Date DataInizio;
 
     @DatabaseField(dataType = DataType.DATE, canBeNull = false)
     @Column(nullable = false)
+    @Temporal(value = TemporalType.DATE)
     private Date DataFine;
 
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)
