@@ -10,7 +10,9 @@ import java.io.Serializable;
 @DatabaseTable(tableName = "Contatto")
 @Entity
 @Table(name = "Contatto")
-@MappedSuperclass()
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(columnDefinition = "Pediatra", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue(value = "1")
 public class Contatto implements Serializable
 {
     @DatabaseField(generatedId = true)

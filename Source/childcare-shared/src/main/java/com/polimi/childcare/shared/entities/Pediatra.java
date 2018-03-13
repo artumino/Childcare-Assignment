@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Pediatra")
-public class Pediatra extends Contatto implements Serializable
+@DiscriminatorValue(value = "1")
+public class Pediatra extends Contatto
 {
 }
