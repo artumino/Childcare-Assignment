@@ -9,9 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 @DatabaseTable(tableName = "Persona")
-@DiscriminatorColumn(name = "TipoPersona", discriminatorType = DiscriminatorType.INTEGER)
 @Entity
 @Table(name = "Persona")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "TipoPersona", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class Persona implements Serializable
 {
     @DatabaseField(generatedId = true)
@@ -58,9 +59,13 @@ public abstract class Persona implements Serializable
     @Column(nullable = false)
     protected byte Sesso;
 
-    //TODO: Gestire l'istanziazione (Decorator??)
     public enum TipoPersona
     {
         Bambino(), Genitore(), Addetto();
+
+        public int getOrdinal()
+        {
+            return ordinal();
+        }
     }
 }
