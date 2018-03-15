@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "Contatti")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "Pediatra", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "Pediatra", discriminatorType = DiscriminatorType.CHAR, length = 1)
 @DiscriminatorValue(value = "0")
 public class Contatto implements Serializable
 {
