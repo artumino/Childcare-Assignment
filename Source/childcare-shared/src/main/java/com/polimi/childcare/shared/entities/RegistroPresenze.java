@@ -17,10 +17,10 @@ public class RegistroPresenze implements Serializable
     @Id
     private Long ID;
 
-    @DatabaseField(foreign = true, foreignColumnName = "ID", canBeNull = false) //TODO: Foreing in hibernate
+    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
     private Persona Persona;
 
-    @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false) //TODO: Enum in hibernate
+    @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false)
     @Enumerated(EnumType.ORDINAL)
     private StatoPresenza Stato;
 

@@ -7,7 +7,7 @@
 
         <!-- database connection properties -->
         <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mariadb://serverstation:3306/childcare_db</property>
+        <property name="hibernate.connection.url">jdbc:mariadb://192.168.0.108:3306/childcare_db</property>
         <!--<property name="hibernate.connection.url">jdbc:mariadb://localhost:3306/childcare_db</property>-->
         <property name="hibernate.connection.username">childcare_admin</property>
         <property name="hibernate.connection.password">child1234</property>
