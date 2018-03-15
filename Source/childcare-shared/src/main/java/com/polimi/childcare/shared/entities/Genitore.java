@@ -1,10 +1,17 @@
 package com.polimi.childcare.shared.entities;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue(value = "1")
 public class Genitore extends Persona
 {
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "TutoriLegali",
+            joinColumns = { @JoinColumn(name = "genitore_id") },
+            inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
+    )
+    private List<Bambino> bambini;
 }

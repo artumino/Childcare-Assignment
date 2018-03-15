@@ -1,14 +1,24 @@
 package com.polimi.childcare.shared.entities;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity
 @DiscriminatorValue(value = "0")
 public class Bambino extends Persona
 {
+    //Relazioni
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
+    private List<RegistroPresenze> presenze;
+
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "Pediatra_FK")
+    private Pediatra pediatra;
+
     @ManyToMany(mappedBy = "bambini")
-    private Set<Gruppo> gruppi;
+    private List<Genitore> genitori;
+
+    @ManyToMany(mappedBy = "bambini")
+    private List<Gruppo> gruppi;
 }

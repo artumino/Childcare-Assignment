@@ -13,12 +13,10 @@ import java.util.Date;
 @Table(name = "RegistroPresenza")
 public class RegistroPresenze implements Serializable
 {
+    //Attributi
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
-
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
-    private Persona Persona;
 
     @DatabaseField(dataType = DataType.ENUM_INTEGER, canBeNull = false)
     @Enumerated(EnumType.ORDINAL)
@@ -37,6 +35,11 @@ public class RegistroPresenze implements Serializable
     @DatabaseField(dataType = DataType.SHORT, canBeNull = false)
     @Column(nullable = false)
     private short Ora;
+
+    //Relazioni
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name="Bambino_FK")
+    private Bambino bambino;
 
     public enum StatoPresenza
     {

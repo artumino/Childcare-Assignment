@@ -15,10 +15,10 @@ import java.io.Serializable;
 @DiscriminatorValue(value = "0")
 public class Contatto implements Serializable
 {
+    //Attributi
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
-
 
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)
     @Column(nullable = false, length = 15)
@@ -39,4 +39,6 @@ public class Contatto implements Serializable
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)
     @Column(nullable = false, length = 25)
     private String Indirizzo;
+
+    //Relazioni
 }
