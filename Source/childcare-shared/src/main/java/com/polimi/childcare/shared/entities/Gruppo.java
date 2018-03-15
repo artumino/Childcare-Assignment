@@ -32,5 +32,8 @@ public class Gruppo implements Serializable
     )
     private List<Bambino> bambini;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
+    private List<PianoViaggi> pianoviaggi;
+
     //endregion
 }

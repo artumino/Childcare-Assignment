@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Gite")
@@ -38,6 +39,9 @@ public class Gita implements Serializable
     //endregion
 
     //region Relazioni
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
+    private List<PianoViaggi> pianoviaggi;
 
     //endregion
 }

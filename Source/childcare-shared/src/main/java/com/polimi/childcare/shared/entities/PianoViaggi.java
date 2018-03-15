@@ -21,14 +21,17 @@ public class PianoViaggi implements Serializable
 
     //region Relazioni
 
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
-    private Gita Destinazione;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Gita_FK")
+    private Gita gita;
 
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
-    private Gruppo Gruppo;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Gruppo_FK")
+    private Gruppo gruppo;
 
-    @OneToOne(optional = false, cascade = CascadeType.REMOVE)
-    private MezzoDiTrasporto Mezzo;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Mezzo_FK")
+    private MezzoDiTrasporto mezzo;
 
     //endregion
 }

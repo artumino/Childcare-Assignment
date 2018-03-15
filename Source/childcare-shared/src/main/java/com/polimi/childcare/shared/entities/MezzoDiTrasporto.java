@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -39,6 +40,9 @@ public class MezzoDiTrasporto implements Serializable
 
     @OneToOne(optional = false, cascade = CascadeType.REFRESH)
     private Fornitore fornitore;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
+    private List<PianoViaggi> pianoviaggi;
 
     //endregion
 }
