@@ -31,7 +31,7 @@ public class Gruppo implements Serializable
             joinColumns = { @JoinColumn(name = "gruppo_id") },
             inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
     )
-    private Set<Bambino> bambini;
+    private List<Bambino> bambini;
 
     //endregion
 }
