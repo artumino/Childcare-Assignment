@@ -11,6 +11,8 @@ import java.io.Serializable;
 @Table(name = "ReazioneAvverse")
 public class ReazioniAvverse implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -22,4 +24,10 @@ public class ReazioniAvverse implements Serializable
     @DatabaseField(dataType = DataType.STRING)
     @Column(length = 50)
     private String Descrizione;
+
+    //endregion
+
+    //region Relazioni
+
+    //endregion
 }

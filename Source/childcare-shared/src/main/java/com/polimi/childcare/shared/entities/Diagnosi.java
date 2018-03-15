@@ -13,9 +13,19 @@ import java.util.List;
 @Table(name = "Diagnosi")
 public class Diagnosi implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
+
+    @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
+    @Column(nullable = false)
+    private int Allergia;
+
+    //endregion
+
+    //region Relazioni
 
     @OneToMany(mappedBy = "persone")
     public List<Persona> Persona;
@@ -23,8 +33,6 @@ public class Diagnosi implements Serializable
     @OneToMany(mappedBy = "reazioni")
     public List<ReazioniAvverse> ReazioniAvverse;
 
-    @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
-    @Column(nullable = false)
-    private int Allergia;
+    //endregion
 
 }

@@ -12,9 +12,15 @@ import java.util.Set;
 @Table(name = "PianoViaggi")
 public class PianoViaggi implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
+
+    //endregion
+
+    //region Relazioni
 
     @OneToOne(optional = false, cascade = CascadeType.REMOVE)
     private Gita Destinazione;
@@ -24,4 +30,6 @@ public class PianoViaggi implements Serializable
 
     @OneToOne(optional = false, cascade = CascadeType.REMOVE)
     private MezzoDiTrasporto Mezzo;
+
+    //endregion
 }

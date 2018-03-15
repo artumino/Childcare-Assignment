@@ -12,11 +12,16 @@ import java.util.Set;
 @Table(name = "Gruppo")
 public class Gruppo implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
     //Qua completeremo con ID Tutore e ID Bambino esterni
 
+    //endregion
+
+    //region Relazioni
     @OneToOne(optional = false, cascade = CascadeType.REFRESH)
     private Addetto sorvergliante;
 
@@ -27,4 +32,6 @@ public class Gruppo implements Serializable
             inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
     )
     private Set<Bambino> bambini;
+
+    //endregion
 }

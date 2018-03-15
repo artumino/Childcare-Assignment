@@ -12,6 +12,8 @@ import java.util.Date;
 @Table(name = "Gita")
 public class Gita implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -33,4 +35,10 @@ public class Gita implements Serializable
     @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
     private int Costo;
+
+    //endregion
+
+    //region Relazioni
+
+    //endregion
 }

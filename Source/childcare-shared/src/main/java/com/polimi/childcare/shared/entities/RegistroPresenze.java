@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name = "RegistroPresenza")
 public class RegistroPresenze implements Serializable
 {
-    //Attributi
+    //region Attributi
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -36,10 +36,15 @@ public class RegistroPresenze implements Serializable
     @Column(nullable = false)
     private short Ora;
 
-    //Relazioni
+    //endregion
+
+    //region Relazioni
+
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
+
+    //endregion
 
     public enum StatoPresenza
     {
