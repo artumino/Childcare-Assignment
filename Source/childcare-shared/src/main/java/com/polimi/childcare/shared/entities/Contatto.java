@@ -6,6 +6,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @DatabaseTable(tableName = "Contatto")
 @Entity
@@ -15,7 +16,8 @@ import java.io.Serializable;
 @DiscriminatorValue(value = "0")
 public class Contatto implements Serializable
 {
-    //Attributi
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -40,5 +42,17 @@ public class Contatto implements Serializable
     @Column(nullable = false, length = 25)
     private String Indirizzo;
 
-    //Relazioni
+    //endregion
+
+    //region Relazioni
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Riferimenti",
+            joinColumns = { @JoinColumn(name = "contatto_id") },
+            inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
+    )
+    private List<Bambino> bambini;
+
+    //endregion
 }

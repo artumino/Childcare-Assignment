@@ -8,7 +8,8 @@ import java.util.Set;
 @DiscriminatorValue(value = "0")
 public class Bambino extends Persona
 {
-    //Relazioni
+    //region Relazioni
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
     private List<RegistroPresenze> presenze;
 
@@ -20,5 +21,10 @@ public class Bambino extends Persona
     private List<Genitore> genitori;
 
     @ManyToMany(mappedBy = "bambini")
+    private List<Contatto> contatti;
+
+    @ManyToMany(mappedBy = "bambini")
     private List<Gruppo> gruppi;
+
+    //endregion
 }

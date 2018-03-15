@@ -10,7 +10,10 @@ import java.util.List;
 @DiscriminatorValue(value = "1")
 public class Pediatra extends Contatto
 {
-    //Relazioni
+    //region Relazioni
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pediatra")
     private List<Bambino> bambini;
+
+    //endregion
 }

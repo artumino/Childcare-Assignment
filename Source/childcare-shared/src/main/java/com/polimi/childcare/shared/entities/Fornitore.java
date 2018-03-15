@@ -5,12 +5,14 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @DatabaseTable(tableName = "Fornitore")
 @Entity
 @Table(name = "Fornitore")
 public class Fornitore implements Serializable
 {
+    //region Attributi
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -44,4 +46,12 @@ public class Fornitore implements Serializable
     private String IBAN;    //Ancora caso Italiano 27 caratteri
 
     //Mancano Numeri di Telefono e Prodotti (campi multipli)
+    //endregion
+
+    //region Relazioni
+
+    @ManyToMany(mappedBy = "fornitori")
+    private List<Pasto> fornitori;
+
+    //endregion
 }

@@ -15,6 +15,7 @@ import java.util.Date;
 @DiscriminatorColumn(name = "TipoPersona", discriminatorType = DiscriminatorType.INTEGER)
 public abstract class Persona implements Serializable
 {
+    //region Attributi
     @DatabaseField(generatedId = true)
     @Id
     protected Long ID;
@@ -58,6 +59,8 @@ public abstract class Persona implements Serializable
     @DatabaseField(dataType = DataType.BYTE, canBeNull = false)
     @Column(nullable = false)
     protected byte Sesso;
+
+    //endregion
 
     public enum TipoPersona
     {

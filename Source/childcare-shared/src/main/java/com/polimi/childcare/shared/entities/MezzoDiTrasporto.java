@@ -12,12 +12,11 @@ import java.util.Set;
 @Table(name = "MezzoDiTrasporto")
 public class MezzoDiTrasporto implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
-
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
-    private Fornitore fornitore;
 
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)
     @Column(nullable = false, length = 7)   //Targa Italiana
@@ -35,4 +34,12 @@ public class MezzoDiTrasporto implements Serializable
     @Column(nullable = false)
     private int CostoOrario;
 
+    //endregion Attributi
+
+    //region Relazioni
+
+    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
+    private Fornitore fornitore;
+
+    //endregion
 }

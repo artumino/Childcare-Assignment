@@ -7,6 +7,8 @@ import java.util.List;
 @DiscriminatorValue(value = "1")
 public class Genitore extends Persona
 {
+    //region Relazioni
+
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "TutoriLegali",
@@ -14,4 +16,6 @@ public class Genitore extends Persona
             inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
     )
     private List<Bambino> bambini;
+
+    //endregion
 }

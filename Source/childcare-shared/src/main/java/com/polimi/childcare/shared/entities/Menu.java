@@ -12,6 +12,8 @@ import java.util.Date;
 @Table(name = "Menu")
 public class Menu implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -24,4 +26,6 @@ public class Menu implements Serializable
     @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
     private int Ricorrenza;
+
+    //endregion
 }

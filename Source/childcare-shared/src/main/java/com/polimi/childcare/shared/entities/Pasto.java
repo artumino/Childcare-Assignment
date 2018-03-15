@@ -12,6 +12,8 @@ import java.util.List;
 @Table(name = "Pasto")
 public class Pasto implements Serializable
 {
+    //region Attributi
+
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
@@ -24,11 +26,17 @@ public class Pasto implements Serializable
     @Column(length = 50)
     private String Descrizione;
 
+    //endregion
+
+    //region Relazioni
+
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Pasto",
             joinColumns = { @JoinColumn(name = "pasto_id") },
             inverseJoinColumns = { @JoinColumn(name = "fornitore_id") }
     )
-    private List<Fornitore> Fornitori;
+    private List<Fornitore> fornitori;
+
+    //endregion
 }
