@@ -13,8 +13,8 @@ public class Genitore extends Persona
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "TutoriLegali",
-            joinColumns = { @JoinColumn(name = "genitore_id") },
-            inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
+            joinColumns = { @JoinColumn(name = "Genitore_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
     private List<Bambino> bambini;
 

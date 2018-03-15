@@ -29,10 +29,10 @@ public class Menu implements Serializable
 
     //endregion
 
-    //region Attributi
+    //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu")
-    private List<QuantitaPasto> quantitapasto;
+    private List<QuantitaPasto> quantitaPasto;
 
     //endregion
 }

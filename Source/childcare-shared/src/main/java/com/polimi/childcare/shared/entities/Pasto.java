@@ -32,21 +32,21 @@ public class Pasto implements Serializable
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Pasto",
-            joinColumns = { @JoinColumn(name = "pasto_id") },
-            inverseJoinColumns = { @JoinColumn(name = "fornitore_id") }
+            joinColumns = { @JoinColumn(name = "Pasto_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Fornitore_FK") }
     )
     private List<Fornitore> fornitori;
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
-            joinColumns = { @JoinColumn(name = "pasto_id") },
-            inverseJoinColumns = { @JoinColumn(name = "reazioneavversa_id") }
+            joinColumns = { @JoinColumn(name = "Pasto_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "ReazioneAvversa_FK") }
     )
     private List<ReazioneAvversa> reazione;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
-    private List<QuantitaPasto> quantitapasto;
+    private List<QuantitaPasto> quantitaPasto;
 
     //endregion
 }

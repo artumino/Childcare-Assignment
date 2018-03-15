@@ -48,8 +48,8 @@ public class Contatto implements Serializable
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Riferimenti",
-            joinColumns = { @JoinColumn(name = "contatto_id") },
-            inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
+            joinColumns = { @JoinColumn(name = "Contatto_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
     private List<Bambino> bambini;
 

@@ -52,8 +52,8 @@ public class Fornitore implements Serializable
     @ManyToMany(mappedBy = "fornitori")
     private List<Pasto> pasti;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornituramezzi")
-    private List<Fornitore> fornitorimezzi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
+    private List<MezzoDiTrasporto> mezzi;
 
     //endregion
 }

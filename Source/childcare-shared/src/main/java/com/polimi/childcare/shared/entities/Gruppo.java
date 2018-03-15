@@ -27,8 +27,8 @@ public class Gruppo implements Serializable
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Gruppo_Bambino",
-            joinColumns = { @JoinColumn(name = "gruppo_id") },
-            inverseJoinColumns = { @JoinColumn(name = "bambino_id") }
+            joinColumns = { @JoinColumn(name = "Gruppo_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
     private List<Bambino> bambini;
 

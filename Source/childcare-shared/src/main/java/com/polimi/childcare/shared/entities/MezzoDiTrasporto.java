@@ -40,10 +40,10 @@ public class MezzoDiTrasporto implements Serializable
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "Fornitore_FK")
-    private Fornitore fornituramezzi;
+    private Fornitore fornitore;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
-    private List<PianoViaggi> pianoviaggi;
+    private List<PianoViaggi> pianoViaggi;
 
     //endregion
 }
