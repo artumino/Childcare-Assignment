@@ -43,6 +43,10 @@ public class RegistroPresenze implements Serializable
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
 
+    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Gita_FK")
+    private Gita gita;
+
     //endregion
 
     public enum StatoPresenza

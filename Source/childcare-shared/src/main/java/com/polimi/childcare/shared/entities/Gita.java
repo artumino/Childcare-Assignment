@@ -41,7 +41,10 @@ public class Gita implements Serializable
     //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
-    private List<PianoViaggi> pianoviaggi;
+    private List<PianoViaggi> pianiViaggi;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
+    private List<RegistroPresenze> registriPresenze;
 
     //endregion
 }
