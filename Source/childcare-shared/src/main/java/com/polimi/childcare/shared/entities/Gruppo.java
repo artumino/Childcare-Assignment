@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@DatabaseTable(tableName = "Gruppo")
 @Entity
-@Table(name = "Gruppo")
+@Table(name = "Gruppi")
 public class Gruppo implements Serializable
 {
     //region Attributi

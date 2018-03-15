@@ -8,9 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@DatabaseTable(tableName = "Contatto")
 @Entity
-@Table(name = "Contatto")
+@Table(name = "Contatti")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Pediatra", discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue(value = "0")

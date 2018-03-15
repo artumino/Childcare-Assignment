@@ -8,11 +8,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@DatabaseTable(tableName = "Persona")
 @Entity
-@Table(name = "Persona")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TipoPersona", discriminatorType = DiscriminatorType.INTEGER)
+@Table(name = "Persone")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Persona implements Serializable
 {
     //region Attributi
@@ -61,14 +59,4 @@ public abstract class Persona implements Serializable
     protected byte Sesso;
 
     //endregion
-
-    public enum TipoPersona
-    {
-        Bambino(), Genitore(), Addetto();
-
-        public int getOrdinal()
-        {
-            return ordinal();
-        }
-    }
 }

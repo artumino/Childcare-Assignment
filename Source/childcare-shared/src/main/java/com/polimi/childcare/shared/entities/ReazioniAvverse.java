@@ -6,9 +6,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@DatabaseTable(tableName = "ReazioniAvverse")
 @Entity
-@Table(name = "ReazioneAvverse")
+@Table(name = "ReazioniAvverse")
 public class ReazioniAvverse implements Serializable
 {
     //region Attributi

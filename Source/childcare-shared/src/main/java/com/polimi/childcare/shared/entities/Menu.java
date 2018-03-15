@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@DatabaseTable(tableName = "Menu")
 @Entity
 @Table(name = "Menu")
 public class Menu implements Serializable

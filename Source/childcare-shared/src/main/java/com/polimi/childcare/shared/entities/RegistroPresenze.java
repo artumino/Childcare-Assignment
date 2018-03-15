@@ -8,9 +8,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@DatabaseTable(tableName = "RegistroPresenze")
 @Entity
-@Table(name = "RegistroPresenza")
+@Table(name = "RegistroPresenze")
 public class RegistroPresenze implements Serializable
 {
     //region Attributi

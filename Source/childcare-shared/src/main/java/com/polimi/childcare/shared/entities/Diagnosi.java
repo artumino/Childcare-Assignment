@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@DatabaseTable(tableName = "Diagnosi")
 @Entity
 @Table(name = "Diagnosi")
 public class Diagnosi implements Serializable

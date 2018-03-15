@@ -7,9 +7,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@DatabaseTable(tableName = "Gita")
 @Entity
-@Table(name = "Gita")
+@Table(name = "Gite")
 public class Gita implements Serializable
 {
     //region Attributi

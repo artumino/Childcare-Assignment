@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@DiscriminatorValue(value = "0")
+@Table(name = "Bambini")
+@PrimaryKeyJoinColumn(name="Persona_ID")
 public class Bambino extends Persona
 {
     //region Relazioni

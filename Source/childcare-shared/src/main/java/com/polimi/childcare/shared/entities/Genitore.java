@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@DiscriminatorValue(value = "1")
+@Table(name = "Genitori")
+@PrimaryKeyJoinColumn(name="Persona_ID")
 public class Genitore extends Persona
 {
     //region Relazioni

@@ -7,9 +7,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@DatabaseTable(tableName = "Pasto")
 @Entity
-@Table(name = "Pasto")
+@Table(name = "Pasti")
 public class Pasto implements Serializable
 {
     //region Attributi
