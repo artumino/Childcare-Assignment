@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @DatabaseTable(tableName = "MezzoDiTrasporto")
 @Entity
@@ -14,6 +15,9 @@ public class MezzoDiTrasporto implements Serializable
     @DatabaseField(generatedId = true)
     @Id
     private Long ID;
+
+    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
+    private Fornitore fornitore;
 
     @DatabaseField(dataType = DataType.STRING, canBeNull = false)
     @Column(nullable = false, length = 7)   //Targa Italiana
@@ -30,4 +34,5 @@ public class MezzoDiTrasporto implements Serializable
     @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
     private int CostoOrario;
+
 }

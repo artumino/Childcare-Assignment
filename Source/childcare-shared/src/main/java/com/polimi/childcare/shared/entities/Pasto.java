@@ -5,6 +5,7 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @DatabaseTable(tableName = "Pasto")
 @Entity
@@ -22,4 +23,12 @@ public class Pasto implements Serializable
     @DatabaseField(dataType = DataType.STRING)
     @Column(length = 50)
     private String Descrizione;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Fornitore_Pasto",
+            joinColumns = { @JoinColumn(name = "pasto_id") },
+            inverseJoinColumns = { @JoinColumn(name = "fornitore_id") }
+    )
+    private List<Fornitore> Fornitori;
 }
