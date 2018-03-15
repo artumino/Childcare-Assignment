@@ -38,8 +38,9 @@ public class MezzoDiTrasporto implements Serializable
 
     //region Relazioni
 
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
-    private Fornitore fornitore;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Fornitore_FK")
+    private Fornitore fornituramezzi;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
     private List<PianoViaggi> pianoviaggi;

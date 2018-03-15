@@ -37,5 +37,16 @@ public class Pasto implements Serializable
     )
     private List<Fornitore> fornitori;
 
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "ReazioneAvversa_Pasto",
+            joinColumns = { @JoinColumn(name = "pasto_id") },
+            inverseJoinColumns = { @JoinColumn(name = "reazioneavversa_id") }
+    )
+    private List<ReazioneAvversa> reazione;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
+    private List<QuantitaPasto> quantitapasto;
+
     //endregion
 }

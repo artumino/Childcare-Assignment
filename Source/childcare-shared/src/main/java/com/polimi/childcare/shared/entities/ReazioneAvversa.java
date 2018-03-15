@@ -32,6 +32,8 @@ public class ReazioneAvversa implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reazioneAvversa")
     private List<Diagnosi> diagnosi;
 
+    @ManyToMany(mappedBy = "reazione")
+    private List<Pasto> pasti;
 
     //endregion
 }

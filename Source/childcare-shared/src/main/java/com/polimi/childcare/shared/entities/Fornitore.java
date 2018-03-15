@@ -50,7 +50,10 @@ public class Fornitore implements Serializable
     //region Relazioni
 
     @ManyToMany(mappedBy = "fornitori")
-    private List<Pasto> fornitori;
+    private List<Pasto> pasti;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornituramezzi")
+    private List<Fornitore> fornitorimezzi;
 
     //endregion
 }

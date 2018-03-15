@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Menu")
@@ -25,6 +26,13 @@ public class Menu implements Serializable
     @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
     private int Ricorrenza;
+
+    //endregion
+
+    //region Attributi
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu")
+    private List<QuantitaPasto> quantitapasto;
 
     //endregion
 }
