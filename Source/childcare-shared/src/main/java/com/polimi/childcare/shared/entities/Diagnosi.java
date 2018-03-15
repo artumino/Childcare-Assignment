@@ -1,12 +1,9 @@
 package com.polimi.childcare.shared.entities;
 
-import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "Diagnosi")
@@ -18,19 +15,20 @@ public class Diagnosi implements Serializable
     @Id
     private Long ID;
 
-    @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
-    private int Allergia;
+    private boolean Allergia;
 
     //endregion
 
     //region Relazioni
 
-    @OneToMany(mappedBy = "persone")
-    public List<Persona> Persona;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Persona_FK")
+    private Persona persona;
 
-    @OneToMany(mappedBy = "reazioni")
-    public List<ReazioniAvverse> ReazioniAvverse;
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "ReazioneAvversa_FK")
+    private ReazioneAvversa reazioneAvversa;
 
     //endregion
 

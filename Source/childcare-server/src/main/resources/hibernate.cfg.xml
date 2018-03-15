@@ -33,8 +33,10 @@
         <mapping class="com.polimi.childcare.shared.entities.Pasto"/>
         <mapping class="com.polimi.childcare.shared.entities.Pediatra"/>
         <mapping class="com.polimi.childcare.shared.entities.Persona"/>
-        <mapping class="com.polimi.childcare.shared.entities.ReazioniAvverse"/>
+        <mapping class="com.polimi.childcare.shared.entities.ReazioneAvversa"/>
         <mapping class="com.polimi.childcare.shared.entities.RegistroPresenze"/>
+        <mapping class="com.polimi.childcare.shared.entities.PianoViaggi"/>
+        <mapping class="com.polimi.childcare.shared.entities.Diagnosi"/>
 
     </session-factory>
 </hibernate-configuration>

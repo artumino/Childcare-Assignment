@@ -7,6 +7,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Persone")
@@ -57,6 +58,13 @@ public abstract class Persona implements Serializable
     @DatabaseField(dataType = DataType.BYTE, canBeNull = false)
     @Column(nullable = false)
     protected byte Sesso;
+
+    //endregion
+
+    //region Relazioni
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
+    private List<Diagnosi> diagnosi;
 
     //endregion
 }

@@ -5,10 +5,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "ReazioniAvverse")
-public class ReazioniAvverse implements Serializable
+@Table(name = "ReazioneAvversa")
+public class ReazioneAvversa implements Serializable
 {
     //region Attributi
 
@@ -27,6 +28,10 @@ public class ReazioniAvverse implements Serializable
     //endregion
 
     //region Relazioni
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reazioneAvversa")
+    private List<Diagnosi> diagnosi;
+
 
     //endregion
 }
