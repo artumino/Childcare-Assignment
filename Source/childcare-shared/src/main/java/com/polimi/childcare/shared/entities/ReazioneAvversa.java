@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name = "ReazioneAvversa")
+@Table(name = "ReazioniAvverse")
 public class ReazioneAvversa implements Serializable
 {
     //region Attributi
