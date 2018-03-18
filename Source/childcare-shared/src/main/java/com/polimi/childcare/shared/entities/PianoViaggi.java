@@ -1,11 +1,6 @@
 package com.polimi.childcare.shared.entities;
-
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
 
 @Entity
 @Table(name = "PianiViaggi")
@@ -13,7 +8,6 @@ public class PianoViaggi implements Serializable
 {
     //region Attributi
 
-    @DatabaseField(generatedId = true)
     @Id
     private Long ID;
 

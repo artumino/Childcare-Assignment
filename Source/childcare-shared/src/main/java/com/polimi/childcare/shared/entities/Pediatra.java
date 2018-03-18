@@ -1,7 +1,4 @@
 package com.polimi.childcare.shared.entities;
-
-import org.hibernate.annotations.DiscriminatorOptions;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;

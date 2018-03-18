@@ -1,7 +1,4 @@
 package com.polimi.childcare.shared.entities;
-
-import com.j256.ormlite.field.DatabaseField;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,7 +8,6 @@ public class Diagnosi implements Serializable
 {
     //region Attributi
 
-    @DatabaseField(generatedId = true)
     @Id
     private Long ID;
 

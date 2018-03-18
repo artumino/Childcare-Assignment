@@ -1,8 +1,4 @@
 package com.polimi.childcare.shared.entities;
-
-import com.j256.ormlite.field.DataType;
-import com.j256.ormlite.field.DatabaseField;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,11 +8,9 @@ public class QuantitaPasto implements Serializable
 {
     //region Attributi
 
-    @DatabaseField(generatedId = true)
     @Id
     private Long ID;
 
-    @DatabaseField(dataType = DataType.INTEGER, canBeNull = false)
     @Column(nullable = false)
     private int Quantita;
 
