@@ -15,9 +15,6 @@ public class Contatto implements Serializable
     @Id
     private Long ID;
 
-    @Column(nullable = false, length = 15)
-    private String Telefono;
-
     @Column(length = 45)   //Di default è nullable
     private String Descrizione;
 
@@ -41,6 +38,14 @@ public class Contatto implements Serializable
             inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
     private List<Bambino> bambini;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Contatto_Rubrica",
+            joinColumns = { @JoinColumn(name = "Contatto_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
+    )
+    private List<NumeroTelefono> telefoni;
 
     //endregion
 }

@@ -43,5 +43,21 @@ public class Fornitore implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
     private List<MezzoDiTrasporto> mezzi;
 
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Fornitore_Fax_Rubrica",
+            joinColumns = { @JoinColumn(name = "Fornitore_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
+    )
+    private List<NumeroTelefono> fax;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Fornitore_Rubrica",
+            joinColumns = { @JoinColumn(name = "Fornitore_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
+    )
+    private List<NumeroTelefono> telefoni;
+
     //endregion
 }

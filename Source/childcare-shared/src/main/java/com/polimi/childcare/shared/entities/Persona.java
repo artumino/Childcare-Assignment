@@ -50,5 +50,13 @@ public abstract class Persona implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
     private List<Diagnosi> diagnosi;
 
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "Persona_Rubrica",
+            joinColumns = { @JoinColumn(name = "Persona_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
+    )
+    private List<NumeroTelefono> telefoni;
+
     //endregion
 }
