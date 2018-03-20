@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- database connection properties -->
+        <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mariadb://192.168.0.108:3306/childcare_test_db</property>
+        <!--<property name="hibernate.connection.url">jdbc:mariadb://localhost:3306/childcare_db</property>-->
+        <property name="hibernate.connection.username">childcare_admin</property>
+        <property name="hibernate.connection.password">child1234</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MariaDB53Dialect</property>
+
+        <!-- show mysql queries output in console -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- manage automatic database creation -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!-- add resources here -->
+        <!-- <mapping resource="Book.hbm.xml"/> -->
+        <mapping class="com.polimi.childcare.shared.entities.Addetto"/>
+        <mapping class="com.polimi.childcare.shared.entities.Bambino"/>
+        <mapping class="com.polimi.childcare.shared.entities.Contatto"/>
+        <mapping class="com.polimi.childcare.shared.entities.Fornitore"/>
+        <mapping class="com.polimi.childcare.shared.entities.Genitore"/>
+        <mapping class="com.polimi.childcare.shared.entities.Gita"/>
+        <mapping class="com.polimi.childcare.shared.entities.Gruppo"/>
+        <mapping class="com.polimi.childcare.shared.entities.Menu"/>
+        <mapping class="com.polimi.childcare.shared.entities.MezzoDiTrasporto"/>
+        <mapping class="com.polimi.childcare.shared.entities.Pasto"/>
+        <mapping class="com.polimi.childcare.shared.entities.Pediatra"/>
+        <mapping class="com.polimi.childcare.shared.entities.Persona"/>
+        <mapping class="com.polimi.childcare.shared.entities.ReazioneAvversa"/>
+        <mapping class="com.polimi.childcare.shared.entities.RegistroPresenze"/>
+        <mapping class="com.polimi.childcare.shared.entities.PianoViaggi"/>
+        <mapping class="com.polimi.childcare.shared.entities.Diagnosi"/>
+        <mapping class="com.polimi.childcare.shared.entities.QuantitaPasto"/>
+        <mapping class="com.polimi.childcare.shared.entities.NumeroTelefono"/>
+
+    </session-factory>
+</hibernate-configuration>

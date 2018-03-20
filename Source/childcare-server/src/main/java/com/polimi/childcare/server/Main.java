@@ -10,7 +10,7 @@ public class Main
         System.out.println("Hello Server...");
         System.out.println("Setting up server...");
         DatabaseSession.getInstance().setUp();
-        System.out.println("Server setup complete");
+        System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
         DatabaseSession.getInstance().close();
     }
 }

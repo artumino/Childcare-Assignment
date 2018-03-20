@@ -6,11 +6,14 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.jinq.jpa.JinqJPAStreamProvider;
 import org.jinq.orm.stream.JinqStream;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DatabaseSession
 {
@@ -33,7 +36,7 @@ public class DatabaseSession
             return;
 
         sessionFactory = new Configuration().configure().buildSessionFactory();
-        entityManagerFactory = Persistence.createEntityManagerFactory("JPA");
+        entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
         streams = new JinqJPAStreamProvider(entityManagerFactory);
     }
 
@@ -44,6 +47,23 @@ public class DatabaseSession
             return null;
 
         return sessionFactory.openSession();
+    }
+
+    public String getCurrentConnectionURL()
+    {
+        if(sessionFactory == null)
+            return "";
+
+        try {
+            Connection connection = sessionFactory.getSessionFactoryOptions().getServiceRegistry().
+                    getService(ConnectionProvider.class).getConnection();
+            String url = connection.getMetaData().getURL();
+            connection.close();
+            return url;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     //region Metodi per Entita
