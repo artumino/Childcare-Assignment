@@ -68,16 +68,16 @@ public class DatabaseSession
 
     //region Metodi per Entita
 
-    public <T> Integer insert(T element)
+    public <T> Long insert(T element)
     {
         if(sessionFactory != null) {
             Transaction tx = null;
-            Integer ID = null;
+            Long ID = null;
 
             try (Session session = sessionFactory.openSession())
             {
                 tx = session.beginTransaction();
-                ID = (Integer) session.save(element);
+                ID = (Long) session.save(element);
                 tx.commit();
             } catch (HibernateException e) {
                 if (tx != null) tx.rollback();

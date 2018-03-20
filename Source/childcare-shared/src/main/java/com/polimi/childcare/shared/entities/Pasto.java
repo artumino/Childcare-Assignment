@@ -10,6 +10,7 @@ public class Pasto implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false, length = 20)
@@ -47,12 +48,14 @@ public class Pasto implements Serializable
 
     public Pasto() { }
 
-    public Long getID() {
-        return ID;
+    public Pasto(String nome, String descrizione)
+    {
+        Nome = nome;
+        Descrizione = descrizione;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public Long getID() {
+        return ID;
     }
 
     public String getNome() {

@@ -10,6 +10,7 @@ public class MezzoDiTrasporto implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false, length = 7)   //Targa Italiana
@@ -43,10 +44,6 @@ public class MezzoDiTrasporto implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public String getTarga() {

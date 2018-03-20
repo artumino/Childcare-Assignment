@@ -11,6 +11,7 @@ public class Gita implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false)
@@ -45,10 +46,6 @@ public class Gita implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public Date getDataInizio() {

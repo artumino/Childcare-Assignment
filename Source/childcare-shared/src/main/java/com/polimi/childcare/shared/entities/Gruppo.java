@@ -10,6 +10,7 @@ public class Gruppo implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
     //Qua completeremo con ID Tutore e ID Bambino esterni
 
@@ -38,10 +39,6 @@ public class Gruppo implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public Addetto getSorvergliante() {

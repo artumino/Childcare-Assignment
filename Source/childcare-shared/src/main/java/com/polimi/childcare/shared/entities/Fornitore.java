@@ -9,6 +9,7 @@ public class Fornitore implements Serializable
 {
     //region Attributi
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false, length = 50)
@@ -67,10 +68,6 @@ public class Fornitore implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public String getRagioneSociale() {

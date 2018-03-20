@@ -11,6 +11,7 @@ public abstract class Persona implements Serializable
 {
     //region Attributi
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     protected Long ID;
 
     @Column(nullable = false, length = 20)
@@ -63,6 +64,20 @@ public abstract class Persona implements Serializable
     //region Metodi
 
     public Persona() { }
+
+    public Persona(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
+    {
+        Nome = nome;
+        Cognome = cognome;
+        CodiceFiscale = codiceFiscale;
+        DataNascita = dataNascita;
+        Stato = stato;
+        Comune = comune;
+        Provincia = provincia;
+        Cittadinanza = cittadinanza;
+        Residenza = residenza;
+        Sesso = sesso;
+    }
 
     public Long getID() {
         return ID;

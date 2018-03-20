@@ -9,6 +9,7 @@ public class Diagnosi implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false)
@@ -34,10 +35,6 @@ public class Diagnosi implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public boolean isAllergia() {

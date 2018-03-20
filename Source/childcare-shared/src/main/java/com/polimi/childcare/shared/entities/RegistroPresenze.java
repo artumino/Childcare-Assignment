@@ -9,6 +9,7 @@ public class RegistroPresenze implements Serializable
 {
     //region Attributi
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Enumerated(EnumType.ORDINAL)
@@ -45,10 +46,6 @@ public class RegistroPresenze implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public StatoPresenza getStato() {

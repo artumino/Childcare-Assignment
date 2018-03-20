@@ -10,6 +10,7 @@ public class ReazioneAvversa implements Serializable
     //region Attributi
 
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long ID;
 
     @Column(nullable = false, length = 20)
@@ -36,10 +37,6 @@ public class ReazioneAvversa implements Serializable
 
     public Long getID() {
         return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
     }
 
     public String getNome() {
