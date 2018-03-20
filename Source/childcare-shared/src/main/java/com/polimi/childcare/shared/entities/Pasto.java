@@ -71,29 +71,5 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
-    public List<Fornitore> getFornitori() {
-        return fornitori;
-    }
-
-    public void setFornitori(List<Fornitore> fornitori) {
-        this.fornitori = fornitori;
-    }
-
-    public List<ReazioneAvversa> getReazione() {
-        return reazione;
-    }
-
-    public void setReazione(List<ReazioneAvversa> reazione) {
-        this.reazione = reazione;
-    }
-
-    public List<QuantitaPasto> getQuantitaPasto() {
-        return quantitaPasto;
-    }
-
-    public void setQuantitaPasto(List<QuantitaPasto> quantitaPasto) {
-        this.quantitaPasto = quantitaPasto;
-    }
-
     //endregion
 }

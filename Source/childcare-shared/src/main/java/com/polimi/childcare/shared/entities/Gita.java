@@ -79,25 +79,5 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public void setCosto(int costo) {
-        Costo = costo;
-    }
-
-    public List<PianoViaggi> getPianiViaggi() {
-        return pianiViaggi;
-    }
-
-    public void setPianiViaggi(List<PianoViaggi> pianiViaggi) {
-        this.pianiViaggi = pianiViaggi;
-    }
-
-    public List<RegistroPresenze> getRegistriPresenze() {
-        return registriPresenze;
-    }
-
-    public void setRegistriPresenze(List<RegistroPresenze> registriPresenze) {
-        this.registriPresenze = registriPresenze;
-    }
-
     //endregion
 }

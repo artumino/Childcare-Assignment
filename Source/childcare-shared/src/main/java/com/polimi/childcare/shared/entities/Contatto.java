@@ -93,21 +93,5 @@ public class Contatto implements Serializable
         Indirizzo = indirizzo;
     }
 
-    public List<Bambino> getBambini() {
-        return bambini;
-    }
-
-    public void setBambini(List<Bambino> bambini) {
-        this.bambini = bambini;
-    }
-
-    public List<NumeroTelefono> getTelefoni() {
-        return telefoni;
-    }
-
-    public void setTelefoni(List<NumeroTelefono> telefoni) {
-        this.telefoni = telefoni;
-    }
-
     //endregion
 }

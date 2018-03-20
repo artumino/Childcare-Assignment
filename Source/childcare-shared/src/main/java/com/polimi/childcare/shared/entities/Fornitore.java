@@ -129,37 +129,5 @@ public class Fornitore implements Serializable
         this.IBAN = IBAN;
     }
 
-    public List<Pasto> getPasti() {
-        return pasti;
-    }
-
-    public void setPasti(List<Pasto> pasti) {
-        this.pasti = pasti;
-    }
-
-    public List<MezzoDiTrasporto> getMezzi() {
-        return mezzi;
-    }
-
-    public void setMezzi(List<MezzoDiTrasporto> mezzi) {
-        this.mezzi = mezzi;
-    }
-
-    public List<NumeroTelefono> getFax() {
-        return fax;
-    }
-
-    public void setFax(List<NumeroTelefono> fax) {
-        this.fax = fax;
-    }
-
-    public List<NumeroTelefono> getTelefoni() {
-        return telefoni;
-    }
-
-    public void setTelefoni(List<NumeroTelefono> telefoni) {
-        this.telefoni = telefoni;
-    }
-
     //endregion
 }
