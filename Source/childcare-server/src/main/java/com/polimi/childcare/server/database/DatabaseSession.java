@@ -35,8 +35,8 @@ public class DatabaseSession
         if(sessionFactory != null)
             return;
 
-        sessionFactory = new Configuration().configure().buildSessionFactory();
         entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
+        sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
         streams = new JinqJPAStreamProvider(entityManagerFactory);
     }
 
