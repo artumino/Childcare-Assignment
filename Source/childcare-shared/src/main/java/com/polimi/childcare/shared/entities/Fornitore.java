@@ -60,4 +60,106 @@ public class Fornitore implements Serializable
     private List<NumeroTelefono> telefoni;
 
     //endregion
+
+    //region Metodi
+
+    public Fornitore() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getRagioneSociale() {
+        return RagioneSociale;
+    }
+
+    public void setRagioneSociale(String ragioneSociale) {
+        RagioneSociale = ragioneSociale;
+    }
+
+    public String getPartitaIVA() {
+        return PartitaIVA;
+    }
+
+    public void setPartitaIVA(String partitaIVA) {
+        PartitaIVA = partitaIVA;
+    }
+
+    public String getSedeLegale() {
+        return SedeLegale;
+    }
+
+    public void setSedeLegale(String sedeLegale) {
+        SedeLegale = sedeLegale;
+    }
+
+    public String getNumeroRegistroImprese() {
+        return NumeroRegistroImprese;
+    }
+
+    public void setNumeroRegistroImprese(String numeroRegistroImprese) {
+        NumeroRegistroImprese = numeroRegistroImprese;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
+    }
+
+    public String getFAX() {
+        return FAX;
+    }
+
+    public void setFAX(String FAX) {
+        this.FAX = FAX;
+    }
+
+    public String getIBAN() {
+        return IBAN;
+    }
+
+    public void setIBAN(String IBAN) {
+        this.IBAN = IBAN;
+    }
+
+    public List<Pasto> getPasti() {
+        return pasti;
+    }
+
+    public void setPasti(List<Pasto> pasti) {
+        this.pasti = pasti;
+    }
+
+    public List<MezzoDiTrasporto> getMezzi() {
+        return mezzi;
+    }
+
+    public void setMezzi(List<MezzoDiTrasporto> mezzi) {
+        this.mezzi = mezzi;
+    }
+
+    public List<NumeroTelefono> getFax() {
+        return fax;
+    }
+
+    public void setFax(List<NumeroTelefono> fax) {
+        this.fax = fax;
+    }
+
+    public List<NumeroTelefono> getTelefoni() {
+        return telefoni;
+    }
+
+    public void setTelefoni(List<NumeroTelefono> telefoni) {
+        this.telefoni = telefoni;
+    }
+
+    //endregion
 }

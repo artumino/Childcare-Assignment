@@ -28,4 +28,42 @@ public class QuantitaPasto implements Serializable
 
     //endregion
 
+    //region Metodi
+
+    public QuantitaPasto() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public int getQuantita() {
+        return Quantita;
+    }
+
+    public void setQuantita(int quantita) {
+        Quantita = quantita;
+    }
+
+    public Pasto getPasto() {
+        return pasto;
+    }
+
+    public void setPasto(Pasto pasto) {
+        this.pasto = pasto;
+    }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(Menu menu) {
+        this.menu = menu;
+    }
+
+    //endregion
+
 }

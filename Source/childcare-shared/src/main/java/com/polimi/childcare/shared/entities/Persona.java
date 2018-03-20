@@ -59,4 +59,114 @@ public abstract class Persona implements Serializable
     private List<NumeroTelefono> telefoni;
 
     //endregion
+
+    //region Metodi
+
+    public Persona() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+    public String getCognome() {
+        return Cognome;
+    }
+
+    public void setCognome(String cognome) {
+        Cognome = cognome;
+    }
+
+    public String getCodiceFiscale() {
+        return CodiceFiscale;
+    }
+
+    public void setCodiceFiscale(String codiceFiscale) {
+        CodiceFiscale = codiceFiscale;
+    }
+
+    public Date getDataNascita() {
+        return DataNascita;
+    }
+
+    public void setDataNascita(Date dataNascita) {
+        DataNascita = dataNascita;
+    }
+
+    public String getStato() {
+        return Stato;
+    }
+
+    public void setStato(String stato) {
+        Stato = stato;
+    }
+
+    public String getComune() {
+        return Comune;
+    }
+
+    public void setComune(String comune) {
+        Comune = comune;
+    }
+
+    public String getProvincia() {
+        return Provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        Provincia = provincia;
+    }
+
+    public String getCittadinanza() {
+        return Cittadinanza;
+    }
+
+    public void setCittadinanza(String cittadinanza) {
+        Cittadinanza = cittadinanza;
+    }
+
+    public String getResidenza() {
+        return Residenza;
+    }
+
+    public void setResidenza(String residenza) {
+        Residenza = residenza;
+    }
+
+    public byte getSesso() {
+        return Sesso;
+    }
+
+    public void setSesso(byte sesso) {
+        Sesso = sesso;
+    }
+
+    public List<Diagnosi> getDiagnosi() {
+        return diagnosi;
+    }
+
+    public void setDiagnosi(List<Diagnosi> diagnosi) {
+        this.diagnosi = diagnosi;
+    }
+
+    public List<NumeroTelefono> getTelefoni() {
+        return telefoni;
+    }
+
+    public void setTelefoni(List<NumeroTelefono> telefoni) {
+        this.telefoni = telefoni;
+    }
+
+    //endregion
 }

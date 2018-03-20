@@ -17,4 +17,26 @@ public class NumeroTelefono
     private String Numero;
 
     //endregion
+
+    //region Metodi
+
+    public NumeroTelefono() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getNumero() {
+        return Numero;
+    }
+
+    public void setNumero(String numero) {
+        Numero = numero;
+    }
+
+    //endregion
 }

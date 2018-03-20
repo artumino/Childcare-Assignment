@@ -36,4 +36,66 @@ public class MezzoDiTrasporto implements Serializable
     private List<PianoViaggi> pianoViaggi;
 
     //endregion
+
+    //region Metodi
+
+    public MezzoDiTrasporto() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getTarga() {
+        return Targa;
+    }
+
+    public void setTarga(String targa) {
+        Targa = targa;
+    }
+
+    public int getCapienza() {
+        return Capienza;
+    }
+
+    public void setCapienza(int capienza) {
+        Capienza = capienza;
+    }
+
+    public int getNumeroIdentificativo() {
+        return NumeroIdentificativo;
+    }
+
+    public void setNumeroIdentificativo(int numeroIdentificativo) {
+        NumeroIdentificativo = numeroIdentificativo;
+    }
+
+    public int getCostoOrario() {
+        return CostoOrario;
+    }
+
+    public void setCostoOrario(int costoOrario) {
+        CostoOrario = costoOrario;
+    }
+
+    public Fornitore getFornitore() {
+        return fornitore;
+    }
+
+    public void setFornitore(Fornitore fornitore) {
+        this.fornitore = fornitore;
+    }
+
+    public List<PianoViaggi> getPianoViaggi() {
+        return pianoViaggi;
+    }
+
+    public void setPianoViaggi(List<PianoViaggi> pianoViaggi) {
+        this.pianoViaggi = pianoViaggi;
+    }
+
+    //endregion
 }

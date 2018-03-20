@@ -28,4 +28,42 @@ public class Menu implements Serializable
     private List<QuantitaPasto> quantitaPasto;
 
     //endregion
+
+    //region Metodi
+
+    public Menu() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public Date getDataInizio() {
+        return DataInizio;
+    }
+
+    public void setDataInizio(Date dataInizio) {
+        DataInizio = dataInizio;
+    }
+
+    public int getRicorrenza() {
+        return Ricorrenza;
+    }
+
+    public void setRicorrenza(int ricorrenza) {
+        Ricorrenza = ricorrenza;
+    }
+
+    public List<QuantitaPasto> getQuantitaPasto() {
+        return quantitaPasto;
+    }
+
+    public void setQuantitaPasto(List<QuantitaPasto> quantitaPasto) {
+        this.quantitaPasto = quantitaPasto;
+    }
+
+    //endregion
 }

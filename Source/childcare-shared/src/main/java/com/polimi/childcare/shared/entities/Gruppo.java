@@ -31,4 +31,42 @@ public class Gruppo implements Serializable
     private List<PianoViaggi> pianoviaggi;
 
     //endregion
+
+    //region Metodi
+
+    public Gruppo() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public Addetto getSorvergliante() {
+        return sorvergliante;
+    }
+
+    public void setSorvergliante(Addetto sorvergliante) {
+        this.sorvergliante = sorvergliante;
+    }
+
+    public List<Bambino> getBambini() {
+        return bambini;
+    }
+
+    public void setBambini(List<Bambino> bambini) {
+        this.bambini = bambini;
+    }
+
+    public List<PianoViaggi> getPianoviaggi() {
+        return pianoviaggi;
+    }
+
+    public void setPianoviaggi(List<PianoViaggi> pianoviaggi) {
+        this.pianoviaggi = pianoviaggi;
+    }
+
+    //endregion
 }

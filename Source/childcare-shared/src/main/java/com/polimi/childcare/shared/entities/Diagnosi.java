@@ -28,4 +28,42 @@ public class Diagnosi implements Serializable
 
     //endregion
 
+    //region Metodi
+
+    public Diagnosi() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public boolean isAllergia() {
+        return Allergia;
+    }
+
+    public void setAllergia(boolean allergia) {
+        Allergia = allergia;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public ReazioneAvversa getReazioneAvversa() {
+        return reazioneAvversa;
+    }
+
+    public void setReazioneAvversa(ReazioneAvversa reazioneAvversa) {
+        this.reazioneAvversa = reazioneAvversa;
+    }
+
+    //endregion
+
 }

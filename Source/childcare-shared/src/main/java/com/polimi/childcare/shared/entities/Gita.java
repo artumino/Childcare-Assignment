@@ -38,4 +38,66 @@ public class Gita implements Serializable
     private List<RegistroPresenze> registriPresenze;
 
     //endregion
+
+    //region Metodi
+
+    public Gita() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public Date getDataInizio() {
+        return DataInizio;
+    }
+
+    public void setDataInizio(Date dataInizio) {
+        DataInizio = dataInizio;
+    }
+
+    public Date getDataFine() {
+        return DataFine;
+    }
+
+    public void setDataFine(Date dataFine) {
+        DataFine = dataFine;
+    }
+
+    public String getLuogo() {
+        return Luogo;
+    }
+
+    public void setLuogo(String luogo) {
+        Luogo = luogo;
+    }
+
+    public int getCosto() {
+        return Costo;
+    }
+
+    public void setCosto(int costo) {
+        Costo = costo;
+    }
+
+    public List<PianoViaggi> getPianiViaggi() {
+        return pianiViaggi;
+    }
+
+    public void setPianiViaggi(List<PianoViaggi> pianiViaggi) {
+        this.pianiViaggi = pianiViaggi;
+    }
+
+    public List<RegistroPresenze> getRegistriPresenze() {
+        return registriPresenze;
+    }
+
+    public void setRegistriPresenze(List<RegistroPresenze> registriPresenze) {
+        this.registriPresenze = registriPresenze;
+    }
+
+    //endregion
 }
