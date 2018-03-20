@@ -152,21 +152,5 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public List<Diagnosi> getDiagnosi() {
-        return diagnosi;
-    }
-
-    public void setDiagnosi(List<Diagnosi> diagnosi) {
-        this.diagnosi = diagnosi;
-    }
-
-    public List<NumeroTelefono> getTelefoni() {
-        return telefoni;
-    }
-
-    public void setTelefoni(List<NumeroTelefono> telefoni) {
-        this.telefoni = telefoni;
-    }
-
     //endregion
 }

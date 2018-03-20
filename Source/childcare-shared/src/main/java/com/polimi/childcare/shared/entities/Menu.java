@@ -57,13 +57,5 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
-    public List<QuantitaPasto> getQuantitaPasto() {
-        return quantitaPasto;
-    }
-
-    public void setQuantitaPasto(List<QuantitaPasto> quantitaPasto) {
-        this.quantitaPasto = quantitaPasto;
-    }
-
     //endregion
 }

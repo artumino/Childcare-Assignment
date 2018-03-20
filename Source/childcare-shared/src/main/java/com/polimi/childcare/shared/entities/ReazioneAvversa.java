@@ -58,21 +58,5 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
-    public List<Diagnosi> getDiagnosi() {
-        return diagnosi;
-    }
-
-    public void setDiagnosi(List<Diagnosi> diagnosi) {
-        this.diagnosi = diagnosi;
-    }
-
-    public List<Pasto> getPasti() {
-        return pasti;
-    }
-
-    public void setPasti(List<Pasto> pasti) {
-        this.pasti = pasti;
-    }
-
     //endregion
 }

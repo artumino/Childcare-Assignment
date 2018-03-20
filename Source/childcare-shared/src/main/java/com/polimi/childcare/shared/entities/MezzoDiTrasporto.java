@@ -89,13 +89,5 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public List<PianoViaggi> getPianoViaggi() {
-        return pianoViaggi;
-    }
-
-    public void setPianoViaggi(List<PianoViaggi> pianoViaggi) {
-        this.pianoViaggi = pianoViaggi;
-    }
-
     //endregion
 }
