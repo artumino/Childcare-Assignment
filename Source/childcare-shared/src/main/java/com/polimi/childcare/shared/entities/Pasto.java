@@ -42,4 +42,58 @@ public class Pasto implements Serializable
     private List<QuantitaPasto> quantitaPasto;
 
     //endregion
+
+    //region Metodi
+
+    public Pasto() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+    public String getDescrizione() {
+        return Descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        Descrizione = descrizione;
+    }
+
+    public List<Fornitore> getFornitori() {
+        return fornitori;
+    }
+
+    public void setFornitori(List<Fornitore> fornitori) {
+        this.fornitori = fornitori;
+    }
+
+    public List<ReazioneAvversa> getReazione() {
+        return reazione;
+    }
+
+    public void setReazione(List<ReazioneAvversa> reazione) {
+        this.reazione = reazione;
+    }
+
+    public List<QuantitaPasto> getQuantitaPasto() {
+        return quantitaPasto;
+    }
+
+    public void setQuantitaPasto(List<QuantitaPasto> quantitaPasto) {
+        this.quantitaPasto = quantitaPasto;
+    }
+
+    //endregion
 }

@@ -48,4 +48,66 @@ public class Contatto implements Serializable
     private List<NumeroTelefono> telefoni;
 
     //endregion
+
+    //region Metodi
+
+    public Contatto() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getDescrizione() {
+        return Descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        Descrizione = descrizione;
+    }
+
+    public String getNome() {
+        return Nome;
+    }
+
+    public void setNome(String nome) {
+        Nome = nome;
+    }
+
+    public String getCognome() {
+        return Cognome;
+    }
+
+    public void setCognome(String cognome) {
+        Cognome = cognome;
+    }
+
+    public String getIndirizzo() {
+        return Indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        Indirizzo = indirizzo;
+    }
+
+    public List<Bambino> getBambini() {
+        return bambini;
+    }
+
+    public void setBambini(List<Bambino> bambini) {
+        this.bambini = bambini;
+    }
+
+    public List<NumeroTelefono> getTelefoni() {
+        return telefoni;
+    }
+
+    public void setTelefoni(List<NumeroTelefono> telefoni) {
+        this.telefoni = telefoni;
+    }
+
+    //endregion
 }

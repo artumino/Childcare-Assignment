@@ -28,4 +28,42 @@ public class PianoViaggi implements Serializable
     private MezzoDiTrasporto mezzo;
 
     //endregion
+
+    //region Metodi
+
+    public PianoViaggi() { }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public Gita getGita() {
+        return gita;
+    }
+
+    public void setGita(Gita gita) {
+        this.gita = gita;
+    }
+
+    public Gruppo getGruppo() {
+        return gruppo;
+    }
+
+    public void setGruppo(Gruppo gruppo) {
+        this.gruppo = gruppo;
+    }
+
+    public MezzoDiTrasporto getMezzo() {
+        return mezzo;
+    }
+
+    public void setMezzo(MezzoDiTrasporto mezzo) {
+        this.mezzo = mezzo;
+    }
+
+    //endregion
 }
