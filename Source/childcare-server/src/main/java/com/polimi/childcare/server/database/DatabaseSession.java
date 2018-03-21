@@ -5,7 +5,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.jinq.jpa.JinqJPAStreamProvider;
 import org.jinq.orm.stream.JinqStream;
@@ -32,7 +31,7 @@ public class DatabaseSession
 
     public void setUp()
     {
-        if(sessionFactory != null)
+        if(entityManagerFactory != null)
             return;
 
         entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
@@ -174,6 +173,9 @@ public class DatabaseSession
 
     public <T> JinqStream<T> query(Class<T> tClass)
     {
+        if(streams == null)
+            return null;
+
         //TODO: Crea problemi continuare a creare EntityManager?
         return streams.streamAll(entityManagerFactory.createEntityManager(), tClass);
     }
@@ -183,5 +185,11 @@ public class DatabaseSession
         if(sessionFactory != null)
             sessionFactory.close();
         sessionFactory = null;
+
+        streams = null;
+
+        if(entityManagerFactory != null)
+            entityManagerFactory.close();
+        entityManagerFactory = null;
     }
 }
