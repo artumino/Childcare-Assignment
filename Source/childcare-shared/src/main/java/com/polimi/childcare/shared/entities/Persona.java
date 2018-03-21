@@ -12,7 +12,7 @@ public abstract class Persona implements Serializable
     //region Attributi
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    protected Long ID;
+    protected int ID;
 
     @Column(nullable = false, length = 20)
     protected String Nome;
@@ -79,13 +79,7 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public Long getID() {
-        return ID;
-    }
-
-    public void setID(Long ID) {
-        this.ID = ID;
-    }
+    public int getID() { return ID; }
 
     public String getNome() {
         return Nome;

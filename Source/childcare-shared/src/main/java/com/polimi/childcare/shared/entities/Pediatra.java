@@ -13,4 +13,14 @@ public class Pediatra extends Contatto
     private List<Bambino> bambini;
 
     //endregion
+
+    //region Metodi
+
+    public Pediatra() { }
+
+    public Pediatra(String descrizione, String nome, String cognome, String indirizzo) {
+        super(descrizione, nome, cognome, indirizzo);
+    }
+
+    //endregion
 }

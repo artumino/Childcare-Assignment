@@ -20,4 +20,14 @@ public class Genitore extends Persona
     private List<Bambino> bambini;
 
     //endregion
+
+    //region Metodi
+
+    public Genitore() { }
+
+    public Genitore(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso) {
+        super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
+    }
+
+    //endregion
 }

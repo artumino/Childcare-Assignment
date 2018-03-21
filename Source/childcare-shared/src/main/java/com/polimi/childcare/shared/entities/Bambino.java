@@ -31,6 +31,9 @@ public class Bambino extends Persona
 
     //region Metodi
 
+
+    public Bambino() { }
+
     public Bambino(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
     {
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);

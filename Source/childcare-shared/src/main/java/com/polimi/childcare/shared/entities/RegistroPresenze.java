@@ -10,7 +10,7 @@ public class RegistroPresenze implements Serializable
     //region Attributi
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Enumerated(EnumType.ORDINAL)
     private StatoPresenza Stato;
@@ -44,7 +44,16 @@ public class RegistroPresenze implements Serializable
 
     public RegistroPresenze() { }
 
-    public Long getID() {
+    public RegistroPresenze(StatoPresenza stato, java.util.Date date, java.util.Date timeStamp, short ora, Bambino bambino, Gita gita) {
+        Stato = stato;
+        Date = date;
+        TimeStamp = timeStamp;
+        Ora = ora;
+        this.bambino = bambino;
+        this.gita = gita;
+    }
+
+    public int getID() {
         return ID;
     }
 

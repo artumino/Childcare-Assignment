@@ -11,7 +11,7 @@ public class Pasto implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false, length = 20)
     private String Nome;
@@ -54,7 +54,7 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
-    public Long getID() {
+    public int getID() {
         return ID;
     }
 

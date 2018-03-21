@@ -8,7 +8,7 @@ public class NumeroTelefono
     //region Attributi
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false, length = 15)   //Standard E.164
     private String Numero;
@@ -19,7 +19,11 @@ public class NumeroTelefono
 
     public NumeroTelefono() { }
 
-    public Long getID() {
+    public NumeroTelefono(String numero) {
+        Numero = numero;
+    }
+
+    public int getID() {
         return ID;
     }
 

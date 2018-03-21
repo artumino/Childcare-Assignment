@@ -10,7 +10,7 @@ public class QuantitaPasto implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false)
     private int Quantita;
@@ -33,7 +33,13 @@ public class QuantitaPasto implements Serializable
 
     public QuantitaPasto() { }
 
-    public Long getID() {
+    public QuantitaPasto(int quantita, Pasto pasto, Menu menu) {
+        Quantita = quantita;
+        this.pasto = pasto;
+        this.menu = menu;
+    }
+
+    public int getID() {
         return ID;
     }
 

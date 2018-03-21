@@ -10,7 +10,7 @@ public class Fornitore implements Serializable
     //region Attributi
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false, length = 50)
     private String RagioneSociale;
@@ -66,7 +66,17 @@ public class Fornitore implements Serializable
 
     public Fornitore() { }
 
-    public Long getID() {
+    public Fornitore(String ragioneSociale, String partitaIVA, String sedeLegale, String numeroRegistroImprese, String email, String FAX, String IBAN) {
+        RagioneSociale = ragioneSociale;
+        PartitaIVA = partitaIVA;
+        SedeLegale = sedeLegale;
+        NumeroRegistroImprese = numeroRegistroImprese;
+        Email = email;
+        this.FAX = FAX;
+        this.IBAN = IBAN;
+    }
+
+    public int getID() {
         return ID;
     }
 

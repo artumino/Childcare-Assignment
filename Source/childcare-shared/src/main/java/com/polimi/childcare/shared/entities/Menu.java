@@ -12,7 +12,7 @@ public class Menu implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.DATE)
@@ -34,7 +34,12 @@ public class Menu implements Serializable
 
     public Menu() { }
 
-    public Long getID() {
+    public Menu(Date dataInizio, int ricorrenza) {
+        DataInizio = dataInizio;
+        Ricorrenza = ricorrenza;
+    }
+
+    public int getID() {
         return ID;
     }
 

@@ -12,7 +12,7 @@ public class Gita implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.DATE)
@@ -44,7 +44,14 @@ public class Gita implements Serializable
 
     public Gita() { }
 
-    public Long getID() {
+    public Gita(Date dataInizio, Date dataFine, String luogo, int costo) {
+        DataInizio = dataInizio;
+        DataFine = dataFine;
+        Luogo = luogo;
+        Costo = costo;
+    }
+
+    public int getID() {
         return ID;
     }
 

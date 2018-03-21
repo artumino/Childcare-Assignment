@@ -11,7 +11,7 @@ public class Gruppo implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
     //Qua completeremo con ID Tutore e ID Bambino esterni
 
     //endregion
@@ -37,7 +37,11 @@ public class Gruppo implements Serializable
 
     public Gruppo() { }
 
-    public Long getID() {
+    public Gruppo(Addetto sorvergliante) {
+        this.sorvergliante = sorvergliante;
+    }
+
+    public int getID() {
         return ID;
     }
 

@@ -14,7 +14,7 @@ public class Contatto implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(length = 45)   //Di default è nullable
     private String Descrizione;
@@ -54,9 +54,14 @@ public class Contatto implements Serializable
 
     public Contatto() { }
 
-    public Long getID() {
-        return ID;
+    public Contatto(String descrizione, String nome, String cognome, String indirizzo) {
+        Descrizione = descrizione;
+        Nome = nome;
+        Cognome = cognome;
+        Indirizzo = indirizzo;
     }
+
+    public int getID() { return ID; }
 
     public String getDescrizione() {
         return Descrizione;

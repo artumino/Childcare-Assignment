@@ -11,7 +11,7 @@ public class MezzoDiTrasporto implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false, length = 7)   //Targa Italiana
     private String Targa;
@@ -42,7 +42,15 @@ public class MezzoDiTrasporto implements Serializable
 
     public MezzoDiTrasporto() { }
 
-    public Long getID() {
+    public MezzoDiTrasporto(String targa, int capienza, int numeroIdentificativo, int costoOrario, Fornitore fornitore) {
+        Targa = targa;
+        Capienza = capienza;
+        NumeroIdentificativo = numeroIdentificativo;
+        CostoOrario = costoOrario;
+        this.fornitore = fornitore;
+    }
+
+    public int getID() {
         return ID;
     }
 

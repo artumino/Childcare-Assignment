@@ -11,7 +11,7 @@ public class ReazioneAvversa implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false, length = 20)
     private String Nome;
@@ -35,7 +35,12 @@ public class ReazioneAvversa implements Serializable
 
     public ReazioneAvversa() { }
 
-    public Long getID() {
+    public ReazioneAvversa(String nome, String descrizione) {
+        Nome = nome;
+        Descrizione = descrizione;
+    }
+
+    public int getID() {
         return ID;
     }
 

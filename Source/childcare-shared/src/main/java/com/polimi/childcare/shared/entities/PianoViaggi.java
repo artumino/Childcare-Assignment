@@ -10,7 +10,7 @@ public class PianoViaggi implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     //endregion
 
@@ -34,7 +34,13 @@ public class PianoViaggi implements Serializable
 
     public PianoViaggi() { }
 
-    public Long getID() {
+    public PianoViaggi(Gita gita, Gruppo gruppo, MezzoDiTrasporto mezzo) {
+        this.gita = gita;
+        this.gruppo = gruppo;
+        this.mezzo = mezzo;
+    }
+
+    public int getID() {
         return ID;
     }
 

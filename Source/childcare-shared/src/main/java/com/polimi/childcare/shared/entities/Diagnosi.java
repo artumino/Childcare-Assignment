@@ -10,7 +10,7 @@ public class Diagnosi implements Serializable
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long ID;
+    private int ID;
 
     @Column(nullable = false)
     private boolean Allergia;
@@ -33,7 +33,13 @@ public class Diagnosi implements Serializable
 
     public Diagnosi() { }
 
-    public Long getID() {
+    public Diagnosi(boolean allergia, Persona persona, ReazioneAvversa reazioneAvversa) {
+        Allergia = allergia;
+        this.persona = persona;
+        this.reazioneAvversa = reazioneAvversa;
+    }
+
+    public int getID() {
         return ID;
     }
 
