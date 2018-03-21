@@ -1,10 +1,10 @@
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.Pasto;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import rules.DatabaseSessionRule;
-import static org.junit.Assert.*;
 
 public class InsertTest
 {
@@ -19,6 +19,6 @@ public class InsertTest
         Pasto r;
         DatabaseSession.getInstance().insert(p);
         r = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        assertTrue(true);
+        Assert.assertTrue("Default return true", true);
     }
 }
