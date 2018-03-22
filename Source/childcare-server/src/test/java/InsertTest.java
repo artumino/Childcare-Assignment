@@ -19,6 +19,6 @@ public class InsertTest
         Pasto r;
         DatabaseSession.getInstance().insert(p);
         r = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        Assert.assertTrue("Default return true", true);
+        Assert.assertEquals(p, r);
     }
 }
