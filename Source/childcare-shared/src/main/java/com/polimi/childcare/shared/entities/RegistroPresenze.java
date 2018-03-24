@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "RegistroPresenze")
@@ -103,6 +104,20 @@ public class RegistroPresenze implements Serializable
 
     public void setGita(Gita gita) {
         this.gita = gita;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RegistroPresenze)) return false;
+        RegistroPresenze that = (RegistroPresenze) o;
+        return getID() == that.getID() &&
+                getOra() == that.getOra() &&
+                getStato() == that.getStato() &&
+                Objects.equals(getDate(), that.getDate()) &&
+                Objects.equals(getTimeStamp(), that.getTimeStamp()) &&
+                Objects.equals(getBambino(), that.getBambino()) &&
+                Objects.equals(getGita(), that.getGita());
     }
 
     //endregion

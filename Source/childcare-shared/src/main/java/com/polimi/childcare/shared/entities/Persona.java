@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Persone")
@@ -159,6 +160,24 @@ public abstract class Persona implements Serializable
 
     public void setSesso(byte sesso) {
         Sesso = sesso;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Persona)) return false;
+        Persona persona = (Persona) o;
+        return getID() == persona.getID() &&
+                getSesso() == persona.getSesso() &&
+                Objects.equals(getNome(), persona.getNome()) &&
+                Objects.equals(getCognome(), persona.getCognome()) &&
+                Objects.equals(getCodiceFiscale(), persona.getCodiceFiscale()) &&
+                Objects.equals(getDataNascita(), persona.getDataNascita()) &&
+                Objects.equals(getStato(), persona.getStato()) &&
+                Objects.equals(getComune(), persona.getComune()) &&
+                Objects.equals(getProvincia(), persona.getProvincia()) &&
+                Objects.equals(getCittadinanza(), persona.getCittadinanza()) &&
+                Objects.equals(getResidenza(), persona.getResidenza());
     }
 
     //endregion

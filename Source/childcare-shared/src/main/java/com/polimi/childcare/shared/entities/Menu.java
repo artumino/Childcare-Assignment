@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Menu")
@@ -57,6 +58,16 @@ public class Menu implements Serializable
 
     public void setRicorrenza(int ricorrenza) {
         Ricorrenza = ricorrenza;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Menu)) return false;
+        Menu menu = (Menu) o;
+        return getID() == menu.getID() &&
+                getRicorrenza() == menu.getRicorrenza() &&
+                Objects.equals(getDataInizio(), menu.getDataInizio());
     }
 
     //endregion

@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "PianiViaggi")
@@ -66,6 +67,17 @@ public class PianoViaggi implements Serializable
 
     public void setMezzo(MezzoDiTrasporto mezzo) {
         this.mezzo = mezzo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PianoViaggi)) return false;
+        PianoViaggi that = (PianoViaggi) o;
+        return getID() == that.getID() &&
+                Objects.equals(getGita(), that.getGita()) &&
+                Objects.equals(getGruppo(), that.getGruppo()) &&
+                Objects.equals(getMezzo(), that.getMezzo());
     }
 
     //endregion

@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Diagnosi")
@@ -65,6 +66,17 @@ public class Diagnosi implements Serializable
 
     public void setReazioneAvversa(ReazioneAvversa reazioneAvversa) {
         this.reazioneAvversa = reazioneAvversa;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Diagnosi)) return false;
+        Diagnosi diagnosi = (Diagnosi) o;
+        return getID() == diagnosi.getID() &&
+                isAllergia() == diagnosi.isAllergia() &&
+                Objects.equals(getPersona(), diagnosi.getPersona()) &&
+                Objects.equals(getReazioneAvversa(), diagnosi.getReazioneAvversa());
     }
 
     //endregion

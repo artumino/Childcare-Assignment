@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "MezziDiTrasporto")
@@ -92,6 +93,19 @@ public class MezzoDiTrasporto implements Serializable
 
     public void setFornitore(Fornitore fornitore) {
         this.fornitore = fornitore;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MezzoDiTrasporto)) return false;
+        MezzoDiTrasporto that = (MezzoDiTrasporto) o;
+        return getID() == that.getID() &&
+                getCapienza() == that.getCapienza() &&
+                getNumeroIdentificativo() == that.getNumeroIdentificativo() &&
+                getCostoOrario() == that.getCostoOrario() &&
+                Objects.equals(getTarga(), that.getTarga()) &&
+                Objects.equals(getFornitore(), that.getFornitore());
     }
 
     //endregion

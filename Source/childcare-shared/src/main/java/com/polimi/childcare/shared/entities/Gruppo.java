@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Gruppi")
@@ -67,6 +68,15 @@ public class Gruppo implements Serializable
 
     public void setPianoviaggi(List<PianoViaggi> pianoviaggi) {
         this.pianoviaggi = pianoviaggi;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gruppo)) return false;
+        Gruppo gruppo = (Gruppo) o;
+        return getID() == gruppo.getID() &&
+                Objects.equals(getSorvergliante(), gruppo.getSorvergliante());
     }
 
     //endregion

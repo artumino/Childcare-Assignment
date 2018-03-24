@@ -11,7 +11,6 @@ public class Addetto extends Persona
 {
     //region Metodi
 
-
     public Addetto() { }
 
     public Addetto(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso) {

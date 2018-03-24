@@ -1,5 +1,6 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Rubrica")
@@ -33,6 +34,15 @@ public class NumeroTelefono
 
     public void setNumero(String numero) {
         Numero = numero;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NumeroTelefono)) return false;
+        NumeroTelefono that = (NumeroTelefono) o;
+        return getID() == that.getID() &&
+                Objects.equals(getNumero(), that.getNumero());
     }
 
     //endregion

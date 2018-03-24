@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ReazioniAvverse")
@@ -58,6 +59,16 @@ public class ReazioneAvversa implements Serializable
 
     public void setDescrizione(String descrizione) {
         Descrizione = descrizione;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReazioneAvversa)) return false;
+        ReazioneAvversa that = (ReazioneAvversa) o;
+        return getID() == that.getID() &&
+                Objects.equals(getNome(), that.getNome()) &&
+                Objects.equals(getDescrizione(), that.getDescrizione());
     }
 
     //endregion

@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Bambini")
@@ -37,6 +38,23 @@ public class Bambino extends Persona
     public Bambino(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
     {
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
+    }
+
+    public Pediatra getPediatra() {
+        return pediatra;
+    }
+
+    public void setPediatra(Pediatra pediatra) {
+        this.pediatra = pediatra;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bambino)) return false;
+        if (!super.equals(o)) return false;
+        Bambino bambino = (Bambino) o;
+        return Objects.equals(getPediatra(), bambino.getPediatra());
     }
 
     //endregion

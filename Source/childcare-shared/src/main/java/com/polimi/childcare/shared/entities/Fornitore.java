@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Fornitori")
@@ -108,9 +109,7 @@ public class Fornitore implements Serializable
         return NumeroRegistroImprese;
     }
 
-    public void setNumeroRegistroImprese(String numeroRegistroImprese) {
-        NumeroRegistroImprese = numeroRegistroImprese;
-    }
+    public void setNumeroRegistroImprese(String numeroRegistroImprese) { NumeroRegistroImprese = numeroRegistroImprese; }
 
     public String getEmail() {
         return Email;
@@ -134,6 +133,21 @@ public class Fornitore implements Serializable
 
     public void setIBAN(String IBAN) {
         this.IBAN = IBAN;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Fornitore)) return false;
+        Fornitore fornitore = (Fornitore) o;
+        return getID() == fornitore.getID() &&
+                Objects.equals(getRagioneSociale(), fornitore.getRagioneSociale()) &&
+                Objects.equals(getPartitaIVA(), fornitore.getPartitaIVA()) &&
+                Objects.equals(getSedeLegale(), fornitore.getSedeLegale()) &&
+                Objects.equals(getNumeroRegistroImprese(), fornitore.getNumeroRegistroImprese()) &&
+                Objects.equals(getEmail(), fornitore.getEmail()) &&
+                Objects.equals(getFAX(), fornitore.getFAX()) &&
+                Objects.equals(getIBAN(), fornitore.getIBAN());
     }
 
     //endregion

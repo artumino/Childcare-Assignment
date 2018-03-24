@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Gite")
@@ -81,6 +82,18 @@ public class Gita implements Serializable
 
     public int getCosto() {
         return Costo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gita)) return false;
+        Gita gita = (Gita) o;
+        return getID() == gita.getID() &&
+                getCosto() == gita.getCosto() &&
+                Objects.equals(getDataInizio(), gita.getDataInizio()) &&
+                Objects.equals(getDataFine(), gita.getDataFine()) &&
+                Objects.equals(getLuogo(), gita.getLuogo());
     }
 
     //endregion

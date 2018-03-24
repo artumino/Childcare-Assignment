@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Contatti")
@@ -93,6 +94,18 @@ public class Contatto implements Serializable
 
     public void setIndirizzo(String indirizzo) {
         Indirizzo = indirizzo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contatto)) return false;
+        Contatto contatto = (Contatto) o;
+        return getID() == contatto.getID() &&
+                Objects.equals(getDescrizione(), contatto.getDescrizione()) &&
+                Objects.equals(getNome(), contatto.getNome()) &&
+                Objects.equals(getCognome(), contatto.getCognome()) &&
+                Objects.equals(getIndirizzo(), contatto.getIndirizzo());
     }
 
     //endregion
