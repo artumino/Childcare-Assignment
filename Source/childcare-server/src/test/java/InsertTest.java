@@ -27,8 +27,11 @@ public class InsertTest
         Pasto p = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
         DatabaseSession.getInstance().insert(p);
         Pasto r = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        //DatabaseSession.getInstance().delete(r);
+        System.out.println("ID: " + r.getID() + " - " + "Nome: " + r.getNome() + " - " + "Descrizione: " + r.getDescrizione());
+        DatabaseSession.getInstance().delete(r);
         //DatabaseSession.getInstance().deleteByID(Pasto.class, 1);
+        r = DatabaseSession.getInstance().getByID(Pasto.class, 1);
+        System.out.println("ID: " + r.getID() + " - " + "Nome: " + r.getNome() + " - " + "Descrizione: " + r.getDescrizione());
         //if(DatabaseSession.getInstance().getByID(Pasto.class, 1) == null)
             Assert.assertTrue("Eliminato correttamente elemento creato nel test precendente", true);
         //else
