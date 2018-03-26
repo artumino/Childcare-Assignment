@@ -11,7 +11,7 @@ public class Gruppo implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
     //Qua completeremo con ID Tutore e ID Bambino esterni
 

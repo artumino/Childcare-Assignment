@@ -12,7 +12,7 @@ public abstract class Persona implements Serializable
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     protected int ID;
 
     @Column(nullable = false, length = 20)

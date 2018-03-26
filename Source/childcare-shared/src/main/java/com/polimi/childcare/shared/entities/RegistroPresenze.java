@@ -10,7 +10,7 @@ public class RegistroPresenze implements Serializable
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Enumerated(EnumType.ORDINAL)

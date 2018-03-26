@@ -3,15 +3,16 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Rubrica")
+@Table(name = "Rubrica", indexes = {
+        @Index(columnList = "Numero", name = "idx_Numero")})
 public class NumeroTelefono
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false, length = 15)   //Standard E.164
+    @Column(nullable = false, length = 15, unique = true)   //Standard E.164
     private String Numero;
 
     //endregion
