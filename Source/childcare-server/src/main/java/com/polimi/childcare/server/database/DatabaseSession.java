@@ -36,7 +36,7 @@ public class DatabaseSession
 
         entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
         sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-        streams = new JinqJPAStreamProvider(entityManagerFactory);
+        streams = new JinqJPAStreamProvider(sessionFactory);
     }
 
     //@ensures (\result == true) <==> (sessionFactory != null)
@@ -133,13 +133,12 @@ public class DatabaseSession
 
     //endregion
 
-    public <T> JinqStream<T> query(Class<T> tClass)
+    public <T> JinqStream<T> query(Class<T> tClass, Session session)
     {
         if(streams == null)
             return null;
 
-        //TODO: Crea problemi continuare a creare EntityManager?
-        return streams.streamAll(entityManagerFactory.createEntityManager(), tClass);
+        return streams.streamAll(session, tClass);
     }
 
     public boolean execute(IDatabaseExecution execution)
