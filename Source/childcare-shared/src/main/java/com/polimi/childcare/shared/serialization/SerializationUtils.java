@@ -36,7 +36,7 @@ public class SerializationUtils
             Object obj = in.readObject();
 
             //Eseguo il cast alla classe richiesta solo se posso effettivamente farlo
-            if(tClass.isAssignableFrom(obj.getClass()))
+            if(obj != null && tClass.isAssignableFrom(obj.getClass()))
                 return (T)obj;
         }
         catch (IOException | ClassNotFoundException ex) {
