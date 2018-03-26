@@ -35,7 +35,7 @@ public class SerializationTest
 
         SerializableListResponse response = new SerializableListResponse(200, payload);
         byte[] serArr = SerializationUtils.serializeToByteArray(response);
-        BaseResponse received = SerializationUtils.deserializeByteArray(serArr, BaseResponse.class);
+        Integer received = SerializationUtils.deserializeByteArray(serArr, Integer.class);
         Assert.assertNull(received);
 
         SerializableListResponse dResponse = SerializationUtils.deserializeByteArray(serArr, SerializableListResponse.class);
@@ -45,5 +45,31 @@ public class SerializationTest
 
         for(int i = 0; i < payload.size(); i++)
             Assert.assertTrue(dResponse.getPayload().get(i).equals(payload.get(i)));
+    }
+
+    //Controllo che almeno le classi con solo tipi complessi Serializable possano essere serializzate
+    @Test
+    public void SerializeDeserializePayloadedDowncastedClassesTest()
+    {
+        Random rnd = new Random();
+
+        ArrayList<Serializable> payload = new ArrayList<>();
+        for(int i = 0; i < 20; i++)
+            payload.add(rnd.nextInt());
+
+        SerializableListResponse response = new SerializableListResponse(200, payload);
+        byte[] serArr = SerializationUtils.serializeToByteArray(response);
+        Integer received = SerializationUtils.deserializeByteArray(serArr, Integer.class);
+        Assert.assertNull(received);
+
+        BaseResponse dResponse = SerializationUtils.deserializeByteArray(serArr, BaseResponse.class);
+        Assert.assertNotNull(dResponse);
+        Assert.assertEquals(response.getCode(), dResponse.getCode());
+
+        SerializableListResponse sResponse = (SerializableListResponse)dResponse;
+        Assert.assertEquals(sResponse.getPayload().size(), payload.size());
+
+        for(int i = 0; i < payload.size(); i++)
+            Assert.assertTrue(sResponse.getPayload().get(i).equals(payload.get(i)));
     }
 }
