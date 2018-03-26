@@ -45,27 +45,35 @@ public class SocketClientHandler implements Runnable
             {
                 //Ascolto per una request codificata in Base64
                 String request = isReader.readLine();
-                byte[] requestBytes = Base64.getDecoder().decode(request);
-                BaseRequest requestInstance = SerializationUtils.deserializeByteArray(requestBytes, BaseRequest.class);
 
-                //Computo una risposta opportuna
-                BaseResponse response = null;
-                if(requestInstance != null)
-                    response = networkInterface.messageReceived(requestInstance); //Process Request
+                //FIXME: ???
+                if(request != null)
+                {
+                    byte[] requestBytes = Base64.getDecoder().decode(request);
+                    BaseRequest requestInstance = SerializationUtils.deserializeByteArray(requestBytes, BaseRequest.class);
 
-                if(response == null)
-                    response = new BaseResponse(400); //Bad Request
+                    //Computo una risposta opportuna
+                    BaseResponse response = null;
+                    if (requestInstance != null)
+                        response = networkInterface.messageReceived(requestInstance); //Process Request
 
-                //Rispondo con una Response codificata in Base64
-                osWriter.write(Base64.getEncoder().encodeToString(SerializationUtils.serializeToByteArray(response)));
-                osWriter.newLine();
-                osWriter.flush();
+                    if (response == null)
+                        response = new BaseResponse(400); //Bad Request
+
+                    //Rispondo con una Response codificata in Base64
+                    osWriter.write(Base64.getEncoder().encodeToString(SerializationUtils.serializeToByteArray(response)));
+                    osWriter.newLine();
+                    osWriter.flush();
+                }
             }
         } catch (IOException ex)
         {
-            if(socket != null)
-                System.err.println("Errore nella comunicazione con il client " + socket.getRemoteSocketAddress().toString());
-            ex.printStackTrace();
+
+            if(!ex.getMessage().contains("Socket closed") && !ex.getMessage().contains("Stream closed") ) {
+                if (socket != null)
+                    System.err.println("Errore nella comunicazione con il client " + socket.getRemoteSocketAddress().toString());
+                ex.printStackTrace();
+            }
         }
     }
 
