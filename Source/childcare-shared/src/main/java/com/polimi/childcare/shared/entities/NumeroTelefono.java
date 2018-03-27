@@ -43,7 +43,7 @@ public class NumeroTelefono
         if (!(o instanceof NumeroTelefono)) return false;
         NumeroTelefono that = (NumeroTelefono) o;
         return getID() == that.getID() &&
-                getNumero() == that.getNumero();
+                getNumero().equals(that.getNumero());
     }
 
     //endregion

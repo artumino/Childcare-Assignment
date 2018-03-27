@@ -106,10 +106,10 @@ public class Contatto implements Serializable
         if (!(o instanceof Contatto)) return false;
         Contatto contatto = (Contatto) o;
         return getID() == contatto.getID() &&
-                getDescrizione() == contatto.getDescrizione() &&
-                getNome() == contatto.getNome() &&
-                getCognome() == contatto.getCognome() &&
-                getIndirizzo() == contatto.getIndirizzo();
+                getDescrizione().equals(contatto.getDescrizione()) &&
+                getNome().equals(contatto.getNome()) &&
+                getCognome().equals(contatto.getCognome()) &&
+                getIndirizzo().equals(contatto.getIndirizzo());
     }
 
     //endregion

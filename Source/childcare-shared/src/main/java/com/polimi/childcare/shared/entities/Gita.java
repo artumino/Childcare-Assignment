@@ -97,7 +97,7 @@ public class Gita implements Serializable
                 getCosto() == gita.getCosto() &&
                 getDataInizio().compareTo(gita.getDataInizio()) == 0 &&
                 getDataFine().compareTo(gita.getDataFine()) == 0 &&
-                getLuogo() == gita.getLuogo();
+                getLuogo().equals(gita.getLuogo());
     }
 
     //endregion

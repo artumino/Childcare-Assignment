@@ -71,8 +71,8 @@ public class ReazioneAvversa implements Serializable
         if (!(o instanceof ReazioneAvversa)) return false;
         ReazioneAvversa that = (ReazioneAvversa) o;
         return getID() == that.getID() &&
-                getNome() == that.getNome() &&
-                getDescrizione() == that.getDescrizione();
+                getNome().equals(that.getNome()) &&
+                getDescrizione().equals(that.getDescrizione());
     }
 
     //endregion

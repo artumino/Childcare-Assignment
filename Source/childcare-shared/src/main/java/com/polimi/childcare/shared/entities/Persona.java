@@ -173,15 +173,15 @@ public abstract class Persona implements Serializable
         Persona persona = (Persona) o;
         return getID() == persona.getID() &&
                 getSesso() == persona.getSesso()&&
-                getNome() == persona.getNome() &&
-                getCognome() == persona.getCognome() &&
-                getCodiceFiscale() == persona.getCodiceFiscale() &&
+                getNome().equals(persona.getNome()) &&
+                getCognome().equals(persona.getCognome()) &&
+                getCodiceFiscale().equals(persona.getCodiceFiscale()) &&
                 getDataNascita().compareTo(persona.getDataNascita())  == 0 &&
-                getStato() == persona.getStato() &&
-                getComune() == persona.getComune() &&
-                getProvincia() == persona.getProvincia() &&
-                getCittadinanza() == persona.getCittadinanza() &&
-                getResidenza() == persona.getResidenza();
+                getStato().equals(persona.getStato()) &&
+                getComune().equals(persona.getComune()) &&
+                getProvincia().equals(persona.getProvincia()) &&
+                getCittadinanza().equals(persona.getCittadinanza()) &&
+                getResidenza().equals(persona.getResidenza());
     }
 
     //endregion
