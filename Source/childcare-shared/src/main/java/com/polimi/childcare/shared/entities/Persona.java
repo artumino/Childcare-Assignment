@@ -172,11 +172,11 @@ public abstract class Persona implements Serializable
         if (!(o instanceof Persona)) return false;
         Persona persona = (Persona) o;
         return getID() == persona.getID() &&
-                getSesso() == persona.getSesso() &&
+                getSesso() == persona.getSesso()&&
                 getNome() == persona.getNome() &&
                 getCognome() == persona.getCognome() &&
                 getCodiceFiscale() == persona.getCodiceFiscale() &&
-                getDataNascita() ==persona.getDataNascita() &&
+                getDataNascita().compareTo(persona.getDataNascita())  == 0 &&
                 getStato() == persona.getStato() &&
                 getComune() == persona.getComune() &&
                 getProvincia() == persona.getProvincia() &&

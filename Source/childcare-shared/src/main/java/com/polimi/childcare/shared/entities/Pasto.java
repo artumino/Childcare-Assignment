@@ -87,8 +87,8 @@ public class Pasto implements Serializable
         if (!(o instanceof Pasto)) return false;
         Pasto pasto = (Pasto) o;
         return getID() == pasto.getID() &&
-                Objects.equals(getNome(), pasto.getNome()) &&
-                Objects.equals(getDescrizione(), pasto.getDescrizione());
+                getNome() == pasto.getNome() &&
+                getDescrizione() == pasto.getDescrizione();
     }
 
     //endregion

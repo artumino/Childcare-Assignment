@@ -114,10 +114,10 @@ public class RegistroPresenze implements Serializable
         return getID() == that.getID() &&
                 getOra() == that.getOra() &&
                 getStato() == that.getStato() &&
-                Objects.equals(getDate(), that.getDate()) &&
-                Objects.equals(getTimeStamp(), that.getTimeStamp()) &&
-                Objects.equals(getBambino(), that.getBambino()) &&
-                Objects.equals(getGita(), that.getGita());
+                getDate().compareTo(that.getDate()) == 0 &&
+                getTimeStamp().compareTo(that.getTimeStamp()) == 0 &&
+                getBambino().equals(that.getBambino()) &&
+                getGita().equals(that.getGita());
     }
 
     //endregion

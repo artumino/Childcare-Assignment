@@ -75,8 +75,8 @@ public class QuantitaPasto implements Serializable
         QuantitaPasto that = (QuantitaPasto) o;
         return getID() == that.getID() &&
                 getQuantita() == that.getQuantita() &&
-                Objects.equals(getPasto(), that.getPasto()) &&
-                Objects.equals(getMenu(), that.getMenu());
+                getPasto().equals(that.getPasto()) &&
+                getMenu().equals(that.getMenu());
     }
 
     //endregion

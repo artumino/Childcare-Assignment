@@ -13,7 +13,7 @@ public class Bambino extends Persona
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
     private List<RegistroPresenze> presenze;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
@@ -61,7 +61,7 @@ public class Bambino extends Persona
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
         Bambino bambino = (Bambino) o;
-        return getPediatra().equals(bambino.getPediatra());
+        return true;// getPediatra().equals(bambino.getPediatra()); LAZY Error
     }
 
     //endregion

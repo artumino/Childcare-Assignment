@@ -95,9 +95,9 @@ public class Gita implements Serializable
         Gita gita = (Gita) o;
         return getID() == gita.getID() &&
                 getCosto() == gita.getCosto() &&
-                Objects.equals(getDataInizio(), gita.getDataInizio()) &&
-                Objects.equals(getDataFine(), gita.getDataFine()) &&
-                Objects.equals(getLuogo(), gita.getLuogo());
+                getDataInizio().compareTo(gita.getDataInizio()) == 0 &&
+                getDataFine().compareTo(gita.getDataFine()) == 0 &&
+                getLuogo() == gita.getLuogo();
     }
 
     //endregion

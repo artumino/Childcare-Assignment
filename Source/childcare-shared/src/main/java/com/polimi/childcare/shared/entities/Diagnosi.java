@@ -75,7 +75,7 @@ public class Diagnosi implements Serializable
         Diagnosi diagnosi = (Diagnosi) o;
         return getID() == diagnosi.getID() &&
                 isAllergia() == diagnosi.isAllergia() &&
-                getPersona().equals(diagnosi.getPersona()) &&
+                //getPersona().equals(diagnosi.getPersona()) &&
                 getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
     }
 

@@ -149,13 +149,13 @@ public class Fornitore implements Serializable
         if (!(o instanceof Fornitore)) return false;
         Fornitore fornitore = (Fornitore) o;
         return getID() == fornitore.getID() &&
-                Objects.equals(getRagioneSociale(), fornitore.getRagioneSociale()) &&
-                Objects.equals(getPartitaIVA(), fornitore.getPartitaIVA()) &&
-                Objects.equals(getSedeLegale(), fornitore.getSedeLegale()) &&
-                Objects.equals(getNumeroRegistroImprese(), fornitore.getNumeroRegistroImprese()) &&
-                Objects.equals(getEmail(), fornitore.getEmail()) &&
-                Objects.equals(getFAX(), fornitore.getFAX()) &&
-                Objects.equals(getIBAN(), fornitore.getIBAN());
+                getRagioneSociale() == fornitore.getRagioneSociale() &&
+                getPartitaIVA() == fornitore.getPartitaIVA() &&
+                getSedeLegale() == fornitore.getSedeLegale() &&
+                getNumeroRegistroImprese() == fornitore.getNumeroRegistroImprese() &&
+                getEmail() == fornitore.getEmail() &&
+                getFAX() == fornitore.getFAX() &&
+                getIBAN() ==  fornitore.getIBAN();
     }
 
     //endregion

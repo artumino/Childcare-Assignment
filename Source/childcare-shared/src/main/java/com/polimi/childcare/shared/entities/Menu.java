@@ -69,7 +69,7 @@ public class Menu implements Serializable
         Menu menu = (Menu) o;
         return getID() == menu.getID() &&
                 getRicorrenza() == menu.getRicorrenza() &&
-                Objects.equals(getDataInizio(), menu.getDataInizio());
+                getDataInizio().compareTo(menu.getDataInizio()) == 0;
     }
 
     //endregion

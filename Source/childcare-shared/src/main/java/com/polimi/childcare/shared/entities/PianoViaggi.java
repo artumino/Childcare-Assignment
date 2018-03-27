@@ -73,9 +73,9 @@ public class PianoViaggi implements Serializable
         if (!(o instanceof PianoViaggi)) return false;
         PianoViaggi that = (PianoViaggi) o;
         return getID() == that.getID() &&
-                Objects.equals(getGita(), that.getGita()) &&
-                Objects.equals(getGruppo(), that.getGruppo()) &&
-                Objects.equals(getMezzo(), that.getMezzo());
+                getGita().equals(that.getGita()) &&
+                getGruppo().equals(that.getGruppo()) &&
+                getMezzo().equals(that.getMezzo());
     }
 
     //endregion

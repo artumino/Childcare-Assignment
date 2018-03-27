@@ -68,7 +68,7 @@ public class Gruppo implements Serializable
         if (!(o instanceof Gruppo)) return false;
         Gruppo gruppo = (Gruppo) o;
         return getID() == gruppo.getID() &&
-                Objects.equals(getSorvergliante(), gruppo.getSorvergliante());
+                getSorvergliante().equals(gruppo.getSorvergliante());
     }
 
     //endregion
