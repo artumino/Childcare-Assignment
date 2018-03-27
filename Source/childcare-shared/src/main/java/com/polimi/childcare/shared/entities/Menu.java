@@ -60,6 +60,8 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
+    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

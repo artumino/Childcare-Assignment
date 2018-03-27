@@ -29,5 +29,7 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
+    public List<Bambino> getBambini() { return bambini; }
+
     //endregion
 }

@@ -96,16 +96,20 @@ public class Contatto implements Serializable
         Indirizzo = indirizzo;
     }
 
+    public List<Bambino> getBambini() { return bambini; }
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Contatto)) return false;
         Contatto contatto = (Contatto) o;
         return getID() == contatto.getID() &&
-                Objects.equals(getDescrizione(), contatto.getDescrizione()) &&
-                Objects.equals(getNome(), contatto.getNome()) &&
-                Objects.equals(getCognome(), contatto.getCognome()) &&
-                Objects.equals(getIndirizzo(), contatto.getIndirizzo());
+                getDescrizione() == contatto.getDescrizione() &&
+                getNome() == contatto.getNome() &&
+                getCognome() == contatto.getCognome() &&
+                getIndirizzo() == contatto.getIndirizzo();
     }
 
     //endregion

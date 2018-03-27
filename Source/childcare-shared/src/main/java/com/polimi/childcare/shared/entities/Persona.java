@@ -162,6 +162,10 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
+    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -169,15 +173,15 @@ public abstract class Persona implements Serializable
         Persona persona = (Persona) o;
         return getID() == persona.getID() &&
                 getSesso() == persona.getSesso() &&
-                Objects.equals(getNome(), persona.getNome()) &&
-                Objects.equals(getCognome(), persona.getCognome()) &&
-                Objects.equals(getCodiceFiscale(), persona.getCodiceFiscale()) &&
-                Objects.equals(getDataNascita(), persona.getDataNascita()) &&
-                Objects.equals(getStato(), persona.getStato()) &&
-                Objects.equals(getComune(), persona.getComune()) &&
-                Objects.equals(getProvincia(), persona.getProvincia()) &&
-                Objects.equals(getCittadinanza(), persona.getCittadinanza()) &&
-                Objects.equals(getResidenza(), persona.getResidenza());
+                getNome() == persona.getNome() &&
+                getCognome() == persona.getCognome() &&
+                getCodiceFiscale() == persona.getCodiceFiscale() &&
+                getDataNascita() ==persona.getDataNascita() &&
+                getStato() == persona.getStato() &&
+                getComune() == persona.getComune() &&
+                getProvincia() == persona.getProvincia() &&
+                getCittadinanza() == persona.getCittadinanza() &&
+                getResidenza() == persona.getResidenza();
     }
 
     //endregion

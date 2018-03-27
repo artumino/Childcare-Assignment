@@ -22,5 +22,8 @@ public class Pediatra extends Contatto
         super(descrizione, nome, cognome, indirizzo);
     }
 
+    @Override
+    public List<Bambino> getBambini() { return bambini; }
+
     //endregion
 }

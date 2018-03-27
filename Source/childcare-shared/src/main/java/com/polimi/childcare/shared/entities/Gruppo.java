@@ -58,16 +58,8 @@ public class Gruppo implements Serializable
         return bambini;
     }
 
-    public void setBambini(List<Bambino> bambini) {
-        this.bambini = bambini;
-    }
-
     public List<PianoViaggi> getPianoviaggi() {
         return pianoviaggi;
-    }
-
-    public void setPianoviaggi(List<PianoViaggi> pianoviaggi) {
-        this.pianoviaggi = pianoviaggi;
     }
 
     @Override

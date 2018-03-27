@@ -75,6 +75,12 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
+    public List<Fornitore> getFornitori() { return fornitori; }
+
+    public List<ReazioneAvversa> getReazione() { return reazione; }
+
+    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

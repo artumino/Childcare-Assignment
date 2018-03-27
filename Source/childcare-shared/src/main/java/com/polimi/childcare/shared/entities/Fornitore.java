@@ -135,6 +135,14 @@ public class Fornitore implements Serializable
         this.IBAN = IBAN;
     }
 
+    public List<Pasto> getPasti() { return pasti; }
+
+    public List<MezzoDiTrasporto> getMezzi() { return mezzi; }
+
+    public List<NumeroTelefono> getFax() { return fax; }
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

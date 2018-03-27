@@ -61,14 +61,18 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
+    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+
+    public List<Pasto> getPasti() { return pasti; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ReazioneAvversa)) return false;
         ReazioneAvversa that = (ReazioneAvversa) o;
         return getID() == that.getID() &&
-                Objects.equals(getNome(), that.getNome()) &&
-                Objects.equals(getDescrizione(), that.getDescrizione());
+                getNome() == that.getNome() &&
+                getDescrizione() == that.getDescrizione();
     }
 
     //endregion

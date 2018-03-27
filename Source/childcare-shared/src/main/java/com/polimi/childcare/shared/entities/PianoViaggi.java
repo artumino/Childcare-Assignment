@@ -65,9 +65,7 @@ public class PianoViaggi implements Serializable
         return mezzo;
     }
 
-    public void setMezzo(MezzoDiTrasporto mezzo) {
-        this.mezzo = mezzo;
-    }
+    public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
 
     @Override
     public boolean equals(Object o) {

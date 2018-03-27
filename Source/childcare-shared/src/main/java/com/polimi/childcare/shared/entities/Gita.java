@@ -84,6 +84,10 @@ public class Gita implements Serializable
         return Costo;
     }
 
+    public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
+
+    public List<RegistroPresenze> getRegistriPresenze() { return registriPresenze; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

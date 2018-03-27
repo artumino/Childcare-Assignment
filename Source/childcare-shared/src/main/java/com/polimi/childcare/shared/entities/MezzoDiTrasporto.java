@@ -95,6 +95,8 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
+    public List<PianoViaggi> getPianoViaggi() { return pianoViaggi; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

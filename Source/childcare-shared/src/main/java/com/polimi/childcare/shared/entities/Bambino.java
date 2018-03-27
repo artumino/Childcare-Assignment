@@ -1,9 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Bambini")
@@ -48,13 +46,22 @@ public class Bambino extends Persona
         this.pediatra = pediatra;
     }
 
+    public List<RegistroPresenze> getPresenze() { return presenze; }
+
+    public List<Genitore> getGenitori() { return genitori; }
+
+    public List<Contatto> getContatti() { return contatti; }
+
+    public List<Gruppo> getGruppi() { return gruppi;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {           //Da rivedere
         if (this == o) return true;
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
         Bambino bambino = (Bambino) o;
-        return Objects.equals(getPediatra(), bambino.getPediatra());
+        return getPediatra().equals(bambino.getPediatra());
     }
 
     //endregion
