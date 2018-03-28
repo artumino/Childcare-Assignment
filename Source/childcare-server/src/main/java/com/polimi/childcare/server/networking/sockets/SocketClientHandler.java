@@ -1,7 +1,7 @@
 package com.polimi.childcare.server.networking.sockets;
 
 import com.polimi.childcare.server.networking.sockets.dummyrequests.DummyConnectionClosedRequest;
-import com.polimi.childcare.shared.networking.IServerNetworkInterface;
+import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
@@ -46,7 +46,7 @@ public class SocketClientHandler implements Runnable
                 //Ascolto per una request codificata in Base64
                 String request = isReader.readLine();
 
-                //FIXME: ???
+                //Se la connessione termina mentre sono in ascolto per una richiesta, request ritorna null
                 if(request != null)
                 {
                     byte[] requestBytes = Base64.getDecoder().decode(request);

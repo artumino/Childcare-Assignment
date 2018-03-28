@@ -1,7 +1,7 @@
 package com.polimi.childcare.server.networking.sockets;
 
+import com.polimi.childcare.server.networking.BaseServerNetworkInterface;
 import com.polimi.childcare.server.networking.sockets.dummyrequests.DummyConnectionClosedRequest;
-import com.polimi.childcare.shared.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-public class SocketInterfaceServer implements IServerNetworkInterface, Runnable
+public class SocketInterfaceServer extends BaseServerNetworkInterface implements Runnable
 {
     private ServerSocket serverSocket;
     private Thread listenerThread;
@@ -62,6 +62,11 @@ public class SocketInterfaceServer implements IServerNetworkInterface, Runnable
     }
 
     @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    @Override
     public BaseResponse messageReceived(BaseRequest request)
     {
         //Un client si è disconnesso
@@ -73,7 +78,7 @@ public class SocketInterfaceServer implements IServerNetworkInterface, Runnable
                 this.handlers.remove(clientHandler);
         }
 
-        return null;
+        return super.messageReceived(request);
     }
 
     @Override

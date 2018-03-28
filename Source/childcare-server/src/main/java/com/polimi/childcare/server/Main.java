@@ -2,8 +2,7 @@ package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
-import com.polimi.childcare.shared.networking.IServerNetworkInterface;
-import org.hibernate.cfg.Configuration;
+import com.polimi.childcare.server.networking.IServerNetworkInterface;
 
 import java.io.IOException;
 

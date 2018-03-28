@@ -1,10 +1,14 @@
+import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
 import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
+import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
-import com.polimi.childcare.shared.networking.IClientNetworkInterface;
-import com.polimi.childcare.shared.networking.IServerNetworkInterface;
+import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
+import stubs.networking.RMIInterfaceServerStub;
+import stubs.networking.SocketInterfaceServerStub;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +23,6 @@ public class NetworkingRule implements MethodRule
     {
         this.clientNetworkInterfaces = new ArrayList<>();
         this.testType = testType;
-        setupServer();
     }
 
     @Override
@@ -28,7 +31,8 @@ public class NetworkingRule implements MethodRule
         {
             @Override
             public void evaluate() throws Throwable {
-                serverNetworkInterface.listen("localhost", 55403);
+                setupServer();
+                serverNetworkInterface.listen("localhost", testType == TestType.Sockets ? 55403 : 55405);
                 try {
                     base.evaluate();
                 } finally {
@@ -47,14 +51,15 @@ public class NetworkingRule implements MethodRule
         switch (testType)
         {
             case RMI:
-                //break; //Non implementato
+                clientNetworkInterface = new RMIInterfaceClient();
+                break;
             default:
                 clientNetworkInterface = new SocketInterfaceClient();
                 break;
         }
 
         clientNetworkInterfaces.add(clientNetworkInterface);
-        clientNetworkInterface.connect("localhost", 55403);
+        clientNetworkInterface.connect("localhost", testType == TestType.Sockets ? 55403 : 55405);
         return clientNetworkInterface;
     }
 
@@ -63,9 +68,10 @@ public class NetworkingRule implements MethodRule
         switch (testType)
         {
             case RMI:
-                //break; //Non implementato
+                serverNetworkInterface = new RMIInterfaceServerStub();
+                break;
             case Sockets:
-                serverNetworkInterface = new SocketInterfaceServer();
+                serverNetworkInterface = new SocketInterfaceServerStub();
                 break;
         }
     }
