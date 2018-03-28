@@ -14,7 +14,7 @@ public class InsertTest
     public DatabaseSessionRule dbSessioneRule = new DatabaseSessionRule(); //Si occupa di fare il setup del DB prima di eseguire i test
 
     @Test
-    public void insertionTest() //Prova del mio branch
+    public void insertionTest() //Prova del mio branch chiamato Database
     {
         Fornitore f = new Fornitore("Azienda Testing sui Bambini", "000000","Piacenza","PC1234","non@laha.it","00000", "IT0123456789");
         Pediatra e = new Pediatra("Pediatra Test", "Francesco", "Giovanni", "Via Sesto 2, Cremona");
