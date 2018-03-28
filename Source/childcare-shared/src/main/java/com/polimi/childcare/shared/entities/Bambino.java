@@ -72,8 +72,11 @@ public class Bambino extends Persona
         if (this == o) return true;
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
-        Bambino bambino = (Bambino) o;
-        return getPediatra().equals(bambino.getPediatra()); //LAZY Error
+        //Bambino bambino = (Bambino) o;
+
+        //E' concettualmente errato controllare anche il pediatra, se io voglio fare Bambino = Bambino mi aspetto solo
+        //che abbiano gli attributi uguali ma non che siano anche consistenti sul DB (quello è un controllo da fare altrove)
+        return true;//getPediatra().equals(bambino.getPediatra()); //LAZY Error
     }
 
     //endregion

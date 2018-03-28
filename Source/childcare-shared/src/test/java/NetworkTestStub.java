@@ -55,7 +55,7 @@ public class NetworkTestStub
             Assert.assertNotNull(bambiniResponse);
             Assert.assertEquals("Lughezza payload risposta errato", bambiniResponse.size(), bambini.size());
             for(int k = 0; k < bambini.size(); k++)
-                Assert.assertEquals("Valori ritornati alterati o non ordinati", bambiniResponse.get(k), bambini.get(i));
+                Assert.assertEquals("Valori ritornati alterati o non ordinati", bambiniResponse.get(k), bambini.get(k));
         }
     }
 }

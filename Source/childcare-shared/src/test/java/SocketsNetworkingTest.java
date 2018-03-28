@@ -13,7 +13,6 @@ public class SocketsNetworkingTest
     public NetworkingRule netRule = new NetworkingRule(NetworkingRule.TestType.Sockets);
 
     @Test
-    @Ignore
     public void MultipleClientTest() throws IOException
     {
         NetworkTestStub.TestMultipleClients(netRule);

@@ -8,9 +8,11 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import javax.persistence.Transient;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.ExportException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class RMIInterfaceServer extends BaseServerNetworkInterface implements IRMIServer,Serializable
 {
@@ -20,7 +22,7 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
     @Transient
     private int port;
     @Transient
-    private String boundName;
+    private Registry boundRegistry;
 
     @Override
     public void listen(String address, int port) throws IOException
@@ -28,36 +30,57 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
         this.address = address;
         this.port = port;
 
-        //Registra server RMI
-        LocateRegistry.createRegistry(port);
-        this.boundName = "//" + address + "/" + IRMIServer.ENDPOINT;
         try {
-            LocateRegistry.getRegistry(address, port).bind(IRMIServer.ENDPOINT, this);
-        } catch (AlreadyBoundException e)
+            //Registra server RMI
+            this.boundRegistry = LocateRegistry.createRegistry(port);
+        }
+        catch (ExportException ex)
         {
-            System.out.println("Failed to bind RMI on " + this.boundName);
-            this.boundName = null;
-            e.printStackTrace();
+            this.boundRegistry = LocateRegistry.getRegistry(port);
+        }
+        finally
+        {
+            try
+            {
+                this.boundRegistry.bind(IRMIServer.ENDPOINT, this);
+            }
+            catch (AlreadyBoundException e1)
+            {
+                e1.printStackTrace();
+                try {
+                    this.boundRegistry.rebind(IRMIServer.ENDPOINT, this);
+                }
+                catch (Exception ex)
+                {
+                    System.out.println("Failed to bind RMI on " + this.boundRegistry);
+                    this.boundRegistry = null;
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
     public boolean isRunning() {
-        return this.boundName != null;
+        return this.boundRegistry != null;
     }
 
     @Override
     public void stop()
     {
-        if(this.boundName != null)
+        if(this.boundRegistry != null)
         {
             try {
                 LocateRegistry.getRegistry(address, port).unbind(IRMIServer.ENDPOINT);
+
+                //Chiudo il registro
+                UnicastRemoteObject.unexportObject(this.boundRegistry, true);
+
             } catch (RemoteException e) {
                 e.printStackTrace();
             } catch (NotBoundException e) {
                 e.printStackTrace();
             }
-            this.boundName = null;
+            this.boundRegistry = null;
         }
     }
 

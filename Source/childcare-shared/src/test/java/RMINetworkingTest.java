@@ -12,7 +12,6 @@ public class RMINetworkingTest
     public NetworkingRule netRule = new NetworkingRule(NetworkingRule.TestType.RMI);
 
     @Test
-    @Ignore
     public void MultipleClientTest() throws IOException
     {
         NetworkTestStub.TestMultipleClients(netRule);
