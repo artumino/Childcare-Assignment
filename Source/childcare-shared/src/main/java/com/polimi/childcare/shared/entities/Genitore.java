@@ -29,6 +29,10 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
+    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
+
+    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
+
     public List<Bambino> getBambini() { return bambini; }
 
     //endregion

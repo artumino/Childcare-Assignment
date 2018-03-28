@@ -13,7 +13,7 @@ public class Bambino extends Persona
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
     private List<RegistroPresenze> presenze;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Non posso fare confronti se è LAZY :S
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
@@ -46,6 +46,18 @@ public class Bambino extends Persona
         this.pediatra = pediatra;
     }
 
+    public void addGenitore(Genitore g){ genitori.add(g); }//Poi va fatto update del Database
+
+    public void removeGenitore(Genitore g){ genitori.remove(g); }//Poi va fatto update del Database
+
+    public void addContatto(Contatto c){ contatti.add(c); }//Poi va fatto update del Database
+
+    public void removeContatto(Contatto c){ contatti.remove(c); }//Poi va fatto update del Database
+
+    public void addGruppo(Gruppo g){ gruppi.add(g); }//Poi va fatto update del Database
+
+    public void removeGruppo(Gruppo g){ gruppi.remove(g); }//Poi va fatto update del Database
+
     public List<RegistroPresenze> getPresenze() { return presenze; }
 
     public List<Genitore> getGenitori() { return genitori; }
@@ -56,12 +68,12 @@ public class Bambino extends Persona
     }
 
     @Override
-    public boolean equals(Object o) {           //Da rivedere
+    public boolean equals(Object o) {           //Ora funzionante con Pediatra EAGER
         if (this == o) return true;
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
         Bambino bambino = (Bambino) o;
-        return true;// getPediatra().equals(bambino.getPediatra()); LAZY Error
+        return getPediatra().equals(bambino.getPediatra()); //LAZY Error
     }
 
     //endregion

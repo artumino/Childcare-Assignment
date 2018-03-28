@@ -84,6 +84,14 @@ public class Gita implements Serializable
         return Costo;
     }
 
+    public void addViaggio(PianoViaggi p){ pianiViaggi.add(p); }
+
+    public void removeViaggio(PianoViaggi p){ pianiViaggi.remove(p); }
+
+    public void addRegistro(RegistroPresenze r){ registriPresenze.add(r); }
+
+    public void removeRegistro(RegistroPresenze r){ registriPresenze.remove(r); }
+
     public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
 
     public List<RegistroPresenze> getRegistriPresenze() { return registriPresenze; }

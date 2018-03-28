@@ -98,6 +98,14 @@ public class Contatto implements Serializable
 
     public List<Bambino> getBambini() { return bambini; }
 
+    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
+
+    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
+
+    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }   //Poi va fatto update del Database
+
+    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n);}   //Poi va fatto update del Database
+
     public List<NumeroTelefono> getTelefoni() { return telefoni; }
 
     @Override

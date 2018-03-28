@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import org.jinq.jpa.jpqlquery.ParameterAsQuery;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -134,6 +136,22 @@ public class Fornitore implements Serializable
     public void setIBAN(String IBAN) {
         this.IBAN = IBAN;
     }
+
+    public void addPasto(Pasto p) { pasti.add(p); }  //Poi va fatto update del Database
+
+    public void removePasto(Pasto p) { pasti.remove(p); }  //Poi va fatto update del Database
+
+    public void addMezzo(MezzoDiTrasporto m) { mezzi.add(m); }  //Poi va fatto update del Database
+
+    public void removeMezzo(MezzoDiTrasporto m) { mezzi.remove(m); }  //Poi va fatto update del Database
+
+    public void addFax(NumeroTelefono n) { fax.add(n); }  //Poi va fatto update del Database
+
+    public void removeFax(NumeroTelefono n) { fax.remove(n); }  //Poi va fatto update del Database
+
+    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+
+    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
 
     public List<Pasto> getPasti() { return pasti; }
 

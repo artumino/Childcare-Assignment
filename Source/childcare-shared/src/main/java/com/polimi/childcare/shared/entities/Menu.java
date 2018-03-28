@@ -60,6 +60,10 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
+    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+
+    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+
     public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
 
     @Override

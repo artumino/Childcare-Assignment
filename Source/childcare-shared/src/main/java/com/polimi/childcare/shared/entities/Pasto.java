@@ -75,6 +75,18 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
+    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+
+    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+
+    public void addReazione(ReazioneAvversa r){ reazione.add(r); }
+
+    public void removeReazione(ReazioneAvversa r){ reazione.remove(r); }
+
+    public void addFornitori(Fornitore f){ fornitori.add(f); }
+
+    public void removeFornitori(Fornitore f){ fornitori.remove(f); }
+
     public List<Fornitore> getFornitori() { return fornitori; }
 
     public List<ReazioneAvversa> getReazione() { return reazione; }
