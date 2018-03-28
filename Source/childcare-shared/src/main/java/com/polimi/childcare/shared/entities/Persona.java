@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Persone")
@@ -11,7 +12,7 @@ public abstract class Persona implements Serializable
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     protected int ID;
 
     @Column(nullable = false, length = 20)
@@ -159,6 +160,36 @@ public abstract class Persona implements Serializable
 
     public void setSesso(byte sesso) {
         Sesso = sesso;
+    }
+
+    public void addDiagnosi(Diagnosi d) { diagnosi.add(d); }   //Poi va fatto update del Database
+
+    public void removeDiagnosi(Diagnosi d) {diagnosi.remove(d);}   //Poi va fatto update del Database
+
+    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+
+    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
+
+    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Persona)) return false;
+        Persona persona = (Persona) o;
+        return getID() == persona.getID() &&
+                getSesso() == persona.getSesso()&&
+                getNome().equals(persona.getNome()) &&
+                getCognome().equals(persona.getCognome()) &&
+                getCodiceFiscale().equals(persona.getCodiceFiscale()) &&
+                getDataNascita().compareTo(persona.getDataNascita())  == 0 &&
+                getStato().equals(persona.getStato()) &&
+                getComune().equals(persona.getComune()) &&
+                getProvincia().equals(persona.getProvincia()) &&
+                getCittadinanza().equals(persona.getCittadinanza()) &&
+                getResidenza().equals(persona.getResidenza());
     }
 
     //endregion

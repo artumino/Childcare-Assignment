@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "PianiViaggi")
@@ -9,7 +10,7 @@ public class PianoViaggi implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     //endregion
@@ -64,8 +65,17 @@ public class PianoViaggi implements Serializable
         return mezzo;
     }
 
-    public void setMezzo(MezzoDiTrasporto mezzo) {
-        this.mezzo = mezzo;
+    public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PianoViaggi)) return false;
+        PianoViaggi that = (PianoViaggi) o;
+        return getID() == that.getID() &&
+                getGita().equals(that.getGita()) &&
+                getGruppo().equals(that.getGruppo()) &&
+                getMezzo().equals(that.getMezzo());
     }
 
     //endregion

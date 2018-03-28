@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Menu")
@@ -11,7 +12,7 @@ public class Menu implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false)
@@ -57,6 +58,22 @@ public class Menu implements Serializable
 
     public void setRicorrenza(int ricorrenza) {
         Ricorrenza = ricorrenza;
+    }
+
+    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+
+    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+
+    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Menu)) return false;
+        Menu menu = (Menu) o;
+        return getID() == menu.getID() &&
+                getRicorrenza() == menu.getRicorrenza() &&
+                getDataInizio().compareTo(menu.getDataInizio()) == 0;
     }
 
     //endregion

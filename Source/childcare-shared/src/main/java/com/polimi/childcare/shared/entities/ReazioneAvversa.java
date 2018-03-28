@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "ReazioniAvverse")
@@ -10,7 +11,7 @@ public class ReazioneAvversa implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false, length = 20)
@@ -58,6 +59,28 @@ public class ReazioneAvversa implements Serializable
 
     public void setDescrizione(String descrizione) {
         Descrizione = descrizione;
+    }
+
+    public void addDiagnosi(Diagnosi d) { diagnosi.add(d); }   //Poi va fatto update del Database
+
+    public void removeDiagnosi(Diagnosi d) {diagnosi.remove(d);}   //Poi va fatto update del Database
+
+    public void addPasto(Pasto p) { pasti.add(p); }  //Poi va fatto update del Database
+
+    public void removePasto(Pasto p) { pasti.remove(p); }  //Poi va fatto update del Database
+
+    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+
+    public List<Pasto> getPasti() { return pasti; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ReazioneAvversa)) return false;
+        ReazioneAvversa that = (ReazioneAvversa) o;
+        return getID() == that.getID() &&
+                getNome().equals(that.getNome()) &&
+                getDescrizione().equals(that.getDescrizione());
     }
 
     //endregion

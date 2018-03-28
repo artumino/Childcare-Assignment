@@ -1,16 +1,18 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
-@Table(name = "Rubrica")
+@Table(name = "Rubrica", indexes = {
+        @Index(columnList = "Numero", name = "idx_Numero")})
 public class NumeroTelefono
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false, length = 15)   //Standard E.164
+    @Column(nullable = false, length = 15, unique = true)   //Standard E.164
     private String Numero;
 
     //endregion
@@ -33,6 +35,15 @@ public class NumeroTelefono
 
     public void setNumero(String numero) {
         Numero = numero;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NumeroTelefono)) return false;
+        NumeroTelefono that = (NumeroTelefono) o;
+        return getID() == that.getID() &&
+                getNumero().equals(that.getNumero());
     }
 
     //endregion

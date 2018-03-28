@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Pasti")
@@ -10,7 +11,7 @@ public class Pasto implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false, length = 20)
@@ -72,6 +73,34 @@ public class Pasto implements Serializable
 
     public void setDescrizione(String descrizione) {
         Descrizione = descrizione;
+    }
+
+    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+
+    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+
+    public void addReazione(ReazioneAvversa r){ reazione.add(r); }
+
+    public void removeReazione(ReazioneAvversa r){ reazione.remove(r); }
+
+    public void addFornitori(Fornitore f){ fornitori.add(f); }
+
+    public void removeFornitori(Fornitore f){ fornitori.remove(f); }
+
+    public List<Fornitore> getFornitori() { return fornitori; }
+
+    public List<ReazioneAvversa> getReazione() { return reazione; }
+
+    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pasto)) return false;
+        Pasto pasto = (Pasto) o;
+        return getID() == pasto.getID() &&
+                getNome().equals(pasto.getNome()) &&
+                getDescrizione().equals(pasto.getDescrizione());
     }
 
     //endregion

@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "QuantitaPasti")
@@ -9,7 +10,7 @@ public class QuantitaPasto implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false)
@@ -65,6 +66,17 @@ public class QuantitaPasto implements Serializable
 
     public void setMenu(Menu menu) {
         this.menu = menu;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof QuantitaPasto)) return false;
+        QuantitaPasto that = (QuantitaPasto) o;
+        return getID() == that.getID() &&
+                getQuantita() == that.getQuantita() &&
+                getPasto().equals(that.getPasto()) &&
+                getMenu().equals(that.getMenu());
     }
 
     //endregion

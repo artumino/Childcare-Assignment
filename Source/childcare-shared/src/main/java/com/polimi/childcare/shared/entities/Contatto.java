@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Contatti")
@@ -13,7 +14,7 @@ public class Contatto implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(length = 45)   //Di default è nullable
@@ -93,6 +94,30 @@ public class Contatto implements Serializable
 
     public void setIndirizzo(String indirizzo) {
         Indirizzo = indirizzo;
+    }
+
+    public List<Bambino> getBambini() { return bambini; }
+
+    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
+
+    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
+
+    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }   //Poi va fatto update del Database
+
+    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n);}   //Poi va fatto update del Database
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contatto)) return false;
+        Contatto contatto = (Contatto) o;
+        return getID() == contatto.getID() &&
+                getDescrizione().equals(contatto.getDescrizione()) &&
+                getNome().equals(contatto.getNome()) &&
+                getCognome().equals(contatto.getCognome()) &&
+                getIndirizzo().equals(contatto.getIndirizzo());
     }
 
     //endregion

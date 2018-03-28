@@ -36,11 +36,11 @@ public class DatabaseSession
 
         entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
         sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-        streams = new JinqJPAStreamProvider(entityManagerFactory);
+        streams = new JinqJPAStreamProvider(sessionFactory);
     }
 
     //@ensures (\result == true) <==> (sessionFactory != null)
-    public Session getSession()
+    public Session openSession()
     {
         if(sessionFactory == null)
             return null;
@@ -69,74 +69,38 @@ public class DatabaseSession
 
     public <T> Integer insert(T element)
     {
-        if(sessionFactory != null) {
-            Transaction tx = null;
-            Integer ID = null;
-
-            try (Session session = sessionFactory.openSession())
-            {
-                tx = session.beginTransaction();
-                ID = (Integer) session.save(element);
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                e.printStackTrace();
-            }
-            return ID;
-        }
-        else
-            return null;
+        //FIXME: Veramente brutto
+        final Integer[] ID = {null};
+        execute(session -> {
+            ID[0] = session.insert(element);
+            return true;
+        });
+        return ID[0];
     }
 
     public <T> void update(T element) throws HibernateException
     {
-        if(sessionFactory != null) {
-            Transaction tx = null;
-
-            try (Session session = sessionFactory.openSession())
-            {
-                tx = session.beginTransaction();
-                session.update(element);
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                throw e;
-            }
-        }
+        execute(session -> {
+            //FIXME: Dopo il merge l'istanza di element è ancora consistente?
+            session.update(session.contains(element) ? element : session.merge(element));
+            return true;
+        });
     }
 
     public <T> void insertOrUpdate(T element) throws HibernateException
     {
-        if(sessionFactory != null) {
-            Transaction tx = null;
-
-            try (Session session = sessionFactory.openSession())
-            {
-                tx = session.beginTransaction();
-                session.saveOrUpdate(element);
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                throw e;
-            }
-        }
+        execute(session -> {
+            session.insertOrUpdate(session.contains(element) ? element : session.merge(element));
+            return true;
+        });
     }
 
     public <T> void delete(T element) throws HibernateException
     {
-        if(sessionFactory != null) {
-            Transaction tx = null;
-
-            try (Session session = sessionFactory.openSession())
-            {
-                tx = session.beginTransaction();
-                session.delete(element);
-                tx.commit();
-            } catch (HibernateException e) {
-                if (tx != null) tx.rollback();
-                throw e;
-            }
-        }
+        execute(session -> {
+            session.delete(session.contains(element) ? element : session.merge(element));
+            return true;
+        });
     }
 
     //endregion
@@ -169,13 +133,40 @@ public class DatabaseSession
 
     //endregion
 
-    public <T> JinqStream<T> query(Class<T> tClass)
+    public <T> JinqStream<T> query(Class<T> tClass, Session session)
     {
         if(streams == null)
             return null;
 
-        //TODO: Crea problemi continuare a creare EntityManager?
-        return streams.streamAll(entityManagerFactory.createEntityManager(), tClass);
+        return streams.streamAll(session, tClass);
+    }
+
+    public boolean execute(IDatabaseExecution execution)
+    {
+        if(sessionFactory == null)
+            return false;
+
+        Transaction tx = null;
+        try(Session session = sessionFactory.openSession())
+        {
+            tx = session.beginTransaction();
+            DatabaseSessionInstance exec = new DatabaseSessionInstance(session, streams, tx);
+            if(execution.execute(exec))
+                tx.commit();
+            else
+            {
+                tx.rollback();
+                return false;
+            }
+
+        }catch (HibernateException ex)
+        {
+            ex.printStackTrace();
+            if(tx != null) tx.rollback();
+            return false;
+        }
+
+        return true;
     }
 
     public void close()
@@ -189,5 +180,92 @@ public class DatabaseSession
         if(entityManagerFactory != null)
             entityManagerFactory.close();
         entityManagerFactory = null;
+    }
+
+    public class DatabaseSessionInstance
+    {
+        private Session session;
+        private Transaction transaction;
+        private JinqJPAStreamProvider streams;
+
+        DatabaseSessionInstance(Session session, JinqJPAStreamProvider streams, Transaction transaction)
+        {
+            this.session = session;
+            this.streams = streams;
+            this.transaction = transaction;
+        }
+
+        //region Metodi per Entità
+
+        public <T> Integer insert(T element)
+        {
+            Integer ID = null;
+            try
+            {
+                ID = (Integer) session.save(element);
+            } catch (HibernateException e) {
+                e.printStackTrace();
+            }
+            return ID;
+        }
+
+        public <T> void update(T element) throws HibernateException
+        {
+            session.update(element);
+        }
+
+        public <T> void insertOrUpdate(T element) throws HibernateException
+        {
+            session.saveOrUpdate(element);
+        }
+
+        public <T> void delete(T element) throws HibernateException
+        {
+            session.delete(element);
+        }
+
+        public <T> boolean contains(T element) throws HibernateException
+        {
+            return session.contains(element);
+        }
+
+        public <T> T merge(T element) throws HibernateException
+        {
+            Object obj = session.merge(element);
+            if(obj != null && obj.getClass().isInstance(element))
+                return (T)obj;
+            return null;
+        }
+
+        //endregion
+
+        //region Metodi per ID
+
+        public <T> T getByID(Class<T> tClass, Integer ID)
+        {
+            return session.get(tClass, ID);
+        }
+
+        public <T> void deleteByID(Class<T> tClass, Integer ID)
+        {
+            T entity = getByID(tClass, ID);
+            if(entity != null)
+                delete(entity);
+        }
+
+        //endregion
+
+        public <T> JinqStream<T> query(Class<T> tClass)
+        {
+            if(streams == null)
+                return null;
+
+            return streams.streamAll(session, tClass);
+        }
+    }
+
+    public interface IDatabaseExecution
+    {
+        boolean execute(DatabaseSessionInstance execution);
     }
 }

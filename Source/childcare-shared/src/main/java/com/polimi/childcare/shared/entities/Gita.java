@@ -3,6 +3,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Gite")
@@ -11,7 +12,7 @@ public class Gita implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false)
@@ -81,6 +82,30 @@ public class Gita implements Serializable
 
     public int getCosto() {
         return Costo;
+    }
+
+    public void addViaggio(PianoViaggi p){ pianiViaggi.add(p); }
+
+    public void removeViaggio(PianoViaggi p){ pianiViaggi.remove(p); }
+
+    public void addRegistro(RegistroPresenze r){ registriPresenze.add(r); }
+
+    public void removeRegistro(RegistroPresenze r){ registriPresenze.remove(r); }
+
+    public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
+
+    public List<RegistroPresenze> getRegistriPresenze() { return registriPresenze; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gita)) return false;
+        Gita gita = (Gita) o;
+        return getID() == gita.getID() &&
+                getCosto() == gita.getCosto() &&
+                getDataInizio().compareTo(gita.getDataInizio()) == 0 &&
+                getDataFine().compareTo(gita.getDataFine()) == 0 &&
+                getLuogo().equals(gita.getLuogo());
     }
 
     //endregion

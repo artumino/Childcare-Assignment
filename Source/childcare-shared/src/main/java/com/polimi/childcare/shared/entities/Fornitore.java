@@ -1,7 +1,10 @@
 package com.polimi.childcare.shared.entities;
+import org.jinq.jpa.jpqlquery.ParameterAsQuery;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Fornitori")
@@ -9,7 +12,7 @@ public class Fornitore implements Serializable
 {
     //region Attributi
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     @Column(nullable = false, length = 50)
@@ -108,9 +111,7 @@ public class Fornitore implements Serializable
         return NumeroRegistroImprese;
     }
 
-    public void setNumeroRegistroImprese(String numeroRegistroImprese) {
-        NumeroRegistroImprese = numeroRegistroImprese;
-    }
+    public void setNumeroRegistroImprese(String numeroRegistroImprese) { NumeroRegistroImprese = numeroRegistroImprese; }
 
     public String getEmail() {
         return Email;
@@ -134,6 +135,45 @@ public class Fornitore implements Serializable
 
     public void setIBAN(String IBAN) {
         this.IBAN = IBAN;
+    }
+
+    public void addPasto(Pasto p) { pasti.add(p); }  //Poi va fatto update del Database
+
+    public void removePasto(Pasto p) { pasti.remove(p); }  //Poi va fatto update del Database
+
+    public void addMezzo(MezzoDiTrasporto m) { mezzi.add(m); }  //Poi va fatto update del Database
+
+    public void removeMezzo(MezzoDiTrasporto m) { mezzi.remove(m); }  //Poi va fatto update del Database
+
+    public void addFax(NumeroTelefono n) { fax.add(n); }  //Poi va fatto update del Database
+
+    public void removeFax(NumeroTelefono n) { fax.remove(n); }  //Poi va fatto update del Database
+
+    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+
+    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
+
+    public List<Pasto> getPasti() { return pasti; }
+
+    public List<MezzoDiTrasporto> getMezzi() { return mezzi; }
+
+    public List<NumeroTelefono> getFax() { return fax; }
+
+    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Fornitore)) return false;
+        Fornitore fornitore = (Fornitore) o;
+        return getID() == fornitore.getID() &&
+                getRagioneSociale().equals(fornitore.getRagioneSociale()) &&
+                getPartitaIVA().equals(fornitore.getPartitaIVA()) &&
+                getSedeLegale().equals(fornitore.getSedeLegale()) &&
+                getNumeroRegistroImprese().equals(fornitore.getNumeroRegistroImprese()) &&
+                getEmail().equals(fornitore.getEmail()) &&
+                getFAX().equals(fornitore.getFAX()) &&
+                getIBAN().equals(fornitore.getIBAN());
     }
 
     //endregion
