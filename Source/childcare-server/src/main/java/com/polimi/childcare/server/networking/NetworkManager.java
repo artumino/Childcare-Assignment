@@ -11,9 +11,17 @@ import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
 
+/**
+ * Singleton per la gestione delle interfacce di rete e le comunicazioni che avvengono tramite esse
+ */
 public class NetworkManager implements IRequestHandler,Serializable
 {
+    //Singleton
     private static NetworkManager _instance;
+
+    /**
+     * @return Istanza del singleton attuale
+     */
     public static NetworkManager getInstance() { return _instance != null ? _instance : (_instance = new NetworkManager()); }
 
     private transient ArrayList<IServerNetworkInterface> interfaces;
@@ -26,7 +34,12 @@ public class NetworkManager implements IRequestHandler,Serializable
         this.requestHandlersMap = new HashMap<>();
     }
 
-    //Avvia tutte le interfacce di rete
+    /**
+     * Avvia tutte le interfacce di rete
+     * @param address Indirizzo per l'ascolto di nuovi client
+     * @param networkMapping Mappa contenente le informazioni di inizializzazione su ogni interfaccia di rete driverRete:{@link IServerNetworkInterface}, porta:{@link Integer}
+     * @throws IOException In caso di impossibilità nell'apertura di una interfaccia
+     */
     public void listen(String address, HashMap<IServerNetworkInterface, Integer> networkMapping) throws IOException
     {
         for(IServerNetworkInterface networkInterface : networkMapping.keySet())
@@ -36,15 +49,22 @@ public class NetworkManager implements IRequestHandler,Serializable
         }
     }
 
-    //Ferma tutte le interfacce di rete
+    /**
+     * Ferma tutte le interfacce di rete
+     */
     public void stop()
     {
         for(IServerNetworkInterface networkInterface : interfaces)
             networkInterface.stop();
     }
 
-    //Registra un nuovo gestore di richieste
-    //TODO: JML?
+    /**
+     * Registra un nuovo gestore di richieste.
+     * N.B. Può essere registrato solo un handler per tipo di richiesta.
+     * @param requestClass Tipo di richiesta da gestire
+     * @param handler Strategia per la gestione della richiesta
+     * @return true se l'inserimento è avvenuto senza problemi, false in caso vi sia già un handler registrato per questa richiesta (o in caso almeno uno dei parametri sia null)
+     */
     public boolean addRequestHandler(Class<? extends BaseRequest> requestClass, IRequestHandler handler)
     {
         if(requestClass != null &&
@@ -56,7 +76,10 @@ public class NetworkManager implements IRequestHandler,Serializable
         return false;
     }
 
-    //Rimuove un handler già inserito
+    /**
+     * Rimuove un handler già inserito
+     * @param requestClass Tipo da richiesta per cui si vuole rimuovere l'handler
+     */
     public void removeRequestHandler(Class<? extends BaseRequest> requestClass)
     {
         if(requestClass != null &&
@@ -65,8 +88,12 @@ public class NetworkManager implements IRequestHandler,Serializable
         }
     }
 
-    //Gestisce tutti i messaggi in arrivo da tutte le interfacce che ereditano BaseServerNetworkInterface
-    //Accede alla mappa degli handler per ogni classe di richiesta
+    /**
+     * Gestisce tutti i messaggi in arrivo dalle interfacce per cui questo {@link IRequestHandler<BaseRequest>} è stato registrato come handler di default delle richieste
+     * Accede alla mappa degli handler per ogni classe di richiesta
+     * @param request Richiesta di tipo T che estende {@link BaseRequest}
+     * @return Risposta che verrà inoltrata al client (passando per i driver di rete opportuni)
+     */
     @Override
     public BaseResponse processRequest(BaseRequest request)
     {
