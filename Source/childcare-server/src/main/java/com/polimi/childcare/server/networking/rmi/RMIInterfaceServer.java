@@ -1,11 +1,11 @@
 package com.polimi.childcare.server.networking.rmi;
 
 import com.polimi.childcare.server.networking.BaseServerNetworkInterface;
+import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.networking.rmi.IRMIServer;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
-import javax.persistence.Transient;
 import java.io.IOException;
 import java.io.Serializable;
 import java.rmi.*;
@@ -16,17 +16,16 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIInterfaceServer extends BaseServerNetworkInterface implements IRMIServer,Serializable
 {
-
-    @Transient
-    private String address;
-    @Transient
-    private int port;
-    @Transient
-    private Registry boundRegistry;
+    private transient String address;
+    private transient int port;
+    private transient Registry boundRegistry;
 
     @Override
-    public void listen(String address, int port) throws IOException
+    public void listen(String address, int port, IRequestHandler defaultHandler) throws IOException
     {
+        System.out.println("Avvio interfaccia di rete RMI...");
+
+        super.listen(address, port, defaultHandler);
         this.address = address;
         this.port = port;
 

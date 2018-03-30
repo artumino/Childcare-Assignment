@@ -1,33 +1,29 @@
+import com.polimi.childcare.client.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
 import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
-import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
-import com.polimi.childcare.server.networking.IServerNetworkInterface;
-import com.polimi.childcare.shared.networking.requests.BaseRequest;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import stubs.BambinoListRequestHandler;
 import stubs.BambinoListRequestStub;
-import stubs.BambinoListResponseStub;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Random;
 
-public class NetworkingRule implements MethodRule
+public class MultiInterfaceNetworkingRule implements MethodRule
 {
-    private TestType testType;
-    public IServerNetworkInterface serverNetworkInterface;
     public ArrayList<IClientNetworkInterface> clientNetworkInterfaces;
+    public NetworkManager manager;
 
-    public NetworkingRule(TestType testType)
+    public MultiInterfaceNetworkingRule()
     {
         this.clientNetworkInterfaces = new ArrayList<>();
-        this.testType = testType;
     }
 
     @Override
@@ -37,20 +33,26 @@ public class NetworkingRule implements MethodRule
             @Override
             public void evaluate() throws Throwable {
                 setupServer();
-                serverNetworkInterface.listen("localhost", testType == TestType.Sockets ? 55403 : 55405, NetworkManager.getInstance());
+
+
+                manager.listen("localhost", new HashMap<IServerNetworkInterface, Integer>(2)
+                {{
+                    put(new SocketInterfaceServer(), 55503);
+                    put(new RMIInterfaceServer(), 55505);
+                }});
                 try {
                     base.evaluate();
                 } finally {
                     //Chiudo le connessioni
                     for(IClientNetworkInterface iClientNetworkInterface : clientNetworkInterfaces)
                         iClientNetworkInterface.close();
-                    serverNetworkInterface.stop();
+                    manager.stop();
                 }
             }
         };
     }
 
-    public IClientNetworkInterface createDummyClient() throws IOException {
+    public IClientNetworkInterface createDummyClient(NetworkingRule.TestType testType) throws IOException {
         IClientNetworkInterface clientNetworkInterface;
 
         switch (testType)
@@ -64,27 +66,13 @@ public class NetworkingRule implements MethodRule
         }
 
         clientNetworkInterfaces.add(clientNetworkInterface);
-        clientNetworkInterface.connect("localhost", testType == TestType.Sockets ? 55403 : 55405);
+        clientNetworkInterface.connect("localhost", clientNetworkInterface instanceof SocketInterfaceClient ? 55503 : 55505);
         return clientNetworkInterface;
     }
 
     private void setupServer()
     {
-        NetworkManager.getInstance().addRequestHandler(BambinoListRequestStub.class, new BambinoListRequestHandler());
-
-        switch (testType)
-        {
-            case RMI:
-                serverNetworkInterface = new RMIInterfaceServer();
-                break;
-            case Sockets:
-                serverNetworkInterface = new SocketInterfaceServer();
-                break;
-        }
-    }
-
-    public enum TestType
-    {
-        Sockets, RMI
+        this.manager = NetworkManager.getInstance();
+        manager.addRequestHandler(BambinoListRequestStub.class, new BambinoListRequestHandler());
     }
 }

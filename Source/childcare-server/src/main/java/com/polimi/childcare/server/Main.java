@@ -1,10 +1,13 @@
 package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.networking.NetworkManager;
+import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class Main
 {
@@ -12,9 +15,17 @@ public class Main
     {
         System.out.println("Hello Server...");
 
-        IServerNetworkInterface networkInterface = new SocketInterfaceServer();
-        try {
-            networkInterface.listen("localhost", 55403);
+        NetworkManager networkManager = NetworkManager.getInstance();
+        try
+        {
+            //Inizializza due interfacce di rete
+            //Socket: localhost:55403
+            //RMI: localhost:55404
+            networkManager.listen("localhost", new HashMap<IServerNetworkInterface, Integer>(2)
+            {{
+                put(new SocketInterfaceServer(), 55403);
+                put(new RMIInterfaceServer(), 55404);
+            }});
         } catch (IOException e)
         {
             System.out.println("Errore durante l'avvio dell'interfaccia di rete");
@@ -26,6 +37,6 @@ public class Main
         System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
         DatabaseSession.getInstance().close();
 
-        networkInterface.stop();
+        networkManager.stop();
     }
 }

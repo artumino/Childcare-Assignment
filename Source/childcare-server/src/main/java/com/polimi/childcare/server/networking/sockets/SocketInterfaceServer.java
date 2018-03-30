@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.networking.sockets;
 
 import com.polimi.childcare.server.networking.BaseServerNetworkInterface;
+import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.server.networking.sockets.dummyrequests.DummyConnectionClosedRequest;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
@@ -20,10 +21,11 @@ public class SocketInterfaceServer extends BaseServerNetworkInterface implements
     private ArrayList<SocketClientHandler> handlers;
 
     @Override
-    public void listen(String address, int port) throws IOException
+    public void listen(String address, int port, IRequestHandler defaultHandler) throws IOException
     {
         System.out.println("Avvio interfaccia di rete socket...");
 
+        super.listen(address, port, defaultHandler);
         handlers = new ArrayList<>(3);
         serverSocket = new ServerSocket(port);
         isRunning = true;
