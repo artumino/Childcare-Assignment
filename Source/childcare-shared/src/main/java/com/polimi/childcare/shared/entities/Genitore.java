@@ -12,12 +12,7 @@ public class Genitore extends Persona
 {
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "TutoriLegali",
-            joinColumns = { @JoinColumn(name = "Genitore_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
-    )
+    @ManyToMany(mappedBy = "genitori")
     private List<Bambino> bambini;
 
     //endregion

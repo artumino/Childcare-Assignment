@@ -17,7 +17,12 @@ public class Bambino extends Persona
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
-    @ManyToMany(mappedBy = "bambini")
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "TutoriLegali",
+            joinColumns = { @JoinColumn(name = "Bambino_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Genitore_FK") }
+    )
     private List<Genitore> genitori;
 
     @ManyToMany(mappedBy = "bambini")
