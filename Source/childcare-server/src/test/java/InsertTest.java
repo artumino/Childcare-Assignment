@@ -24,6 +24,7 @@ public class InsertTest
         Genitore genitore1 = new Genitore("Babu", "Bubu", "EHEHEH", Date.from(Instant.now()), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
         genitore1.addBambino(bambino1);
+        bambino1.addGenitore(genitore1);
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
         bambino1.addDiagnosi(diagnosi1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", Date.from(Instant.now()), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
@@ -55,14 +56,24 @@ public class InsertTest
             return true;
         });
 
-        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, 1);
-        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, 1);
-        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, 1);
-        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, 1);
-        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, 1);
-        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, 2);
-        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, 2);
+        int idBambino = bambino1.getID();
+        int idAddetto = addetto1.getID();
+        int idGenitore = genitore1.getID();
+        int idPediatra = pediatra1.getID();
+        int idContatto = contatto1.getID();
+        int idDiagnosi = diagnosi1.getID();
+        int idReazione = reazioneavversa1.getID();
+        int idPasto = pasto1.getID();
+        int idFornitore = fornitore1.getID();
+
+        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, idPasto);
+        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
+        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, idPediatra);
+        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
+        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
+        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino);
+        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto);
+        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
 
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.equals(pasto1));   //So che è il messaggio di errore ma lo lascio così per ora
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.equals(fornitore1));
@@ -72,7 +83,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.equals(diagnosi1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.equals(bambino1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
-        //Assert.assertTrue("Controllo update liste bilaterale", bambino1.getGenitori() == null);
+        Assert.assertTrue("Controllo update liste bilaterale", bambino1.getGenitori().size() == 1);
 
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
@@ -100,15 +111,14 @@ public class InsertTest
             return true;
         });
 
-
-        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, 1);
-        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, 1);
-        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, 1);
-        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, 1);
-        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, 1);
-        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, 2);
-        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, 2);
+        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, idPasto);
+        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
+        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, idPediatra);
+        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
+        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
+        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino);
+        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto);
+        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
 
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.getNome() == "Eheheheh");
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.getEmail() == "1233897@live.it");
@@ -120,31 +130,33 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.getCodiceFiscale() == "CF-------");
 
 
-        genitore1.removeBambino(bambino1);
+        //genitore1.removeBambino(bambino1);
+        //bambino1.removeGenitore(genitore1);
 
         DatabaseSession.getInstance().execute(session ->{
-            session.update(genitore1);      //Prima tolgo bambino dalla lista di genitore, poi updato genitore e infine posso eliminare bambino
-            session.deleteByID(Genitore.class, 3);
-            session.deleteByID(Pasto.class, 1);
-            session.deleteByID(Fornitore.class, 1);
-            session.deleteByID(Pediatra.class, 1);
-            session.deleteByID(ReazioneAvversa.class, 1);
-            session.deleteByID(Diagnosi.class, 1);
-            //session.deleteByID(Bambino.class, 1);
-            session.deleteByID(Addetto.class, 2);
-            session.deleteByID(Contatto.class, 2);
+            //session.update(genitore1);      //Prima tolgo bambino dalla lista di genitore, poi updato genitore e infine posso eliminare bambino
+            //session.update(bambino1);
+            session.deleteByID(Genitore.class, idGenitore);
+            session.deleteByID(Pasto.class, idPasto);
+            session.deleteByID(Fornitore.class, idFornitore);
+            session.deleteByID(Pediatra.class, idPediatra);
+            session.deleteByID(ReazioneAvversa.class, idReazione);
+            session.deleteByID(Addetto.class, idAddetto);
+            session.deleteByID(Diagnosi.class, idDiagnosi);
+            session.deleteByID(Bambino.class, idBambino);
+            session.deleteByID(Contatto.class, idContatto);
 
             return true;
         });
 
-        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, 1);
-        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, 1);
-        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, 1);
-        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, 1);
-        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, 1);
-        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, 1);
-        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, 2);
-        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, 2);
+        pastoget = DatabaseSession.getInstance().getByID(Pasto.class, idPasto);
+        fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
+        pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, idPediatra);
+        reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
+        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
+        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino);
+        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto);
+        contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
 
 
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget == null);
@@ -154,7 +166,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget == null);
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget == null);
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget == null);
-        //Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget == null);
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget == null);
 
     }
 

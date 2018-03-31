@@ -23,7 +23,7 @@ public class Bambino extends Persona
             joinColumns = { @JoinColumn(name = "Bambino_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Genitore_FK") }
     )
-    private List<Genitore> genitori;
+    private Set<Genitore> genitori;
 
     @ManyToMany(mappedBy = "bambini")
     private List<Contatto> contatti;
@@ -35,7 +35,6 @@ public class Bambino extends Persona
     //endregion
 
     //region Metodi
-
 
     public Bambino() { }
 
@@ -55,14 +54,14 @@ public class Bambino extends Persona
     public void addGenitore(Genitore g)
     {
         if(genitori == null)
-            genitori = new ArrayList<>();
+            genitori = new HashSet<>();
         genitori.add(g);
     }//Poi va fatto update del Database
 
     public void removeGenitore(Genitore g)
     {
         if(genitori != null)
-            genitori = new ArrayList<>();
+            genitori = new HashSet<>();
         genitori.remove(g);
     }//Poi va fatto update del Database
 
@@ -94,7 +93,7 @@ public class Bambino extends Persona
 
     public List<RegistroPresenze> getPresenze() { return presenze; }
 
-    public List<Genitore> getGenitori() { return genitori; }
+    public Set<Genitore> getGenitori() { return genitori; }
 
     public List<Contatto> getContatti() { return contatti; }
 

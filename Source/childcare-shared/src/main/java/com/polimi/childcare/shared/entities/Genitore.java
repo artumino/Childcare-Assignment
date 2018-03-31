@@ -1,9 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Genitori")
@@ -13,7 +11,7 @@ public class Genitore extends Persona
     //region Relazioni
 
     @ManyToMany(mappedBy = "genitori")
-    private List<Bambino> bambini;
+    private Set<Bambino> bambini;
 
     //endregion
 
@@ -28,7 +26,7 @@ public class Genitore extends Persona
     public void addBambino(Bambino b)
     {
         if(bambini == null)
-            bambini = new ArrayList<>();
+            bambini = new HashSet<>();
         bambini.add(b);
     }   //Poi va fatto update del Database
 
@@ -36,9 +34,9 @@ public class Genitore extends Persona
     {
         if(bambini != null)
             bambini.remove(b);
-    }   //Poi va fatto update del Database
+    }   //Poi va fatto update del Database*/
 
-    public List<Bambino> getBambini() { return bambini; }
+    public Set<Bambino> getBambini() { return bambini; }
 
     //endregion
 }
