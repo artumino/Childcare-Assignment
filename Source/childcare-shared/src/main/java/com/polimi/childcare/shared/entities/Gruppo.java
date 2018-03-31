@@ -21,12 +21,7 @@ public class Gruppo implements Serializable
     @OneToOne(optional = false, cascade = CascadeType.REFRESH)
     private Addetto sorvergliante;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Gruppo_Bambino",
-            joinColumns = { @JoinColumn(name = "Gruppo_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
-    )
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
     private List<Bambino> bambini;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
@@ -75,8 +70,8 @@ public class Gruppo implements Serializable
         if (this == o) return true;
         if (!(o instanceof Gruppo)) return false;
         Gruppo gruppo = (Gruppo) o;
-        return getID() == gruppo.getID() &&
-                getSorvergliante().equals(gruppo.getSorvergliante());
+        return getID() == gruppo.getID(); //&&
+                //getSorvergliante().equals(gruppo.getSorvergliante());
     }
 
     //endregion

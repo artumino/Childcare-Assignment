@@ -110,8 +110,8 @@ public class MezzoDiTrasporto implements Serializable
                 getCapienza() == that.getCapienza() &&
                 getNumeroIdentificativo() == that.getNumeroIdentificativo() &&
                 getCostoOrario() == that.getCostoOrario() &&
-                getTarga().equals(that.getTarga()) &&
-                getFornitore().equals(that.getFornitore());
+                getTarga().equals(that.getTarga());
+                //getFornitore().equals(that.getFornitore());
     }
 
     //endregion

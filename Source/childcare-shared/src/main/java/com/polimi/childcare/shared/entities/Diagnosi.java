@@ -73,10 +73,10 @@ public class Diagnosi implements Serializable
         if (this == o) return true;
         if (!(o instanceof Diagnosi)) return false;
         Diagnosi diagnosi = (Diagnosi) o;
-        return getID() == diagnosi.getID() &&
-                isAllergia() == diagnosi.isAllergia() &&
+        return getID() == diagnosi.getID(); //&&
+                //isAllergia() == diagnosi.isAllergia() &&
                 //getPersona().equals(diagnosi.getPersona()) &&
-                getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
+                //getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
     }
 
     //endregion

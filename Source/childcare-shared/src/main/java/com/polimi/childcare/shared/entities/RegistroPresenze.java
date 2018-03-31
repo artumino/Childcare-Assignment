@@ -115,9 +115,9 @@ public class RegistroPresenze implements Serializable
                 getOra() == that.getOra() &&
                 getStato() == that.getStato() &&
                 getDate().compareTo(that.getDate()) == 0 &&
-                getTimeStamp().compareTo(that.getTimeStamp()) == 0 &&
-                getBambino().equals(that.getBambino()) &&
-                getGita().equals(that.getGita());
+                getTimeStamp().compareTo(that.getTimeStamp()) == 0; //&&
+                //getBambino().equals(that.getBambino()) &&
+                //getGita().equals(that.getGita());
     }
 
     //endregion
