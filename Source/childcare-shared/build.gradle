@@ -14,5 +14,8 @@ dependencies {
     compile 'org.hibernate:hibernate-core:5.2.15.Final'
     compile 'org.mariadb.jdbc:mariadb-java-client:2.2.3'
     compile 'org.jinq:jinq-jpa:1.8.22'
+
+    testCompile project(':childcare-client')
+    testCompile project(':childcare-server')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
