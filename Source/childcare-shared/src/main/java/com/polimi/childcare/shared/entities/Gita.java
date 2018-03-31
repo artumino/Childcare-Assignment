@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -84,13 +85,31 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public void addViaggio(PianoViaggi p){ pianiViaggi.add(p); }
+    public void addViaggio(PianoViaggi p)
+    {
+        if(pianiViaggi == null)
+            pianiViaggi = new ArrayList<>();
+        pianiViaggi.add(p);
+    }
 
-    public void removeViaggio(PianoViaggi p){ pianiViaggi.remove(p); }
+    public void removeViaggio(PianoViaggi p)
+    {
+        if(pianiViaggi != null)
+            pianiViaggi.remove(p);
+    }
 
-    public void addRegistro(RegistroPresenze r){ registriPresenze.add(r); }
+    public void addRegistro(RegistroPresenze r)
+    {
+        if(registriPresenze == null)
+            registriPresenze = new ArrayList<>();
+        registriPresenze.add(r);
+    }
 
-    public void removeRegistro(RegistroPresenze r){ registriPresenze.remove(r); }
+    public void removeRegistro(RegistroPresenze r)
+    {
+        if(registriPresenze != null)
+            registriPresenze.remove(r);
+    }
 
     public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
 

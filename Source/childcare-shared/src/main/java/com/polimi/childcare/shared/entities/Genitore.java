@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,9 +30,18 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
-    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
+    public void addBambino(Bambino b)
+    {
+        if(bambini == null)
+            bambini = new ArrayList<>();
+        bambini.add(b);
+    }   //Poi va fatto update del Database
 
-    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
+    public void removeBambino(Bambino b)
+    {
+        if(bambini != null)
+            bambini.remove(b);
+    }   //Poi va fatto update del Database
 
     public List<Bambino> getBambini() { return bambini; }
 

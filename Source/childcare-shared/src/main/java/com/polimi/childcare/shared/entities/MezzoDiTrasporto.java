@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -95,9 +96,18 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public void addViaggio(PianoViaggi p){ pianoViaggi.add(p); }
+    public void addViaggio(PianoViaggi p)
+    {
+        if(pianoViaggi == null)
+            pianoViaggi = new ArrayList<>();
+        pianoViaggi.add(p);
+    }
 
-    public void removeViaggio(PianoViaggi p){ pianoViaggi.remove(p); }
+    public void removeViaggio(PianoViaggi p)
+    {
+        if(pianoViaggi != null)
+            pianoViaggi.remove(p);
+    }
 
     public List<PianoViaggi> getPianoViaggi() { return pianoViaggi; }
 

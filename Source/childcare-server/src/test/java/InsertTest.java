@@ -24,6 +24,8 @@ public class InsertTest
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", Date.from(Instant.now()), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
+        NumeroTelefono numero = new NumeroTelefono("3333");
+        addetto1.addNumero(numero);
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
 
         Pasto pastoget;

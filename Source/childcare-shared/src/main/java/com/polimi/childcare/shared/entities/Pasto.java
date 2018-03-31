@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,17 +76,44 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
-    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+    public void addQuantitaPasto(QuantitaPasto q)
+    {
+        if(quantitaPasto == null)
+            quantitaPasto = new ArrayList<>();
+        quantitaPasto.add(q);
+    }
 
-    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+    public void removeQuantitaPasto(QuantitaPasto q)
+    {
+        if(quantitaPasto != null)
+            quantitaPasto.remove(q);
+    }
 
-    public void addReazione(ReazioneAvversa r){ reazione.add(r); }
+    public void addReazione(ReazioneAvversa r)
+    {
+        if(reazione == null)
+            reazione = new ArrayList<>();
+        reazione.add(r);
+    }
 
-    public void removeReazione(ReazioneAvversa r){ reazione.remove(r); }
+    public void removeReazione(ReazioneAvversa r)
+    {
+        if(reazione != null)
+            reazione.remove(r);
+    }
 
-    public void addFornitori(Fornitore f){ fornitori.add(f); }
+    public void addFornitori(Fornitore f)
+    {
+        if(fornitori == null)
+            fornitori = new ArrayList<>();
+        fornitori.add(f);
+    }
 
-    public void removeFornitori(Fornitore f){ fornitori.remove(f); }
+    public void removeFornitori(Fornitore f)
+    {
+        if(fornitori != null)
+            fornitori.remove(f);
+    }
 
     public List<Fornitore> getFornitori() { return fornitori; }
 

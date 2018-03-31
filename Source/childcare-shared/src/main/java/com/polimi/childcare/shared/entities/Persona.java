@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -162,13 +163,32 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public void addDiagnosi(Diagnosi d) { diagnosi.add(d); }   //Poi va fatto update del Database
+    public void addDiagnosi(Diagnosi d)
+    {
+        if(diagnosi == null)
+            diagnosi = new ArrayList<>();
+        diagnosi.add(d);
+    }   //Poi va fatto update del Database
 
-    public void removeDiagnosi(Diagnosi d) {diagnosi.remove(d);}   //Poi va fatto update del Database
+    public void removeDiagnosi(Diagnosi d)
+    {
+        if(diagnosi != null)
+            diagnosi.remove(d);
+    }   //Poi va fatto update del Database
 
-    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+    public void addNumero(NumeroTelefono n)
+    {
+        if(telefoni == null)
+            telefoni = new ArrayList<>();
 
-    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
+        telefoni.add(n);
+    }  //Poi va fatto update del Database
+
+    public void removeNumero(NumeroTelefono n)
+    {
+        if(telefoni != null)
+            telefoni.remove(n);
+    }  //Poi va fatto update del Database
 
     public List<Diagnosi> getDiagnosi() { return diagnosi; }
 

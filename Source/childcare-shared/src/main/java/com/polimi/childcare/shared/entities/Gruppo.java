@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -49,13 +50,31 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
+    public void addBambino(Bambino b)
+    {
+        if(bambini == null)
+            bambini = new ArrayList<>();
+        bambini.add(b);
+    }   //Poi va fatto update del Database
 
-    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
+    public void removeBambino(Bambino b)
+    {
+        if(bambini != null)
+            bambini.remove(b);
+    }   //Poi va fatto update del Database
 
-    public void addViaggio(PianoViaggi p){ pianoviaggi.add(p); }
+    public void addViaggio(PianoViaggi p)
+    {
+        if(pianoviaggi == null)
+            pianoviaggi = new ArrayList<>();
+        pianoviaggi.add(p);
+    }
 
-    public void removeViaggio(PianoViaggi p){ pianoviaggi.remove(p); }
+    public void removeViaggio(PianoViaggi p)
+    {
+        if(pianoviaggi != null)
+            pianoviaggi.remove(p);
+    }
 
     public List<Bambino> getBambini() {
         return bambini;

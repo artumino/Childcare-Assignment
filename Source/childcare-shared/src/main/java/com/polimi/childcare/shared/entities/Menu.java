@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -60,9 +61,18 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
-    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+    public void addQuantitaPasto(QuantitaPasto q)
+    {
+        if(quantitaPasto == null)
+            quantitaPasto = new ArrayList<>();
+        quantitaPasto.add(q);
+    }
 
-    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+    public void removeQuantitaPasto(QuantitaPasto q)
+    {
+        if(quantitaPasto != null)
+            quantitaPasto.remove(q);
+    }
 
     public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
 

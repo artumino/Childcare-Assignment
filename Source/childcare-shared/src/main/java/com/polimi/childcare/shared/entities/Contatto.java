@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,15 +97,33 @@ public class Contatto implements Serializable
         Indirizzo = indirizzo;
     }
 
+    public void addBambino(Bambino b)
+    {
+        if(bambini == null)
+            bambini = new ArrayList<>();
+        bambini.add(b);
+    }   //Poi va fatto update del Database
+
+    public void removeBambino(Bambino b)
+    {
+        if(bambini != null)
+            bambini.remove(b);
+    }   //Poi va fatto update del Database
+
+    public void addTelefono(NumeroTelefono n)
+    {
+        if(telefoni == null)
+            telefoni = new ArrayList<>();
+        telefoni.add(n);
+    }   //Poi va fatto update del Database
+
+    public void removeTelefono(NumeroTelefono n)
+    {
+        if(telefoni != null)
+            telefoni.remove(n);
+    }   //Poi va fatto update del Database
+
     public List<Bambino> getBambini() { return bambini; }
-
-    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
-
-    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
-
-    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }   //Poi va fatto update del Database
-
-    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n);}   //Poi va fatto update del Database
 
     public List<NumeroTelefono> getTelefoni() { return telefoni; }
 

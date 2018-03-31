@@ -47,13 +47,45 @@ public class Bambino extends Persona
         this.pediatra = pediatra;
     }
 
-    public void addGenitore(Genitore g){ genitori.add(g); }//Poi va fatto update del Database
+    public void addGenitore(Genitore g)
+    {
+        if(genitori == null)
+            genitori = new ArrayList<>();
+        genitori.add(g);
+    }//Poi va fatto update del Database
 
-    public void removeGenitore(Genitore g){ genitori.remove(g); }//Poi va fatto update del Database
+    public void removeGenitore(Genitore g)
+    {
+        if(genitori != null)
+            genitori = new ArrayList<>();
+        genitori.remove(g);
+    }//Poi va fatto update del Database
 
-    public void addContatto(Contatto c){ contatti.add(c); }//Poi va fatto update del Database
+    public void addContatto(Contatto c)
+    {
+        if(contatti == null)
+            contatti = new ArrayList<>();
+        contatti.add(c);
+    }//Poi va fatto update del Database
 
-    public void removeContatto(Contatto c){ contatti.remove(c); }//Poi va fatto update del Database
+    public void removeContatto(Contatto c)
+    {
+        if(contatti != null)
+            contatti.remove(c);
+    }//Poi va fatto update del Database
+
+    public void addPresenza(RegistroPresenze r)
+    {
+        if(presenze == null)
+            presenze = new ArrayList<>();
+        presenze.add(r);
+    }//Poi va fatto update del Database
+
+    public void removePresenza(RegistroPresenze r)
+    {
+        if(presenze != null)
+            presenze.remove(r);
+    }//Poi va fatto update del Database
 
     public List<RegistroPresenze> getPresenze() { return presenze; }
 

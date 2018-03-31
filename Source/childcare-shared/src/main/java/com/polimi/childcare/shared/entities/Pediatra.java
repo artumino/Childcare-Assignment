@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,8 +24,20 @@ public class Pediatra extends Contatto
         super(descrizione, nome, cognome, indirizzo);
     }
 
-    @Override
-    public List<Bambino> getBambini() { return bambini; }
+    public void addBambinoCurato(Bambino b)
+    {
+        if(bambini == null)
+            bambini = new ArrayList<>();
+        bambini.add(b);
+    }   //Poi va fatto update del Database
+
+    public void removeBambinoCurato(Bambino b)
+    {
+        if(bambini != null)
+            bambini.remove(b);
+    }   //Poi va fatto update del Database
+
+    public List<Bambino> getBambiniCurati() { return bambini; }
 
     //endregion
 }
