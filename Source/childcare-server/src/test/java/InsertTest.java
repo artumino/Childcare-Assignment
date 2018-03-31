@@ -16,7 +16,7 @@ public class InsertTest
     @Test
     public void insertionTest() //Prova del mio branch chiamato Database
     {
-        Fornitore fornitore1 = new Fornitore("Azienda Testing sui Bambini", "000000","Piacenza","PC1234","non@laha.it","00000", "IT0123456789");
+        Fornitore fornitore1 = new Fornitore("Azienda Testing sui Bambini", "000000","Piacenza","PC1234","non@laha.it", "IT0123456789");
         Pediatra pediatra1 = new Pediatra("Pediatra Test", "Francesco", "Giovanni", "Via Sesto 2, Cremona");
         Contatto contatto1 = new Contatto("Contatto Test", "Ciso", "Giovanni", "Via Sesto 2, Cremona");
         ReazioneAvversa reazioneavversa1 = new ReazioneAvversa("Latte", "Se lo bevi muori");
@@ -70,7 +70,7 @@ public class InsertTest
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
         pasto1.setNome("Eheheheh");
-        fornitore1.setFAX("1233897");
+        fornitore1.setEmail("1233897@live.it");
         pediatra1.setIndirizzo("Cambiato");
         reazioneavversa1.setNome("Grano");
         diagnosi1.setPersona(addetto1);
@@ -103,7 +103,7 @@ public class InsertTest
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, 2);
 
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.getNome() == "Eheheheh");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.getFAX() == "1233897");
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.getEmail() == "1233897@live.it");
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pediatraget.getIndirizzo() == "Cambiato");
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", reazioneavversaget.getNome() == "Grano");
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget.getIndirizzo() == "Inventato ORA");

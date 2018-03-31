@@ -30,9 +30,6 @@ public class Fornitore implements Serializable
     @Column(length = 30)
     private String Email;
 
-    @Column(length = 15)   //10 numeri + 3 di prefisso (oppure 4 se conti due 0 come il +), lascio a 15 per sicurezza
-    private String FAX;
-
     @Column(length = 27)
     private String IBAN;    //Ancora caso Italiano 27 caratteri
 
@@ -69,13 +66,12 @@ public class Fornitore implements Serializable
 
     public Fornitore() { }
 
-    public Fornitore(String ragioneSociale, String partitaIVA, String sedeLegale, String numeroRegistroImprese, String email, String FAX, String IBAN) {
+    public Fornitore(String ragioneSociale, String partitaIVA, String sedeLegale, String numeroRegistroImprese, String email, String IBAN) {
         RagioneSociale = ragioneSociale;
         PartitaIVA = partitaIVA;
         SedeLegale = sedeLegale;
         NumeroRegistroImprese = numeroRegistroImprese;
         Email = email;
-        this.FAX = FAX;
         this.IBAN = IBAN;
     }
 
@@ -121,14 +117,6 @@ public class Fornitore implements Serializable
         Email = email;
     }
 
-    public String getFAX() {
-        return FAX;
-    }
-
-    public void setFAX(String FAX) {
-        this.FAX = FAX;
-    }
-
     public String getIBAN() {
         return IBAN;
     }
@@ -172,7 +160,6 @@ public class Fornitore implements Serializable
                 getSedeLegale().equals(fornitore.getSedeLegale()) &&
                 getNumeroRegistroImprese().equals(fornitore.getNumeroRegistroImprese()) &&
                 getEmail().equals(fornitore.getEmail()) &&
-                getFAX().equals(fornitore.getFAX()) &&
                 getIBAN().equals(fornitore.getIBAN());
     }
 
