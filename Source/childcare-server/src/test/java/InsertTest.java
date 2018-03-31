@@ -21,8 +21,11 @@ public class InsertTest
         Contatto contatto1 = new Contatto("Contatto Test", "Ciso", "Giovanni", "Via Sesto 2, Cremona");
         ReazioneAvversa reazioneavversa1 = new ReazioneAvversa("Latte", "Se lo bevi muori");
         Bambino bambino1 = new Bambino("Paolo", "Rossi", "CF", Date.from(Instant.now()), "Nigeria", "Fiorenzuola", "Piacenza", "Nigeriana", "Via Inesistente, 10", (byte)0);
+        Genitore genitore1 = new Genitore("Babu", "Bubu", "EHEHEH", Date.from(Instant.now()), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
+        genitore1.addBambino(bambino1);
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
+        bambino1.addDiagnosi(diagnosi1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", Date.from(Instant.now()), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
         NumeroTelefono numero = new NumeroTelefono("3333");
         addetto1.addNumero(numero);
@@ -37,7 +40,7 @@ public class InsertTest
         ReazioneAvversa reazioneavversaget;
         Contatto contattoget;
 
-        DatabaseSession.getInstance().execute(session ->{
+        DatabaseSession.getInstance().execute(session ->{   //Ordine nel database dipende da insert nella session
             session.insert(pasto1);
             session.insert(fornitore1);
             session.insert(pediatra1);
@@ -46,6 +49,8 @@ public class InsertTest
             session.insert(reazioneavversa1);
             session.insert(diagnosi1);
             session.insert(contatto1);
+            session.insert(numero);
+            session.insert(genitore1);
 
             return true;
         });
@@ -67,6 +72,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.equals(diagnosi1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.equals(bambino1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
+        Assert.assertTrue("Controllo update liste bilaterale", bambino1.getGenitori() == null);
 
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
@@ -114,7 +120,10 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.getCodiceFiscale() == "CF-------");
 
 
+        genitore1.removeBambino(bambino1);
+
         DatabaseSession.getInstance().execute(session ->{
+            session.update(genitore1);      //Prima tolgo bambino dalla lista di genitore, poi updato genitore e infine posso eliminare bambino
             session.deleteByID(Pasto.class, 1);
             session.deleteByID(Fornitore.class, 1);
             session.deleteByID(Pediatra.class, 1);
@@ -122,7 +131,6 @@ public class InsertTest
             session.deleteByID(Diagnosi.class, 1);
             session.deleteByID(Bambino.class, 1);
             session.deleteByID(Addetto.class, 2);
-            session.deleteByID(Contatto.class, 1);
             session.deleteByID(Contatto.class, 2);
 
             return true;
@@ -145,6 +153,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget == null);
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget == null);
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget == null);
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget == null);
 
     }
 
