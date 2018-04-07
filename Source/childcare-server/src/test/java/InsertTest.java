@@ -1,5 +1,6 @@
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.*;
+import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -7,6 +8,8 @@ import rules.DatabaseSessionRule;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class InsertTest
 {
@@ -23,14 +26,14 @@ public class InsertTest
         Bambino bambino1 = new Bambino("Paolo", "Rossi", "CF", Date.from(Instant.now()), "Nigeria", "Fiorenzuola", "Piacenza", "Nigeriana", "Via Inesistente, 10", (byte)0);
         Genitore genitore1 = new Genitore("Babu", "Bubu", "EHEHEH", Date.from(Instant.now()), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
-        genitore1.addBambino(bambino1);
-        bambino1.addGenitore(genitore1);
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
-        bambino1.addDiagnosi(diagnosi1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", Date.from(Instant.now()), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
         NumeroTelefono numero = new NumeroTelefono("3333");
-        addetto1.addNumero(numero);
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
+
+        Set<Genitore> genitori = new HashSet<>();
+        genitori.add(genitore1);
+        bambino1.setGenitori(genitori);
 
         Pasto pastoget;
         Fornitore fornitoreget;
@@ -40,6 +43,7 @@ public class InsertTest
         Addetto addettoget;
         ReazioneAvversa reazioneavversaget;
         Contatto contattoget;
+        Genitore genitoreget;
 
         DatabaseSession.getInstance().execute(session ->{   //Ordine nel database dipende da insert nella session
             session.insert(pasto1);
@@ -74,6 +78,7 @@ public class InsertTest
         bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino);
         addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto);
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
+        genitoreget = DatabaseSession.getInstance().getByID(Genitore.class, idGenitore);
 
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.equals(pasto1));   //So che è il messaggio di errore ma lo lascio così per ora
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.equals(fornitore1));
@@ -83,8 +88,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.equals(diagnosi1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.equals(bambino1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
-        Assert.assertTrue("Controllo update liste bilaterale", bambino1.getGenitori().size() == 1);
-
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().toArray()[0].equals(genitoreget)); //Per qualche strano motivo non va il contains :S
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
@@ -130,12 +134,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.getCodiceFiscale() == "CF-------");
 
 
-        //genitore1.removeBambino(bambino1);
-        //bambino1.removeGenitore(genitore1);
-
         DatabaseSession.getInstance().execute(session ->{
-            //session.update(genitore1);      //Prima tolgo bambino dalla lista di genitore, poi updato genitore e infine posso eliminare bambino
-            //session.update(bambino1);
             session.deleteByID(Genitore.class, idGenitore);
             session.deleteByID(Pasto.class, idPasto);
             session.deleteByID(Fornitore.class, idFornitore);

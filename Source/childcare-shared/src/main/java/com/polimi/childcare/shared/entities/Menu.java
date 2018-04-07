@@ -61,19 +61,6 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
-    public void addQuantitaPasto(QuantitaPasto q)
-    {
-        if(quantitaPasto == null)
-            quantitaPasto = new ArrayList<>();
-        quantitaPasto.add(q);
-    }
-
-    public void removeQuantitaPasto(QuantitaPasto q)
-    {
-        if(quantitaPasto != null)
-            quantitaPasto.remove(q);
-    }
-
     public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
 
     @Override

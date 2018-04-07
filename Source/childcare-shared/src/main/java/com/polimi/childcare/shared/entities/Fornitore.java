@@ -126,57 +126,9 @@ public class Fornitore implements Serializable
         this.IBAN = IBAN;
     }
 
-    public void addPasto(Pasto p)
-    {
-        if(pasti == null)
-            pasti = new ArrayList<>();
-        pasti.add(p);
-    }  //Poi va fatto update del Database
+    public void setFax(List<NumeroTelefono> fax) { this.fax = fax; }
 
-    public void removePasto(Pasto p)
-    {
-        if(pasti != null)
-            pasti.remove(p);
-    }  //Poi va fatto update del Database
-
-    public void addMezzo(MezzoDiTrasporto m)
-    {
-        if(mezzi == null)
-            mezzi = new ArrayList<>();
-        mezzi.add(m);
-    }  //Poi va fatto update del Database
-
-    public void removeMezzo(MezzoDiTrasporto m)
-    {
-        if(mezzi != null)
-            mezzi.remove(m);
-    }  //Poi va fatto update del Database
-
-    public void addFax(NumeroTelefono n)
-    {
-        if(fax == null)
-            fax = new ArrayList<>();
-        fax.add(n);
-    }  //Poi va fatto update del Database
-
-    public void removeFax(NumeroTelefono n)
-    {
-        if(fax != null)
-            fax.remove(n);
-    }  //Poi va fatto update del Database
-
-    public void addNumero(NumeroTelefono n)
-    {
-        if(telefoni == null)
-            telefoni = new ArrayList<>();
-        telefoni.add(n);
-    }  //Poi va fatto update del Database
-
-    public void removeNumero(NumeroTelefono n)
-    {
-        if(telefoni != null)
-            telefoni.remove(n);
-    }  //Poi va fatto update del Database
+    public void setTelefoni(List<NumeroTelefono> telefoni) { this.telefoni = telefoni; }
 
     public List<Pasto> getPasti() { return pasti; }
 

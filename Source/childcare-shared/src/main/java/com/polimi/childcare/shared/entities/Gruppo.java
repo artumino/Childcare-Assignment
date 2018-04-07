@@ -50,32 +50,6 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public void addBambino(Bambino b)
-    {
-        if(bambini == null)
-            bambini = new ArrayList<>();
-        bambini.add(b);
-    }   //Poi va fatto update del Database
-
-    public void removeBambino(Bambino b)
-    {
-        if(bambini != null)
-            bambini.remove(b);
-    }   //Poi va fatto update del Database
-
-    public void addViaggio(PianoViaggi p)
-    {
-        if(pianoviaggi == null)
-            pianoviaggi = new ArrayList<>();
-        pianoviaggi.add(p);
-    }
-
-    public void removeViaggio(PianoViaggi p)
-    {
-        if(pianoviaggi != null)
-            pianoviaggi.remove(p);
-    }
-
     public List<Bambino> getBambini() {
         return bambini;
     }

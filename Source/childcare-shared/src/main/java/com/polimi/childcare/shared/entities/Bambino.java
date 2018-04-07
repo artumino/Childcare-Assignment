@@ -23,7 +23,7 @@ public class Bambino extends Persona
             joinColumns = { @JoinColumn(name = "Bambino_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Genitore_FK") }
     )
-    private Set<Genitore> genitori;
+    private Set<Genitore> genitori = new HashSet<>();
 
     @ManyToMany(mappedBy = "bambini")
     private List<Contatto> contatti;
@@ -47,49 +47,13 @@ public class Bambino extends Persona
         return pediatra;
     }
 
-    public void setPediatra(Pediatra pediatra) {
-        this.pediatra = pediatra;
-    }
+    public void setPediatra(Pediatra pediatra) { this.pediatra = pediatra; }
 
-    public void addGenitore(Genitore g)
-    {
-        if(genitori == null)
-            genitori = new HashSet<>();
-        genitori.add(g);
-    }//Poi va fatto update del Database
+    public Gruppo getGruppo() { return gruppo; }
 
-    public void removeGenitore(Genitore g)
-    {
-        if(genitori != null)
-            genitori = new HashSet<>();
-        genitori.remove(g);
-    }//Poi va fatto update del Database
+    public void setGruppo(Gruppo gruppo) { this.gruppo = gruppo; }
 
-    public void addContatto(Contatto c)
-    {
-        if(contatti == null)
-            contatti = new ArrayList<>();
-        contatti.add(c);
-    }//Poi va fatto update del Database
-
-    public void removeContatto(Contatto c)
-    {
-        if(contatti != null)
-            contatti.remove(c);
-    }//Poi va fatto update del Database
-
-    public void addPresenza(RegistroPresenze r)
-    {
-        if(presenze == null)
-            presenze = new ArrayList<>();
-        presenze.add(r);
-    }//Poi va fatto update del Database
-
-    public void removePresenza(RegistroPresenze r)
-    {
-        if(presenze != null)
-            presenze.remove(r);
-    }//Poi va fatto update del Database
+    public void setGenitori(Set<Genitore> genitori) { this.genitori = genitori; }
 
     public List<RegistroPresenze> getPresenze() { return presenze; }
 

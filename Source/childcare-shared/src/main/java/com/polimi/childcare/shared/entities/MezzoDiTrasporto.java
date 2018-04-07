@@ -96,19 +96,6 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public void addViaggio(PianoViaggi p)
-    {
-        if(pianoViaggi == null)
-            pianoViaggi = new ArrayList<>();
-        pianoViaggi.add(p);
-    }
-
-    public void removeViaggio(PianoViaggi p)
-    {
-        if(pianoViaggi != null)
-            pianoViaggi.remove(p);
-    }
-
     public List<PianoViaggi> getPianoViaggi() { return pianoViaggi; }
 
     @Override

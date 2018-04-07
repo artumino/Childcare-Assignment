@@ -163,36 +163,16 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public void addDiagnosi(Diagnosi d)
-    {
-        if(diagnosi == null)
-            diagnosi = new ArrayList<>();
-        diagnosi.add(d);
-    }   //Poi va fatto update del Database
-
-    public void removeDiagnosi(Diagnosi d)
-    {
-        if(diagnosi != null)
-            diagnosi.remove(d);
-    }   //Poi va fatto update del Database
-
-    public void addNumero(NumeroTelefono n)
-    {
-        if(telefoni == null)
-            telefoni = new ArrayList<>();
-
-        telefoni.add(n);
-    }  //Poi va fatto update del Database
-
-    public void removeNumero(NumeroTelefono n)
-    {
-        if(telefoni != null)
-            telefoni.remove(n);
-    }  //Poi va fatto update del Database
+    public void setTelefoni(List<NumeroTelefono> telefoni) { this.telefoni = telefoni; }
 
     public List<Diagnosi> getDiagnosi() { return diagnosi; }
 
     public List<NumeroTelefono> getTelefoni() { return telefoni; }
+
+    @Override   //Su internette dicono che serve Overridarlo :S
+    public int hashCode() {
+        return Objects.hash(ID, Nome, Cognome, CodiceFiscale, DataNascita, Stato, Comune, Provincia, Cittadinanza, Residenza, Sesso, diagnosi, telefoni);
+    }
 
     @Override
     public boolean equals(Object o) {

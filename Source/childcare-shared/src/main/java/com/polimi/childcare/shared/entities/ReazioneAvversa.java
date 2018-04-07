@@ -62,32 +62,6 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
-    public void addDiagnosi(Diagnosi d)
-    {
-        if(diagnosi == null)
-            diagnosi = new ArrayList<>();
-        diagnosi.add(d);
-    }   //Poi va fatto update del Database
-
-    public void removeDiagnosi(Diagnosi d)
-    {
-        if(diagnosi != null)
-            diagnosi.remove(d);
-    }   //Poi va fatto update del Database
-
-    public void addPasto(Pasto p)
-    {
-        if(pasti == null)
-            pasti = new ArrayList<>();
-        pasti.add(p);
-    }  //Poi va fatto update del Database
-
-    public void removePasto(Pasto p)
-    {
-        if(pasti != null)
-            pasti.remove(p);
-    }  //Poi va fatto update del Database
-
     public List<Diagnosi> getDiagnosi() { return diagnosi; }
 
     public List<Pasto> getPasti() { return pasti; }
