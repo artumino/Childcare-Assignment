@@ -1,4 +1,8 @@
 package com.polimi.childcare.shared.entities;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -10,7 +14,7 @@ public class Genitore extends Persona
 {
     //region Relazioni
 
-    @ManyToMany(mappedBy = "genitori")
+    @ManyToMany(mappedBy = "genitori", fetch = FetchType.EAGER) //Ora va :D
     private Set<Bambino> bambini = new HashSet<>(); //Non fa nulla
 
     //endregion
@@ -23,7 +27,7 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
-    public Set<Bambino> getBambini() { return bambini; } //Inutile???
+    public Set<Bambino> getBambini() { return bambini; }
 
     //endregion
 }

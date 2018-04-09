@@ -80,6 +80,7 @@ public class InsertTest
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
         genitoreget = DatabaseSession.getInstance().getByID(Genitore.class, idGenitore);
 
+
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.equals(pasto1));   //So che è il messaggio di errore ma lo lascio così per ora
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.equals(fornitore1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", pediatraget.equals(pediatra1));
@@ -88,6 +89,7 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.equals(diagnosi1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.equals(bambino1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.getBambini().toArray()[0].equals(bambinoget));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().toArray()[0].equals(genitoreget)); //Per qualche strano motivo non va il contains :S
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
