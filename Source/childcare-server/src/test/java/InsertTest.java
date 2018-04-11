@@ -31,9 +31,7 @@ public class InsertTest
         NumeroTelefono numero = new NumeroTelefono("3333");
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
 
-        Set<Genitore> genitori = new HashSet<>();
-        genitori.add(genitore1);
-        bambino1.setGenitori(genitori);
+        bambino1.addGenitore(genitore1);
 
         Pasto pastoget;
         Fornitore fornitoreget;
@@ -90,7 +88,8 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.equals(bambino1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.getBambini().toArray()[0].equals(bambinoget));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().toArray()[0].equals(genitoreget)); //Per qualche strano motivo non va il contains :S
+        //Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.getBambini().contains(bambino1)); //Per qualche strano motivo non va il contains :S
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().toArray()[0].equals(genitore1));
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 

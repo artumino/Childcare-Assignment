@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,8 +36,8 @@ public class MezzoDiTrasporto implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
-    private List<PianoViaggi> pianoViaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "mezzo")
+    private List<PianoViaggi> pianoViaggi = new ArrayList<>();
 
     //endregion
 
@@ -96,7 +97,13 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public List<PianoViaggi> getPianoViaggi() { return pianoViaggi; }
+    public List<PianoViaggi> getPianoViaggi()
+    {
+        List<PianoViaggi> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, pianoViaggi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

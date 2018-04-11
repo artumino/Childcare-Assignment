@@ -3,9 +3,7 @@ import org.jinq.jpa.jpqlquery.ParameterAsQuery;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Fornitori")
@@ -39,27 +37,27 @@ public class Fornitore implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(mappedBy = "fornitori")
-    private List<Pasto> pasti;
+    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.EAGER)
+    private Set<Pasto> pasti = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
-    private List<MezzoDiTrasporto> mezzi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
+    private List<MezzoDiTrasporto> mezzi = new ArrayList<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Fax_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> fax;
+    private Set<NumeroTelefono> fax = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni;
+    private List<NumeroTelefono> telefoni = new ArrayList<>();
 
     //endregion
 
@@ -126,17 +124,44 @@ public class Fornitore implements Serializable
         this.IBAN = IBAN;
     }
 
-    public void setFax(List<NumeroTelefono> fax) { this.fax = fax; }
+    public void addFax(NumeroTelefono f) { fax.add(f); }
 
-    public void setTelefoni(List<NumeroTelefono> telefoni) { this.telefoni = telefoni; }
+    public void removeFax(NumeroTelefono f) { fax.remove(f); }
 
-    public List<Pasto> getPasti() { return pasti; }
+    public void addTelefono(NumeroTelefono t) { telefoni.add(t); }
 
-    public List<MezzoDiTrasporto> getMezzi() { return mezzi; }
+    public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
 
-    public List<NumeroTelefono> getFax() { return fax; }
 
-    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+    public Set<Pasto> getPasti()
+    {
+        Set<Pasto> ritorno = new HashSet<>(pasti);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
+
+    public List<MezzoDiTrasporto> getMezzi()
+    {
+        List<MezzoDiTrasporto> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, mezzi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
+
+    public Set<NumeroTelefono> getFax()
+    {
+        Set<NumeroTelefono> ritorno = new HashSet<>(fax);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
+
+    public List<NumeroTelefono> getTelefoni()
+    {
+        List<NumeroTelefono> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, telefoni);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

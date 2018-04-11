@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -40,15 +41,15 @@ public class Contatto implements Serializable
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
-    private List<Bambino> bambini;
+    private List<Bambino> bambini = new ArrayList<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Contatto_Rubrica",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni;
+    private List<NumeroTelefono> telefoni = new ArrayList<>();
 
     //endregion
 
@@ -97,13 +98,29 @@ public class Contatto implements Serializable
         Indirizzo = indirizzo;
     }
 
-    public void setBambini(List<Bambino> bambini) { this.bambini = bambini; }
+    public void addNumero(NumeroTelefono n) { telefoni.add(n); }
 
-    public void setTelefoni(List<NumeroTelefono> telefoni) { this.telefoni = telefoni; }
+    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }
 
-    public List<Bambino> getBambini() { return bambini; }
+    public void addBambino(Bambino b) { bambini.add(b); }
 
-    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+    public void removeBambino(Bambino b) { bambini.remove(b); }
+
+    public List<Bambino> getBambini()
+    {
+        List<Bambino> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, bambini);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
+
+    public List<NumeroTelefono> getTelefoni()
+    {
+        List<NumeroTelefono> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, telefoni);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

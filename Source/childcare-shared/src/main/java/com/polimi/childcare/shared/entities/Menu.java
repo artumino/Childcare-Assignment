@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Menu")
@@ -27,8 +24,8 @@ public class Menu implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "menu")
-    private List<QuantitaPasto> quantitaPasto;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "menu")
+    private List<QuantitaPasto> quantitaPasto = new ArrayList<>();
 
     //endregion
 
@@ -61,7 +58,13 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
-    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+    public List<QuantitaPasto> getQuantitaPasto()
+    {
+        List<QuantitaPasto> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, quantitaPasto);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

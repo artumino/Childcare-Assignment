@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Gite")
@@ -34,11 +31,11 @@ public class Gita implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
-    private List<PianoViaggi> pianiViaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
+    private List<PianoViaggi> pianiViaggi = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
-    private List<RegistroPresenze> registriPresenze;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
+    private List<RegistroPresenze> registriPresenze = new ArrayList<>();
 
     //endregion
 
@@ -85,9 +82,21 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
+    public List<PianoViaggi> getPianiViaggi()
+    {
+        List<PianoViaggi> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, pianiViaggi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
-    public List<RegistroPresenze> getRegistriPresenze() { return registriPresenze; }
+    public List<RegistroPresenze> getRegistriPresenze()
+    {
+        List<RegistroPresenze> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, registriPresenze);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

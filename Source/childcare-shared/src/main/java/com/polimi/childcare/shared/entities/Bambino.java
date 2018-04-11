@@ -10,8 +10,8 @@ public class Bambino extends Persona
 {
     //region Relazioni
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
-    private List<RegistroPresenze> presenze;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bambino")
+    private List<RegistroPresenze> presenze = new ArrayList<>();
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
@@ -25,8 +25,8 @@ public class Bambino extends Persona
     )
     private Set<Genitore> genitori = new HashSet<>();
 
-    @ManyToMany(mappedBy = "bambini")
-    private List<Contatto> contatti;
+    @ManyToMany(mappedBy = "bambini", fetch = FetchType.EAGER)
+    private List<Contatto> contatti = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "Gruppo_FK")
@@ -53,13 +53,32 @@ public class Bambino extends Persona
 
     public void setGruppo(Gruppo gruppo) { this.gruppo = gruppo; }
 
-    public void setGenitori(Set<Genitore> genitori) { this.genitori = genitori; }
+    public void addGenitore(Genitore g) { genitori.add(g); }
 
-    public List<RegistroPresenze> getPresenze() { return presenze; }
+    public void removeGenitore(Genitore g) { genitori.remove(g); }
 
-    public Set<Genitore> getGenitori() { return genitori; }
+    public List<RegistroPresenze> getPresenze()
+    {
+        List<RegistroPresenze> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, presenze);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
-    public List<Contatto> getContatti() { return contatti; }
+    public Set<Genitore> getGenitori()
+    {
+        Set<Genitore> ritorno = new HashSet<>(genitori);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
+
+    public List<Contatto> getContatti()
+    {
+        List<Contatto> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, contatti);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {           //Ora funzionante con Pediatra EAGER

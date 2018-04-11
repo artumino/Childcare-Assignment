@@ -27,7 +27,12 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
-    public Set<Bambino> getBambini() { return bambini; }
+    public Set<Bambino> getBambini()
+    {
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
     //endregion
 }

@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -19,14 +20,14 @@ public class Gruppo implements Serializable
     //endregion
 
     //region Relazioni
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
+    @OneToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
-    private List<Bambino> bambini;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    private List<Bambino> bambini  = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
-    private List<PianoViaggi> pianoviaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    private List<PianoViaggi> pianoviaggi = new ArrayList<>();
 
     //endregion
 
@@ -50,12 +51,20 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public List<Bambino> getBambini() {
-        return bambini;
+    public List<Bambino> getBambini()
+    {
+        List<Bambino> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, bambini);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
     }
 
-    public List<PianoViaggi> getPianoviaggi() {
-        return pianoviaggi;
+    public List<PianoViaggi> getPianoviaggi()
+    {
+        List<PianoViaggi> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, pianoviaggi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
     }
 
     @Override

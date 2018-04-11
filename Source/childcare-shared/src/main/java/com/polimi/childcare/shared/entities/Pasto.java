@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,7 +26,7 @@ public class Pasto implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
@@ -33,7 +34,7 @@ public class Pasto implements Serializable
     )
     private List<Fornitore> fornitori;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
@@ -41,7 +42,7 @@ public class Pasto implements Serializable
     )
     private List<ReazioneAvversa> reazione;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pasto")
     private List<QuantitaPasto> quantitaPasto;
 
     //endregion
@@ -76,15 +77,37 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
-    public void setFornitori(List<Fornitore> fornitori) { this.fornitori = fornitori; }
+    public void addFornitore(Fornitore f) { fornitori.add(f); }
 
-    public void setReazione(List<ReazioneAvversa> reazione) { this.reazione = reazione; }
+    public void removeFornitore(Fornitore f) { fornitori.remove(f); }
 
-    public List<Fornitore> getFornitori() { return fornitori; }
+    public void addReazione(ReazioneAvversa r) { reazione.add(r); }
 
-    public List<ReazioneAvversa> getReazione() { return reazione; }
+    public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+    public List<Fornitore> getFornitori()
+    {
+        List<Fornitore> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, fornitori);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
+
+    public List<ReazioneAvversa> getReazione()
+    {
+        List<ReazioneAvversa> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, reazione);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
+
+    public List<QuantitaPasto> getQuantitaPasto()
+    {
+        List<QuantitaPasto> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, quantitaPasto);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

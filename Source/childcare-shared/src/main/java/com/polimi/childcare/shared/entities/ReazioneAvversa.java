@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,11 +26,11 @@ public class ReazioneAvversa implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reazioneAvversa")
-    private List<Diagnosi> diagnosi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "reazioneAvversa")
+    private List<Diagnosi> diagnosi = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "reazione")
-    private List<Pasto> pasti;
+    @ManyToMany(mappedBy = "reazione", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Pasto> pasti = new ArrayList<>();
 
     //endregion
 
@@ -62,9 +63,21 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
-    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+    public List<Diagnosi> getDiagnosi()
+    {
+        List<Diagnosi> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, diagnosi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
-    public List<Pasto> getPasti() { return pasti; }
+    public List<Pasto> getPasti()
+    {
+        List<Pasto> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, pasti);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -31,7 +31,7 @@ public class RegistroPresenze implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
 

@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Persone")
@@ -50,16 +47,16 @@ public abstract class Persona implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
-    private List<Diagnosi> diagnosi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "persona")
+    private List<Diagnosi> diagnosi = new ArrayList<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Persona_Rubrica",
             joinColumns = { @JoinColumn(name = "Persona_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni;
+    private List<NumeroTelefono> telefoni = new ArrayList<>();
 
     //endregion
 
@@ -163,11 +160,25 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public void setTelefoni(List<NumeroTelefono> telefoni) { this.telefoni = telefoni; }
+    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }
 
-    public List<Diagnosi> getDiagnosi() { return diagnosi; }
+    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
 
-    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+    public List<Diagnosi> getDiagnosi()
+    {
+        List<Diagnosi> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, diagnosi);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
+
+    public List<NumeroTelefono> getTelefoni()
+    {
+        List<NumeroTelefono> ritorno = new ArrayList<>();
+        Collections.copy(ritorno, telefoni);
+        Collections.unmodifiableList(ritorno);
+        return ritorno;
+    }
 
     @Override   //Su internette dicono che serve Overridarlo :S
     public int hashCode() {
