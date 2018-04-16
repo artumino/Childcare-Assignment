@@ -69,6 +69,9 @@ public class QuantitaPasto implements Serializable
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, QuantitaPasto.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof QuantitaPasto)) return false;

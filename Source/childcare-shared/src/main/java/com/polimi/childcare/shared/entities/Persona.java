@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -48,7 +50,7 @@ public abstract class Persona implements Serializable
     //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "persona")
-    private List<Diagnosi> diagnosi = new ArrayList<>();
+    private Set<Diagnosi> diagnosi = new HashSet<>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
@@ -56,7 +58,7 @@ public abstract class Persona implements Serializable
             joinColumns = { @JoinColumn(name = "Persona_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni = new ArrayList<>();
+    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -164,26 +166,22 @@ public abstract class Persona implements Serializable
 
     public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
 
-    public List<Diagnosi> getDiagnosi()
+    public Set<Diagnosi> getDiagnosi()
     {
-        List<Diagnosi> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, diagnosi);
-        Collections.unmodifiableList(ritorno);
+        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<NumeroTelefono> getTelefoni()
+    public Set<NumeroTelefono> getTelefoni()
     {
-        List<NumeroTelefono> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, telefoni);
-        Collections.unmodifiableList(ritorno);
+        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    @Override   //Su internette dicono che serve Overridarlo :S
-    public int hashCode() {
-        return Objects.hash(ID, Nome, Cognome, CodiceFiscale, DataNascita, Stato, Comune, Provincia, Cittadinanza, Residenza, Sesso, diagnosi, telefoni);
-    }
+    @Override
+    public int hashCode() { return Objects.hash(ID, Persona.class); }
 
     @Override
     public boolean equals(Object o) {

@@ -41,7 +41,7 @@ public class Fornitore implements Serializable
     private Set<Pasto> pasti = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
-    private List<MezzoDiTrasporto> mezzi = new ArrayList<>();
+    private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
@@ -57,7 +57,7 @@ public class Fornitore implements Serializable
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni = new ArrayList<>();
+    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -140,11 +140,10 @@ public class Fornitore implements Serializable
         return ritorno;
     }
 
-    public List<MezzoDiTrasporto> getMezzi()
+    public Set<MezzoDiTrasporto> getMezzi()
     {
-        List<MezzoDiTrasporto> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, mezzi);
-        Collections.unmodifiableList(ritorno);
+        Set<MezzoDiTrasporto> ritorno = new HashSet<>(mezzi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
@@ -155,13 +154,15 @@ public class Fornitore implements Serializable
         return ritorno;
     }
 
-    public List<NumeroTelefono> getTelefoni()
+    public Set<NumeroTelefono> getTelefoni()
     {
-        List<NumeroTelefono> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, telefoni);
-        Collections.unmodifiableList(ritorno);
+        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Fornitore.class); }
 
     @Override
     public boolean equals(Object o) {

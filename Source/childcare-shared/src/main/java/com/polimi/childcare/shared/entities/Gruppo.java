@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Gruppi")
@@ -24,10 +21,10 @@ public class Gruppo implements Serializable
     private Addetto sorvergliante;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
-    private List<Bambino> bambini  = new ArrayList<>();
+    private Set<Bambino> bambini  = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
-    private List<PianoViaggi> pianoviaggi = new ArrayList<>();
+    private Set<PianoViaggi> pianoviaggi = new HashSet<>();
 
     //endregion
 
@@ -51,21 +48,22 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public List<Bambino> getBambini()
+    public Set<Bambino> getBambini()
     {
-        List<Bambino> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, bambini);
-        Collections.unmodifiableList(ritorno);
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<PianoViaggi> getPianoviaggi()
+    public Set<PianoViaggi> getPianoviaggi()
     {
-        List<PianoViaggi> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, pianoviaggi);
-        Collections.unmodifiableList(ritorno);
+        Set<PianoViaggi> ritorno = new HashSet<>(pianoviaggi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Gruppo.class); }
 
     @Override
     public boolean equals(Object o) {

@@ -68,6 +68,9 @@ public class PianoViaggi implements Serializable
     public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, PianoViaggi.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PianoViaggi)) return false;

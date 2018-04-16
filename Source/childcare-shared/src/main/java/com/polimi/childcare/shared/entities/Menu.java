@@ -25,7 +25,7 @@ public class Menu implements Serializable
     //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "menu")
-    private List<QuantitaPasto> quantitaPasto = new ArrayList<>();
+    private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
 
     //endregion
 
@@ -58,13 +58,15 @@ public class Menu implements Serializable
         Ricorrenza = ricorrenza;
     }
 
-    public List<QuantitaPasto> getQuantitaPasto()
+    public Set<QuantitaPasto> getQuantitaPasto()
     {
-        List<QuantitaPasto> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, quantitaPasto);
-        Collections.unmodifiableList(ritorno);
+        Set<QuantitaPasto> ritorno = new HashSet<>(quantitaPasto);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Menu.class); }
 
     @Override
     public boolean equals(Object o) {

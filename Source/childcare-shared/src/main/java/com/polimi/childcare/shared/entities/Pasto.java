@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Pasti")
@@ -32,7 +29,7 @@ public class Pasto implements Serializable
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Fornitore_FK") }
     )
-    private List<Fornitore> fornitori;
+    private Set<Fornitore> fornitori = new HashSet<>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
@@ -40,10 +37,10 @@ public class Pasto implements Serializable
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "ReazioneAvversa_FK") }
     )
-    private List<ReazioneAvversa> reazione;
+    private Set<ReazioneAvversa> reazione = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pasto")
-    private List<QuantitaPasto> quantitaPasto;
+    private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
 
     //endregion
 
@@ -85,29 +82,29 @@ public class Pasto implements Serializable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public List<Fornitore> getFornitori()
+    public Set<Fornitore> getFornitori()
     {
-        List<Fornitore> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, fornitori);
-        Collections.unmodifiableList(ritorno);
+        Set<Fornitore> ritorno = new HashSet<>(fornitori);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<ReazioneAvversa> getReazione()
+    public Set<ReazioneAvversa> getReazione()
     {
-        List<ReazioneAvversa> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, reazione);
-        Collections.unmodifiableList(ritorno);
+        Set<ReazioneAvversa> ritorno = new HashSet<>(reazione);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<QuantitaPasto> getQuantitaPasto()
+    public Set<QuantitaPasto> getQuantitaPasto()
     {
-        List<QuantitaPasto> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, quantitaPasto);
-        Collections.unmodifiableList(ritorno);
+        Set<QuantitaPasto> ritorno = new HashSet<>(quantitaPasto);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Pasto.class); }
 
     @Override
     public boolean equals(Object o) {

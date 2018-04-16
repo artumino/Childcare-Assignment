@@ -10,9 +10,6 @@ public class Bambino extends Persona
 {
     //region Relazioni
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "bambino")
-    private List<RegistroPresenze> presenze = new ArrayList<>();
-
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
@@ -26,7 +23,7 @@ public class Bambino extends Persona
     private Set<Genitore> genitori = new HashSet<>();
 
     @ManyToMany(mappedBy = "bambini", fetch = FetchType.EAGER)
-    private List<Contatto> contatti = new ArrayList<>();
+    private Set<Contatto> contatti = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "Gruppo_FK")
@@ -57,14 +54,6 @@ public class Bambino extends Persona
 
     public void removeGenitore(Genitore g) { genitori.remove(g); }
 
-    public List<RegistroPresenze> getPresenze()
-    {
-        List<RegistroPresenze> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, presenze);
-        Collections.unmodifiableList(ritorno);
-        return ritorno;
-    }
-
     public Set<Genitore> getGenitori()
     {
         Set<Genitore> ritorno = new HashSet<>(genitori);
@@ -72,11 +61,10 @@ public class Bambino extends Persona
         return ritorno;
     }
 
-    public List<Contatto> getContatti()
+    public Set<Contatto> getContatti()
     {
-        List<Contatto> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, contatti);
-        Collections.unmodifiableList(ritorno);
+        Set<Contatto> ritorno = new HashSet<>(contatti);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 

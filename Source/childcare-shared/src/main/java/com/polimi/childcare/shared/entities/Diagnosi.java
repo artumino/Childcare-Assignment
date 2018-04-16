@@ -69,6 +69,9 @@ public class Diagnosi implements Serializable
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, Diagnosi.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Diagnosi)) return false;

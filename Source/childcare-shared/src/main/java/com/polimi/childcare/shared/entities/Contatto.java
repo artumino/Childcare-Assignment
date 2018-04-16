@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Contatti")
@@ -41,7 +38,7 @@ public class Contatto implements Serializable
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
     )
-    private List<Bambino> bambini = new ArrayList<>();
+    private Set<Bambino> bambini = new HashSet<>();
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
@@ -49,7 +46,7 @@ public class Contatto implements Serializable
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni = new ArrayList<>();
+    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -106,21 +103,22 @@ public class Contatto implements Serializable
 
     public void removeBambino(Bambino b) { bambini.remove(b); }
 
-    public List<Bambino> getBambini()
+    public Set<Bambino> getBambini()
     {
-        List<Bambino> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, bambini);
-        Collections.unmodifiableList(ritorno);
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<NumeroTelefono> getTelefoni()
+    public Set<NumeroTelefono> getTelefoni()
     {
-        List<NumeroTelefono> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, telefoni);
-        Collections.unmodifiableList(ritorno);
+        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Contatto.class); }
 
     @Override
     public boolean equals(Object o) {

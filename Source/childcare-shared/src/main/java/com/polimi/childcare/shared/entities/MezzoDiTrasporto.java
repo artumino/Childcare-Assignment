@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "MezziDiTrasporto")
@@ -37,7 +34,7 @@ public class MezzoDiTrasporto implements Serializable
     private Fornitore fornitore;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "mezzo")
-    private List<PianoViaggi> pianoViaggi = new ArrayList<>();
+    private Set<PianoViaggi> pianoViaggi = new HashSet<>();
 
     //endregion
 
@@ -97,13 +94,15 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public List<PianoViaggi> getPianoViaggi()
+    public Set<PianoViaggi> getPianoViaggi()
     {
-        List<PianoViaggi> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, pianoViaggi);
-        Collections.unmodifiableList(ritorno);
+        Set<PianoViaggi> ritorno = new HashSet<>(pianoViaggi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, MezzoDiTrasporto.class); }
 
     @Override
     public boolean equals(Object o) {

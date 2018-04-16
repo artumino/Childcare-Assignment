@@ -1,10 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "ReazioniAvverse")
@@ -27,10 +24,10 @@ public class ReazioneAvversa implements Serializable
     //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "reazioneAvversa")
-    private List<Diagnosi> diagnosi = new ArrayList<>();
+    private Set<Diagnosi> diagnosi = new HashSet<>();
 
     @ManyToMany(mappedBy = "reazione", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Pasto> pasti = new ArrayList<>();
+    private Set<Pasto> pasti = new HashSet<>();
 
     //endregion
 
@@ -63,21 +60,22 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
-    public List<Diagnosi> getDiagnosi()
+    public Set<Diagnosi> getDiagnosi()
     {
-        List<Diagnosi> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, diagnosi);
-        Collections.unmodifiableList(ritorno);
+        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<Pasto> getPasti()
+    public Set<Pasto> getPasti()
     {
-        List<Pasto> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, pasti);
-        Collections.unmodifiableList(ritorno);
+        Set<Pasto> ritorno = new HashSet<>(pasti);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, ReazioneAvversa.class); }
 
     @Override
     public boolean equals(Object o) {

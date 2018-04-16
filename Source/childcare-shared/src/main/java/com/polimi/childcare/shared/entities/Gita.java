@@ -32,10 +32,10 @@ public class Gita implements Serializable
     //region Relazioni
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
-    private List<PianoViaggi> pianiViaggi = new ArrayList<>();
+    private Set<PianoViaggi> pianiViaggi = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
-    private List<RegistroPresenze> registriPresenze = new ArrayList<>();
+    private Set<RegistroPresenze> registriPresenze = new HashSet<>();
 
     //endregion
 
@@ -82,21 +82,22 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public List<PianoViaggi> getPianiViaggi()
+    public Set<PianoViaggi> getPianiViaggi()
     {
-        List<PianoViaggi> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, pianiViaggi);
-        Collections.unmodifiableList(ritorno);
+        Set<PianoViaggi> ritorno = new HashSet<>(pianiViaggi);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
 
-    public List<RegistroPresenze> getRegistriPresenze()
+    public Set<RegistroPresenze> getRegistriPresenze()
     {
-        List<RegistroPresenze> ritorno = new ArrayList<>();
-        Collections.copy(ritorno, registriPresenze);
-        Collections.unmodifiableList(ritorno);
+        Set<RegistroPresenze> ritorno = new HashSet<>(registriPresenze);
+        Collections.unmodifiableSet(ritorno);
         return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Gita.class); }
 
     @Override
     public boolean equals(Object o) {
