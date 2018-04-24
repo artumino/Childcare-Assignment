@@ -10,26 +10,28 @@ public class Bambino extends Persona
 {
     //region Relazioni
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "bambino")
-    private List<RegistroPresenze> presenze;
-
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
-    @ManyToMany(mappedBy = "bambini")
-    private List<Genitore> genitori;
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "TutoriLegali",
+            joinColumns = { @JoinColumn(name = "Bambino_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Genitore_FK") }
+    )
+    private Set<Genitore> genitori = new HashSet<>();
 
-    @ManyToMany(mappedBy = "bambini")
-    private List<Contatto> contatti;
+    @ManyToMany(mappedBy = "bambini", fetch = FetchType.EAGER)
+    private Set<Contatto> contatti = new HashSet<>();
 
-    @ManyToMany(mappedBy = "bambini")
-    private List<Gruppo> gruppi;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "Gruppo_FK")
+    private Gruppo gruppo;
 
     //endregion
 
     //region Metodi
-
 
     public Bambino() { }
 
@@ -42,29 +44,28 @@ public class Bambino extends Persona
         return pediatra;
     }
 
-    public void setPediatra(Pediatra pediatra) {
-        this.pediatra = pediatra;
+    public void setPediatra(Pediatra pediatra) { this.pediatra = pediatra; }
+
+    public Gruppo getGruppo() { return gruppo; }
+
+    public void setGruppo(Gruppo gruppo) { this.gruppo = gruppo; }
+
+    public void addGenitore(Genitore g) { genitori.add(g); }
+
+    public void removeGenitore(Genitore g) { genitori.remove(g); }
+
+    public Set<Genitore> getGenitori()
+    {
+        Set<Genitore> ritorno = new HashSet<>(genitori);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
     }
 
-    public void addGenitore(Genitore g){ genitori.add(g); }//Poi va fatto update del Database
-
-    public void removeGenitore(Genitore g){ genitori.remove(g); }//Poi va fatto update del Database
-
-    public void addContatto(Contatto c){ contatti.add(c); }//Poi va fatto update del Database
-
-    public void removeContatto(Contatto c){ contatti.remove(c); }//Poi va fatto update del Database
-
-    public void addGruppo(Gruppo g){ gruppi.add(g); }//Poi va fatto update del Database
-
-    public void removeGruppo(Gruppo g){ gruppi.remove(g); }//Poi va fatto update del Database
-
-    public List<RegistroPresenze> getPresenze() { return presenze; }
-
-    public List<Genitore> getGenitori() { return genitori; }
-
-    public List<Contatto> getContatti() { return contatti; }
-
-    public List<Gruppo> getGruppi() { return gruppi;
+    public Set<Contatto> getContatti()
+    {
+        Set<Contatto> ritorno = new HashSet<>(contatti);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
     }
 
     @Override

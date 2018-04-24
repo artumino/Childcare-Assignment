@@ -3,8 +3,7 @@ import org.jinq.jpa.jpqlquery.ParameterAsQuery;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Fornitori")
@@ -30,9 +29,6 @@ public class Fornitore implements Serializable
     @Column(length = 30)
     private String Email;
 
-    @Column(length = 15)   //10 numeri + 3 di prefisso (oppure 4 se conti due 0 come il +), lascio a 15 per sicurezza
-    private String FAX;
-
     @Column(length = 27)
     private String IBAN;    //Ancora caso Italiano 27 caratteri
 
@@ -41,27 +37,27 @@ public class Fornitore implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(mappedBy = "fornitori")
-    private List<Pasto> pasti;
+    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.EAGER)
+    private Set<Pasto> pasti = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
-    private List<MezzoDiTrasporto> mezzi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
+    private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Fax_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> fax;
+    private Set<NumeroTelefono> fax = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni;
+    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -69,13 +65,12 @@ public class Fornitore implements Serializable
 
     public Fornitore() { }
 
-    public Fornitore(String ragioneSociale, String partitaIVA, String sedeLegale, String numeroRegistroImprese, String email, String FAX, String IBAN) {
+    public Fornitore(String ragioneSociale, String partitaIVA, String sedeLegale, String numeroRegistroImprese, String email, String IBAN) {
         RagioneSociale = ragioneSociale;
         PartitaIVA = partitaIVA;
         SedeLegale = sedeLegale;
         NumeroRegistroImprese = numeroRegistroImprese;
         Email = email;
-        this.FAX = FAX;
         this.IBAN = IBAN;
     }
 
@@ -121,14 +116,6 @@ public class Fornitore implements Serializable
         Email = email;
     }
 
-    public String getFAX() {
-        return FAX;
-    }
-
-    public void setFAX(String FAX) {
-        this.FAX = FAX;
-    }
-
     public String getIBAN() {
         return IBAN;
     }
@@ -137,29 +124,45 @@ public class Fornitore implements Serializable
         this.IBAN = IBAN;
     }
 
-    public void addPasto(Pasto p) { pasti.add(p); }  //Poi va fatto update del Database
+    public void addFax(NumeroTelefono f) { fax.add(f); }
 
-    public void removePasto(Pasto p) { pasti.remove(p); }  //Poi va fatto update del Database
+    public void removeFax(NumeroTelefono f) { fax.remove(f); }
 
-    public void addMezzo(MezzoDiTrasporto m) { mezzi.add(m); }  //Poi va fatto update del Database
+    public void addTelefono(NumeroTelefono t) { telefoni.add(t); }
 
-    public void removeMezzo(MezzoDiTrasporto m) { mezzi.remove(m); }  //Poi va fatto update del Database
+    public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
 
-    public void addFax(NumeroTelefono n) { fax.add(n); }  //Poi va fatto update del Database
 
-    public void removeFax(NumeroTelefono n) { fax.remove(n); }  //Poi va fatto update del Database
+    public Set<Pasto> getPasti()
+    {
+        Set<Pasto> ritorno = new HashSet<>(pasti);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+    public Set<MezzoDiTrasporto> getMezzi()
+    {
+        Set<MezzoDiTrasporto> ritorno = new HashSet<>(mezzi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
+    public Set<NumeroTelefono> getFax()
+    {
+        Set<NumeroTelefono> ritorno = new HashSet<>(fax);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public List<Pasto> getPasti() { return pasti; }
+    public Set<NumeroTelefono> getTelefoni()
+    {
+        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public List<MezzoDiTrasporto> getMezzi() { return mezzi; }
-
-    public List<NumeroTelefono> getFax() { return fax; }
-
-    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, Fornitore.class); }
 
     @Override
     public boolean equals(Object o) {
@@ -172,7 +175,6 @@ public class Fornitore implements Serializable
                 getSedeLegale().equals(fornitore.getSedeLegale()) &&
                 getNumeroRegistroImprese().equals(fornitore.getNumeroRegistroImprese()) &&
                 getEmail().equals(fornitore.getEmail()) &&
-                getFAX().equals(fornitore.getFAX()) &&
                 getIBAN().equals(fornitore.getIBAN());
     }
 

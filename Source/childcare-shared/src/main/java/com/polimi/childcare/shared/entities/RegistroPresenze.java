@@ -31,7 +31,7 @@ public class RegistroPresenze implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
 
@@ -107,6 +107,9 @@ public class RegistroPresenze implements Serializable
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, RegistroPresenze.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RegistroPresenze)) return false;
@@ -115,9 +118,9 @@ public class RegistroPresenze implements Serializable
                 getOra() == that.getOra() &&
                 getStato() == that.getStato() &&
                 getDate().compareTo(that.getDate()) == 0 &&
-                getTimeStamp().compareTo(that.getTimeStamp()) == 0 &&
-                getBambino().equals(that.getBambino()) &&
-                getGita().equals(that.getGita());
+                getTimeStamp().compareTo(that.getTimeStamp()) == 0; //&&
+                //getBambino().equals(that.getBambino()) &&
+                //getGita().equals(that.getGita());
     }
 
     //endregion

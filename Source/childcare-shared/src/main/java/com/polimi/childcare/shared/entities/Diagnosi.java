@@ -69,14 +69,17 @@ public class Diagnosi implements Serializable
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, Diagnosi.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Diagnosi)) return false;
         Diagnosi diagnosi = (Diagnosi) o;
-        return getID() == diagnosi.getID() &&
-                isAllergia() == diagnosi.isAllergia() &&
+        return getID() == diagnosi.getID(); //&&
+                //isAllergia() == diagnosi.isAllergia() &&
                 //getPersona().equals(diagnosi.getPersona()) &&
-                getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
+                //getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
     }
 
     //endregion

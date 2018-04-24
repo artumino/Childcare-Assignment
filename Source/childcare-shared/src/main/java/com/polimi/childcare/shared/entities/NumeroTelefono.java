@@ -38,6 +38,9 @@ public class NumeroTelefono
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, NumeroTelefono.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NumeroTelefono)) return false;

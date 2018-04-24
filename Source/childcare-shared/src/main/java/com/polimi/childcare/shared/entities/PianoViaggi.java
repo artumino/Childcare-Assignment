@@ -68,14 +68,17 @@ public class PianoViaggi implements Serializable
     public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, PianoViaggi.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof PianoViaggi)) return false;
         PianoViaggi that = (PianoViaggi) o;
-        return getID() == that.getID() &&
-                getGita().equals(that.getGita()) &&
-                getGruppo().equals(that.getGruppo()) &&
-                getMezzo().equals(that.getMezzo());
+        return getID() == that.getID(); //&&
+                //getGita().equals(that.getGita()) &&
+                //getGruppo().equals(that.getGruppo()) &&
+                //getMezzo().equals(that.getMezzo());
     }
 
     //endregion

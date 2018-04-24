@@ -1,8 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "ReazioniAvverse")
@@ -24,11 +23,11 @@ public class ReazioneAvversa implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "reazioneAvversa")
-    private List<Diagnosi> diagnosi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "reazioneAvversa")
+    private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(mappedBy = "reazione")
-    private List<Pasto> pasti;
+    @ManyToMany(mappedBy = "reazione", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Pasto> pasti = new HashSet<>();
 
     //endregion
 
@@ -61,17 +60,22 @@ public class ReazioneAvversa implements Serializable
         Descrizione = descrizione;
     }
 
-    public void addDiagnosi(Diagnosi d) { diagnosi.add(d); }   //Poi va fatto update del Database
+    public Set<Diagnosi> getDiagnosi()
+    {
+        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeDiagnosi(Diagnosi d) {diagnosi.remove(d);}   //Poi va fatto update del Database
+    public Set<Pasto> getPasti()
+    {
+        Set<Pasto> ritorno = new HashSet<>(pasti);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void addPasto(Pasto p) { pasti.add(p); }  //Poi va fatto update del Database
-
-    public void removePasto(Pasto p) { pasti.remove(p); }  //Poi va fatto update del Database
-
-    public List<Diagnosi> getDiagnosi() { return diagnosi; }
-
-    public List<Pasto> getPasti() { return pasti; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, ReazioneAvversa.class); }
 
     @Override
     public boolean equals(Object o) {

@@ -69,14 +69,17 @@ public class QuantitaPasto implements Serializable
     }
 
     @Override
+    public int hashCode() { return Objects.hash(ID, QuantitaPasto.class); }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof QuantitaPasto)) return false;
         QuantitaPasto that = (QuantitaPasto) o;
         return getID() == that.getID() &&
-                getQuantita() == that.getQuantita() &&
-                getPasto().equals(that.getPasto()) &&
-                getMenu().equals(that.getMenu());
+                getQuantita() == that.getQuantita(); //&&
+                //getPasto().equals(that.getPasto()) &&
+                //getMenu().equals(that.getMenu());
     }
 
     //endregion

@@ -1,9 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Gite")
@@ -33,11 +31,11 @@ public class Gita implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
-    private List<PianoViaggi> pianiViaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
+    private Set<PianoViaggi> pianiViaggi = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gita")
-    private List<RegistroPresenze> registriPresenze;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
+    private Set<RegistroPresenze> registriPresenze = new HashSet<>();
 
     //endregion
 
@@ -84,17 +82,22 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public void addViaggio(PianoViaggi p){ pianiViaggi.add(p); }
+    public Set<PianoViaggi> getPianiViaggi()
+    {
+        Set<PianoViaggi> ritorno = new HashSet<>(pianiViaggi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeViaggio(PianoViaggi p){ pianiViaggi.remove(p); }
+    public Set<RegistroPresenze> getRegistriPresenze()
+    {
+        Set<RegistroPresenze> ritorno = new HashSet<>(registriPresenze);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void addRegistro(RegistroPresenze r){ registriPresenze.add(r); }
-
-    public void removeRegistro(RegistroPresenze r){ registriPresenze.remove(r); }
-
-    public List<PianoViaggi> getPianiViaggi() { return pianiViaggi; }
-
-    public List<RegistroPresenze> getRegistriPresenze() { return registriPresenze; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, Gita.class); }
 
     @Override
     public boolean equals(Object o) {

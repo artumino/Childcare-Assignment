@@ -1,8 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Gruppi")
@@ -18,19 +17,14 @@ public class Gruppo implements Serializable
     //endregion
 
     //region Relazioni
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH)
+    @OneToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Gruppo_Bambino",
-            joinColumns = { @JoinColumn(name = "Gruppo_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
-    )
-    private List<Bambino> bambini;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    private Set<Bambino> bambini  = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
-    private List<PianoViaggi> pianoviaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    private Set<PianoViaggi> pianoviaggi = new HashSet<>();
 
     //endregion
 
@@ -54,29 +48,30 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
-
-    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
-
-    public void addViaggio(PianoViaggi p){ pianoviaggi.add(p); }
-
-    public void removeViaggio(PianoViaggi p){ pianoviaggi.remove(p); }
-
-    public List<Bambino> getBambini() {
-        return bambini;
+    public Set<Bambino> getBambini()
+    {
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
     }
 
-    public List<PianoViaggi> getPianoviaggi() {
-        return pianoviaggi;
+    public Set<PianoViaggi> getPianoviaggi()
+    {
+        Set<PianoViaggi> ritorno = new HashSet<>(pianoviaggi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
     }
+
+    @Override
+    public int hashCode() { return Objects.hash(ID, Gruppo.class); }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Gruppo)) return false;
         Gruppo gruppo = (Gruppo) o;
-        return getID() == gruppo.getID() &&
-                getSorvergliante().equals(gruppo.getSorvergliante());
+        return getID() == gruppo.getID(); //&&
+                //getSorvergliante().equals(gruppo.getSorvergliante());
     }
 
     //endregion

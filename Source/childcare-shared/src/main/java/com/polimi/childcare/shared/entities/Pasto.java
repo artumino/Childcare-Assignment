@@ -1,8 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Pasti")
@@ -24,24 +23,24 @@ public class Pasto implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Fornitore_FK") }
     )
-    private List<Fornitore> fornitori;
+    private Set<Fornitore> fornitori = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
             inverseJoinColumns = { @JoinColumn(name = "ReazioneAvversa_FK") }
     )
-    private List<ReazioneAvversa> reazione;
+    private Set<ReazioneAvversa> reazione = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
-    private List<QuantitaPasto> quantitaPasto;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pasto")
+    private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
 
     //endregion
 
@@ -75,23 +74,37 @@ public class Pasto implements Serializable
         Descrizione = descrizione;
     }
 
-    public void addQuantitaPasto(QuantitaPasto q){ quantitaPasto.add(q); }
+    public void addFornitore(Fornitore f) { fornitori.add(f); }
 
-    public void removeQuantitaPasto(QuantitaPasto q){ quantitaPasto.remove(q); }
+    public void removeFornitore(Fornitore f) { fornitori.remove(f); }
 
-    public void addReazione(ReazioneAvversa r){ reazione.add(r); }
+    public void addReazione(ReazioneAvversa r) { reazione.add(r); }
 
-    public void removeReazione(ReazioneAvversa r){ reazione.remove(r); }
+    public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public void addFornitori(Fornitore f){ fornitori.add(f); }
+    public Set<Fornitore> getFornitori()
+    {
+        Set<Fornitore> ritorno = new HashSet<>(fornitori);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeFornitori(Fornitore f){ fornitori.remove(f); }
+    public Set<ReazioneAvversa> getReazione()
+    {
+        Set<ReazioneAvversa> ritorno = new HashSet<>(reazione);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public List<Fornitore> getFornitori() { return fornitori; }
+    public Set<QuantitaPasto> getQuantitaPasto()
+    {
+        Set<QuantitaPasto> ritorno = new HashSet<>(quantitaPasto);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public List<ReazioneAvversa> getReazione() { return reazione; }
-
-    public List<QuantitaPasto> getQuantitaPasto() { return quantitaPasto; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, Pasto.class); }
 
     @Override
     public boolean equals(Object o) {

@@ -1,8 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @DiscriminatorValue(value = "1")
@@ -10,8 +9,8 @@ public class Pediatra extends Contatto
 {
     //region Relazioni
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pediatra")
-    private List<Bambino> bambini;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "pediatra")
+    private Set<Bambino> bambini = new HashSet<>();
 
     //endregion
 
@@ -23,8 +22,12 @@ public class Pediatra extends Contatto
         super(descrizione, nome, cognome, indirizzo);
     }
 
-    @Override
-    public List<Bambino> getBambini() { return bambini; }
+    public Set<Bambino> getBambiniCurati()
+    {
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
     //endregion
 }

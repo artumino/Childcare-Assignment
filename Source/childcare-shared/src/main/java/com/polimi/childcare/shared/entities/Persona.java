@@ -1,9 +1,9 @@
 package com.polimi.childcare.shared.entities;
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "Persone")
@@ -49,16 +49,16 @@ public abstract class Persona implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
-    private List<Diagnosi> diagnosi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "persona")
+    private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Persona_Rubrica",
             joinColumns = { @JoinColumn(name = "Persona_FK") },
             inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
     )
-    private List<NumeroTelefono> telefoni;
+    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -162,17 +162,26 @@ public abstract class Persona implements Serializable
         Sesso = sesso;
     }
 
-    public void addDiagnosi(Diagnosi d) { diagnosi.add(d); }   //Poi va fatto update del Database
+    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }
 
-    public void removeDiagnosi(Diagnosi d) {diagnosi.remove(d);}   //Poi va fatto update del Database
+    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
 
-    public void addNumero(NumeroTelefono n) { telefoni.add(n); }  //Poi va fatto update del Database
+    public Set<Diagnosi> getDiagnosi()
+    {
+        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }  //Poi va fatto update del Database
+    public Set<NumeroTelefono> getTelefoni()
+    {
+        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public List<Diagnosi> getDiagnosi() { return diagnosi; }
-
-    public List<NumeroTelefono> getTelefoni() { return telefoni; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, Persona.class); }
 
     @Override
     public boolean equals(Object o) {

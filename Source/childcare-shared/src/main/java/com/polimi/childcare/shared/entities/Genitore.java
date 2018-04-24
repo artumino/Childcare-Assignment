@@ -1,8 +1,11 @@
 package com.polimi.childcare.shared.entities;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Genitori")
@@ -11,13 +14,8 @@ public class Genitore extends Persona
 {
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "TutoriLegali",
-            joinColumns = { @JoinColumn(name = "Genitore_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Bambino_FK") }
-    )
-    private List<Bambino> bambini;
+    @ManyToMany(mappedBy = "genitori", fetch = FetchType.EAGER) //Ora va :D
+    private Set<Bambino> bambini = new HashSet<>(); //Non fa nulla
 
     //endregion
 
@@ -29,11 +27,12 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
-    public void addBambino(Bambino b) { bambini.add(b); }   //Poi va fatto update del Database
-
-    public void removeBambino(Bambino b) {bambini.remove(b);}   //Poi va fatto update del Database
-
-    public List<Bambino> getBambini() { return bambini; }
+    public Set<Bambino> getBambini()
+    {
+        Set<Bambino> ritorno = new HashSet<>(bambini);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
     //endregion
 }

@@ -1,8 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "MezziDiTrasporto")
@@ -34,8 +33,8 @@ public class MezzoDiTrasporto implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
-    private List<PianoViaggi> pianoViaggi;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "mezzo")
+    private Set<PianoViaggi> pianoViaggi = new HashSet<>();
 
     //endregion
 
@@ -95,11 +94,15 @@ public class MezzoDiTrasporto implements Serializable
         this.fornitore = fornitore;
     }
 
-    public void addViaggio(PianoViaggi p){ pianoViaggi.add(p); }
+    public Set<PianoViaggi> getPianoViaggi()
+    {
+        Set<PianoViaggi> ritorno = new HashSet<>(pianoViaggi);
+        Collections.unmodifiableSet(ritorno);
+        return ritorno;
+    }
 
-    public void removeViaggio(PianoViaggi p){ pianoViaggi.remove(p); }
-
-    public List<PianoViaggi> getPianoViaggi() { return pianoViaggi; }
+    @Override
+    public int hashCode() { return Objects.hash(ID, MezzoDiTrasporto.class); }
 
     @Override
     public boolean equals(Object o) {
@@ -110,8 +113,8 @@ public class MezzoDiTrasporto implements Serializable
                 getCapienza() == that.getCapienza() &&
                 getNumeroIdentificativo() == that.getNumeroIdentificativo() &&
                 getCostoOrario() == that.getCostoOrario() &&
-                getTarga().equals(that.getTarga()) &&
-                getFornitore().equals(that.getFornitore());
+                getTarga().equals(that.getTarga());
+                //getFornitore().equals(that.getFornitore());
     }
 
     //endregion
