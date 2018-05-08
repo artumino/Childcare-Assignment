@@ -1,4 +1,6 @@
-package com.polimi.childcare.shared.networking.responses;
+package com.polimi.childcare.shared.networking.responses.lists;
+
+import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.io.Serializable;
 import java.util.ArrayList;

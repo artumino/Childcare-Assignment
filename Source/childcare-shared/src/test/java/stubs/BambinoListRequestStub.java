@@ -2,11 +2,8 @@ package stubs;
 
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
-import com.polimi.childcare.shared.networking.responses.ListResponse;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

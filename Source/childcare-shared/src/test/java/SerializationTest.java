@@ -1,6 +1,5 @@
-import com.polimi.childcare.shared.networking.responses.ListResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import com.polimi.childcare.shared.networking.responses.SerializableListResponse;
+import com.polimi.childcare.shared.networking.responses.lists.SerializableListResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 import org.junit.Test;
 import org.junit.Assert;
