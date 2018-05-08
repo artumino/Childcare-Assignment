@@ -39,4 +39,10 @@ public class RMIInterfaceClient implements IClientNetworkInterface
             return serverInterface.messageReceived(request);
         return null;
     }
+
+    @Override
+    public String toString()
+    {
+        return "RMI";
+    }
 }

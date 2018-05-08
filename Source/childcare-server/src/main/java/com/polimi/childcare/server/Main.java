@@ -8,6 +8,7 @@ import com.polimi.childcare.server.networking.IServerNetworkInterface;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main
 {
@@ -35,8 +36,20 @@ public class Main
         System.out.println("Setting up server...");
         DatabaseSession.getInstance().setUp();
         System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
-        DatabaseSession.getInstance().close();
 
+        String command;
+        Scanner scanner = new Scanner(System.in);
+        while((command = scanner.nextLine()) != null && !command.equals("quit"))
+        {
+            //DO NOTHING
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        DatabaseSession.getInstance().close();
         networkManager.stop();
     }
 }
