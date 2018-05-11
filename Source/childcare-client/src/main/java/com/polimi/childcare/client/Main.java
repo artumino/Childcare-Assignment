@@ -1,5 +1,6 @@
 package com.polimi.childcare.client;
 
+import com.polimi.childcare.client.networking.ClientNetworkManager;
 import com.polimi.childcare.client.ui.controllers.StartingBoxController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,14 @@ public class Main extends Application
         //Platform.exit();
     }
 
+    @Override
+    public void stop() throws Exception
+    {
+        //Ferma network manager
+        ClientNetworkManager.getInstance().Dispose();
+
+        super.stop();
+    }
 
     public static void main(String[] args)
     {

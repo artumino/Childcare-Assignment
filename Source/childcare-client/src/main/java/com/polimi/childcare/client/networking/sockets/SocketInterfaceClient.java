@@ -21,6 +21,11 @@ public class SocketInterfaceClient implements IClientNetworkInterface
     private BufferedWriter osWriter;
 
     @Override
+    public boolean isConnected() {
+        return clientSocket != null && clientSocket.isConnected();
+    }
+
+    @Override
     public void connect(String address, int port) throws IOException
     {
         this.clientSocket = new Socket();

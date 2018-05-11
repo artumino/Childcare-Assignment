@@ -18,7 +18,7 @@ public class NetworkOperation
 
     /**
      * Crea una nuova richiesta di operazione di rete, pronta per essere sottomessa alla lista delle operazioni di rete
-     * @param request Richiesta da effettuare al server
+     * @param request Richiesta da effettuare al server, NullPointerExcepion in caso request sia null
      * @param callback Callback chiamato una volta ricevuta la risposta
      * @param runOnUiThread true per eseguire tutto il callback sul thread di JavaFX, false esegue direttamente il callback
      *                      nel thread di rete (il programmatore dovrà preoccuparsi di gestire le operazioni sull'interfaccia grafica opportunamente)
@@ -40,6 +40,9 @@ public class NetworkOperation
 
     private void initialize(BaseRequest request, INetworkOperationCallback callback, boolean runOnUiThread)
     {
+        if(request == null)
+            throw new NullPointerException();
+
         this.request = request;
         this.callback = callback;
         this.runOnUiThread = runOnUiThread;
@@ -73,5 +76,13 @@ public class NetworkOperation
         {
             this.callback = callback;
         }
+    }
+
+    /**
+     * @return Richiesta da effettuare al server
+     */
+    public BaseRequest getRequest()
+    {
+        return request;
     }
 }

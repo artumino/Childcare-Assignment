@@ -65,25 +65,22 @@ public class StartingBoxController extends BaseController
 
             flowPane.getChildren().remove(lblConnectionError);
 
-            try
-            {
-                //Prova a connettersi con l'interfaccia
-                if(ClientNetworkManager.getInstance().GetCurrentInterface() instanceof SocketInterfaceClient)
-                    ClientNetworkManager.getInstance().GetCurrentInterface().connect("localhost", 55403);
-                else
-                    ClientNetworkManager.getInstance().GetCurrentInterface().connect("localhost", 55404);
+            boolean result;
 
+            //Prova a connettersi con l'interfaccia
+            if(cmbConnectionType.getValue() instanceof SocketInterfaceClient)
+               result = ClientNetworkManager.getInstance().tryConnect("localhost", 55403);
+            else
+               result = ClientNetworkManager.getInstance().tryConnect("localhost", 55404);
+
+            if(result)
                 this.linkedStage.close();
-
-
-            } catch(IOException ex)
+            else
             {
-                ex.printStackTrace();
                 //Fallita connessione
                 if(!flowPane.getChildren().contains(lblConnectionError))
                     flowPane.getChildren().add(lblConnectionError);
             }
-
         });
     }
 }
