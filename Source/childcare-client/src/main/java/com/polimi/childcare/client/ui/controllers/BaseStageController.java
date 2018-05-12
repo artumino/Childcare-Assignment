@@ -17,7 +17,7 @@ public abstract class BaseStageController implements IStageController
     @Override
     public Scene setupScene(Stage stage, Parent parent)
     {
-        Scene scene = new Scene(parent, this.getControllerHeight(), this.getControllerWidth());
+        Scene scene = new Scene(parent, this.getControllerWidth(), this.getControllerHeight());
         this.linkedStage.setScene(scene);
         return scene;
     }
@@ -29,6 +29,7 @@ public abstract class BaseStageController implements IStageController
         this.linkedStage.setTitle(this.getTitle());
         this.linkedStage.setResizable(this.isResizable());
         this.linkedStage.show();
+
         return setupScene(stage, parent);
     }
 }

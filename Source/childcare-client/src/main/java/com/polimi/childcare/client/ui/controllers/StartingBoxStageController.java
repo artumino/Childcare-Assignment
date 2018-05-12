@@ -43,7 +43,7 @@ public class StartingBoxStageController extends BaseStageController
     @Override
     //Ritorna la dimensione impostata da SceneBuilder oppure quella di default
     public double getControllerWidth() {
-        return paneRoot != null ? paneRoot.getPrefWidth() : super.getControllerHeight();
+        return paneRoot != null ? paneRoot.getPrefWidth() : super.getControllerWidth();
     }
 
     @FXML
@@ -81,7 +81,7 @@ public class StartingBoxStageController extends BaseStageController
                     flowPane.getChildren().add(lblConnectionError);
 
                 try {
-                    StageUtils.showGenericStage("/fxml/MainStage.fxml");
+                    StageUtils.showGenericStage(this.getClass().getClassLoader().getResource("fxml/MainStage.fxml"));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

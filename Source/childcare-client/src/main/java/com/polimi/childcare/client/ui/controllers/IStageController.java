@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 //Imposta la propria scene, imposta il proprio stage, mostra lo stage
-public interface IStageController extends ISelfController
+public interface IStageController extends ISceneController
 {
     Scene setupStageAndShow(Stage stage, Parent parent);
 }
