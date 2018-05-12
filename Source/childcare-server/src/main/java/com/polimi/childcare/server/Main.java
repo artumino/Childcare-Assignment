@@ -47,11 +47,11 @@ public class Main
         while((command = scanner.nextLine()) != null && !command.equals("quit"))
         {
             //DO NOTHING
-            try {
+            /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
         }
 
         DatabaseSession.getInstance().close();

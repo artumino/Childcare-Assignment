@@ -73,18 +73,20 @@ public class StartingBoxStageController extends BaseStageController
                result = ClientNetworkManager.getInstance().tryConnect("localhost", 55404);
 
             if(result)
+            {
+                try
+                {
+                    StageUtils.showGenericStage(this.getClass().getClassLoader().getResource("fxml/MainStage.fxml"));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 this.linkedStage.close();
+            }
             else
             {
                 //Fallita connessione
                 if(!flowPane.getChildren().contains(lblConnectionError))
                     flowPane.getChildren().add(lblConnectionError);
-
-                try {
-                    StageUtils.showGenericStage(this.getClass().getClassLoader().getResource("fxml/MainStage.fxml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
                 this.linkedStage.close();
             }
