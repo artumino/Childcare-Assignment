@@ -33,7 +33,7 @@ apply plugin: 'javafx-gradle-plugin'
 jfx {
     // minimal requirement for jfxJar-task
     mainClass = 'com.polimi.childcare.client.Main'
-
+    runJavaParameter = '-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005 -jar project-jfx.jar'
     // minimal requirement for jfxNative-task
     vendor = 'Polimi'
 }

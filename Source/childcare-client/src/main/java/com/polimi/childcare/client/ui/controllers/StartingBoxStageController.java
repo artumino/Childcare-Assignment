@@ -5,6 +5,7 @@ import com.polimi.childcare.client.networking.ClientNetworkManager;
 import com.polimi.childcare.client.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
 import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
+import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.sun.javafx.collections.ObservableListWrapper;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,14 +13,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class StartingBoxController extends BaseController
+public class StartingBoxStageController extends BaseStageController
 {
-    private Stage linkedStage;
     @FXML private StackPane paneRoot;
     @FXML private JFXButton btnConnect;
     @FXML private ComboBox<IClientNetworkInterface> cmbConnectionType;
@@ -80,6 +79,14 @@ public class StartingBoxController extends BaseController
                 //Fallita connessione
                 if(!flowPane.getChildren().contains(lblConnectionError))
                     flowPane.getChildren().add(lblConnectionError);
+
+                try {
+                    StageUtils.showGenericStage("MainStage.fxml");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                this.linkedStage.close();
             }
         });
     }

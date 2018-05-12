@@ -4,9 +4,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public abstract class BaseController implements ISelfController
+public abstract class BaseStageController implements IStageController
 {
-    private Stage linkedStage;
+    protected Stage linkedStage;
 
     //Class constant properties
     public abstract String getTitle();
@@ -15,13 +15,20 @@ public abstract class BaseController implements ISelfController
     public boolean isResizable() { return true; }
 
     @Override
-    public Scene setup(Stage stage, Parent parent)
+    public Scene setupScene(Stage stage, Parent parent)
     {
         Scene scene = new Scene(parent, this.getControllerHeight(), this.getControllerWidth());
+        this.linkedStage.setScene(scene);
+        return scene;
+    }
+
+    @Override
+    public Scene setupStageAndShow(Stage stage, Parent parent)
+    {
         this.linkedStage = stage;
         this.linkedStage.setTitle(this.getTitle());
         this.linkedStage.setResizable(this.isResizable());
-        this.linkedStage.setScene(scene);
-        return scene;
+        this.linkedStage.show();
+        return setupScene(stage, parent);
     }
 }
