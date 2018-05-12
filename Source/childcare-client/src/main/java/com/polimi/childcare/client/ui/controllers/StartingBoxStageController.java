@@ -81,7 +81,7 @@ public class StartingBoxStageController extends BaseStageController
                     flowPane.getChildren().add(lblConnectionError);
 
                 try {
-                    StageUtils.showGenericStage("MainStage.fxml");
+                    StageUtils.showGenericStage("/fxml/MainStage.fxml");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
