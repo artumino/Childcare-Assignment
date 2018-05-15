@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="paneRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.StartingBoxStageController">
+   <children>
+      <FlowPane fx:id="flowPane" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="200.0" StackPane.alignment="CENTER">
+         <children>
+            <JFXButton fx:id="btnConnect" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefHeight="92.0" prefWidth="222.0" ripplerFill="#b0b0b0" text="Connect">
+               <FlowPane.margin>
+                  <Insets bottom="25.0" />
+               </FlowPane.margin>
+            </JFXButton>
+            <ComboBox fx:id="cmbConnectionType" prefHeight="26.0" prefWidth="201.0" promptText="ConnectionTest">
+               <opaqueInsets>
+                  <Insets bottom="25.0" />
+               </opaqueInsets>
+               <FlowPane.margin>
+                  <Insets bottom="25.0" />
+               </FlowPane.margin>
+            </ComboBox>
+         </children>
+         <StackPane.margin>
+            <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
+         </StackPane.margin>
+      </FlowPane>
+   </children>
+</StackPane>

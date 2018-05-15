@@ -14,6 +14,12 @@ public class RMIInterfaceClient implements IClientNetworkInterface
 {
     private IRMIServer serverInterface;
 
+    //Non è una vero e proprio indicatore di connessione (dato che RMI è session-less)
+    @Override
+    public boolean isConnected() {
+        return serverInterface != null;
+    }
+
     @Override
     public void connect(String address, int port) throws IOException
     {
@@ -36,7 +42,24 @@ public class RMIInterfaceClient implements IClientNetworkInterface
     public BaseResponse sendMessage(BaseRequest request)
     {
         if(serverInterface != null)
-            return serverInterface.messageReceived(request);
+        {
+            try
+            {
+                BaseResponse response = serverInterface.messageReceived(request);
+                return response;
+            }
+            catch (Exception ex)
+            {
+                ex.printStackTrace();
+                this.close();
+            }
+        }
         return null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "RMI";
     }
 }

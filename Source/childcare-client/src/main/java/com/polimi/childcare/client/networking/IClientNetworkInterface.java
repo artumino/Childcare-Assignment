@@ -8,6 +8,7 @@ import java.io.IOException;
 //Interfaccia per l'astrazione dei componenti di rete
 public interface IClientNetworkInterface
 {
+    boolean isConnected();
     void connect(String address, int port) throws IOException;
     void close();
 

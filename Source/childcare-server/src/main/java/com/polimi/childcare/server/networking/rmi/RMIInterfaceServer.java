@@ -29,6 +29,10 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
         this.address = address;
         this.port = port;
 
+        //if (System.getSecurityManager() == null) {
+        //    System.setSecurityManager(new RMISecurityManager());
+        //}
+
         try {
             //Registra server RMI
             this.boundRegistry = LocateRegistry.createRegistry(port);
@@ -47,7 +51,9 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
             {
                 e1.printStackTrace();
                 try {
-                    this.boundRegistry.rebind(IRMIServer.ENDPOINT, this);
+                    IRMIServer irmiServer = this;
+                    IRMIServer stub = (IRMIServer)UnicastRemoteObject.exportObject(irmiServer, 0);
+                    this.boundRegistry.rebind(IRMIServer.ENDPOINT, stub);
                 }
                 catch (Exception ex)
                 {
