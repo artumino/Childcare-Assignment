@@ -1,27 +1,43 @@
 package com.polimi.childcare.client.ui.controllers;
 
-import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public abstract class UndecoratedDraggableStageController  extends BaseStageController
 {
+    /**
+     * Enum che fornisce la maschera per la direzione del resize
+     */
+    public enum EResizeDirection
+    {
+        Top(1), Bottom(2), Left(4), Right(8);
+
+        int direction;
+        EResizeDirection(int direction)
+        {
+            this.direction = direction;
+        }
+
+        public int getDirection() {
+            return direction;
+        }
+    }
+
     //Elementi di interazione con lo stage
     protected abstract Node getWindowDragParent();
+    protected abstract Node getMinimizeButton();
+    protected abstract Node getMaximizeButton();
+    protected abstract Node getCloseButton();
+    protected abstract Node getRootNode();
 
-    //ID Default
-    @FXML private Node btnClose;
-    @FXML private Node btnMinimize;
-    @FXML private Node btnMaximize;
-
-    //Variabili evento di drag/posizionamento nella finestra in caso di maximized
+    //Variabili evento di drag/posizionamento/ridimensionamento nella finestra in caso di maximized
     private double xOffset;
     private double yOffset;
 
@@ -29,6 +45,9 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
     private boolean isMaximized;
     private double minimizedWidth;
     private double minimizedHeight;
+
+    //Resize
+    private int resizeDirectionMask = 0xffff; //Di default abilitata in tutte le direzioni
 
     @Override
     public Scene setupStageAndShow(Stage stage, Parent parent)
@@ -44,39 +63,50 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
         if(getWindowDragParent() != null)
         {
             getWindowDragParent().setOnMousePressed((event) -> {
-                if(!isMaximized)
+                if(event.isPrimaryButtonDown())
                 {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
+                    if (!isMaximized) {
+                        xOffset = event.getSceneX();
+                        yOffset = event.getSceneY();
+                    }
                 }
             });
 
             getWindowDragParent().setOnMouseDragged((event) -> {
-                if(!isMaximized)
+
+                if(event.isPrimaryButtonDown())
                 {
-                    this.linkedStage.setX(event.getScreenX() - xOffset);
-                    this.linkedStage.setY(event.getScreenY() - yOffset);
-                }
-                else
-                {
-                    xOffset = event.getSceneX();
-                    yOffset = event.getSceneY();
-                    this.setMaximized(false);
+                    if(!isMaximized)
+                    {
+                        this.linkedStage.setX(event.getScreenX() - xOffset);
+                        this.linkedStage.setY(event.getScreenY() - yOffset);
+                    }
+                    else
+                    {
+                        xOffset = event.getSceneX();
+                        yOffset = event.getSceneY();
+                        this.setMaximized(false);
+                    }
                 }
             });
         }
 
-        if(btnClose != null)
-            btnClose.setOnMouseClicked(mouseEvent ->
+        if(getCloseButton() != null)
+            getCloseButton().setOnMouseClicked(mouseEvent ->
                     this.linkedStage.close());
 
-        if(btnMaximize != null)
-            btnMaximize.setOnMouseClicked(mouseEvent ->
+        if(getMaximizeButton() != null)
+            getMaximizeButton().setOnMouseClicked(mouseEvent ->
                     this.setMaximized(!this.isMaximized()));
 
-        if(btnMinimize != null)
-            btnMinimize.setOnMouseClicked(mouseEvent ->
+        if(getMinimizeButton() != null)
+            getMinimizeButton().setOnMouseClicked(mouseEvent ->
                     this.linkedStage.setIconified(true));
+
+
+        //Gestisce gli eventi di resize
+        //if(getRootNode() != null)
+        //    getRootNode().setOnMouseDragged(this::OnResizeEvent);
     }
 
     public boolean isMaximized()
@@ -114,4 +144,47 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
         this.linkedStage.setMaximized(maximized);
         this.isMaximized = maximized;
     }
+
+    public void setResizeDirection(int direction)
+    {
+        this.resizeDirectionMask = direction;
+    }
+
+    public boolean canResizeInDirection(EResizeDirection direction)
+    {
+        return (this.resizeDirectionMask & direction.getDirection()) != 0x0000;
+    }
+
+    private void OnResizeEvent(MouseEvent mouseEvent)
+    {
+        if (mouseEvent.isPrimaryButtonDown())
+        {
+            double width = linkedStage.getWidth();
+            double height = linkedStage.getHeight();
+
+            // Horizontal resize.
+            if (canResizeInDirection(EResizeDirection.Left)) {
+                if ((width > linkedStage.getMinWidth()) || (mouseEvent.getX() < 0)) {
+                    linkedStage.setWidth(width - mouseEvent.getScreenX() + linkedStage.getX());
+                    linkedStage.setX(mouseEvent.getScreenX());
+                }
+            } else if (canResizeInDirection(EResizeDirection.Right)
+                    && ((width > linkedStage.getMinWidth()) || (mouseEvent.getX() > 0))) {
+                linkedStage.setWidth(width + mouseEvent.getX());
+            }
+
+            // Vertical resize.
+            if (canResizeInDirection(EResizeDirection.Top)) {
+                if ((height > linkedStage.getMinHeight()) || (mouseEvent.getY() < 0)) {
+                    linkedStage.setHeight(height - mouseEvent.getScreenY() + linkedStage.getY());
+                    linkedStage.setY(mouseEvent.getScreenY());
+                }
+            } else if (canResizeInDirection(EResizeDirection.Bottom)) {
+                if ((height > linkedStage.getMinHeight()) || (mouseEvent.getY() > 0)) {
+                    linkedStage.setHeight(height + mouseEvent.getY());
+                }
+            }
+        }
+    }
+
 }

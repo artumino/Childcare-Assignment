@@ -8,8 +8,18 @@ public abstract class BaseStageController implements IStageController
 {
     protected Stage linkedStage;
 
+    private String title;
+
     //Class constant properties
-    public abstract String getTitle();
+    public String getTitle() { return title; }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+        if(this.linkedStage != null)
+            this.linkedStage.setTitle(title);
+    }
+
     public double getControllerWidth() { return 100; }
     public double getControllerHeight() { return 100; }
     public boolean isResizable() { return true; }
