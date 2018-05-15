@@ -2,10 +2,12 @@ package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.handlers.BambiniRequestHandler;
+import com.polimi.childcare.server.handlers.FilteredBambiniRequestHandler;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
+import com.polimi.childcare.shared.networking.requests.BambiniRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 
 import java.io.IOException;
@@ -40,7 +42,8 @@ public class Main
         System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
 
         //Aggiunge handler al network manager
-        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new BambiniRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(BambiniRequest.class, new BambiniRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);
