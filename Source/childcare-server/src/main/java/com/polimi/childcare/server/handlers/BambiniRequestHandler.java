@@ -15,9 +15,9 @@ public class BambiniRequestHandler implements IRequestHandler<BambiniRequest>
     @Override
     public BaseResponse processRequest(BambiniRequest request)
     {
-        List<Bambino> bambini;
+        List<Bambino> bambini = new ArrayList<>();
         DatabaseSession.getInstance().execute(session -> {
-            bambini =  session.query(Bambino.class).toList();
+            bambini.addAll(session.query(Bambino.class).toList());
             return true;
         });
 
