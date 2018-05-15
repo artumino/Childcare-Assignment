@@ -25,7 +25,7 @@ public abstract class BaseStageController implements IStageController
     public boolean isResizable() { return true; }
 
     @Override
-    public Scene setupScene(Stage stage, Parent parent)
+    public Scene setupScene(Parent parent)
     {
         Scene scene = new Scene(parent, this.getControllerWidth(), this.getControllerHeight());
         this.linkedStage.setScene(scene);
@@ -40,6 +40,6 @@ public abstract class BaseStageController implements IStageController
         this.linkedStage.setResizable(this.isResizable());
         this.linkedStage.show();
 
-        return setupScene(stage, parent);
+        return setupScene(parent);
     }
 }

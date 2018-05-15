@@ -131,7 +131,7 @@ public class ClientNetworkManager implements Runnable
                     operation = networkOperationQueue.takeLast();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return;
+                    continue;
                 }
 
                 //null in caso di errori di connessione
@@ -144,7 +144,7 @@ public class ClientNetworkManager implements Runnable
                         networkOperationQueue.putLast(operation);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        return;
+                        continue;
                     }
                 }
                 else

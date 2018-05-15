@@ -3,6 +3,7 @@ package com.polimi.childcare.client.ui.controllers;
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
@@ -16,6 +17,8 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
     @FXML private ImageView btnClose;
     @FXML private ImageView btnMinimize;
     @FXML private ImageView btnMaximize;
+
+    @FXML private Label lblTitle;
 
     @Override public String getTitle()
     {
@@ -59,5 +62,12 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
             node.setOnMouseEntered(mouseEvent -> EffectsUtils.AddGlow(node, 2));
             node.setOnMouseExited(mouseEvent -> EffectsUtils.RemoveGlow(node));
         }
+    }
+
+    @Override
+    public void requestSetTitle(String newTitle)
+    {
+        if(lblTitle != null)
+            lblTitle.setText(newTitle);
     }
 }

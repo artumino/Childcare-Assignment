@@ -2,12 +2,10 @@ package com.polimi.childcare.client.ui.controllers;
 
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
-import com.polimi.childcare.client.ui.utils.StageUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.SubScene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -32,6 +30,8 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
     @FXML private Node btnGite;
     @FXML private Node btnMensa;
 
+    @FXML private Label lblTitle;
+
     @FXML private Pane contentPane;
 
     @Override protected Node getWindowDragParent() {
@@ -43,7 +43,7 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
     @Override protected Node getRootNode() { return this.rootStackPane; }
 
     //Mappa usata per associare ad ogni bottone una ed una sola scene istanziata all'apertura dello stage
-    private HashMap<Node,Parent> menuItemsMap;
+    private HashMap<Node,ISubSceneController> menuItemsMap;
     private Node currentSelectedMenuItem;
 
     @Override
@@ -64,10 +64,10 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
         //Crea Menu
         menuItemsMap = new HashMap<>(4);
         try {
-            menuItemsMap.put(btnHome, SceneUtils.loadScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnAnagrafica, SceneUtils.loadScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnGite, SceneUtils.loadScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnMensa, SceneUtils.loadScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnHome, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnGite, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnMensa, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -112,20 +112,34 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
     {
         if(this.contentPane != null && menuItemsMap.containsKey(item))
         {
-            //TODO: Notifica detached
             //Rimuove tutti i bambini
             this.contentPane.getChildren().clear();
 
             if(this.currentSelectedMenuItem != null)
+            {
+                menuItemsMap.get(item).detached();
                 EffectsUtils.RemoveGlow(this.currentSelectedMenuItem);
+            }
 
             //Imposta la scena corretta come contanuto
-            this.contentPane.getChildren().add(menuItemsMap.get(item));
+            this.contentPane.getChildren().add(menuItemsMap.get(item).getRoot());
 
             //Aggiunge l'effetto glow all'oggetto selezionato
             this.currentSelectedMenuItem = item;
             EffectsUtils.AddGlow(item, 2);
-            //TODO: Notifica Attached
+            menuItemsMap.get(item).attached(this);
+        }
+    }
+
+    @Override
+    public void requestSetTitle(String newTitle)
+    {
+        if(lblTitle != null)
+        {
+            if(newTitle == null)
+                lblTitle.setText("ChildCare");
+            else
+                lblTitle.setText("ChildCare - " + newTitle);
         }
     }
 }

@@ -7,5 +7,5 @@ import javafx.stage.Stage;
 //Container in grado di impostare la propria Scene tramite il metodo setupScene()
 public interface ISceneController
 {
-    Scene setupScene(Stage stage, Parent parent);
+    Scene setupScene(Parent parent);
 }

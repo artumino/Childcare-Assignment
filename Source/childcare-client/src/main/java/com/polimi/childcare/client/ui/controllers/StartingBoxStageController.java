@@ -92,4 +92,10 @@ public class StartingBoxStageController extends BaseStageController
             }
         });
     }
+
+    @Override
+    public void requestSetTitle(String newTitle)
+    {
+        //IGNORA RICHIESTA
+    }
 }
