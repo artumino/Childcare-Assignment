@@ -16,7 +16,7 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
     @Override
     public BaseResponse processRequest(FilteredBambiniRequest request)
     {
-        ArrayList<Bambino> rs = new ArrayList<Bambino>();
+        ArrayList<Bambino> rs = new ArrayList();
         ListBambiniResponse risposta = new ListBambiniResponse(200, rs);
 
         /*switch(request.getFilters())
