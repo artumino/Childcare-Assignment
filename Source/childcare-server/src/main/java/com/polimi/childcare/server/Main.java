@@ -1,13 +1,15 @@
 package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.handlers.BambiniRequestHandler;
-import com.polimi.childcare.server.handlers.FilteredBambiniRequestHandler;
+import com.polimi.childcare.server.handlers.*;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
+import com.polimi.childcare.shared.networking.requests.AddettiRequest;
 import com.polimi.childcare.shared.networking.requests.BambiniRequest;
+import com.polimi.childcare.shared.networking.requests.PastiRequest;
+import com.polimi.childcare.shared.networking.requests.PersonaRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 
 import java.io.IOException;
@@ -44,6 +46,9 @@ public class Main
         //Aggiunge handler al network manager
         NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
         NetworkManager.getInstance().addRequestHandler(BambiniRequest.class, new BambiniRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(PersonaRequest.class, new PersonaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(PastiRequest.class, new PastiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(AddettiRequest.class, new AddettiRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);

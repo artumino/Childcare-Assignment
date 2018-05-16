@@ -7,9 +7,7 @@ import org.junit.Test;
 import rules.DatabaseSessionRule;
 
 import java.time.Instant;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class InsertTest
 {
@@ -29,6 +27,7 @@ public class InsertTest
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", Date.from(Instant.now()), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
         NumeroTelefono numero = new NumeroTelefono("3333");
+        addetto1.addTelefono(numero);
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
 
         bambino1.addGenitore(genitore1);
@@ -89,6 +88,13 @@ public class InsertTest
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.equals(addetto1));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.getBambini().contains(bambinoget));
         Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().contains(genitoreget));
+
+        List<Addetto> addetti = new ArrayList<>();
+
+        DatabaseSession.getInstance().execute(session -> {
+            addetti.addAll(session.query(Addetto.class).toList());
+            return true;
+        });
 
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
