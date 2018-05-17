@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public abstract class BaseStageController implements IStageController
 {
     protected Stage linkedStage;
-
+    
     private String title;
 
     //Class constant properties
@@ -19,7 +19,7 @@ public abstract class BaseStageController implements IStageController
         if(this.linkedStage != null)
             this.linkedStage.setTitle(title);
     }
-
+    
     public double getControllerWidth() { return 100; }
     public double getControllerHeight() { return 100; }
     public boolean isResizable() { return true; }
