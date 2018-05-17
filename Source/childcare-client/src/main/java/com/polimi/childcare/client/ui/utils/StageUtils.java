@@ -1,6 +1,7 @@
 package com.polimi.childcare.client.ui.utils;
 
 import com.polimi.childcare.client.ui.controllers.BaseStageController;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -24,6 +25,19 @@ public class StageUtils
     {
         Stage newStage = new Stage();
         return showGenericStage(newStage, fxmlPath);
+    }
+
+    public static ChildcareBaseStageController showChildcareStage(Stage stage, URL fxmlContentPath) throws IOException
+    {
+        ChildcareBaseStageController controller = showGenericStage(stage, StageUtils.class.getClassLoader().getResource("fxml/ChildcareBaseStage.fxml"));
+        controller.setContentScene(fxmlContentPath);
+        return controller;
+    }
+
+    public static ChildcareBaseStageController showChildcareStage(URL fxmlContentPath) throws IOException
+    {
+        Stage newStage = new Stage();
+        return showChildcareStage(newStage, fxmlContentPath);
     }
 
     public static BaseStageController showStage(URL fxmlPath) throws IOException

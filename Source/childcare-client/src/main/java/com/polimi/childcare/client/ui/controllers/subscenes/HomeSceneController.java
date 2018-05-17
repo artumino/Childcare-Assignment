@@ -19,6 +19,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.util.Callback;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -29,6 +32,8 @@ import java.util.HashMap;
 public class HomeSceneController implements ISubSceneController
 {
     private Parent root;
+
+    @FXML private AnchorPane rootPane;
     @FXML private TableView<Persona> tableList;
 
     //Lista persone da visualizzare
@@ -58,6 +63,7 @@ public class HomeSceneController implements ISubSceneController
         if(tableList != null) {
             tableList.getColumns().addAll(name, surname, fiscalCode, dateOfBirth, id);
             tableList.setItems(listaPersone);
+            //tableList.setColumnResizePolicy(p -> true);
         }
     }
 
@@ -101,6 +107,11 @@ public class HomeSceneController implements ISubSceneController
     public void detached()
     {
         //DO NOTHING...
+    }
+
+    @Override
+    public Region getSceneRegion() {
+        return this.rootPane;
     }
 
     @Override

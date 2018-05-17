@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="845.0" minWidth="1302.0" prefHeight="845.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.MainMenuStageController">
+<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="845.0" minWidth="1302.0" prefHeight="845.0" prefWidth="1302.0" stylesheets="@stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.MainMenuStageController">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
@@ -126,7 +126,7 @@
                   </HBox>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="contentPane" prefHeight="779.0" prefWidth="1302.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
+            <AnchorPane fx:id="contentPane" prefHeight="779.0" prefWidth="1302.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
          </children>
       </AnchorPane>
    </children>

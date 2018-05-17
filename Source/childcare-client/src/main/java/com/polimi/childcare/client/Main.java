@@ -13,8 +13,7 @@ public class Main extends Application
     @Override
     public void start(Stage primaryStage) throws Exception
     {
-        StageUtils.showGenericStage(primaryStage, this.getClass().getResource("/fxml/StartingBox.fxml"));
-        //Platform.exit();
+        StageUtils.showChildcareStage(primaryStage, this.getClass().getResource("/fxml/StartingBox.fxml"));
     }
 
     @Override

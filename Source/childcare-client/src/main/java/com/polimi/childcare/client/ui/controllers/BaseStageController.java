@@ -42,4 +42,11 @@ public abstract class BaseStageController implements IStageController
 
         return setupScene(parent);
     }
+
+    @Override
+    public void requestClose()
+    {
+        if(this.linkedStage != null)
+            this.linkedStage.close();
+    }
 }
