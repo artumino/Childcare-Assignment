@@ -144,5 +144,48 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
 
         this.linkedStage.setMaximized(maximized);
         this.isMaximized = maximized;
+    }    }
+
+    public void setResizeDirection(int direction)
+    {
+        this.resizeDirectionMask = direction;
     }
+
+    public boolean canResizeInDirection(EResizeDirection direction)
+    {
+        return (this.resizeDirectionMask & direction.getDirection()) != 0x0000;
+    }
+
+    private void OnResizeEvent(MouseEvent mouseEvent)
+    {
+        if (mouseEvent.isPrimaryButtonDown())
+        {
+            double width = linkedStage.getWidth();
+            double height = linkedStage.getHeight();
+
+            // Horizontal resize.
+            if (canResizeInDirection(EResizeDirection.Left)) {
+                if ((width > linkedStage.getMinWidth()) || (mouseEvent.getX() < 0)) {
+                    linkedStage.setWidth(width - mouseEvent.getScreenX() + linkedStage.getX());
+                    linkedStage.setX(mouseEvent.getScreenX());
+                }
+            } else if (canResizeInDirection(EResizeDirection.Right)
+                    && ((width > linkedStage.getMinWidth()) || (mouseEvent.getX() > 0))) {
+                linkedStage.setWidth(width + mouseEvent.getX());
+            }
+
+            // Vertical resize.
+            if (canResizeInDirection(EResizeDirection.Top)) {
+                if ((height > linkedStage.getMinHeight()) || (mouseEvent.getY() < 0)) {
+                    linkedStage.setHeight(height - mouseEvent.getScreenY() + linkedStage.getY());
+                    linkedStage.setY(mouseEvent.getScreenY());
+                }
+            } else if (canResizeInDirection(EResizeDirection.Bottom)) {
+                if ((height > linkedStage.getMinHeight()) || (mouseEvent.getY() > 0)) {
+                    linkedStage.setHeight(height + mouseEvent.getY());
+                }
+            }
+        }
+    }
+
 }
