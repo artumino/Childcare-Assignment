@@ -144,7 +144,7 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
 
         this.linkedStage.setMaximized(maximized);
         this.isMaximized = maximized;
-    }    }
+    }
 
     public void setResizeDirection(int direction)
     {
