@@ -87,8 +87,6 @@ public class StartingBoxStageController extends BaseStageController
                 //Fallita connessione
                 if(!flowPane.getChildren().contains(lblConnectionError))
                     flowPane.getChildren().add(lblConnectionError);
-
-                this.linkedStage.close();
             }
         });
     }
