@@ -7,9 +7,9 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import java.io.IOException;
 import java.io.Serializable;
 
-public abstract class BaseServerNetworkInterface implements IServerNetworkInterface,Serializable
+public abstract class BaseServerNetworkInterface implements IServerNetworkInterface
 {
-    private IRequestHandler<BaseRequest>  defaultHandler;
+    private transient IRequestHandler<BaseRequest>  defaultHandler;
 
     @Override
     public void listen(String address, int port, IRequestHandler<BaseRequest> defaultHandler) throws IOException

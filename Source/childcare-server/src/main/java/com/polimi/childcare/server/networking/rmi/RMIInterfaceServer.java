@@ -14,7 +14,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.ExportException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class RMIInterfaceServer extends BaseServerNetworkInterface implements IRMIServer,Serializable
+public class RMIInterfaceServer extends BaseServerNetworkInterface implements IRMIServer
 {
     private transient String address;
     private transient int port;
@@ -29,10 +29,6 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
         this.address = address;
         this.port = port;
 
-        //if (System.getSecurityManager() == null) {
-        //    System.setSecurityManager(new RMISecurityManager());
-        //}
-
         try {
             //Registra server RMI
             this.boundRegistry = LocateRegistry.createRegistry(port);
@@ -43,16 +39,16 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
         }
         finally
         {
+            IRMIServer irmiServer = this;
+            Remote stub = UnicastRemoteObject.exportObject(irmiServer, 0);
             try
             {
-                this.boundRegistry.bind(IRMIServer.ENDPOINT, this);
+                this.boundRegistry.bind(IRMIServer.ENDPOINT, stub);
             }
             catch (AlreadyBoundException e1)
             {
                 e1.printStackTrace();
                 try {
-                    IRMIServer irmiServer = this;
-                    IRMIServer stub = (IRMIServer)UnicastRemoteObject.exportObject(irmiServer, 0);
                     this.boundRegistry.rebind(IRMIServer.ENDPOINT, stub);
                 }
                 catch (Exception ex)

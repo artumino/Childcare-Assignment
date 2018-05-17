@@ -58,5 +58,6 @@ public class Main
 
         DatabaseSession.getInstance().close();
         networkManager.stop();
+        System.exit(0);
     }
 }
