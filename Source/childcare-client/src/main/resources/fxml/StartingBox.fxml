@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<StackPane fx:id="paneRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.StartingBoxStageController">
+<StackPane fx:id="paneRoot" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="258.0" prefWidth="265.0" stylesheets="@stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.StartingBoxStageController">
    <children>
-      <FlowPane fx:id="flowPane" alignment="CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefWrapLength="200.0" StackPane.alignment="CENTER">
+      <VBox fx:id="vboxContent" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" StackPane.alignment="CENTER">
+         <StackPane.margin>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </StackPane.margin>
          <children>
-            <JFXButton fx:id="btnConnect" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefHeight="92.0" prefWidth="222.0" ripplerFill="#b0b0b0" text="Connect">
-               <FlowPane.margin>
-                  <Insets bottom="25.0" />
-               </FlowPane.margin>
-            </JFXButton>
+            <Button fx:id="btnConnect" mnemonicParsing="false" prefHeight="87.0" prefWidth="200.0" style="-fx-font-size: 15pt;" text="Connect">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
             <ComboBox fx:id="cmbConnectionType" prefHeight="26.0" prefWidth="201.0" promptText="ConnectionTest">
                <opaqueInsets>
                   <Insets bottom="25.0" />
                </opaqueInsets>
-               <FlowPane.margin>
-                  <Insets bottom="25.0" />
-               </FlowPane.margin>
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
             </ComboBox>
          </children>
-         <StackPane.margin>
-            <Insets bottom="15.0" left="25.0" right="25.0" top="15.0" />
-         </StackPane.margin>
-      </FlowPane>
+      </VBox>
    </children>
 </StackPane>

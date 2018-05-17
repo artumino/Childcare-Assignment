@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.effect.Glow?>
@@ -16,17 +15,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="845.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.MainMenuStageController">
+<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="845.0" minWidth="1302.0" prefHeight="845.0" prefWidth="1302.0" stylesheets="@stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.MainMenuStageController">
    <children>
-      <AnchorPane style="-fx-background-color: #ffffff;" styleClass="root" stylesheets="@stylesheets/material-fx-v0_3.css" StackPane.alignment="TOP_CENTER">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
          <children>
             <AnchorPane prefHeight="116.0" prefWidth="1302.0" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <ToolBar fx:id="dragToolbar" prefHeight="116.0" prefWidth="1302.0" style="-fx-background-color: #37474f;" styleClass="toolbar-colored" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label layoutX="14.0" layoutY="13.0" style="-fx-font-size: 20pt;" styleClass="title-label" stylesheets="@stylesheets/material-fx-v0_3.css" text="Childcare" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="13.0">
+                  <Label fx:id="lblTitle" layoutX="14.0" layoutY="13.0" style="-fx-font-size: 20pt;" styleClass="title-label" stylesheets="@stylesheets/material-fx-v0_3.css" text="Childcare" AnchorPane.bottomAnchor="69.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="13.0">
                      <effect>
                         <InnerShadow />
-                     </effect></Label>
+                     </effect>
+                  </Label>
                   <GridPane layoutX="246.0" layoutY="13.0" pickOnBounds="false" prefHeight="90.0" prefWidth="813.0" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="246.0" AnchorPane.rightAnchor="246.0" AnchorPane.topAnchor="13.0">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -38,15 +38,12 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <VBox alignment="CENTER" pickOnBounds="false" prefHeight="200.0" prefWidth="100.0">
+                        <VBox fx:id="btnHome" alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
                               <ImageView fitHeight="75.0" fitWidth="75.0">
                                  <image>
                                     <Image url="@images/baseline_home_white_48.png" />
                                  </image>
-                                 <effect>
-                                    <InnerShadow />
-                                 </effect>
                               </ImageView>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 14pt; -fx-font-weight: bold;" text="HOME" textAlignment="CENTER">
                                  <effect>
@@ -55,15 +52,12 @@
                               </Text>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" pickOnBounds="false" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
+                        <VBox fx:id="btnGite" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                            <children>
                               <ImageView fitHeight="75.0" fitWidth="75.0">
                                  <image>
                                     <Image url="@images/baseline_map_white_48.png" />
                                  </image>
-                                 <effect>
-                                    <InnerShadow />
-                                 </effect>
                               </ImageView>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 14pt; -fx-font-weight: bold;" text="GITE" textAlignment="CENTER">
                                  <effect>
@@ -72,15 +66,12 @@
                               </Text>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" pickOnBounds="false" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
+                        <VBox fx:id="btnMensa" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2">
                            <children>
                               <ImageView fitHeight="75.0" fitWidth="75.0">
                                  <image>
                                     <Image url="@images/baseline_restaurant_white_48.png" />
                                  </image>
-                                 <effect>
-                                    <InnerShadow />
-                                 </effect>
                               </ImageView>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 14pt; -fx-font-weight: bold;" text="MENSA" textAlignment="CENTER">
                                  <effect>
@@ -89,15 +80,12 @@
                               </Text>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" pickOnBounds="false" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
+                        <VBox fx:id="btnAnagrafica" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3">
                            <children>
                               <ImageView fitHeight="75.0" fitWidth="75.0">
                                  <image>
                                     <Image url="@images/baseline_supervisor_account_white_48.png" />
                                  </image>
-                                 <effect>
-                                    <InnerShadow />
-                                 </effect>
                               </ImageView>
                               <Text fill="WHITE" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 14pt; -fx-font-weight: bold;" text="ANAGRAFICA" textAlignment="CENTER">
                                  <effect>
@@ -138,10 +126,8 @@
                   </HBox>
                </children>
             </AnchorPane>
+            <AnchorPane fx:id="contentPane" prefHeight="779.0" prefWidth="1302.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="116.0" />
          </children>
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
       </AnchorPane>
    </children>
 </StackPane>

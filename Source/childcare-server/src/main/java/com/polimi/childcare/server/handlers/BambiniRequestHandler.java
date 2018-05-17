@@ -33,7 +33,5 @@ public class BambiniRequestHandler implements IRequestHandler<BambiniRequest>
         ListBambiniResponse risposta = new ListBambiniResponse(200, bambini);
 
         return risposta;
-
-
     }
 }

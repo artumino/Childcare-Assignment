@@ -65,6 +65,8 @@ public class SocketClientHandler implements Runnable
                     osWriter.newLine();
                     osWriter.flush();
                 }
+                else //Client Disconnesso
+                    this.close();
             }
         } catch (IOException ex)
         {

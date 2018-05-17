@@ -95,7 +95,6 @@ public class InsertTest
             addetti.addAll(session.query(Addetto.class).toList());
             return true;
         });
-
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
         pasto1.setNome("Eheheheh");

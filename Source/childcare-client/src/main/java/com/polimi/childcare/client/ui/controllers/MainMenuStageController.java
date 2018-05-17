@@ -1,16 +1,19 @@
 package com.polimi.childcare.client.ui.controllers;
 
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
+import com.polimi.childcare.client.ui.utils.SceneUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import javafx.scene.image.ImageView;
+
+import java.io.IOException;
+import java.util.HashMap;
 
 public class MainMenuStageController extends UndecoratedDraggableStageController
 {
@@ -22,12 +25,26 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
     @FXML private ImageView btnMinimize;
     @FXML private ImageView btnMaximize;
 
-    @Override
-    public String getTitle()
-    {
-        return "ChildCare Portal";
-    }
+    @FXML private Node btnHome;
+    @FXML private Node btnAnagrafica;
+    @FXML private Node btnGite;
+    @FXML private Node btnMensa;
 
+    @FXML private Label lblTitle;
+
+    @FXML private Pane contentPane;
+
+    @Override protected Node getWindowDragParent() {
+        return this.dragToolbar;
+    }
+    @Override protected Node getMinimizeButton() { return this.btnMinimize; }
+    @Override protected Node getMaximizeButton() { return this.btnMaximize; }
+    @Override protected Node getCloseButton() { return this.btnClose; }
+    @Override protected Node getRootNode() { return this.rootStackPane; }
+
+    //Mappa usata per associare ad ogni bottone una ed una sola scene istanziata all'apertura dello stage
+    private HashMap<Node,ISubSceneController> menuItemsMap;
+    private Node currentSelectedMenuItem;
 
     @Override
     //Ritorna la dimensione impostata da SceneBuilder oppure quella di default
@@ -42,30 +59,87 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
     }
 
     @Override
-    protected Node getWindowDragParent() {
-        return this.dragToolbar;
+    protected void initialize()
+    {
+        //Crea Menu
+        menuItemsMap = new HashMap<>(4);
+        try {
+            menuItemsMap.put(btnHome, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnGite, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnMensa, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        btnHome.setOnMouseClicked((ev) -> SelectMenuItem(btnHome));
+        btnAnagrafica.setOnMouseClicked((ev) -> SelectMenuItem(btnAnagrafica));
+        btnGite.setOnMouseClicked((ev) -> SelectMenuItem(btnGite));
+        btnMensa.setOnMouseClicked((ev) -> SelectMenuItem(btnMensa));
+
+        //Seleziono elemento di default
+        if(currentSelectedMenuItem == null)
+            SelectMenuItem(btnHome);
+
+        //Imposta altri eventi
+        addGlowEffectEvents(btnClose);
+        addGlowEffectEvents(btnMaximize);
+        addGlowEffectEvents(btnMinimize);
+
+        addGlowEffectEvents(btnHome);
+        addGlowEffectEvents(btnAnagrafica);
+        addGlowEffectEvents(btnGite);
+        addGlowEffectEvents(btnMensa);
+
+        super.initialize();
+    }
+
+    private void addGlowEffectEvents(Node node)
+    {
+        if(node != null)
+        {
+            node.setOnMouseEntered(mouseEvent -> EffectsUtils.AddGlow(node, 2));
+
+            //Rimuove il Glow solo agli oggetti non attualmente selezionati
+            node.setOnMouseExited(mouseEvent -> {
+                if(currentSelectedMenuItem != node)
+                    EffectsUtils.RemoveGlow(node);
+            });
+        }
+    }
+
+    private void SelectMenuItem(Node item)
+    {
+        if(this.contentPane != null && menuItemsMap.containsKey(item))
+        {
+            //Rimuove tutti i bambini
+            this.contentPane.getChildren().clear();
+
+            if(this.currentSelectedMenuItem != null)
+            {
+                menuItemsMap.get(item).detached();
+                EffectsUtils.RemoveGlow(this.currentSelectedMenuItem);
+            }
+
+            //Imposta la scena corretta come contanuto
+            this.contentPane.getChildren().add(menuItemsMap.get(item).getRoot());
+
+            //Aggiunge l'effetto glow all'oggetto selezionato
+            this.currentSelectedMenuItem = item;
+            EffectsUtils.AddGlow(item, 2);
+            menuItemsMap.get(item).attached(this);
+        }
     }
 
     @Override
-    protected void initialize() {
-        super.initialize();
-
-        if(btnClose != null)
+    public void requestSetTitle(String newTitle)
+    {
+        if(lblTitle != null)
         {
-            btnClose.setOnMouseEntered(mouseEvent -> EffectsUtils.AddGlow(btnClose, 2));
-            btnClose.setOnMouseExited(mouseEvent -> EffectsUtils.RemoveGlow(btnClose));
-        }
-
-        if(btnMaximize != null)
-        {
-            btnMaximize.setOnMouseEntered(mouseEvent -> EffectsUtils.AddGlow(btnMaximize, 2));
-            btnMaximize.setOnMouseExited(mouseEvent -> EffectsUtils.RemoveGlow(btnMaximize));
-        }
-
-        if(btnMinimize != null)
-        {
-            btnMinimize.setOnMouseEntered(mouseEvent -> EffectsUtils.AddGlow(btnMinimize, 2));
-            btnMinimize.setOnMouseExited(mouseEvent -> EffectsUtils.RemoveGlow(btnMinimize));
+            if(newTitle == null)
+                lblTitle.setText("ChildCare");
+            else
+                lblTitle.setText("ChildCare - " + newTitle);
         }
     }
 }

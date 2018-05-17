@@ -92,7 +92,7 @@ public class ClientNetworkManager implements Runnable
                     this.networkThread.start();
 
                 return true;
-            } catch (Exception ex) {
+            } catch (Throwable ex) {
                 ex.printStackTrace();
             }
         }
@@ -114,8 +114,9 @@ public class ClientNetworkManager implements Runnable
 
     /**
      * NetworkLoop, gestisce la coda delle operazioni di rete.
-     * estrae un'operazione dalla coda, prova ad eseguirla e ne valuta il successo. In caso di insuccesso reinserisce l'operazione in coda
-     * In caso di errori di connession, cerca di riconnetterni con un predeterminato tempo di retry
+     * estrae un'operazione dalla coda (FIFO), prova ad eseguirla e ne valuta il successo.
+     * In caso di insuccesso reinserisce l'operazione in fondo alla coda(pronta per essere riestratta).
+     * In caso di errori di connessione, cerca di riconnetterni con un predeterminato tempo di retry
      */
     @Override
     public void run()
@@ -131,7 +132,7 @@ public class ClientNetworkManager implements Runnable
                     operation = networkOperationQueue.takeLast();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                    return;
+                    continue;
                 }
 
                 //null in caso di errori di connessione
@@ -144,7 +145,7 @@ public class ClientNetworkManager implements Runnable
                         networkOperationQueue.putLast(operation);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        return;
+                        continue;
                     }
                 }
                 else

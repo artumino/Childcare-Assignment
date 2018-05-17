@@ -59,7 +59,7 @@ public class NetworkOperation
             if(callback != null)
             {
                 if(runOnUiThread)
-                    Platform.runLater(() -> { callback.OnResult(response); });
+                    Platform.runLater(() -> callback.OnResult(response));
                 else
                     callback.OnResult(response);
             }

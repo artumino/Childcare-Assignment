@@ -52,17 +52,20 @@ public class Main
 
         String command;
         Scanner scanner = new Scanner(System.in);
-        while((command = scanner.nextLine()) != null && !command.equals("quit"))
+
+        do
         {
+            command = scanner.nextLine();
             //DO NOTHING
             /*try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
-        }
+        } while(!command.equals("quit") && !command.equals("exit"));
 
         DatabaseSession.getInstance().close();
         networkManager.stop();
+        System.exit(0);
     }
 }
