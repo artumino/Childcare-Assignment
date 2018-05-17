@@ -39,6 +39,7 @@ public class StageUtils
         Stage newStage = new Stage();
         return showChildcareStage(newStage, fxmlContentPath);
     }
+    
     public static BaseStageController showStage(URL fxmlPath) throws IOException
     {
         return StageUtils.showGenericStage(fxmlPath);
