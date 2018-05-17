@@ -29,10 +29,6 @@ public class RMIInterfaceServer extends BaseServerNetworkInterface implements IR
         this.address = address;
         this.port = port;
 
-        //if (System.getSecurityManager() == null) {
-        //    System.setSecurityManager(new RMISecurityManager());
-        //}
-
         try {
             //Registra server RMI
             this.boundRegistry = LocateRegistry.createRegistry(port);
