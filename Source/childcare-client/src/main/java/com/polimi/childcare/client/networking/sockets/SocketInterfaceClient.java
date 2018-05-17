@@ -21,6 +21,11 @@ public class SocketInterfaceClient implements IClientNetworkInterface
     private BufferedWriter osWriter;
 
     @Override
+    public boolean isConnected() {
+        return clientSocket != null && clientSocket.isConnected();
+    }
+
+    @Override
     public void connect(String address, int port) throws IOException
     {
         this.clientSocket = new Socket();
@@ -35,21 +40,26 @@ public class SocketInterfaceClient implements IClientNetworkInterface
     @Override
     public void close()
     {
-        if(this.clientSocket != null && !this.clientSocket.isClosed())
+        if(this.clientSocket != null)
         {
             //Provo a chiudere gli stream e liberare il socket
             try {
-                this.inputStream.close();
-                this.outputStream.close();
+                if(this.inputStream != null)
+                    this.inputStream.close();
+
+                if(this.outputStream != null)
+                    this.outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             finally {
                 try {
-                    this.clientSocket.close();
+                    if(!clientSocket.isClosed())
+                        this.clientSocket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                this.clientSocket = null;
             }
         }
     }
@@ -68,6 +78,14 @@ public class SocketInterfaceClient implements IClientNetworkInterface
 
                 //Attendo una risposta
                 String responseStr = this.isReader.readLine();
+
+                //Disconnected!
+                if(responseStr == null)
+                {
+                    this.close();
+                    return null;
+                }
+
                 byte[] responseBytes = Base64.getDecoder().decode(responseStr);
 
                 //Computo la risposta
@@ -79,5 +97,11 @@ public class SocketInterfaceClient implements IClientNetworkInterface
             this.close();
         }
         return null;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Socket";
     }
 }

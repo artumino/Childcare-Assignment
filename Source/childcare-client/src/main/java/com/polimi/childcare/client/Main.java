@@ -1,23 +1,33 @@
 package com.polimi.childcare.client;
 
+import com.polimi.childcare.client.networking.ClientNetworkManager;
+import com.polimi.childcare.client.ui.utils.StageUtils;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+import java.rmi.RMISecurityManager;
+
+public class Main extends Application
+{
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        //primaryStage.setTitle("Hello World");
-        //primaryStage.setScene(new Scene(root, 300, 275));
-        //primaryStage.show();
-        
-        Platform.exit();
+    public void start(Stage primaryStage) throws Exception
+    {
+        StageUtils.showChildcareStage(primaryStage, this.getClass().getResource("/fxml/StartingBox.fxml"));
     }
 
+    @Override
+    public void stop() throws Exception
+    {
+        //Ferma network manager
+        ClientNetworkManager.getInstance().Dispose();
 
-    public static void main(String[] args) {
+        super.stop();
+    }
+
+    public static void main(String[] args)
+    {
+        System.setProperty("java.security.policy", "resources/security.policy");
         launch(args);
     }
 }

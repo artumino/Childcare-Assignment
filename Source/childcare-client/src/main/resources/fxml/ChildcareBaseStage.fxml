@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="rootStackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="845.0" prefWidth="1302.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController">
+   <children>
+      <AnchorPane style="-fx-background-color: #ffffff;" styleClass="root" stylesheets="@stylesheets/material-fx-v0_3.css">
+         <children>
+            <AnchorPane minHeight="-Infinity" prefHeight="60.0" prefWidth="1302.0" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ToolBar fx:id="dragToolbar" prefHeight="60.0" prefWidth="1302.0" style="-fx-background-color: #37474f;" styleClass="toolbar-colored" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="lblTitle" layoutX="14.0" layoutY="13.0" style="-fx-font-size: 20pt;" styleClass="title-label" stylesheets="@stylesheets/material-fx-v0_3.css" text="Childcare" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                     <effect>
+                        <InnerShadow />
+                     </effect>
+                  </Label>
+                  <HBox fx:id="hboxToolbarButtons" alignment="CENTER" layoutX="1195.0" layoutY="13.0" prefHeight="34.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <ImageView fx:id="btnMinimize" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@images/baseline_remove_circle_white_18.png" />
+                           </image>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="btnMaximize" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true">
+                           <image>
+                              <Image url="@images/baseline_crop_square_white_18_filled.png" />
+                           </image>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                        </ImageView>
+                        <ImageView fx:id="btnClose" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" rotate="45.0">
+                           <image>
+                              <Image url="@images/baseline_add_circle_white_18.png" />
+                           </image>
+                           <effect>
+                              <InnerShadow />
+                           </effect>
+                        </ImageView>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="contentPane" prefHeight="779.0" prefWidth="1302.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
