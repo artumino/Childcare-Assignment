@@ -97,7 +97,10 @@ public class HomeSceneController implements ISubSceneController
 
         //Aggiungo tutti i bambini
         if(bambiniResponse.getPayload() != null)
+        {
             listaPersone.addAll(bambiniResponse.getPayload());
+            tableList.sort();
+        }
 
         //tableList.refresh();
 

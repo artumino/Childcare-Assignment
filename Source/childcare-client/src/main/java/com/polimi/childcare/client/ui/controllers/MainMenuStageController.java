@@ -65,7 +65,7 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
         menuItemsMap = new HashMap<>(4);
         try {
             menuItemsMap.put(btnHome, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/AnagraficaScene.fxml")));
             menuItemsMap.put(btnGite, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
             menuItemsMap.put(btnMensa, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
         } catch (IOException e) {

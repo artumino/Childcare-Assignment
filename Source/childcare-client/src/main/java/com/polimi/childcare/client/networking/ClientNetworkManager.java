@@ -113,6 +113,15 @@ public class ClientNetworkManager implements Runnable
     }
 
     /**
+     * Rimuove dalla lista delle operazioni un'operazione precedentemente inserita
+     * @param networkOperation Operazione di rete da effettuare
+     */
+    public void abortOperation(NetworkOperation networkOperation)
+    {
+        this.networkOperationQueue.removeFirstOccurrence(networkOperation);
+    }
+
+    /**
      * NetworkLoop, gestisce la coda delle operazioni di rete.
      * estrae un'operazione dalla coda (FIFO), prova ad eseguirla e ne valuta il successo.
      * In caso di insuccesso reinserisce l'operazione in fondo alla coda(pronta per essere riestratta).
