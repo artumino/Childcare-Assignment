@@ -20,7 +20,7 @@ public class Diagnosi implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
     @JoinColumn(name = "Persona_FK")
     private Persona persona;
 

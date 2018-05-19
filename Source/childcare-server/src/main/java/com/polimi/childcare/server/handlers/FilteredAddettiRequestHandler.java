@@ -7,9 +7,11 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoR
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
+import org.jinq.orm.stream.JinqStream;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAddettoRequest>
 {
@@ -22,6 +24,13 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
 
         if (request.getCount() == 0)
             DatabaseSession.getInstance().execute(session -> {
+                JinqStream query = session.query(Addetto.class);
+
+                for (Map.Entry<JinqStream.CollectComparable, Boolean> entry : request.getFilters())
+                {
+                    query = query.where(entry);
+                }
+
                 addetti.addAll(session.query(Addetto.class).toList());
                 return true;
             });
@@ -32,8 +41,9 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
                 return true;
             });
 
-        if(!request.isDetailed())
+        if(request.isDetailed())
         {
+
 
         }
 
