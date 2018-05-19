@@ -32,6 +32,11 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
                 return true;
             });
 
+        if(!request.isDetailed())
+        {
+
+        }
+
         ListAddettiResponse risposta = new ListAddettiResponse(200, addetti);
 
         return risposta;
