@@ -1,5 +1,6 @@
 package com.polimi.childcare.server.handlers;
 
+import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Addetto;
@@ -11,7 +12,6 @@ import org.jinq.orm.stream.JinqStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAddettoRequest>
 {
@@ -26,9 +26,10 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
             DatabaseSession.getInstance().execute(session -> {
                 JinqStream query = session.query(Addetto.class);
 
-                for (Map.Entry<JinqStream.CollectComparable, Boolean> entry : request.getFilters())
-                {
-                    query = query.where(entry);
+                try {
+                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
                 addetti.addAll(session.query(Addetto.class).toList());
@@ -37,13 +38,25 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
 
         else
             DatabaseSession.getInstance().execute(session -> {
+                JinqStream query = session.query(Addetto.class);
+
+                try {
+                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 addetti.addAll(session.query(Addetto.class).limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).toList());
                 return true;
             });
 
         if(request.isDetailed())
         {
-
+            for(Addetto a : addetti)
+            {
+                DBHelper.objectInizialize(a.getTelefoni());
+                DBHelper.objectInizialize(a.getDiagnosi());
+            }
 
         }
 
