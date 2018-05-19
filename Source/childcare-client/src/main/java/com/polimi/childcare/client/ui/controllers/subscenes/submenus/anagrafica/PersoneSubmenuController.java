@@ -127,6 +127,8 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
     private void OnPersoneResponseRecived(BaseResponse response)
     {
+        this.pendingOperation = null;
+
         if(!(response instanceof ListPersoneResponse))
         {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
