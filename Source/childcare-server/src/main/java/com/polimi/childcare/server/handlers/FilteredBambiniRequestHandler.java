@@ -3,7 +3,6 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
-import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -13,7 +12,6 @@ import org.jinq.orm.stream.JinqStream;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBambiniRequest>
 {
@@ -55,9 +53,9 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
         {
             for(Bambino b : bambini)
             {
-                DBHelper.objectInizialize(b.getGenitori());
-                DBHelper.objectInizialize(b.getContatti());
-                DBHelper.objectInizialize(b.getGruppo());
+                DBHelper.objectInitialize(b.getGenitori());
+                DBHelper.objectInitialize(b.getContatti());
+                DBHelper.objectInitialize(b.getGruppo());
             }
 
         }

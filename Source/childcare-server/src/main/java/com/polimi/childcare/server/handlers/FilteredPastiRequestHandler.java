@@ -3,7 +3,6 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
-import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -53,9 +52,9 @@ public class FilteredPastiRequestHandler implements IRequestHandler<FilteredPast
         {
             for(Pasto p : pasti)
             {
-                DBHelper.objectInizialize(p.getFornitori());
-                DBHelper.objectInizialize(p.getQuantitaPasto());
-                DBHelper.objectInizialize(p.getReazione());
+                DBHelper.objectInitialize(p.getFornitori());
+                DBHelper.objectInitialize(p.getQuantitaPasto());
+                DBHelper.objectInitialize(p.getReazione());
             }
 
         }

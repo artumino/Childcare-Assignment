@@ -54,8 +54,8 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
         {
             for(Addetto a : addetti)
             {
-                DBHelper.objectInizialize(a.getTelefoni());
-                DBHelper.objectInizialize(a.getDiagnosi());
+                DBHelper.objectInitialize(a.getTelefoni());
+                DBHelper.objectInitialize(a.getDiagnosi());
             }
 
         }

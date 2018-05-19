@@ -3,7 +3,6 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
-import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -55,8 +54,8 @@ public class FilteredPersonaRequestHandler implements IRequestHandler<FilteredPe
         {
             for(Persona p : persone)
             {
-                DBHelper.objectInizialize(p.getDiagnosi());
-                DBHelper.objectInizialize(p.getTelefoni());
+                DBHelper.objectInitialize(p.getDiagnosi());
+                DBHelper.objectInitialize(p.getTelefoni());
             }
 
         }

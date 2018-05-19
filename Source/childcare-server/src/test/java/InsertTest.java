@@ -36,12 +36,12 @@ public class InsertTest
         Pasto pastoget;
         Fornitore fornitoreget;
         Pediatra pediatraget;
-        List<Bambino> bambinoget = new ArrayList<>();
+        Bambino bambinoget;
         Diagnosi diagnosiget;
-        List<Addetto> addettoget = new ArrayList<>();
+        Addetto addettoget;
         ReazioneAvversa reazioneavversaget;
         Contatto contattoget;
-        List<Genitore> genitoreget = new ArrayList<>();
+        Genitore genitoreget;
 
         DatabaseSession.getInstance().execute(session ->{   //Ordine nel database dipende da insert nella session
             session.insert(pasto1);
@@ -74,36 +74,21 @@ public class InsertTest
         reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
         diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
+        genitoreget = DatabaseSession.getInstance().getByID(Genitore.class, idGenitore, true);
+        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino, true);
+        addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto, true);
 
-        DatabaseSession.getInstance().execute(session -> {
-            genitoreget.add(session.getByID(Genitore.class, idGenitore));
-            bambinoget.add(session.getByID(Bambino.class, idBambino));
-            addettoget.add(session.getByID(Addetto.class, idAddetto));
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", pastoget, pasto1);   //So che è il messaggio di errore ma lo lascio così per ora
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", fornitoreget, fornitore1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", pediatraget, pediatra1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", reazioneavversaget, reazioneavversa1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", contattoget, contatto1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", diagnosiget, diagnosi1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", bambinoget, bambino1);
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", addettoget, addetto1);
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.getBambini().contains(bambinoget));
+        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.getGenitori().contains(genitoreget));
 
-            DBHelper.objectInizialize(genitoreget.get(0).getBambini());
-            DBHelper.objectInizialize(bambinoget.get(0).getGenitori());
-            DBHelper.objectInizialize(addettoget.get(0).getTelefoni());
-
-            return true;
-        });
-
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.equals(pasto1));   //So che è il messaggio di errore ma lo lascio così per ora
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.equals(fornitore1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pediatraget.equals(pediatra1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", reazioneavversaget.equals(reazioneavversa1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget.equals(contatto1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.equals(diagnosi1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.get(0).equals(bambino1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", addettoget.get(0).equals(addetto1));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", genitoreget.get(0).getBambini().contains(bambinoget.get(0)));
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", bambinoget.get(0).getGenitori().contains(genitoreget.get(0)));
-
-        List<Addetto> addetti = new ArrayList<>();
-
-        DatabaseSession.getInstance().execute(session -> {
-            addetti.addAll(session.query(Addetto.class).toList());
-            return true;
-        });
         Pediatra n2 = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
         pasto1.setNome("Eheheheh");
@@ -133,15 +118,15 @@ public class InsertTest
         fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
         pediatraget = DatabaseSession.getInstance().getByID(Pediatra.class, idPediatra);
         reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
-        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
+        diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi, true);
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
 
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget.getNome() == "Eheheheh");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget.getEmail() == "1233897@live.it");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pediatraget.getIndirizzo() == "Cambiato");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", reazioneavversaget.getNome() == "Grano");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget.getIndirizzo() == "Inventato ORA");
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget.getPersona().equals(addetto1));
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Eheheheh", pastoget.getNome());
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", "1233897@live.it", fornitoreget.getEmail());
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Cambiato", pediatraget.getIndirizzo());
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Grano", reazioneavversaget.getNome());
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Inventato ORA", contattoget.getIndirizzo());
+        Assert.assertEquals("Controllo che i due oggetti si equivalgano", diagnosiget.getPersona(), addetto1);
 
 
         DatabaseSession.getInstance().execute(session ->{
@@ -149,7 +134,7 @@ public class InsertTest
             session.deleteByID(Pasto.class, idPasto);
             session.deleteByID(Fornitore.class, idFornitore);
             session.deleteByID(Pediatra.class, idPediatra);
-            session.deleteByID(ReazioneAvversa.class, idReazione);
+            session.deleteByID(ReazioneAvversa.class, idReazione); //FIXME: Controllare Cascade
             session.deleteByID(Addetto.class, idAddetto);
             session.deleteByID(Diagnosi.class, idDiagnosi);
             session.deleteByID(Bambino.class, idBambino);
@@ -166,12 +151,12 @@ public class InsertTest
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
 
 
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pastoget == null);
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", fornitoreget == null);
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", pediatraget == null);
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", reazioneavversaget == null);
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", contattoget == null);
-        Assert.assertTrue("Controllo che i due oggetti si equivalgano", diagnosiget == null);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", pastoget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", fornitoreget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", pediatraget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", reazioneavversaget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", contattoget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", diagnosiget);
 
     }
 
