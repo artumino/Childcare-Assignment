@@ -52,7 +52,7 @@ public abstract class Persona implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "persona")
     private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Persona_Rubrica",
             joinColumns = { @JoinColumn(name = "Persona_FK") },

@@ -37,13 +37,13 @@ public class Fornitore implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.LAZY)
     private Set<Pasto> pasti = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
     private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Fax_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
@@ -51,7 +51,7 @@ public class Fornitore implements Serializable
     )
     private Set<NumeroTelefono> fax = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },

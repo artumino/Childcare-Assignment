@@ -14,7 +14,7 @@ public class Genitore extends Persona
 {
     //region Relazioni
 
-    @ManyToMany(mappedBy = "genitori", fetch = FetchType.EAGER) //Ora va :D
+    @ManyToMany(mappedBy = "genitori", fetch = FetchType.LAZY) //Ora va :D
     private Set<Bambino> bambini = new HashSet<>(); //Non fa nulla
 
     //endregion

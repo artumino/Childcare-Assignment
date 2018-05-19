@@ -20,7 +20,7 @@ public class Gruppo implements Serializable
     @OneToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
     private Set<Bambino> bambini  = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")

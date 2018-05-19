@@ -32,7 +32,7 @@ public class Contatto implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Riferimenti",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
@@ -40,7 +40,7 @@ public class Contatto implements Serializable
     )
     private Set<Bambino> bambini = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Contatto_Rubrica",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
