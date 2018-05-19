@@ -1,13 +1,10 @@
 package com.polimi.childcare.shared.networking.requests.filtered;
 
-import com.polimi.childcare.shared.entities.Addetto;
-import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
+import java.util.HashMap;
 
-import java.util.List;
-
-public class FilteredAddettoRequest extends ListResponse<Addetto>
+public class FilteredAddettoRequest extends FilteredBaseRequest
 {
-    public FilteredAddettoRequest(int code, List<Addetto> payload) {
-        super(code, payload);
+    public FilteredAddettoRequest(int count, int pageNumber, boolean detailed, HashMap<String, String> filters, HashMap<String, Boolean> orderBy) {
+        super(count, pageNumber, detailed, filters, orderBy);
     }
 }

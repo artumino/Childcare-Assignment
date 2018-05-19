@@ -3,7 +3,7 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Pasto;
-import com.polimi.childcare.shared.networking.requests.PastiRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPastiResponse;
@@ -11,10 +11,10 @@ import com.polimi.childcare.shared.networking.responses.lists.ListPastiResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PastiRequestHandler implements IRequestHandler<PastiRequest>
+public class FilteredPastiRequestHandler implements IRequestHandler<FilteredPastoRequest>
 {
     @Override
-    public BaseResponse processRequest(PastiRequest request)
+    public BaseResponse processRequest(FilteredPastoRequest request)
     {
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();

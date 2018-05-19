@@ -6,11 +6,10 @@ import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
-import com.polimi.childcare.shared.networking.requests.AddettiRequest;
-import com.polimi.childcare.shared.networking.requests.BambiniRequest;
-import com.polimi.childcare.shared.networking.requests.PastiRequest;
-import com.polimi.childcare.shared.networking.requests.PersonaRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -45,10 +44,9 @@ public class Main
 
         //Aggiunge handler al network manager
         NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(BambiniRequest.class, new BambiniRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(PersonaRequest.class, new PersonaRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(PastiRequest.class, new PastiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(AddettiRequest.class, new AddettiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredAddettoRequest.class, new FilteredAddettiRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);

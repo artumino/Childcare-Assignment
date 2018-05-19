@@ -1,13 +1,10 @@
 package com.polimi.childcare.shared.networking.requests.filtered;
 
-import com.polimi.childcare.shared.entities.Pasto;
-import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
+import java.util.HashMap;
 
-import java.util.List;
-
-public class FilteredPastoRequest extends ListResponse<Pasto>
+public class FilteredPastoRequest extends FilteredBaseRequest
 {
-    public FilteredPastoRequest(int code, List<Pasto> payload) {
-        super(code, payload);
+    public FilteredPastoRequest(int count, int pageNumber, boolean detailed, HashMap<String, String> filters, HashMap<String, Boolean> orderBy) {
+        super(count, pageNumber, detailed, filters, orderBy);
     }
 }
