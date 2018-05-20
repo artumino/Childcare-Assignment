@@ -16,4 +16,10 @@ public class ChildcareApp extends Application
 
         //Proseguo con l'avvio dell'app
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        ClientNetworkManager.getInstance().Dispose();
+    }
 }
