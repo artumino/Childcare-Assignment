@@ -1,11 +1,12 @@
 package com.polimi.childcare.shared.entities;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Rubrica", indexes = {
         @Index(columnList = "Numero", name = "idx_Numero")})
-public class NumeroTelefono
+public class NumeroTelefono implements Serializable
 {
     //region Attributi
     @Id

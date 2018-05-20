@@ -1,11 +1,13 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
 
 @Entity
 @Table(name = "Gite")
-public class Gita implements Serializable
+public class Gita implements Serializable, ITransferable
 {
     //region Attributi
 
@@ -109,6 +111,32 @@ public class Gita implements Serializable
                 getDataInizio().compareTo(gita.getDataInizio()) == 0 &&
                 getDataFine().compareTo(gita.getDataFine()) == 0 &&
                 getLuogo().equals(gita.getLuogo());
+    }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        pianiViaggi = getPianiViaggi();
+        registriPresenze = getRegistriPresenze();
+
+
+        DTOUtils.iterableToDTO(pianiViaggi);
+        DTOUtils.iterableToDTO(registriPresenze);
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return (pianiViaggi instanceof HashSet) && (registriPresenze instanceof HashSet);
     }
 
     //endregion

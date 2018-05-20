@@ -6,7 +6,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "RegistroPresenze")
-public class RegistroPresenze implements Serializable
+public class RegistroPresenze implements Serializable, ITransferable
 {
     //region Attributi
     @Id
@@ -134,4 +134,28 @@ public class RegistroPresenze implements Serializable
 
     //endregion
 
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        if(!bambino.isDTO())
+            bambino.toDTO();
+
+        if(!gita.isDTO())
+            gita.toDTO();
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return bambino.isDTO() && gita.isDTO();
+    }
+
+    //endregion
 }

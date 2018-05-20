@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -78,6 +80,40 @@ public class Bambino extends Persona
         //E' concettualmente errato controllare anche il pediatra, se io voglio fare Bambino = Bambino mi aspetto solo
         //che abbiano gli attributi uguali ma non che siano anche consistenti sul DB (quello è un controllo da fare altrove)
         return true;//getPediatra().equals(bambino.getPediatra()); //LAZY Error
+    }
+
+    //endregion
+
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        if(!gruppo.isDTO())
+            gruppo.toDTO();
+
+        if(!pediatra.isDTO())
+            pediatra.toDTO();
+
+        genitori = getGenitori();
+        contatti = getContatti();
+
+
+        DTOUtils.iterableToDTO(genitori);
+        DTOUtils.iterableToDTO(contatti);
+
+        super.toDTO();
+    }
+
+    @Override
+    public boolean isDTO() {
+        return super.isDTO() && gruppo.isDTO() && pediatra.isDTO() && (genitori instanceof HashSet) && (contatti instanceof HashSet);
     }
 
     //endregion

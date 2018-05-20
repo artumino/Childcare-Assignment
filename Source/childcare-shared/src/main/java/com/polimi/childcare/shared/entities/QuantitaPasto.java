@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "QuantitaPasti")
-public class QuantitaPasto implements Serializable
+public class QuantitaPasto implements Serializable, ITransferable
 {
     //region Attributi
 
@@ -84,4 +84,28 @@ public class QuantitaPasto implements Serializable
 
     //endregion
 
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        if(!menu.isDTO())
+            menu.toDTO();
+
+        if(!pasto.isDTO())
+            pasto.toDTO();
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return menu.isDTO() && pasto.isDTO();
+    }
+
+    //endregion
 }
