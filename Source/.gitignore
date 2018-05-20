@@ -103,3 +103,5 @@ hs_err_pid*
 
 #Sincronizza la librerie
 !libs/**
+
+local.properties
