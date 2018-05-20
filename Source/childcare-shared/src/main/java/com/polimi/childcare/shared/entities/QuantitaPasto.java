@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -94,17 +96,14 @@ public class QuantitaPasto implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        if(!menu.isDTO())
-            menu.toDTO();
-
-        if(!pasto.isDTO())
-            pasto.toDTO();
+        DTOUtils.objectToDTO(menu);
+        DTOUtils.objectToDTO(pasto);
     }
 
     @Override
     public boolean isDTO()
     {
-        return menu.isDTO() && pasto.isDTO();
+        return DTOUtils.isDTO(menu) && DTOUtils.isDTO(pasto);
     }
 
     //endregion

@@ -88,8 +88,7 @@ public class Gruppo implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        if(!sorvergliante.isDTO())
-            sorvergliante.toDTO();
+        DTOUtils.objectToDTO(sorvergliante);
 
         bambini = this.getBambini();
         pianoviaggi = this.getPianoviaggi();
@@ -102,7 +101,7 @@ public class Gruppo implements Serializable, ITransferable
     @Override
     public boolean isDTO()
     {
-        return (pianoviaggi instanceof HashSet) && (bambini instanceof HashSet) && sorvergliante.isDTO();
+        return (pianoviaggi instanceof HashSet) && (bambini instanceof HashSet) && DTOUtils.isDTO(sorvergliante);
     }
 
     //endregion

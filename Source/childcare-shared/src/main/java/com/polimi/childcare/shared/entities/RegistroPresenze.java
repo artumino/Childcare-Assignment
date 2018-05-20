@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -144,17 +146,14 @@ public class RegistroPresenze implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        if(!bambino.isDTO())
-            bambino.toDTO();
-
-        if(!gita.isDTO())
-            gita.toDTO();
+        DTOUtils.objectToDTO(bambino);
+        DTOUtils.objectToDTO(gita);
     }
 
     @Override
     public boolean isDTO()
     {
-        return bambino.isDTO() && gita.isDTO();
+        return DTOUtils.isDTO(bambino) && DTOUtils.isDTO(gita);
     }
 
     //endregion

@@ -95,11 +95,8 @@ public class Bambino extends Persona
     @Override
     public void toDTO()
     {
-        if(!gruppo.isDTO())
-            gruppo.toDTO();
-
-        if(!pediatra.isDTO())
-            pediatra.toDTO();
+        DTOUtils.objectToDTO(gruppo);
+        DTOUtils.objectToDTO(pediatra);
 
         genitori = getGenitori();
         contatti = getContatti();
@@ -113,7 +110,7 @@ public class Bambino extends Persona
 
     @Override
     public boolean isDTO() {
-        return super.isDTO() && gruppo.isDTO() && pediatra.isDTO() && (genitori instanceof HashSet) && (contatti instanceof HashSet);
+        return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && (genitori instanceof HashSet) && (contatti instanceof HashSet);
     }
 
     //endregion

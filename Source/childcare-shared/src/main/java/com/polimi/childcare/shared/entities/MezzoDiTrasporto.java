@@ -133,8 +133,7 @@ public class MezzoDiTrasporto implements Serializable, ITransferable
     {
         pianoViaggi = getPianoViaggi();
 
-        if(!fornitore.isDTO())
-            fornitore.toDTO();
+        DTOUtils.objectToDTO(fornitore);
 
         DTOUtils.iterableToDTO(pianoViaggi);
     }
@@ -142,7 +141,7 @@ public class MezzoDiTrasporto implements Serializable, ITransferable
     @Override
     public boolean isDTO()
     {
-        return (pianoViaggi instanceof HashSet) && (fornitore.isDTO());
+        return (pianoViaggi instanceof HashSet) && DTOUtils.isDTO(fornitore);
     }
 
     //endregion

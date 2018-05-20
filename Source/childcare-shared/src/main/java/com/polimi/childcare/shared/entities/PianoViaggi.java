@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -94,20 +96,15 @@ public class PianoViaggi implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        if(!gruppo.isDTO())
-            gruppo.toDTO();
-
-        if(!mezzo.isDTO())
-            mezzo.toDTO();
-
-        if(!gita.isDTO())
-            gita.toDTO();
+        DTOUtils.objectToDTO(gruppo);
+        DTOUtils.objectToDTO(mezzo);
+        DTOUtils.objectToDTO(gita);
     }
 
     @Override
     public boolean isDTO()
     {
-        return gruppo.isDTO() && mezzo.isDTO() && gita.isDTO();
+        return DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(mezzo) && DTOUtils.isDTO(gita);
     }
 
     //endregion

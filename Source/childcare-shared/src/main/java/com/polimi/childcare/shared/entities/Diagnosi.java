@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -96,17 +98,14 @@ public class Diagnosi implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        if(!persona.isDTO())
-            persona.toDTO();
-
-        if(!reazioneAvversa.isDTO())
-            reazioneAvversa.toDTO();
+        DTOUtils.objectToDTO(persona);
+        DTOUtils.objectToDTO(reazioneAvversa);
     }
 
     @Override
     public boolean isDTO()
     {
-        return persona.isDTO() && reazioneAvversa.isDTO();
+        return DTOUtils.isDTO(persona) && DTOUtils.isDTO(reazioneAvversa);
     }
 
     //endregion

@@ -2,6 +2,7 @@ package com.polimi.childcare.server.handlers;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -37,6 +38,7 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
 
         }
 
+        DTOUtils.iterableToDTO(addetti);
         ListAddettiResponse risposta = new ListAddettiResponse(200, addetti);
 
         return risposta;
