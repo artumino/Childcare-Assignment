@@ -50,15 +50,7 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
 
 
         if(request.isDetailed())
-        {
-            for(Bambino b : bambini)
-            {
-                DBHelper.objectInitialize(b.getGenitori());
-                DBHelper.objectInitialize(b.getContatti());
-                DBHelper.objectInitialize(b.getGruppo());
-            }
-
-        }
+            DBHelper.recursiveObjectInitialize(bambini);
 
         ListBambiniResponse risposta = new ListBambiniResponse(200, bambini);
 

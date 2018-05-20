@@ -49,15 +49,7 @@ public class FilteredPastiRequestHandler implements IRequestHandler<FilteredPast
             });
 
         if(request.isDetailed())
-        {
-            for(Pasto p : pasti)
-            {
-                DBHelper.objectInitialize(p.getFornitori());
-                DBHelper.objectInitialize(p.getQuantitaPasto());
-                DBHelper.objectInitialize(p.getReazione());
-            }
-
-        }
+            DBHelper.recursiveObjectInitialize(pasti);
 
         ListPastiResponse risposta = new ListPastiResponse(200, pasti);
 

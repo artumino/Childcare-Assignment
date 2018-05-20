@@ -51,14 +51,7 @@ public class FilteredPersonaRequestHandler implements IRequestHandler<FilteredPe
             });
 
         if(request.isDetailed())
-        {
-            for(Persona p : persone)
-            {
-                DBHelper.objectInitialize(p.getDiagnosi());
-                DBHelper.objectInitialize(p.getTelefoni());
-            }
-
-        }
+            DBHelper.recursiveObjectInitialize(persone);
 
         ListPersoneResponse risposta = new ListPersoneResponse(200, persone);
 

@@ -51,14 +51,7 @@ public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAd
             });
 
         if(request.isDetailed())
-        {
-            for(Addetto a : addetti)
-            {
-                DBHelper.objectInitialize(a.getTelefoni());
-                DBHelper.objectInitialize(a.getDiagnosi());
-            }
-
-        }
+            DBHelper.recursiveObjectInitialize(addetti);
 
         ListAddettiResponse risposta = new ListAddettiResponse(200, addetti);
 
