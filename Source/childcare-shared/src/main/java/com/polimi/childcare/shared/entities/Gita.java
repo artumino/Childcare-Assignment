@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -82,19 +84,9 @@ public class Gita implements Serializable
         return Costo;
     }
 
-    public Set<PianoViaggi> getPianiViaggi()
-    {
-        Set<PianoViaggi> ritorno = new HashSet<>(pianiViaggi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<PianoViaggi> getPianiViaggi() { return EntitiesHelper.unmodifiableListReturn(pianiViaggi); }
 
-    public Set<RegistroPresenze> getRegistriPresenze()
-    {
-        Set<RegistroPresenze> ritorno = new HashSet<>(registriPresenze);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<RegistroPresenze> getRegistriPresenze() { return EntitiesHelper.unmodifiableListReturn(registriPresenze); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Gita.class); }

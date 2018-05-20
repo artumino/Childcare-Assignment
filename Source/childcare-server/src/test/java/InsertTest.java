@@ -32,6 +32,8 @@ public class InsertTest
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
 
         bambino1.addGenitore(genitore1);
+        pasto1.addFornitore(fornitore1);
+        pasto1.addReazione(reazioneavversa1);
 
         Pasto pastoget;
         Fornitore fornitoreget;
@@ -42,6 +44,7 @@ public class InsertTest
         ReazioneAvversa reazioneavversaget;
         Contatto contattoget;
         Genitore genitoreget;
+        NumeroTelefono telefonoget;
 
         DatabaseSession.getInstance().execute(session ->{   //Ordine nel database dipende da insert nella session
             session.insert(pasto1);
@@ -67,6 +70,7 @@ public class InsertTest
         int idReazione = reazioneavversa1.getID();
         int idPasto = pasto1.getID();
         int idFornitore = fornitore1.getID();
+        int idTelefono = numero.getID();
 
         pastoget = DatabaseSession.getInstance().getByID(Pasto.class, idPasto);
         fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
@@ -77,6 +81,7 @@ public class InsertTest
         genitoreget = DatabaseSession.getInstance().getByID(Genitore.class, idGenitore, true);
         bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino, true);
         addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto, true);
+        telefonoget = DatabaseSession.getInstance().getByID(NumeroTelefono.class, idTelefono);
 
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", pastoget, pasto1);   //So che è il messaggio di errore ma lo lascio così per ora
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", fornitoreget, fornitore1);
@@ -130,13 +135,14 @@ public class InsertTest
 
 
         DatabaseSession.getInstance().execute(session ->{
+            session.deleteByID(NumeroTelefono.class, idTelefono);
             session.deleteByID(Genitore.class, idGenitore);
-            session.deleteByID(Pasto.class, idPasto);
             session.deleteByID(Fornitore.class, idFornitore);
+            session.deleteByID(Pasto.class, idPasto);
             session.deleteByID(Pediatra.class, idPediatra);
             session.deleteByID(ReazioneAvversa.class, idReazione); //FIXME: Controllare Cascade
-            session.deleteByID(Addetto.class, idAddetto);
             session.deleteByID(Diagnosi.class, idDiagnosi);
+            session.deleteByID(Addetto.class, idAddetto);
             session.deleteByID(Bambino.class, idBambino);
             session.deleteByID(Contatto.class, idContatto);
 

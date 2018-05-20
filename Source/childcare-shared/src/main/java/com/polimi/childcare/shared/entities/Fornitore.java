@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 import org.jinq.jpa.jpqlquery.ParameterAsQuery;
 
 import javax.persistence.*;
@@ -132,34 +133,13 @@ public class Fornitore implements Serializable
 
     public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
 
+    public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
 
-    public Set<Pasto> getPasti()
-    {
-        Set<Pasto> ritorno = new HashSet<>(pasti);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<MezzoDiTrasporto> getMezzi() { return EntitiesHelper.unmodifiableListReturn(mezzi); }
 
-    public Set<MezzoDiTrasporto> getMezzi()
-    {
-        Set<MezzoDiTrasporto> ritorno = new HashSet<>(mezzi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<NumeroTelefono> getFax() { return EntitiesHelper.unmodifiableListReturn(fax); }
 
-    public Set<NumeroTelefono> getFax()
-    {
-        Set<NumeroTelefono> ritorno = new HashSet<>(fax);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
-
-    public Set<NumeroTelefono> getTelefoni()
-    {
-        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Fornitore.class); }

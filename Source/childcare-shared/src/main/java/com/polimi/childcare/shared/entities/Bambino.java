@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -54,30 +55,20 @@ public class Bambino extends Persona
 
     public void removeGenitore(Genitore g) { genitori.remove(g); }
 
-    public Set<Genitore> getGenitori()
-    {
-        Set<Genitore> ritorno = new HashSet<>(genitori);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Genitore> getGenitori() { return EntitiesHelper.unmodifiableListReturn(genitori); }
 
     public Set<Contatto> getContatti()
     {
-        Set<Contatto> ritorno = new HashSet<>(contatti);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
+        return EntitiesHelper.unmodifiableListReturn(contatti);
     }
 
     @Override
-    public boolean equals(Object o) {           //Ora funzionante con Pediatra EAGER
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
-        //Bambino bambino = (Bambino) o;
 
-        //E' concettualmente errato controllare anche il pediatra, se io voglio fare Bambino = Bambino mi aspetto solo
-        //che abbiano gli attributi uguali ma non che siano anche consistenti sul DB (quello è un controllo da fare altrove)
-        return true;//getPediatra().equals(bambino.getPediatra()); //LAZY Error
+        return true;
     }
 
     //endregion

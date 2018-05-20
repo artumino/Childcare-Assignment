@@ -77,9 +77,7 @@ public class QuantitaPasto implements Serializable
         if (!(o instanceof QuantitaPasto)) return false;
         QuantitaPasto that = (QuantitaPasto) o;
         return getID() == that.getID() &&
-                getQuantita() == that.getQuantita(); //&&
-                //getPasto().equals(that.getPasto()) &&
-                //getMenu().equals(that.getMenu());
+                getQuantita() == that.getQuantita();
     }
 
     //endregion

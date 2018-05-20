@@ -1,4 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -48,19 +50,9 @@ public class Gruppo implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
-    public Set<Bambino> getBambini()
-    {
-        Set<Bambino> ritorno = new HashSet<>(bambini);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
-    public Set<PianoViaggi> getPianoviaggi()
-    {
-        Set<PianoViaggi> ritorno = new HashSet<>(pianoviaggi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<PianoViaggi> getPianoviaggi() { return EntitiesHelper.unmodifiableListReturn(pianoviaggi); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Gruppo.class); }
@@ -70,8 +62,7 @@ public class Gruppo implements Serializable
         if (this == o) return true;
         if (!(o instanceof Gruppo)) return false;
         Gruppo gruppo = (Gruppo) o;
-        return getID() == gruppo.getID(); //&&
-                //getSorvergliante().equals(gruppo.getSorvergliante());
+        return getID() == gruppo.getID();
     }
 
     //endregion
