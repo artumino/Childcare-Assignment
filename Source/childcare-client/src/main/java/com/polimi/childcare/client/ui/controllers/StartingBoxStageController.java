@@ -1,10 +1,9 @@
 package com.polimi.childcare.client.ui.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.polimi.childcare.client.networking.ClientNetworkManager;
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
-import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
+import com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient;
 import com.polimi.childcare.client.ui.constants.ToolbarButtons;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.sun.javafx.collections.ObservableListWrapper;
@@ -15,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;

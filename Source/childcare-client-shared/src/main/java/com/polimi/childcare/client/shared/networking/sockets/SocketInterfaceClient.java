@@ -1,6 +1,6 @@
-package com.polimi.childcare.client.networking.sockets;
+package com.polimi.childcare.client.shared.networking.sockets;
 
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;

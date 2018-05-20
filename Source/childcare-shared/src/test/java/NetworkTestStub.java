@@ -1,4 +1,4 @@
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.NullRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;

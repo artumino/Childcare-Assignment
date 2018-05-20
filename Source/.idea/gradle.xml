@@ -10,6 +10,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/childcare-client" />
+            <option value="$PROJECT_DIR$/childcare-client-shared" />
             <option value="$PROJECT_DIR$/childcare-server" />
             <option value="$PROJECT_DIR$/childcare-shared" />
           </set>

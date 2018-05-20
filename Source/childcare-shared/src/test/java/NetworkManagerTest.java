@@ -1,18 +1,14 @@
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.NullRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import stubs.BambinoListRequestStub;
-import stubs.BambinoListResponseStub;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 public class NetworkManagerTest

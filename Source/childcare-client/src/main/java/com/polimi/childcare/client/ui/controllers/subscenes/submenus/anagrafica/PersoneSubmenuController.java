@@ -1,7 +1,7 @@
 package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica;
 
-import com.polimi.childcare.client.networking.ClientNetworkManager;
-import com.polimi.childcare.client.networking.NetworkOperation;
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.utils.DateUtils;
 import com.polimi.childcare.shared.entities.Persona;

@@ -1,4 +1,4 @@
-package com.polimi.childcare.client.networking;
+package com.polimi.childcare.client.shared.networking;
 
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 

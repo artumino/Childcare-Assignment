@@ -1,6 +1,6 @@
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
-import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
+import com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
@@ -14,7 +14,6 @@ import stubs.BambinoListRequestStub;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 public class MultiInterfaceNetworkingRule implements MethodRule
 {

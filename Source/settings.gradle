@@ -2,4 +2,5 @@ rootProject.name = 'ChildCare'
 include 'childcare-client'
 include 'childcare-server'
 include 'childcare-shared'
+include 'childcare-client-shared'
 

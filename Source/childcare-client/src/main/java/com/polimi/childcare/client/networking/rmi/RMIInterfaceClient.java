@@ -1,12 +1,11 @@
 package com.polimi.childcare.client.networking.rmi;
 
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.rmi.IRMIServer;
 
 import java.io.IOException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.registry.LocateRegistry;
 
