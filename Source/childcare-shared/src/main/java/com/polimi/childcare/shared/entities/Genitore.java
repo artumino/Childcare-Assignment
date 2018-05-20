@@ -1,8 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -29,6 +27,30 @@ public class Genitore extends Persona
     }
 
     public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        bambini = getBambini();
+
+        DTOUtils.iterableToDTO(bambini);
+
+        super.toDTO();
+    }
+
+    @Override
+    public boolean isDTO() {
+        return super.isDTO() && (bambini instanceof HashSet);
+    }
 
     //endregion
 }

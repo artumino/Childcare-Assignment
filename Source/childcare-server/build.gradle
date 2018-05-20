@@ -12,8 +12,24 @@ repositories {
 
 dependencies {
     compile project(':childcare-shared')
+    compile fileTree(dir: '../libs', include: ['*.jar'])
+    compile 'org.jinq:jinq-jpa:1.8.22'
+    compile 'org.mariadb.jdbc:mariadb-java-client:2.2.3'
+    compile 'org.hibernate:hibernate-core:5.2.17.Final'
     testCompile 'com.h2database:h2:1.4.196'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+mainClassName = "com.polimi.childcare.server.Main"
+
+jar
+{
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 run {

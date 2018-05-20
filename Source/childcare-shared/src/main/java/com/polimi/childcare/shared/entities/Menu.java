@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Menu")
-public class Menu implements Serializable
+public class Menu implements Serializable, ITransferable
 {
     //region Attributi
 
@@ -73,6 +74,29 @@ public class Menu implements Serializable
         return getID() == menu.getID() &&
                 getRicorrenza() == menu.getRicorrenza() &&
                 getDataInizio().compareTo(menu.getDataInizio()) == 0;
+    }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        quantitaPasto = this.getQuantitaPasto();
+
+        DTOUtils.iterableToDTO(quantitaPasto);
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return (quantitaPasto instanceof HashSet);
     }
 
     //endregion

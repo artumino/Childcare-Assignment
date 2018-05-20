@@ -1,6 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
-import org.hibernate.Session;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.*;
 @Entity
 @Table(name = "Persone")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Persona implements Serializable
+public abstract class Persona implements Serializable, ITransferable
 {
     //region Attributi
     @Id
@@ -80,6 +80,7 @@ public abstract class Persona implements Serializable
         Residenza = residenza;
         Sesso = sesso;
     }
+
 
     public int getID() { return ID; }
 
@@ -190,6 +191,31 @@ public abstract class Persona implements Serializable
                 getProvincia().equals(persona.getProvincia()) &&
                 getCittadinanza().equals(persona.getCittadinanza()) &&
                 getResidenza().equals(persona.getResidenza());
+    }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        telefoni = this.getTelefoni();
+        diagnosi = this.getDiagnosi();
+
+        //Aggiorna figli
+        DTOUtils.iterableToDTO(diagnosi);
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return (telefoni instanceof HashSet) && (diagnosi instanceof HashSet);
     }
 
     //endregion

@@ -3,6 +3,7 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -47,12 +48,15 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
                 bambini.addAll(session.query(Bambino.class).limit(request.getCount()*(request.getPageNumber() + 1)).skip(request.getCount()*request.getPageNumber()).toList());
                 return true;
             });
-
-
+            
         if(request.isDetailed())
             DBHelper.recursiveObjectInitialize(bambini);
+            
+        //Trasforma i proxy
+        DTOUtils.iterableToDTO(bambini);ù
 
         ListBambiniResponse risposta = new ListBambiniResponse(200, bambini);
+
 
         return risposta;
     }

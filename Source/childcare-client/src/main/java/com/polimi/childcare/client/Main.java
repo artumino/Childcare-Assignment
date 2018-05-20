@@ -1,11 +1,9 @@
 package com.polimi.childcare.client;
 
-import com.polimi.childcare.client.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.rmi.RMISecurityManager;
 
 public class Main extends Application
 {

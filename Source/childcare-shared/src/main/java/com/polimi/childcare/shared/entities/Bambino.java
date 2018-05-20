@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -69,6 +70,37 @@ public class Bambino extends Persona
         if (!super.equals(o)) return false;
 
         return true;
+    }
+
+    //endregion
+
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        DTOUtils.objectToDTO(gruppo);
+        DTOUtils.objectToDTO(pediatra);
+
+        genitori = getGenitori();
+        contatti = getContatti();
+
+
+        DTOUtils.iterableToDTO(genitori);
+        DTOUtils.iterableToDTO(contatti);
+
+        super.toDTO();
+    }
+
+    @Override
+    public boolean isDTO() {
+        return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && (genitori instanceof HashSet) && (contatti instanceof HashSet);
     }
 
     //endregion

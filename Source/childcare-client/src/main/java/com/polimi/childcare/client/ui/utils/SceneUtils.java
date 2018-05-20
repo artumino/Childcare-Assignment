@@ -23,4 +23,25 @@ public class SceneUtils
         controller.setupScene(root);
         return controller;
     }
+
+    public static <T extends ISubSceneController> T loadSubSceneWithController(URL fxmlPath, Class<T> controllerClass) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(fxmlPath);
+        loader.setControllerFactory((type) ->
+        {
+            if(type.isAssignableFrom(controllerClass))
+            {
+                try {
+                    return controllerClass.newInstance();
+                } catch (InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        });
+        Parent root = loader.load(fxmlPath.openStream());
+        T controller = loader.getController();
+        controller.setupScene(root);
+        return controller;
+    }
 }

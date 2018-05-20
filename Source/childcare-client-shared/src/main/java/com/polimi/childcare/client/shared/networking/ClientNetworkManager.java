@@ -1,5 +1,7 @@
-package com.polimi.childcare.client.networking;
+package com.polimi.childcare.client.shared.networking;
 
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
+import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.concurrent.LinkedBlockingDeque;
@@ -113,6 +115,15 @@ public class ClientNetworkManager implements Runnable
     }
 
     /**
+     * Rimuove dalla lista delle operazioni un'operazione precedentemente inserita
+     * @param networkOperation Operazione di rete da effettuare
+     */
+    public void abortOperation(NetworkOperation networkOperation)
+    {
+        this.networkOperationQueue.removeFirstOccurrence(networkOperation);
+    }
+
+    /**
      * NetworkLoop, gestisce la coda delle operazioni di rete.
      * estrae un'operazione dalla coda (FIFO), prova ad eseguirla e ne valuta il successo.
      * In caso di insuccesso reinserisce l'operazione in fondo alla coda(pronta per essere riestratta).
@@ -136,10 +147,17 @@ public class ClientNetworkManager implements Runnable
                 }
 
                 //null in caso di errori di connessione
-                BaseResponse response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                BaseResponse response = null;
+                boolean clientException = false;
+                try {
+                    response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                } catch (NetworkSerializationException e) {
+                    e.printStackTrace();
+                    clientException = true;
+                }
 
 
-                if(response == null) {
+                if(response == null && !clientException) {
                     //In caso di errore di connessione ripristino la richiesta nella lista delle richieste
                     try {
                         networkOperationQueue.putLast(operation);
@@ -148,7 +166,7 @@ public class ClientNetworkManager implements Runnable
                         continue;
                     }
                 }
-                else
+                else if(!clientException)
                     //In caso di operazione andata a buon fine, eseguo il callback
                     operation.executeCallback(response);
             }

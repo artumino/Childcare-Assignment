@@ -1,19 +1,15 @@
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
-import com.polimi.childcare.client.networking.sockets.SocketInterfaceClient;
-import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
-import com.polimi.childcare.shared.networking.requests.BaseRequest;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 import stubs.BambinoListRequestHandler;
 import stubs.BambinoListRequestStub;
-import stubs.BambinoListResponseStub;
 
 import java.io.IOException;
 import java.util.ArrayList;
