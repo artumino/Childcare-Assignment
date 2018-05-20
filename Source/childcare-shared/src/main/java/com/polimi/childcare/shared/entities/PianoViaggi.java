@@ -78,10 +78,7 @@ public class PianoViaggi implements Serializable, ITransferable
         if (this == o) return true;
         if (!(o instanceof PianoViaggi)) return false;
         PianoViaggi that = (PianoViaggi) o;
-        return getID() == that.getID(); //&&
-                //getGita().equals(that.getGita()) &&
-                //getGruppo().equals(that.getGruppo()) &&
-                //getMezzo().equals(that.getMezzo());
+        return getID() == that.getID();
     }
 
     //endregion

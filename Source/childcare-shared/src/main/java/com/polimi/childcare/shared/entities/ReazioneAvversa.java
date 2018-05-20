@@ -1,5 +1,6 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -62,19 +63,9 @@ public class ReazioneAvversa implements Serializable, ITransferable
         Descrizione = descrizione;
     }
 
-    public Set<Diagnosi> getDiagnosi()
-    {
-        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
 
-    public Set<Pasto> getPasti()
-    {
-        Set<Pasto> ritorno = new HashSet<>(pasti);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, ReazioneAvversa.class); }

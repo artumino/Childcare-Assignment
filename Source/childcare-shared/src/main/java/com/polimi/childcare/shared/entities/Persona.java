@@ -1,6 +1,6 @@
 package com.polimi.childcare.shared.entities;
-
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -50,10 +50,10 @@ public abstract class Persona implements Serializable, ITransferable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "persona")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
     private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Persona_Rubrica",
             joinColumns = { @JoinColumn(name = "Persona_FK") },
@@ -168,19 +168,9 @@ public abstract class Persona implements Serializable, ITransferable
 
     public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
 
-    public Set<Diagnosi> getDiagnosi()
-    {
-        Set<Diagnosi> ritorno = new HashSet<>(diagnosi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
 
-    public Set<NumeroTelefono> getTelefoni()
-    {
-        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Persona.class); }

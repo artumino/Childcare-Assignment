@@ -1,5 +1,6 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -84,26 +85,11 @@ public class Pasto implements Serializable, ITransferable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public Set<Fornitore> getFornitori()
-    {
-        Set<Fornitore> ritorno = new HashSet<>(fornitori);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Fornitore> getFornitori() { return EntitiesHelper.unmodifiableListReturn(fornitori); }
 
-    public Set<ReazioneAvversa> getReazione()
-    {
-        Set<ReazioneAvversa> ritorno = new HashSet<>(reazione);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }
 
-    public Set<QuantitaPasto> getQuantitaPasto()
-    {
-        Set<QuantitaPasto> ritorno = new HashSet<>(quantitaPasto);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Pasto.class); }

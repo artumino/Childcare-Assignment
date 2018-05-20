@@ -1,5 +1,6 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -96,12 +97,7 @@ public class MezzoDiTrasporto implements Serializable, ITransferable
         this.fornitore = fornitore;
     }
 
-    public Set<PianoViaggi> getPianoViaggi()
-    {
-        Set<PianoViaggi> ritorno = new HashSet<>(pianoViaggi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<PianoViaggi> getPianoViaggi() { return EntitiesHelper.unmodifiableListReturn(pianoViaggi); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, MezzoDiTrasporto.class); }
@@ -116,7 +112,6 @@ public class MezzoDiTrasporto implements Serializable, ITransferable
                 getNumeroIdentificativo() == that.getNumeroIdentificativo() &&
                 getCostoOrario() == that.getCostoOrario() &&
                 getTarga().equals(that.getTarga());
-                //getFornitore().equals(that.getFornitore());
     }
 
     //endregion

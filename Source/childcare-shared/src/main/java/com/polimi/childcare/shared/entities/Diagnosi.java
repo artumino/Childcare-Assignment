@@ -23,11 +23,11 @@ public class Diagnosi implements Serializable, ITransferable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "Persona_FK")
     private Persona persona;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = { CascadeType.ALL })
     @JoinColumn(name = "ReazioneAvversa_FK")
     private ReazioneAvversa reazioneAvversa;
 
@@ -79,10 +79,7 @@ public class Diagnosi implements Serializable, ITransferable
         if (this == o) return true;
         if (!(o instanceof Diagnosi)) return false;
         Diagnosi diagnosi = (Diagnosi) o;
-        return getID() == diagnosi.getID(); //&&
-                //isAllergia() == diagnosi.isAllergia() &&
-                //getPersona().equals(diagnosi.getPersona()) &&
-                //getReazioneAvversa().equals(diagnosi.getReazioneAvversa());
+        return getID() == diagnosi.getID();
     }
 
     //endregion

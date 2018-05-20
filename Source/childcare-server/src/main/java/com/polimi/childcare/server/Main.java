@@ -6,10 +6,7 @@ import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoRequest;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,10 +40,13 @@ public class Main
         System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
 
         //Aggiunge handler al network manager
-        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredAddettoRequest.class, new FilteredAddettiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredContattoRequest.class, new FilteredContattoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredDiagnosiRequest.class, new FilteredDiagnosiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredFornitoriRequest.class, new FilteredFornitoreRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);

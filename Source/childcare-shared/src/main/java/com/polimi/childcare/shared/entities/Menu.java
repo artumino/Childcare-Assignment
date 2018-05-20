@@ -1,5 +1,6 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -60,12 +61,7 @@ public class Menu implements Serializable, ITransferable
         Ricorrenza = ricorrenza;
     }
 
-    public Set<QuantitaPasto> getQuantitaPasto()
-    {
-        Set<QuantitaPasto> ritorno = new HashSet<>(quantitaPasto);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Menu.class); }

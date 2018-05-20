@@ -1,6 +1,6 @@
 package com.polimi.childcare.shared.entities;
-
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -38,13 +38,13 @@ public class Fornitore implements Serializable, ITransferable
 
     //region Relazioni
 
-    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.LAZY)
     private Set<Pasto> pasti = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
     private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Fax_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
@@ -52,7 +52,7 @@ public class Fornitore implements Serializable, ITransferable
     )
     private Set<NumeroTelefono> fax = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "Fornitore_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
@@ -133,34 +133,13 @@ public class Fornitore implements Serializable, ITransferable
 
     public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
 
+    public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
 
-    public Set<Pasto> getPasti()
-    {
-        Set<Pasto> ritorno = new HashSet<>(pasti);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<MezzoDiTrasporto> getMezzi() { return EntitiesHelper.unmodifiableListReturn(mezzi); }
 
-    public Set<MezzoDiTrasporto> getMezzi()
-    {
-        Set<MezzoDiTrasporto> ritorno = new HashSet<>(mezzi);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<NumeroTelefono> getFax() { return EntitiesHelper.unmodifiableListReturn(fax); }
 
-    public Set<NumeroTelefono> getFax()
-    {
-        Set<NumeroTelefono> ritorno = new HashSet<>(fax);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
-
-    public Set<NumeroTelefono> getTelefoni()
-    {
-        Set<NumeroTelefono> ritorno = new HashSet<>(telefoni);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Fornitore.class); }
