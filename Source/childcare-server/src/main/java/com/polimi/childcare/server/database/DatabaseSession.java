@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.database;
 
 
+import com.polimi.childcare.server.Helper.DBHelper;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -107,7 +108,7 @@ public class DatabaseSession
 
     //region Metodi per ID
 
-    public <T> T getByID(Class<T> tClass, Integer ID)
+    public <T> T getByID(Class<T> tClass, Integer ID, boolean eager)
     {
         if(sessionFactory != null) {
             T entity = null;
@@ -115,6 +116,8 @@ public class DatabaseSession
             try (Session session = sessionFactory.openSession())
             {
                 entity = session.get(tClass, ID);
+                if(eager)
+                    DBHelper.recursiveObjectInitialize(entity);
             } catch (HibernateException e) {
                 e.printStackTrace();
             }
@@ -122,6 +125,11 @@ public class DatabaseSession
         }
         else
             return null;
+    }
+
+    public <T> T getByID(Class<T> tClass, Integer ID)
+    {
+        return getByID(tClass, ID, false);
     }
 
     public <T> void deleteByID(Class<T> tClass, Integer ID)
@@ -158,7 +166,6 @@ public class DatabaseSession
                 tx.rollback();
                 return false;
             }
-
         }catch (HibernateException ex)
         {
             ex.printStackTrace();
@@ -241,9 +248,18 @@ public class DatabaseSession
 
         //region Metodi per ID
 
+
+        public <T> T getByID(Class<T> tClass, Integer ID, boolean eager)
+        {
+            T result = session.get(tClass, ID);
+            if(eager)
+                DBHelper.recursiveObjectInitialize(result);
+            return result;
+        }
+
         public <T> T getByID(Class<T> tClass, Integer ID)
         {
-            return session.get(tClass, ID);
+            return getByID(tClass, ID, false);
         }
 
         public <T> void deleteByID(Class<T> tClass, Integer ID)

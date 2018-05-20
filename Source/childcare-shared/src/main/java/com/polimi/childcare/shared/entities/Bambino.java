@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
+
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -10,11 +11,11 @@ public class Bambino extends Persona
 {
     //region Relazioni
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Non posso fare confronti se è LAZY :S
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "TutoriLegali",
             joinColumns = { @JoinColumn(name = "Bambino_FK") },
@@ -22,10 +23,10 @@ public class Bambino extends Persona
     )
     private Set<Genitore> genitori = new HashSet<>();
 
-    @ManyToMany(mappedBy = "bambini", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "bambini", fetch = FetchType.LAZY)
     private Set<Contatto> contatti = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
 
@@ -54,30 +55,20 @@ public class Bambino extends Persona
 
     public void removeGenitore(Genitore g) { genitori.remove(g); }
 
-    public Set<Genitore> getGenitori()
-    {
-        Set<Genitore> ritorno = new HashSet<>(genitori);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
-    }
+    public Set<Genitore> getGenitori() { return EntitiesHelper.unmodifiableListReturn(genitori); }
 
     public Set<Contatto> getContatti()
     {
-        Set<Contatto> ritorno = new HashSet<>(contatti);
-        Collections.unmodifiableSet(ritorno);
-        return ritorno;
+        return EntitiesHelper.unmodifiableListReturn(contatti);
     }
 
     @Override
-    public boolean equals(Object o) {           //Ora funzionante con Pediatra EAGER
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Bambino)) return false;
         if (!super.equals(o)) return false;
-        //Bambino bambino = (Bambino) o;
 
-        //E' concettualmente errato controllare anche il pediatra, se io voglio fare Bambino = Bambino mi aspetto solo
-        //che abbiano gli attributi uguali ma non che siano anche consistenti sul DB (quello è un controllo da fare altrove)
-        return true;//getPediatra().equals(bambino.getPediatra()); //LAZY Error
+        return true;
     }
 
     //endregion

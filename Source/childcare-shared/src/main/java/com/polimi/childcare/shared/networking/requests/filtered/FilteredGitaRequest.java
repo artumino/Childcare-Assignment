@@ -5,9 +5,9 @@ import org.jinq.orm.stream.JinqStream;
 import java.util.HashMap;
 import java.util.List;
 
-public class FilteredPastoRequest extends FilteredBaseRequest
+public class FilteredGitaRequest extends FilteredBaseRequest
 {
-    public FilteredPastoRequest(int count, int pageNumber, boolean detailed, List<JinqStream.Where> filters, HashMap<JinqStream.CollectComparable, Boolean> orderBy) {
+    public FilteredGitaRequest(int count, int pageNumber, boolean detailed, List<JinqStream.Where> filters, HashMap<JinqStream.CollectComparable, Boolean> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);
     }
 }
