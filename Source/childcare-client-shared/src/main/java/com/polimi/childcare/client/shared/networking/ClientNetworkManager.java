@@ -1,5 +1,7 @@
 package com.polimi.childcare.client.shared.networking;
 
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
+import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.concurrent.LinkedBlockingDeque;
@@ -145,10 +147,17 @@ public class ClientNetworkManager implements Runnable
                 }
 
                 //null in caso di errori di connessione
-                BaseResponse response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                BaseResponse response = null;
+                boolean clientException = false;
+                try {
+                    response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                } catch (NetworkSerializationException e) {
+                    e.printStackTrace();
+                    clientException = true;
+                }
 
 
-                if(response == null) {
+                if(response == null && !clientException) {
                     //In caso di errore di connessione ripristino la richiesta nella lista delle richieste
                     try {
                         networkOperationQueue.putLast(operation);
@@ -157,7 +166,7 @@ public class ClientNetworkManager implements Runnable
                         continue;
                     }
                 }
-                else
+                else if(!clientException)
                     //In caso di operazione andata a buon fine, eseguo il callback
                     operation.executeCallback(response);
             }

@@ -1,5 +1,6 @@
 package com.polimi.childcare.client.shared.networking;
 
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
@@ -13,5 +14,5 @@ public interface IClientNetworkInterface
     void close();
 
     //Metodo bloccante per l'invio di un messaggio e l'attesa della risposta
-    BaseResponse sendMessage(BaseRequest request);
+    BaseResponse sendMessage(BaseRequest request) throws NetworkSerializationException;
 }

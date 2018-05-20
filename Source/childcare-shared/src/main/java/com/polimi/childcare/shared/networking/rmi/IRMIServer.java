@@ -9,5 +9,5 @@ import java.rmi.RemoteException;
 public interface IRMIServer extends Remote
 {
     public static final String ENDPOINT = "IRMIServer";
-    BaseResponse messageReceived(BaseRequest request) throws RemoteException;
+    BaseResponse messageReceived(BaseRequest request) throws RemoteException, ClassNotFoundException;
 }
