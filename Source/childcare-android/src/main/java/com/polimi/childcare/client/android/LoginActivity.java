@@ -2,6 +2,7 @@ package com.polimi.childcare.client.android;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -77,6 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                 txtLayoutServerAddress.setError("Permessi di connessione necessari");
                 return;
             }
+
+            startActivity(new Intent(this, PresenzeActivity.class));
 
             //Le operazioni di rete su Android devono essere sempre su altri thread
             AsyncTask.execute(() ->
