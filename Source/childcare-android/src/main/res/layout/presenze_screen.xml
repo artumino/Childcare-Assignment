@@ -49,18 +49,27 @@
                     android:layout_height="wrap_content" android:id="@+id/txtSurname" android:layout_weight="1"
                     android:textAlignment="center" android:textSize="12pt" android:textStyle="bold"/>
         </LinearLayout>
-        <me.dm7.barcodescanner.zxing.ZXingScannerView
+        <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:id="@+id/qrCodeScannerView">
-        </me.dm7.barcodescanner.zxing.ZXingScannerView>
+                android:layout_height="0dp" android:layout_weight="1">
+
+            <me.dm7.barcodescanner.zxing.ZXingScannerView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:id="@+id/qrCodeScannerView">
+            </me.dm7.barcodescanner.zxing.ZXingScannerView>
+            <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" app:srcCompat="@drawable/ic_photo_camera_black_24dp"
+                    android:id="@+id/imgScanBambinoPreview" android:scaleType="centerCrop" android:visibility="gone"/>
+        </FrameLayout>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="60dp" android:layout_weight="0" android:gravity="center">
             <android.support.design.widget.FloatingActionButton
-                    android:layout_width="45dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:clickable="true" app:srcCompat="@drawable/ic_arrow_upward_black_24dp"
                     android:id="@+id/fabEnter" android:layout_weight="0"
@@ -74,7 +83,7 @@
                     android:layout_marginEnd="15dp" android:layout_marginLeft="15dp" android:layout_marginRight="15dp"
                     android:layout_marginStart="15dp"/>
             <android.support.design.widget.FloatingActionButton
-                    android:layout_width="45dp"
+                    android:layout_width="60dp"
                     android:layout_height="wrap_content"
                     android:clickable="true" app:srcCompat="@drawable/ic_arrow_downward_black_24dp"
                     android:id="@+id/fabExit" android:layout_weight="0"

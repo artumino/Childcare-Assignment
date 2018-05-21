@@ -47,7 +47,7 @@
                     android:inputType="textPersonName"
                     android:ems="10"
                     android:id="@+id/txtIpAddress" android:layout_weight="1" android:textColor="#ccc"
-                    android:textStyle="bold" android:text="192.168.0.140" android:hint="Server Address"
+                    android:textStyle="bold" android:text="192.168.0.135" android:hint="Server Address"
                     android:textColorHint="@color/colorAccent"/>
         </android.support.design.widget.TextInputLayout>
         <Button

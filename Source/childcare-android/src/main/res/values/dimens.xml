@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="img_bambino_size">60dp</dimen>
+    <dimen name="img_bambino_size_half">30dp</dimen>
+</resources>

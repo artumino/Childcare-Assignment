@@ -79,13 +79,11 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            startActivity(new Intent(this, PresenzeActivity.class));
-
             //Le operazioni di rete su Android devono essere sempre su altri thread
             AsyncTask.execute(() ->
             {
                 if (ClientNetworkManager.getInstance().tryConnect(txtServerAddress.getText().toString(), 55403))
-                    finish();
+                    startActivity(new Intent(this, PresenzeActivity.class));
                 else
                     runOnUiThread(() -> txtLayoutServerAddress.setError("Impossibile connettersi al server"));
             });
