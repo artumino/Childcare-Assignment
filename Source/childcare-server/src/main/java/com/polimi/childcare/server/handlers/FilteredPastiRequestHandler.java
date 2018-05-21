@@ -53,7 +53,6 @@ public class FilteredPastiRequestHandler implements IRequestHandler<FilteredPast
             DBHelper.recursiveObjectInitialize(pasti);
             
         DTOUtils.iterableToDTO(pasti);
-        
         ListPastiResponse risposta = new ListPastiResponse(200, pasti);
 
         return risposta;

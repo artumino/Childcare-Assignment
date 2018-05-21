@@ -3,6 +3,7 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Contatto;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredContattoRequest;
@@ -53,6 +54,7 @@ public class FilteredContattoRequestHandler implements IRequestHandler<FilteredC
         if(request.isDetailed())
             DBHelper.recursiveObjectInitialize(contatti);
 
+        DTOUtils.iterableToDTO(contatti);
         ListContattoResponse risposta = new ListContattoResponse(200, contatti);
 
         return risposta;

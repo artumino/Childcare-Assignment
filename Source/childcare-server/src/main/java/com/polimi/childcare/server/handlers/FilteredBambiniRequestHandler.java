@@ -53,7 +53,7 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
             DBHelper.recursiveObjectInitialize(bambini);
             
         //Trasforma i proxy
-        DTOUtils.iterableToDTO(bambini);ù
+        DTOUtils.iterableToDTO(bambini);
 
         ListBambiniResponse risposta = new ListBambiniResponse(200, bambini);
 

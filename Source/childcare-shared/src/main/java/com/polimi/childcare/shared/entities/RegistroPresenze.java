@@ -8,7 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "RegistroPresenze")
-public class RegistroPresenze implements Serializable, ITransferable
+public class RegistroPresenze extends TransferableEntity implements Serializable
 {
     //region Attributi
     @Id
@@ -144,8 +144,8 @@ public class RegistroPresenze implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(bambino);
-        DTOUtils.objectToDTO(gita);
+        bambino = DTOUtils.objectToDTO(bambino);
+        gita = DTOUtils.objectToDTO(gita);
     }
 
     @Override

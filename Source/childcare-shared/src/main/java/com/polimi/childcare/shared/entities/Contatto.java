@@ -3,7 +3,6 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
-import javax.xml.soap.Node;
 import java.io.Serializable;
 import java.util.*;
 
@@ -12,7 +11,7 @@ import java.util.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "Pediatra", discriminatorType = DiscriminatorType.CHAR, length = 1)
 @DiscriminatorValue(value = "0")
-public class Contatto implements Serializable, ITransferable
+public class Contatto extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -138,15 +137,16 @@ public class Contatto implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
+        bambini = DTOUtils.iterableToDTO(bambini);
+        telefoni = DTOUtils.iterableToDTO(telefoni);
+
         telefoni = getTelefoni();
         bambini = getBambini();
-
-        DTOUtils.iterableToDTO(bambini);
     }
 
     @Override
     public boolean isDTO() {
-        return (telefoni instanceof HashSet) && (bambini instanceof HashSet);
+        return DTOUtils.isDTO(telefoni) && DTOUtils.isDTO(bambini);
     }
 
     //endregion

@@ -8,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Gite")
-public class Gita implements Serializable, ITransferable
+public class Gita extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -116,18 +116,17 @@ public class Gita implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
+        pianiViaggi = DTOUtils.iterableToDTO(pianiViaggi);
+        registriPresenze = DTOUtils.iterableToDTO(registriPresenze);
+
         pianiViaggi = getPianiViaggi();
         registriPresenze = getRegistriPresenze();
-
-
-        DTOUtils.iterableToDTO(pianiViaggi);
-        DTOUtils.iterableToDTO(registriPresenze);
     }
 
     @Override
     public boolean isDTO()
     {
-        return (pianiViaggi instanceof HashSet) && (registriPresenze instanceof HashSet);
+        return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze);
     }
 
     //endregion

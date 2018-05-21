@@ -9,7 +9,7 @@ import java.util.*;
 @Entity
 @Table(name = "Persone")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Persona implements Serializable, ITransferable
+public abstract class Persona extends TransferableEntity implements Serializable
 {
     //region Attributi
     @Id
@@ -205,17 +205,19 @@ public abstract class Persona implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
+        //Aggiorna figli
+        diagnosi = DTOUtils.iterableToDTO(diagnosi);
+        telefoni = DTOUtils.iterableToDTO(telefoni);
+
+        //Trasformo in Set
         telefoni = this.getTelefoni();
         diagnosi = this.getDiagnosi();
-
-        //Aggiorna figli
-        DTOUtils.iterableToDTO(diagnosi);
     }
 
     @Override
     public boolean isDTO()
     {
-        return (telefoni instanceof HashSet) && (diagnosi instanceof HashSet);
+        return DTOUtils.isDTO(telefoni) &&  DTOUtils.isDTO(diagnosi);
     }
 
     //endregion

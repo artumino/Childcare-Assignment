@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "QuantitaPasti")
-public class QuantitaPasto implements Serializable, ITransferable
+public class QuantitaPasto extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -94,8 +94,8 @@ public class QuantitaPasto implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(menu);
-        DTOUtils.objectToDTO(pasto);
+        menu = DTOUtils.objectToDTO(menu);
+        pasto = DTOUtils.objectToDTO(pasto);
     }
 
     @Override

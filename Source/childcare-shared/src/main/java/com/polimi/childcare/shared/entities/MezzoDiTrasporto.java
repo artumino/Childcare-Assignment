@@ -8,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "MezziDiTrasporto")
-public class MezzoDiTrasporto implements Serializable, ITransferable
+public class MezzoDiTrasporto extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -126,17 +126,16 @@ public class MezzoDiTrasporto implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
+        fornitore = DTOUtils.objectToDTO(fornitore);
+        pianoViaggi = DTOUtils.iterableToDTO(pianoViaggi);
+
         pianoViaggi = getPianoViaggi();
-
-        DTOUtils.objectToDTO(fornitore);
-
-        DTOUtils.iterableToDTO(pianoViaggi);
     }
 
     @Override
     public boolean isDTO()
     {
-        return (pianoViaggi instanceof HashSet) && DTOUtils.isDTO(fornitore);
+        return DTOUtils.isDTO(pianoViaggi) && DTOUtils.isDTO(fornitore);
     }
 
     //endregion

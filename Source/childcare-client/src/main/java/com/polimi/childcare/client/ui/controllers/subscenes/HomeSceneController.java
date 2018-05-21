@@ -74,7 +74,7 @@ public class HomeSceneController implements ISubSceneController
 
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredBambiniRequest(0, 0, false, new HashMap<>(), new HashMap<>()),
+                new FilteredBambiniRequest(0, 0, false, null, new HashMap<>()),
                 this::OnBambiniResponseRecived,
                 true));
     }

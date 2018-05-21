@@ -3,12 +3,11 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
 @Table(name = "PianiViaggi")
-public class PianoViaggi implements Serializable, ITransferable
+public class PianoViaggi extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -93,9 +92,9 @@ public class PianoViaggi implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(gruppo);
-        DTOUtils.objectToDTO(mezzo);
-        DTOUtils.objectToDTO(gita);
+        gruppo = DTOUtils.objectToDTO(gruppo);
+        mezzo = DTOUtils.objectToDTO(mezzo);
+        gita = DTOUtils.objectToDTO(gita);
     }
 
     @Override

@@ -48,23 +48,28 @@ public class DBHelper
 
     public static void filterAdd(JinqStream query, HashMap<JinqStream.CollectComparable, Boolean> param, List<JinqStream.Where> filters) throws Exception
     {
-        for (JinqStream.Where entry : filters)
+        if(filters != null)
         {
-            query = query.where(entry);
+            for (JinqStream.Where entry : filters) {
+                query = query.where(entry);
+            }
         }
 
-        Iterator it = param.entrySet().iterator();
+        if(param != null)
+        {
+            Iterator it = param.entrySet().iterator();
 
-        if(!it.hasNext())
-            throw new Exception("Ordinamento vuoto!");
+            if (!it.hasNext())
+                return; // throw new Exception("Ordinamento vuoto!"); (Non ha senso ritornare un'eccezione, se param è null non ci sono ordinamenti
 
-        Map.Entry entry = (Map.Entry)it.next();
+            Map.Entry entry = (Map.Entry) it.next();
 
-        if((Boolean)entry.getValue())
-            query = query.sortedBy((JinqStream.CollectComparable)entry.getKey());
+            if ((Boolean) entry.getValue())
+                query = query.sortedBy((JinqStream.CollectComparable) entry.getKey());
 
-        else
-            query = query.sortedDescendingBy((JinqStream.CollectComparable)entry.getKey());
+            else
+                query = query.sortedDescendingBy((JinqStream.CollectComparable) entry.getKey());
+        }
 
     }
 

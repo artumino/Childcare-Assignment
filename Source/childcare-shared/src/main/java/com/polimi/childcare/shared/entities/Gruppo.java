@@ -8,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Gruppi")
-public class Gruppo implements Serializable, ITransferable
+public class Gruppo extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -78,20 +78,19 @@ public class Gruppo implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(sorvergliante);
+        //Aggiorna figli
+        sorvergliante = DTOUtils.objectToDTO(sorvergliante);
+        bambini = DTOUtils.iterableToDTO(bambini);
+        pianoviaggi = DTOUtils.iterableToDTO(pianoviaggi);
 
         bambini = this.getBambini();
         pianoviaggi = this.getPianoviaggi();
-
-        //Aggiorna figli
-        DTOUtils.iterableToDTO(bambini);
-        DTOUtils.iterableToDTO(pianoviaggi);
     }
 
     @Override
     public boolean isDTO()
     {
-        return (pianoviaggi instanceof HashSet) && (bambini instanceof HashSet) && DTOUtils.isDTO(sorvergliante);
+        return DTOUtils.isDTO(pianoviaggi) && DTOUtils.isDTO(bambini) && DTOUtils.isDTO(sorvergliante);
     }
 
     //endregion

@@ -85,22 +85,21 @@ public class Bambino extends Persona
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(gruppo);
-        DTOUtils.objectToDTO(pediatra);
+        gruppo = DTOUtils.objectToDTO(gruppo);
+        pediatra = DTOUtils.objectToDTO(pediatra);
+
+        genitori = DTOUtils.iterableToDTO(genitori);
+        contatti = DTOUtils.iterableToDTO(contatti);
 
         genitori = getGenitori();
         contatti = getContatti();
-
-
-        DTOUtils.iterableToDTO(genitori);
-        DTOUtils.iterableToDTO(contatti);
 
         super.toDTO();
     }
 
     @Override
     public boolean isDTO() {
-        return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && (genitori instanceof HashSet) && (contatti instanceof HashSet);
+        return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && DTOUtils.isDTO(genitori) &&  DTOUtils.isDTO(contatti);
     }
 
     //endregion

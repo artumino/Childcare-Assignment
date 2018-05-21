@@ -3,12 +3,11 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Diagnosi")
-public class Diagnosi implements Serializable, ITransferable
+public class Diagnosi extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -95,8 +94,8 @@ public class Diagnosi implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
-        DTOUtils.objectToDTO(persona);
-        DTOUtils.objectToDTO(reazioneAvversa);
+        persona = DTOUtils.objectToDTO(persona);
+        reazioneAvversa = DTOUtils.objectToDTO(reazioneAvversa);
     }
 
     @Override

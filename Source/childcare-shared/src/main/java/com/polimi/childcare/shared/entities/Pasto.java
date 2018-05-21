@@ -8,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Pasti")
-public class Pasto implements Serializable, ITransferable
+public class Pasto extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -117,20 +117,20 @@ public class Pasto implements Serializable, ITransferable
     @Override
     public void toDTO()
     {
+        //Aggiorna figli
+        fornitori = DTOUtils.iterableToDTO(fornitori);
+        reazione = DTOUtils.iterableToDTO(reazione);
+        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto);
+
         fornitori = this.getFornitori();
         reazione = this.getReazione();
         quantitaPasto = this.getQuantitaPasto();
-
-        //Aggiorna figli
-        DTOUtils.iterableToDTO(fornitori);
-        DTOUtils.iterableToDTO(reazione);
-        DTOUtils.iterableToDTO(quantitaPasto);
     }
 
     @Override
     public boolean isDTO()
     {
-        return (fornitori instanceof HashSet) && (reazione instanceof HashSet) && (quantitaPasto instanceof HashSet);
+        return DTOUtils.isDTO(fornitori) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
     }
 
     //endregion

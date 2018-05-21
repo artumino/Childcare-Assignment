@@ -3,7 +3,6 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.*;
 
 @Entity
@@ -40,16 +39,15 @@ public class Genitore extends Persona
     @Override
     public void toDTO()
     {
+        bambini = DTOUtils.iterableToDTO(bambini);
         bambini = getBambini();
-
-        DTOUtils.iterableToDTO(bambini);
 
         super.toDTO();
     }
 
     @Override
     public boolean isDTO() {
-        return super.isDTO() && (bambini instanceof HashSet);
+        return super.isDTO() && DTOUtils.isDTO(bambini);
     }
 
     //endregion

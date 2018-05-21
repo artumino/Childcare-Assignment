@@ -9,7 +9,6 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaR
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPersoneResponse;
-import java.lang.reflect.InvocationTargetException;
 import org.jinq.orm.stream.JinqStream;
 import java.util.ArrayList;
 import java.util.List;

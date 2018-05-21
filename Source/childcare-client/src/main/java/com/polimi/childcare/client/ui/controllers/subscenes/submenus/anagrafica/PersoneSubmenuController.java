@@ -117,7 +117,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredPersonaRequest(0, 0, false, new HashMap<>(), new HashMap<>()),
+                new FilteredPersonaRequest(0, 0, false, null, new HashMap<>()),
                 this::OnPersoneResponseRecived,
                 true);
 

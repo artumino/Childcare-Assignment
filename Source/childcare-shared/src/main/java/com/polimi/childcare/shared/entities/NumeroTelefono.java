@@ -1,12 +1,15 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Rubrica", indexes = {
         @Index(columnList = "Numero", name = "idx_Numero")})
-public class NumeroTelefono implements Serializable
+public class NumeroTelefono extends TransferableEntity implements Serializable
 {
     //region Attributi
     @Id
@@ -48,6 +51,22 @@ public class NumeroTelefono implements Serializable
         NumeroTelefono that = (NumeroTelefono) o;
         return getID() == that.getID() &&
                 getNumero().equals(that.getNumero());
+    }
+
+    //endregion
+
+    //region DTO
+
+    @Override
+    public void toDTO()
+    {
+        //DO NOTHING...
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return true;
     }
 
     //endregion
