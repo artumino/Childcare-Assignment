@@ -1,5 +1,6 @@
 package com.polimi.childcare.server;
 
+import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.handlers.*;
 import com.polimi.childcare.server.networking.NetworkManager;
@@ -60,6 +61,10 @@ public class Main
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }*/
+
+            String[] commands = command.split(" ");
+            if(commands.length == 2 && commands[0].equals("demo"))
+                DatabaseDemo.runDemoGeneration(Integer.parseInt(commands[1]));
         } while(!command.equals("quit") && !command.equals("exit"));
 
         DatabaseSession.getInstance().close();

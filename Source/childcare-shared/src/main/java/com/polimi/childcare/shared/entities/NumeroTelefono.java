@@ -16,7 +16,7 @@ public class NumeroTelefono extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false, length = 15, unique = true)   //Standard E.164
+    @Column(nullable = false, length = 15, unique = true)   //Standard E.164/123
     private String Numero;
 
     //endregion

@@ -2,6 +2,7 @@ package com.polimi.childcare.server.database;
 
 
 import com.polimi.childcare.server.Helper.DBHelper;
+import com.polimi.childcare.shared.entities.Addetto;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -14,6 +15,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class DatabaseSession
 {
@@ -30,6 +33,9 @@ public class DatabaseSession
     private EntityManagerFactory entityManagerFactory;
     private JinqJPAStreamProvider streams;
 
+    /**
+     * Effettua la connessione al DB ed inizializza le variabili per la corretta esecuzione di query
+     */
     public void setUp()
     {
         if(entityManagerFactory != null)
@@ -40,6 +46,11 @@ public class DatabaseSession
         streams = new JinqJPAStreamProvider(sessionFactory);
     }
 
+    /**
+     * Crea una sessione per l'esecuzione diretta di query sul DB
+     * @implNote Ricordarsi di chiamare opportunamente close() al termine delle operazioni per evitare leak di connesioni al DB
+     * @return Una nuova sessione verso il DB per l'esecuzione diretta di query (senza i metodi helper di questa classe)
+     */
     //@ensures (\result == true) <==> (sessionFactory != null)
     public Session openSession()
     {
@@ -49,6 +60,10 @@ public class DatabaseSession
         return sessionFactory.openSession();
     }
 
+    /**
+     * Ottiene l'attuale stringa di connessione dal DB
+     * @return stringa di connessione al DB
+     */
     public String getCurrentConnectionURL()
     {
         if(sessionFactory == null)
@@ -68,6 +83,12 @@ public class DatabaseSession
 
     //region Metodi per Entita
 
+    /**
+     * Inserisce un elemento nel DB e restituisce il suo ID
+     * @param element Elemento da inserire nel DB
+     * @param <T> Tipo di elemento da inserire nel DB
+     * @return ID nel caso di corretto inserimento, null in caso contrario
+     */
     public <T> Integer insert(T element)
     {
         //FIXME: Veramente brutto
@@ -79,6 +100,26 @@ public class DatabaseSession
         return ID[0];
     }
 
+    /**
+     * Inserisce gli elementi di una collezione in una trasazione(per migliori prestazioni)
+     * @param elements Collezione di elementi da inserire
+     * @param <T> Tipo di entità nella collezione
+     */
+    public <T> void insertAll(Collection<T> elements)
+    {
+        execute((session) -> {
+            for(T element : elements)
+                session.insert(element);
+            return true;
+        });
+    }
+
+    /**
+     * Aggiorna un elemento nel DB
+     * @param element Elemento da aggiornare
+     * @param <T> Tipo di elemento da aggiornare
+     * @throws HibernateException In caso di eccezioni e conflitti nell'aggiornamento
+     */
     public <T> void update(T element) throws HibernateException
     {
         execute(session -> {
@@ -88,6 +129,12 @@ public class DatabaseSession
         });
     }
 
+    /**
+     * Aggiorna o inserisce un elemento nel DB
+     * @param element Elemento da inserire/aggiornare
+     * @param <T> Tipo di elemento da aggiornare
+     * @throws HibernateException In caso di eccezioni o conflitti in fase di aggiornamento
+     */
     public <T> void insertOrUpdate(T element) throws HibernateException
     {
         execute(session -> {
@@ -96,6 +143,12 @@ public class DatabaseSession
         });
     }
 
+    /**
+     * Cancella un elemento dal DB
+     * @param element Elemento da cancellare
+     * @param <T> Tipo di elemento da cancellare
+     * @throws HibernateException In caso di eccezioni durante la rimozione
+     */
     public <T> void delete(T element) throws HibernateException
     {
         execute(session -> {
@@ -108,6 +161,14 @@ public class DatabaseSession
 
     //region Metodi per ID
 
+    /**
+     * Cerca di ottenere un elemento dal database
+     * @param tClass Classe dell'entità che ci si aspetta
+     * @param ID ID dell'elemento da selezionare nel DB
+     * @param eager Se true ritorna l'elemento con tutte le relazioni di prima generazione inizializzate, false invece non li carica (null o proxy di Hibernate)
+     * @param <T> Tipo elemento da selezionare
+     * @return null in caso di errori, oggetto di tipo T corrispondende all'ID fornito in caso contrario
+     */
     public <T> T getByID(Class<T> tClass, Integer ID, boolean eager)
     {
         if(sessionFactory != null) {
@@ -127,6 +188,9 @@ public class DatabaseSession
             return null;
     }
 
+    /**
+     * @see DatabaseSession#getByID(Class, Integer, boolean) chiamato con parametro eager=false
+     */
     public <T> T getByID(Class<T> tClass, Integer ID)
     {
         return getByID(tClass, ID, false);
@@ -141,6 +205,13 @@ public class DatabaseSession
 
     //endregion
 
+    /**
+     * Esegue una query di tipo JINQ sul DB
+     * @param tClass Classe della tabella delle entità su cui effettuare la query
+     * @param session Sessione del DB su cui effettuare la query
+     * @param <T> Tipo delle entità di ritorno
+     * @return Ritorna uno stream JINQ filtrabile tramite i relativi metodi
+     */
     public <T> JinqStream<T> query(Class<T> tClass, Session session)
     {
         if(streams == null)
@@ -149,6 +220,11 @@ public class DatabaseSession
         return streams.streamAll(session, tClass);
     }
 
+    /**
+     * Esegue una transazione sul DB
+     * @param execution Codice della transazione da eseguire, in base al risultato della transazione effettua automaticamente il commit() o rollback()
+     * @return true in caso di commit, false in caso di rollback()
+     */
     public boolean execute(IDatabaseExecution execution)
     {
         if(sessionFactory == null)
@@ -176,6 +252,9 @@ public class DatabaseSession
         return true;
     }
 
+    /**
+     * Termina la connessione al DB, interrompe tutte le attuali sessioni aperte
+     */
     public void close()
     {
         if(sessionFactory != null)
@@ -189,6 +268,11 @@ public class DatabaseSession
         entityManagerFactory = null;
     }
 
+    /**
+     * Innerclass utilizzata da execute() per create un contesto di esecuzione in una transazione del DB
+     * Fornisce accesso ad ogni elemento di una sessione nel DB ma all'interno di una transazione
+     * @see DatabaseSession#execute(IDatabaseExecution) per maggiori informazioni
+     */
     public class DatabaseSessionInstance
     {
         private Session session;
@@ -280,6 +364,9 @@ public class DatabaseSession
         }
     }
 
+    /**
+     * Classe per l'esecuzione di transazioni sul DB
+     */
     public interface IDatabaseExecution
     {
         boolean execute(DatabaseSessionInstance execution);
