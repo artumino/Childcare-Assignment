@@ -20,40 +20,7 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
     {
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
-        List<Bambino> bambini = new ArrayList<>();
-        if(request.getCount() == 0)
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Bambino.class);
 
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                bambini.addAll(session.query(Bambino.class).toList());
-                return true;
-            });
-        else
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Bambino.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                bambini.addAll(session.query(Bambino.class).limit(request.getCount()*(request.getPageNumber() + 1)).skip(request.getCount()*request.getPageNumber()).toList());
-                return true;
-            });
-
-
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(bambini);
-
-        ListBambiniResponse risposta = new ListBambiniResponse(200, bambini);
-
-        return risposta;
+        return new ListBambiniResponse(200, FilteredRequestHandler.requestManager(request, Bambino.class, new ArrayList<Bambino>()));
     }
 }

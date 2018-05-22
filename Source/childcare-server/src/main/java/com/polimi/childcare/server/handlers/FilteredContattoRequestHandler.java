@@ -21,40 +21,7 @@ public class FilteredContattoRequestHandler implements IRequestHandler<FilteredC
     {
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
-        List<Contatto> contatti = new ArrayList<>();
-        if(request.getCount() == 0)
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Contatto.class);
 
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                contatti.addAll(session.query(Contatto.class).toList());
-                return true;
-            });
-        else
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Contatto.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                contatti.addAll(session.query(Contatto.class).limit(request.getCount()*(request.getPageNumber() + 1)).skip(request.getCount()*request.getPageNumber()).toList());
-                return true;
-            });
-
-
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(contatti);
-
-        ListContattoResponse risposta = new ListContattoResponse(200, contatti);
-
-        return risposta;
+        return new ListContattoResponse(200, FilteredRequestHandler.requestManager(request, Contatto.class, new ArrayList<Contatto>()));
     }
 }

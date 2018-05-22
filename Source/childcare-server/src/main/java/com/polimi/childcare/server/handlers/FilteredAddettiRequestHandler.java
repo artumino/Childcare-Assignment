@@ -16,45 +16,11 @@ import java.util.List;
 public class FilteredAddettiRequestHandler implements IRequestHandler<FilteredAddettoRequest>
 {
     @Override
-    public BaseResponse processRequest(FilteredAddettoRequest request) {
-        if (request.getCount() < 0 || request.getPageNumber() < 0)
+    public BaseResponse processRequest(FilteredAddettoRequest request)
+    {
+        if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        List<Addetto> addetti = new ArrayList<>();
-
-        if (request.getCount() == 0)
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Addetto.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                addetti.addAll(session.query(Addetto.class).toList());
-                return true;
-            });
-
-        else
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Addetto.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                addetti.addAll(session.query(Addetto.class).limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).toList());
-                return true;
-            });
-
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(addetti);
-
-        ListAddettiResponse risposta = new ListAddettiResponse(200, addetti);
-
-        return risposta;
+        return new ListAddettiResponse(200, FilteredRequestHandler.requestManager(request, Addetto.class, new ArrayList<Addetto>()));
     }
 }

@@ -21,42 +21,6 @@ public class FilteredPersonaRequestHandler implements IRequestHandler<FilteredPe
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        List<Persona> persone = new ArrayList<>();
-
-        if(request.getCount() == 0)
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Persona.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                persone.addAll(session.query(Persona.class).toList());
-                return true;
-            });
-        else
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Persona.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                persone.addAll(session.query(Persona.class).limit(request.getCount()*(request.getPageNumber() + 1)).skip(request.getCount()*request.getPageNumber()).toList());
-                return true;
-            });
-
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(persone);
-
-        ListPersoneResponse risposta = new ListPersoneResponse(200, persone);
-
-        return risposta;
-
-
+        return new ListPersoneResponse(200, FilteredRequestHandler.requestManager(request, Persona.class, new ArrayList<Persona>()));
     }
 }

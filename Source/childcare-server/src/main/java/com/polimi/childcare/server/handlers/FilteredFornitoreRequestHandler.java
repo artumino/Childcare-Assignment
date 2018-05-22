@@ -20,40 +20,7 @@ public class FilteredFornitoreRequestHandler implements IRequestHandler<Filtered
     {
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
-        List<Fornitore> fornitori = new ArrayList<>();
-        if(request.getCount() == 0)
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Fornitore.class);
 
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                fornitori.addAll(session.query(Fornitore.class).toList());
-                return true;
-            });
-        else
-            DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(Fornitore.class);
-
-                try {
-                    DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                fornitori.addAll(session.query(Fornitore.class).limit(request.getCount()*(request.getPageNumber() + 1)).skip(request.getCount()*request.getPageNumber()).toList());
-                return true;
-            });
-
-
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(fornitori);
-
-        ListFornitoriResponse risposta = new ListFornitoriResponse(200, fornitori);
-
-        return risposta;
+        return new ListFornitoriResponse(200, FilteredRequestHandler.requestManager(request, Fornitore.class, new ArrayList<Fornitore>()));
     }
 }
