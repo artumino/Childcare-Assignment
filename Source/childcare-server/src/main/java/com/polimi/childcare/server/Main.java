@@ -45,8 +45,19 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(FilteredContattoRequest.class, new FilteredContattoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredDiagnosiRequest.class, new FilteredDiagnosiRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredFornitoriRequest.class, new FilteredFornitoreRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGenitoriRequest.class, new FilteredGenitoreRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGitaRequest.class, new FilteredGitaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGruppoRequest.class, new FilteredGruppoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredMenuRequest.class, new FilteredMenuRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredMezzoDiTrasportoRequest.class, new FilteredMezzoDiTrasportoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredNumeroTelefonoRequest.class, new FilteredNumeroTelefonoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPediatraRequest.class, new FilteredPediatraRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPianoViaggiRequest.class, new FilteredPianoViaggiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredQuantitaPastoRequest.class, new FilteredQuantitaPastoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new FilteredReazioneAvversaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredRegistroPresenzeRequest.class, new FilteredRegistroPresenzeRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);
