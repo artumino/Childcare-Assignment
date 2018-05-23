@@ -28,7 +28,7 @@ public class Contatto extends TransferableEntity implements Serializable
     @Column(nullable = false, length = 25)
     private String Cognome;
 
-    @Column(nullable = false, length = 25)
+    @Column(nullable = false, length = 75)
     private String Indirizzo;
 
     //endregion

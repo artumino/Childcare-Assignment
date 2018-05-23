@@ -64,7 +64,16 @@ public class Main
 
             String[] commands = command.split(" ");
             if(commands.length == 2 && commands[0].equals("demo"))
-                DatabaseDemo.runDemoGeneration(Integer.parseInt(commands[1]));
+            {
+                try
+                {
+                    DatabaseDemo.runDemoGeneration(Integer.parseInt(commands[1]));
+                }
+                catch (Throwable ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
         } while(!command.equals("quit") && !command.equals("exit"));
 
         DatabaseSession.getInstance().close();

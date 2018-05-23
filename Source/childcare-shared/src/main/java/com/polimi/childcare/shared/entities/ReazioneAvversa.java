@@ -19,7 +19,7 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
     @Column(nullable = false, length = 20)
     private String Nome;
 
-    @Column(length = 50)
+    @Column(length = 250)
     private String Descrizione;
 
     //endregion

@@ -3,16 +3,15 @@ package com.polimi.childcare.server.database;
 
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.shared.entities.Addetto;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.jinq.jpa.JinqJPAStreamProvider;
 import org.jinq.orm.stream.JinqStream;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceException;
+import javax.persistence.RollbackException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -239,13 +238,24 @@ public class DatabaseSession
                 tx.commit();
             else
             {
-                tx.rollback();
+                try {
+                    tx.rollback();
+                }
+                catch (Throwable ex)
+                {
+                    ex.printStackTrace();
+                }
                 return false;
             }
-        }catch (HibernateException ex)
+        }catch (PersistenceException ex)
         {
             ex.printStackTrace();
-            if(tx != null) tx.rollback();
+            try {
+                if (tx != null) tx.rollback();
+            } catch (Throwable thr)
+            {
+                thr.printStackTrace();
+            }
             return false;
         }
 
@@ -300,6 +310,11 @@ public class DatabaseSession
             return ID;
         }
 
+        public Session getSession()
+        {
+            return session;
+        }
+
         public <T> void update(T element) throws HibernateException
         {
             session.update(element);
@@ -313,6 +328,12 @@ public class DatabaseSession
         public <T> void delete(T element) throws HibernateException
         {
             session.delete(element);
+        }
+
+        public <T> void deleteAll(Collection<T> elements) throws HibernateException
+        {
+            for(T element : elements)
+                session.delete(element);
         }
 
         public <T> boolean contains(T element) throws HibernateException
