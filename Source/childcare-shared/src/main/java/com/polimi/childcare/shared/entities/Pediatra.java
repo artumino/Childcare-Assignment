@@ -26,6 +26,16 @@ public class Pediatra extends Contatto
 
     public Set<Bambino> getBambiniCurati() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     //endregion
 
     //region DTO

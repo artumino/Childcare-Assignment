@@ -56,6 +56,10 @@ public class Bambino extends Persona
 
     public void removeGenitore(Genitore g) { genitori.remove(g); }
 
+    public void unsafeAddContatto(Contatto c) { contatti.add(c); }
+
+    public void unsafeRemoveContatto(Contatto c) { contatti.remove(c); }
+
     public Set<Genitore> getGenitori() { return EntitiesHelper.unmodifiableListReturn(genitori); }
 
     public Set<Contatto> getContatti()
@@ -70,6 +74,11 @@ public class Bambino extends Persona
         if (!super.equals(o)) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 
     //endregion

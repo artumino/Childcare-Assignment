@@ -2,6 +2,7 @@ package com.polimi.childcare.client.android;
 
 import android.Manifest;
 import android.app.Application;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 
 import java.security.Permission;
 import java.security.Permissions;
+import java.time.LocalDateTime;
 
 //import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 
@@ -39,6 +41,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if(ClientNetworkManager.getInstance().isConnected())
+        {
+            unlockApplication();
+            return;
+        }
+
         setContentView(R.layout.login_screen);
 
         layoutLogo = this.findViewById(R.id.layoutTitle);
@@ -54,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
             layoutConnection.setY(Resources.getSystem().getDisplayMetrics().heightPixels + layoutConnection.getHeight());
             layoutConnection.animate().translationY(0).setStartDelay(1500).setDuration(500).start();
         }
+
+        if(canRunOffline())
+            btnConnect.setText("Avvia (Offline)");
 
         btnConnect.setOnClickListener((click) ->
         {
@@ -82,12 +94,28 @@ public class LoginActivity extends AppCompatActivity {
             AsyncTask.execute(() ->
             {
                 if (ClientNetworkManager.getInstance().tryConnect(txtServerAddress.getText().toString(), 55403))
-                    finish();
+                    unlockApplication();
                 else
-                    runOnUiThread(() -> txtLayoutServerAddress.setError("Impossibile connettersi al server"));
+                {
+                    if(canRunOffline())
+                        unlockApplication();
+                    else
+                        runOnUiThread(() -> txtLayoutServerAddress.setError("Impossibile connettersi al server"));
+                }
             });
 
         });
+    }
+
+    //Se sono già connesso salto la schermata di login o se ho una cache ancora valida (massimo 2h)
+    private boolean canRunOffline()
+    {
+        return CacheManager.getInstance(this).getLastUpdate().plusHours(2).isAfter(LocalDateTime.now()) && CacheManager.getInstance(this).getBambini().size() > 0;
+    }
+
+    private void unlockApplication()
+    {
+        startActivity(new Intent(this, PresenzeActivity.class));
     }
 
     @Override

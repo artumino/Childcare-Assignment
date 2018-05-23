@@ -27,6 +27,16 @@ public class Genitore extends Persona
 
     public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     //endregion
 
     //region DTO

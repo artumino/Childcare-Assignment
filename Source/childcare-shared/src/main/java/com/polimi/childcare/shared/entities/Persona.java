@@ -31,10 +31,10 @@ public abstract class Persona extends TransferableEntity implements Serializable
     @Column(nullable = false, length = 20)
     protected String Stato;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 45)
     protected String Comune;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 45)
     protected String Provincia;
 
     @Column(nullable = false, length = 20)
@@ -167,6 +167,10 @@ public abstract class Persona extends TransferableEntity implements Serializable
     public void addTelefono(NumeroTelefono n) { telefoni.add(n); }
 
     public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
+
+    public void unsafeAddDiagnosi(Diagnosi d) { diagnosi.add(d); }
+
+    public void unsafeRemoveDiagnosi(Diagnosi d) { diagnosi.remove(d); }
 
     public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
 
