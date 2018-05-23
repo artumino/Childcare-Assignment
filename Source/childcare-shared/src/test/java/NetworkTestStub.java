@@ -1,4 +1,5 @@
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.NullRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -38,7 +39,12 @@ public class NetworkTestStub
     public static void TestMultipleClients(NetworkingRule netRule) throws IOException {
         for(int i = 0; i < 50; i++)
         {
-            Assert.assertNotNull("Ritornata risposta errata", netRule.createDummyClient().sendMessage(new NullRequest()));
+            try {
+                Assert.assertNotNull("Ritornata risposta errata", netRule.createDummyClient().sendMessage(new NullRequest()));
+            } catch (NetworkSerializationException e) {
+                e.printStackTrace();
+                Assert.fail("Errore di serializzazione durante sendMessage");
+            }
         }
     }
 
@@ -49,7 +55,13 @@ public class NetworkTestStub
             ArrayList<Bambino> bambini = createBambiniList();
             IClientNetworkInterface client = netRule.createDummyClient();
 
-            BaseResponse baseResponse = client.sendMessage(new BambinoListRequestStub(123, bambini));
+            BaseResponse baseResponse = null;
+            try {
+                baseResponse = client.sendMessage(new BambinoListRequestStub(123, bambini));
+            } catch (NetworkSerializationException e) {
+                e.printStackTrace();
+                Assert.fail("Errore di serializzazione durante sendMessage");
+            }
             TestMultipleClientsPayloadedAsserts(bambini, baseResponse);
         }
     }

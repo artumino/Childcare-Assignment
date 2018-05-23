@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Gruppi")
-public class Gruppo implements Serializable
+public class Gruppo extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -63,6 +64,33 @@ public class Gruppo implements Serializable
         if (!(o instanceof Gruppo)) return false;
         Gruppo gruppo = (Gruppo) o;
         return getID() == gruppo.getID();
+    }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        //Aggiorna figli
+        sorvergliante = DTOUtils.objectToDTO(sorvergliante);
+        bambini = DTOUtils.iterableToDTO(bambini);
+        pianoviaggi = DTOUtils.iterableToDTO(pianoviaggi);
+
+        bambini = this.getBambini();
+        pianoviaggi = this.getPianoviaggi();
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return DTOUtils.isDTO(pianoviaggi) && DTOUtils.isDTO(bambini) && DTOUtils.isDTO(sorvergliante);
     }
 
     //endregion

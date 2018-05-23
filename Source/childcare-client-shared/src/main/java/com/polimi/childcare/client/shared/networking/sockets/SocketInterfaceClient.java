@@ -1,6 +1,7 @@
-package com.polimi.childcare.client.networking.sockets;
+package com.polimi.childcare.client.shared.networking.sockets;
 
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
@@ -65,7 +66,7 @@ public class SocketInterfaceClient implements IClientNetworkInterface
     }
 
     @Override
-    public BaseResponse sendMessage(BaseRequest request)
+    public BaseResponse sendMessage(BaseRequest request) throws NetworkSerializationException
     {
         try
         {
@@ -89,7 +90,10 @@ public class SocketInterfaceClient implements IClientNetworkInterface
                 byte[] responseBytes = Base64.getDecoder().decode(responseStr);
 
                 //Computo la risposta
-                return SerializationUtils.deserializeByteArray(responseBytes, BaseResponse.class);
+                BaseResponse response = SerializationUtils.deserializeByteArray(responseBytes, BaseResponse.class);
+                if(response == null)
+                    throw new NetworkSerializationException();
+                return response;
             }
         } catch (IOException ex)
         {

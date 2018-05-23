@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -55,6 +56,10 @@ public class Bambino extends Persona
 
     public void removeGenitore(Genitore g) { genitori.remove(g); }
 
+    public void unsafeAddContatto(Contatto c) { contatti.add(c); }
+
+    public void unsafeRemoveContatto(Contatto c) { contatti.remove(c); }
+
     public Set<Genitore> getGenitori() { return EntitiesHelper.unmodifiableListReturn(genitori); }
 
     public Set<Contatto> getContatti()
@@ -69,6 +74,41 @@ public class Bambino extends Persona
         if (!super.equals(o)) return false;
 
         return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    //endregion
+
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        gruppo = DTOUtils.objectToDTO(gruppo);
+        pediatra = DTOUtils.objectToDTO(pediatra);
+
+        genitori = DTOUtils.iterableToDTO(genitori);
+        contatti = DTOUtils.iterableToDTO(contatti);
+
+        genitori = getGenitori();
+        contatti = getContatti();
+
+        super.toDTO();
+    }
+
+    @Override
+    public boolean isDTO() {
+        return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && DTOUtils.isDTO(genitori) &&  DTOUtils.isDTO(contatti);
     }
 
     //endregion

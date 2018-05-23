@@ -1,6 +1,6 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
-import org.hibernate.Session;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import java.util.*;
 @Entity
 @Table(name = "Persone")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Persona implements Serializable
+public abstract class Persona extends TransferableEntity implements Serializable
 {
     //region Attributi
     @Id
@@ -31,10 +31,10 @@ public abstract class Persona implements Serializable
     @Column(nullable = false, length = 20)
     protected String Stato;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 45)
     protected String Comune;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 45)
     protected String Provincia;
 
     @Column(nullable = false, length = 20)
@@ -80,6 +80,7 @@ public abstract class Persona implements Serializable
         Residenza = residenza;
         Sesso = sesso;
     }
+
 
     public int getID() { return ID; }
 
@@ -167,6 +168,10 @@ public abstract class Persona implements Serializable
 
     public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
 
+    public void unsafeAddDiagnosi(Diagnosi d) { diagnosi.add(d); }
+
+    public void unsafeRemoveDiagnosi(Diagnosi d) { diagnosi.remove(d); }
+
     public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
 
     public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
@@ -190,6 +195,33 @@ public abstract class Persona implements Serializable
                 getProvincia().equals(persona.getProvincia()) &&
                 getCittadinanza().equals(persona.getCittadinanza()) &&
                 getResidenza().equals(persona.getResidenza());
+    }
+
+    //endregion
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        //Aggiorna figli
+        diagnosi = DTOUtils.iterableToDTO(diagnosi);
+        telefoni = DTOUtils.iterableToDTO(telefoni);
+
+        //Trasformo in Set
+        telefoni = this.getTelefoni();
+        diagnosi = this.getDiagnosi();
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return DTOUtils.isDTO(telefoni) &&  DTOUtils.isDTO(diagnosi);
     }
 
     //endregion

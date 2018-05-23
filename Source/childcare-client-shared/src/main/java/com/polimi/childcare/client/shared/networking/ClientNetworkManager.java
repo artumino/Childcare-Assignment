@@ -1,5 +1,7 @@
-package com.polimi.childcare.client.networking;
+package com.polimi.childcare.client.shared.networking;
 
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
+import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.concurrent.LinkedBlockingDeque;
@@ -78,9 +80,10 @@ public class ClientNetworkManager implements Runnable
     {
         if(this.clientNetworkInterface != null) {
 
-            //Se il thread di rete è ancora in esecuzione, non posso connettermi nuovamente
+            //Se il thread di rete è ancora in esecuzione, non posso connettermi nuovamente, probabile errore dell'interfaccia
+            //ritorno true per evitare comportamenti non previsti
             if(this.clientNetworkInterface.isConnected())
-                return false;
+                return true;
 
             try {
                 this.currentServerAddress = address;
@@ -100,6 +103,18 @@ public class ClientNetworkManager implements Runnable
     }
 
     /**
+     * Metodo per controllare lo stato dell'interfaccia di rete
+     * @return true se connesso ad un server, false in caso contrario
+     */
+    public boolean isConnected()
+    {
+        if(this.clientNetworkInterface != null) {
+            return this.clientNetworkInterface.isConnected();
+        }
+        return false;
+    }
+
+    /**
      * Aggiunge in testa alla coda delle operazioni di rete networkOperation
      * @param networkOperation Operazione di rete da effettuare
      */
@@ -110,6 +125,15 @@ public class ClientNetworkManager implements Runnable
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Rimuove dalla lista delle operazioni un'operazione precedentemente inserita
+     * @param networkOperation Operazione di rete da effettuare
+     */
+    public void abortOperation(NetworkOperation networkOperation)
+    {
+        this.networkOperationQueue.removeFirstOccurrence(networkOperation);
     }
 
     /**
@@ -136,10 +160,17 @@ public class ClientNetworkManager implements Runnable
                 }
 
                 //null in caso di errori di connessione
-                BaseResponse response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                BaseResponse response = null;
+                boolean clientException = false;
+                try {
+                    response = this.clientNetworkInterface.sendMessage(operation.getRequest());
+                } catch (NetworkSerializationException e) {
+                    e.printStackTrace();
+                    clientException = true;
+                }
 
 
-                if(response == null) {
+                if(response == null && !clientException) {
                     //In caso di errore di connessione ripristino la richiesta nella lista delle richieste
                     try {
                         networkOperationQueue.putLast(operation);
@@ -148,7 +179,7 @@ public class ClientNetworkManager implements Runnable
                         continue;
                     }
                 }
-                else
+                else if(!clientException)
                     //In caso di operazione andata a buon fine, eseguo il callback
                     operation.executeCallback(response);
             }

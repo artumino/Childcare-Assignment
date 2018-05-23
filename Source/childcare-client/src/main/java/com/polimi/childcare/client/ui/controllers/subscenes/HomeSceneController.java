@@ -1,7 +1,7 @@
 package com.polimi.childcare.client.ui.controllers.subscenes;
 
-import com.polimi.childcare.client.networking.ClientNetworkManager;
-import com.polimi.childcare.client.networking.NetworkOperation;
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.IStageController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
@@ -21,9 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
-import javafx.util.Callback;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -76,7 +74,7 @@ public class HomeSceneController implements ISubSceneController
 
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredBambiniRequest(0, 0, false, new HashMap<>(), new HashMap<>()),
+                new FilteredBambiniRequest(0, 0, false, null, new HashMap<>()),
                 this::OnBambiniResponseRecived,
                 true));
     }
@@ -97,7 +95,10 @@ public class HomeSceneController implements ISubSceneController
 
         //Aggiungo tutti i bambini
         if(bambiniResponse.getPayload() != null)
+        {
             listaPersone.addAll(bambiniResponse.getPayload());
+            tableList.sort();
+        }
 
         //tableList.refresh();
 

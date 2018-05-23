@@ -1,4 +1,5 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -7,7 +8,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "Pasti")
-public class Pasto implements Serializable
+public class Pasto extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -101,6 +102,35 @@ public class Pasto implements Serializable
         return getID() == pasto.getID() &&
                 getNome().equals(pasto.getNome()) &&
                 getDescrizione().equals(pasto.getDescrizione());
+    }
+
+    //endregion
+
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        //Aggiorna figli
+        fornitori = DTOUtils.iterableToDTO(fornitori);
+        reazione = DTOUtils.iterableToDTO(reazione);
+        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto);
+
+        fornitori = this.getFornitori();
+        reazione = this.getReazione();
+        quantitaPasto = this.getQuantitaPasto();
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return DTOUtils.isDTO(fornitori) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
     }
 
     //endregion

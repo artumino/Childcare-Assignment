@@ -1,13 +1,14 @@
 package com.polimi.childcare.client.networking.rmi;
 
-import com.polimi.childcare.client.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
+import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.rmi.IRMIServer;
 
 import java.io.IOException;
-import java.rmi.Naming;
 import java.rmi.NotBoundException;
+import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
 
 public class RMIInterfaceClient implements IClientNetworkInterface
@@ -39,8 +40,7 @@ public class RMIInterfaceClient implements IClientNetworkInterface
     }
 
     @Override
-    public BaseResponse sendMessage(BaseRequest request)
-    {
+    public BaseResponse sendMessage(BaseRequest request) throws NetworkSerializationException {
         if(serverInterface != null)
         {
             try
@@ -48,11 +48,17 @@ public class RMIInterfaceClient implements IClientNetworkInterface
                 BaseResponse response = serverInterface.messageReceived(request);
                 return response;
             }
+            catch (UnmarshalException ex)
+            {
+                this.close();
+                throw new NetworkSerializationException();
+            }
             catch (Exception ex)
             {
                 ex.printStackTrace();
                 this.close();
             }
+
         }
         return null;
     }

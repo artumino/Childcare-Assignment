@@ -1,11 +1,13 @@
 package com.polimi.childcare.shared.entities;
+import com.polimi.childcare.shared.dto.DTOUtils;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
 @Table(name = "Diagnosi")
-public class Diagnosi implements Serializable
+public class Diagnosi extends TransferableEntity implements Serializable
 {
     //region Attributi
 
@@ -81,4 +83,26 @@ public class Diagnosi implements Serializable
 
     //endregion
 
+
+    //region DTO
+
+
+    /**
+     * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
+     * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
+     */
+    @Override
+    public void toDTO()
+    {
+        persona = DTOUtils.objectToDTO(persona);
+        reazioneAvversa = DTOUtils.objectToDTO(reazioneAvversa);
+    }
+
+    @Override
+    public boolean isDTO()
+    {
+        return DTOUtils.isDTO(persona) && DTOUtils.isDTO(reazioneAvversa);
+    }
+
+    //endregion
 }
