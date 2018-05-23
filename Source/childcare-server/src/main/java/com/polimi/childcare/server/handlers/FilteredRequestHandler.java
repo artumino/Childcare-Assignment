@@ -3,6 +3,7 @@ package com.polimi.childcare.server.handlers;
 import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBaseRequest;
+import com.polimi.childcare.shared.entities.TransferableEntity;
 import org.jinq.orm.stream.JinqStream;
 
 import java.util.Collection;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class FilteredRequestHandler
 {
-    public static <T extends FilteredBaseRequest, IT> List<IT> requestManager(T request, Class<?> requestClass, List<IT> list)
+    public static <T extends FilteredBaseRequest, IT extends TransferableEntity> List<IT> requestManager(T request, Class<?> requestClass, List<IT> list)
     {
         if (request.getCount() == 0)
             DatabaseSession.getInstance().execute(session -> {
@@ -42,7 +43,10 @@ public class FilteredRequestHandler
 
         if(request.isDetailed())
             DBHelper.recursiveObjectInitialize(list);
-
+        
+        //Trasforma i proxy
+        DTOUtils.iterableToDTO(list);
+        
         return list;
     }
 }
