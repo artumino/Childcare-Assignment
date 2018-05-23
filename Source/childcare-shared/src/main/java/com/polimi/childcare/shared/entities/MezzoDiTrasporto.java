@@ -97,6 +97,10 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
         this.fornitore = fornitore;
     }
 
+    public void unsafeAddPianoViaggi(PianoViaggi p) { pianoViaggi.add(p); }
+
+    public void unsafeRemovePianoViaggi(PianoViaggi p) { pianoViaggi.remove(p); }
+
     public Set<PianoViaggi> getPianoViaggi() { return EntitiesHelper.unmodifiableListReturn(pianoViaggi); }
 
     @Override

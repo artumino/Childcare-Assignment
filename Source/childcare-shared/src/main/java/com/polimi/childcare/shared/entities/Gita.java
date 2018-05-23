@@ -85,6 +85,14 @@ public class Gita extends TransferableEntity implements Serializable
         return Costo;
     }
 
+    public void unsafeAddPianoViaggi(PianoViaggi p) { pianiViaggi.add(p); }
+
+    public void unsafeRemovePianoViaggi(PianoViaggi p) { pianiViaggi.remove(p); }
+
+    public void unsafeAddRegistroPresenza(RegistroPresenze rp) { registriPresenze.add(rp); }
+
+    public void unsafeRemoveRegistroPresenza(RegistroPresenze rp) { registriPresenze.remove(rp); }
+
     public Set<PianoViaggi> getPianiViaggi() { return EntitiesHelper.unmodifiableListReturn(pianiViaggi); }
 
     public Set<RegistroPresenze> getRegistriPresenze() { return EntitiesHelper.unmodifiableListReturn(registriPresenze); }

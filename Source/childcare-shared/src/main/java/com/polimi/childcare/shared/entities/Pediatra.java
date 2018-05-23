@@ -24,6 +24,10 @@ public class Pediatra extends Contatto
         super(descrizione, nome, cognome, indirizzo);
     }
 
+    public void unsafeAddBambino(Bambino b) { bambini.add(b); }
+
+    public void unsafeRemoveBambino(Bambino b) { bambini.remove(b); }
+
     public Set<Bambino> getBambiniCurati() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
     @Override

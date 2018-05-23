@@ -85,6 +85,10 @@ public class Pasto extends TransferableEntity implements Serializable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
+    public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
+
+    public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
+
     public Set<Fornitore> getFornitori() { return EntitiesHelper.unmodifiableListReturn(fornitori); }
 
     public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }

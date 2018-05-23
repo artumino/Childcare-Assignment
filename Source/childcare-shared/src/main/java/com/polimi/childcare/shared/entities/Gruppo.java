@@ -51,6 +51,14 @@ public class Gruppo extends TransferableEntity implements Serializable
         this.sorvergliante = sorvergliante;
     }
 
+    public void unsafeAddBambino(Bambino b) { bambini.add(b); }
+
+    public void unsafeRemoveBambino(Bambino b) { bambini.remove(b); }
+
+    public void unsafeAddPianoViaggi(PianoViaggi p) { pianoviaggi.add(p); }
+
+    public void unsafeRemovePianoViaggi(PianoViaggi p) { pianoviaggi.remove(p); }
+
     public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
     public Set<PianoViaggi> getPianoviaggi() { return EntitiesHelper.unmodifiableListReturn(pianoviaggi); }

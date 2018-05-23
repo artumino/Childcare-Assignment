@@ -1,7 +1,5 @@
-import com.polimi.childcare.server.Helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.*;
-import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

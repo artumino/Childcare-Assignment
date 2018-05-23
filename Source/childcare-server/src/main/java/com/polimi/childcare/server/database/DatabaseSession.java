@@ -1,8 +1,7 @@
 package com.polimi.childcare.server.database;
 
 
-import com.polimi.childcare.server.Helper.DBHelper;
-import com.polimi.childcare.shared.entities.Addetto;
+import com.polimi.childcare.server.helper.DBHelper;
 import org.hibernate.*;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.jinq.jpa.JinqJPAStreamProvider;
@@ -11,10 +10,8 @@ import org.jinq.orm.stream.JinqStream;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
-import javax.persistence.RollbackException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
 
 public class DatabaseSession

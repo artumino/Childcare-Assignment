@@ -133,6 +133,14 @@ public class Fornitore extends TransferableEntity implements Serializable
 
     public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
 
+    public void unsafeAddPasto(Pasto p) { pasti.add(p); }
+
+    public void unsafeRemovePasto(Pasto p) { pasti.remove(p); }
+
+    public void unsafeAddMezzo(MezzoDiTrasporto m) { mezzi.add(m); }
+
+    public void unsafeRemoveMezzo(MezzoDiTrasporto m) { mezzi.remove(m); }
+
     public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
 
     public Set<MezzoDiTrasporto> getMezzi() { return EntitiesHelper.unmodifiableListReturn(mezzi); }

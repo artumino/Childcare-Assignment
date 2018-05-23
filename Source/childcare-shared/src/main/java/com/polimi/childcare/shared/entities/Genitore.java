@@ -25,6 +25,10 @@ public class Genitore extends Persona
         super(nome, cognome, codiceFiscale, dataNascita, stato, comune, provincia, cittadinanza, residenza, sesso);
     }
 
+    public void unsafeAddBambino(Bambino b) { bambini.add(b); }
+
+    public void unsafeRemoveBambino(Bambino b) { bambini.remove(b); }
+
     public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
 
     @Override

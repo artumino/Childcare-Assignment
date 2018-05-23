@@ -61,6 +61,10 @@ public class Menu extends TransferableEntity implements Serializable
         Ricorrenza = ricorrenza;
     }
 
+    public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
+
+    public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
+
     public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
 
     @Override

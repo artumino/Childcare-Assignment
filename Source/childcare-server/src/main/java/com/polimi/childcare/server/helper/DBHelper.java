@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.Helper;
+package com.polimi.childcare.server.helper;
 
 import org.hibernate.Hibernate;
 import org.jinq.orm.stream.JinqStream;

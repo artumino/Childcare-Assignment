@@ -63,6 +63,14 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
         Descrizione = descrizione;
     }
 
+    public void unsafeAddDiagnosi(Diagnosi d) { diagnosi.add(d); }
+
+    public void unsafeRemoveDiagnosi(Diagnosi d) { diagnosi.remove(d); }
+
+    public void unsafeAddPasto(Pasto p) { pasti.add(p); }
+
+    public void unsafeRemovePasto(Pasto p) { pasti.remove(p); }
+
     public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
 
     public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
