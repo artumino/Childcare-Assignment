@@ -1,5 +1,6 @@
 package com.polimi.childcare.client.android;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -29,11 +30,11 @@ public class ImageStore
      * @param uuid ID con cui salvare l'immagine
      * @param image Immagine da salvare
      */
-    public void SaveImage(UUID uuid, Bitmap image)
+    public void SaveImage(Context context, UUID uuid, Bitmap image)
     {
         FileOutputStream file = null;
         try {
-            file = new FileOutputStream(new File(Environment.getExternalStorageDirectory(), uuid.toString() + ".thumb").getAbsolutePath());
+            file = new FileOutputStream(new File(context.getFilesDir(), uuid.toString() + ".thumb").getAbsolutePath());
             image.compress(Bitmap.CompressFormat.PNG, 100, file);
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,8 +54,8 @@ public class ImageStore
      * @param uuid ID associato all'immagine
      * @return Bitmap se immagine presente, null in caso contrario
      */
-    public Bitmap GetImage(UUID uuid)
+    public Bitmap GetImage(Context context, UUID uuid)
     {
-        return BitmapFactory.decodeFile(new File(Environment.getExternalStorageDirectory(), uuid.toString() + ".thumb").getAbsolutePath());
+        return BitmapFactory.decodeFile(new File(context.getFilesDir(), uuid.toString() + ".thumb").getAbsolutePath());
     }
 }

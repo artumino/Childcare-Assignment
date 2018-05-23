@@ -2,6 +2,7 @@ package com.polimi.childcare.client.android.viewholders;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter;
 
 /**
  * Classe per legare un oggetto di tipo T ad un item di una lista

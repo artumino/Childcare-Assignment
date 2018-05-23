@@ -166,6 +166,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         {
             filteredPersone.setPredicate(persona -> {
                 String lowerCaseFilter = filterField.getText().toLowerCase();
+                boolean spaced = lowerCaseFilter.contains(" ");
 
                 try
                 {
@@ -182,7 +183,10 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
                         return true;
                     if(DateUtils.dateToShortString(persona.getDataNascita()).contains(lowerCaseFilter))
                         return true;
-                    return persona.getCodiceFiscale().toLowerCase().contains(lowerCaseFilter);
+                    if(persona.getCodiceFiscale().toLowerCase().contains(lowerCaseFilter))
+                        return true;
+                    return spaced && ((persona.getNome().toLowerCase() + " " + persona.getCognome().toLowerCase()).contains(lowerCaseFilter)
+                                        || (persona.getCognome().toLowerCase() + " " + persona.getNome().toLowerCase()).contains(lowerCaseFilter));
                 }
             });
         }

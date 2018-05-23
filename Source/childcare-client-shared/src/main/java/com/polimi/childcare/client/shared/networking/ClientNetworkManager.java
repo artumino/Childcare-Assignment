@@ -80,9 +80,10 @@ public class ClientNetworkManager implements Runnable
     {
         if(this.clientNetworkInterface != null) {
 
-            //Se il thread di rete è ancora in esecuzione, non posso connettermi nuovamente
+            //Se il thread di rete è ancora in esecuzione, non posso connettermi nuovamente, probabile errore dell'interfaccia
+            //ritorno true per evitare comportamenti non previsti
             if(this.clientNetworkInterface.isConnected())
-                return false;
+                return true;
 
             try {
                 this.currentServerAddress = address;
@@ -97,6 +98,18 @@ public class ClientNetworkManager implements Runnable
             } catch (Throwable ex) {
                 ex.printStackTrace();
             }
+        }
+        return false;
+    }
+
+    /**
+     * Metodo per controllare lo stato dell'interfaccia di rete
+     * @return true se connesso ad un server, false in caso contrario
+     */
+    public boolean isConnected()
+    {
+        if(this.clientNetworkInterface != null) {
+            return this.clientNetworkInterface.isConnected();
         }
         return false;
     }

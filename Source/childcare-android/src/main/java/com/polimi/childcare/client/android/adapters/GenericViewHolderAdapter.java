@@ -1,6 +1,7 @@
 package com.polimi.childcare.client.android.adapters;
 
 import android.support.annotation.Nullable;
+import android.support.v7.util.SortedList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,7 @@ import com.polimi.childcare.client.android.viewholders.GenericViewHolder;
 import com.polimi.childcare.client.android.viewholders.annotations.LayoutAnnotation;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Classe per la gestione di Adapter generici con ViewHolder di oggetti generici
@@ -21,17 +19,21 @@ import java.util.List;
  */
 public class GenericViewHolderAdapter<T, VH extends GenericViewHolder<T>> extends RecyclerView.Adapter<GenericViewHolder<T>>
 {
-    private Class<VH> viewHolder;
-    private List<T> availableItems;
-    private HashMap<T, GenericViewHolder<T>> shownItems;
 
-    public GenericViewHolderAdapter(Class<VH> viewHolder, List<T> items)
+    private Class<VH> viewHolder;
+    private SortedList<T> availableItems;
+    private HashMap<T, GenericViewHolder<T>> shownItems;
+    private Comparator<T> compareMode;
+
+    public GenericViewHolderAdapter(Class<VH> viewHolder, Class<T> tClass, List<T> items, Comparator<T> defaultCompareMode)
     {
         this.viewHolder = viewHolder;
+
+        this.compareMode = defaultCompareMode;
+        this.availableItems = new SortedList<>(tClass, sortedListCallback, items != null ? items.size() : 10);
+
         if(items != null)
-            this.availableItems = items;
-        else
-            this.availableItems = new ArrayList<>(1);
+            this.availableItems.addAll(items);
 
         this.shownItems = new HashMap<>(2);
     }
@@ -82,66 +84,53 @@ public class GenericViewHolderAdapter<T, VH extends GenericViewHolder<T>> extend
 
     public void add(T newItem)
     {
-        if(!availableItems.contains(newItem))
-        {
-            availableItems.add(newItem);
-            notifyItemInserted(availableItems.indexOf(newItem));
-        }
+        availableItems.add(newItem);
     }
 
     public void addRange(Collection<T> newItems)
     {
-        if(newItems.size() > 0 && !availableItems.containsAll(newItems))
-        {
-            availableItems.addAll(newItems);
-            notifyItemRangeInserted(availableItems.indexOf(newItems.iterator().next()), newItems.size());
-        }
-    }
-
-    public void enqueue(T newItem)
-    {
-        if(!availableItems.contains(newItem))
-        {
-            availableItems.add(0, newItem);
-            notifyItemInserted(0);
-        }
-    }
-
-    public void enqueueRange(Collection<T> newItems)
-    {
-        if(newItems.size() > 0 && !availableItems.containsAll(newItems))
-        {
-            availableItems.addAll(0, newItems);
-            notifyItemRangeInserted(0, newItems.size());
-        }
-    }
-
-    public void insert(T newItem, int position)
-    {
-        if(!availableItems.contains(newItem))
-        {
-            availableItems.add(position, newItem);
-            notifyItemInserted(availableItems.indexOf(newItem));
-        }
-    }
-
-    public void insertRange(Collection<T> newItems, int position)
-    {
-        if(newItems.size() > 0 && !availableItems.containsAll(newItems))
-        {
-            availableItems.addAll(position, newItems);
-            notifyItemRangeInserted(position, newItems.size());
-        }
+        availableItems.addAll(newItems);
     }
 
     public void remove(int position)
     {
         if(availableItems.size() > position)
         {
-            notifyItemRemoved(position);
-            shownItems.remove(availableItems.get(position));
-            availableItems.remove(position);
+            T item = availableItems.get(position);
+            shownItems.remove(item);
+            availableItems.remove(item);
         }
+    }
+
+    public void remove(T item)
+    {
+        shownItems.remove(item);
+        availableItems.remove(item);
+    }
+
+    public void remove(List<T> items)
+    {
+        availableItems.beginBatchedUpdates();
+        for (T item : items) {
+            shownItems.remove(item);
+            availableItems.remove(item);
+        }
+        availableItems.endBatchedUpdates();
+    }
+
+    public void replaceAll(List<T> items)
+    {
+        availableItems.beginBatchedUpdates();
+        for (int i = availableItems.size() - 1; i >= 0; i--)
+        {
+            final T item = availableItems.get(i);
+            if (!items.contains(item)) {
+                shownItems.remove(item);
+                availableItems.remove(item);
+            }
+        }
+        availableItems.addAll(items);
+        availableItems.endBatchedUpdates();
     }
 
     public void update(T item)
@@ -164,4 +153,48 @@ public class GenericViewHolderAdapter<T, VH extends GenericViewHolder<T>> extend
             return availableItems.get(position);
         return null;
     }
+
+    public void setCompareMode(Comparator<T> compareMode)
+    {
+        this.compareMode = compareMode;
+    }
+
+    private final SortedList.Callback<T> sortedListCallback = new SortedList.Callback<T>()
+    {
+
+        @Override
+        public void onInserted(int position, int count) {
+            notifyItemRangeInserted(position, count);
+        }
+
+        @Override
+        public void onRemoved(int position, int count) {
+            notifyItemRangeRemoved(position, count);
+        }
+
+        @Override
+        public void onMoved(int fromPosition, int toPosition) {
+            notifyItemMoved(fromPosition, toPosition);
+        }
+
+        @Override
+        public int compare(T o1, T o2) {
+            return compareMode.compare(o1, o2);
+        }
+
+        @Override
+        public void onChanged(int position, int count) {
+            notifyItemRangeChanged(position, count);
+        }
+
+        @Override
+        public boolean areContentsTheSame(T oldItem, T newItem) {
+            return oldItem.equals(newItem);
+        }
+
+        @Override
+        public boolean areItemsTheSame(T item1, T item2) {
+            return item1.hashCode() == item2.hashCode();
+        }
+    };
 }

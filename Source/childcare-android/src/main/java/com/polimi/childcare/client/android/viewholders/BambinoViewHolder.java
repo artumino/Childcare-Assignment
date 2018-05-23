@@ -69,7 +69,7 @@ public class BambinoViewHolder extends GenericViewHolder<Bambino>
             this.txtCodiceFiscane.setText(linkedBambino.getCodiceFiscale());
             this.txtMatricola.setText(String.valueOf(linkedBambino.getID()));
 
-            Bitmap loadedImage = ImageStore.getInstance().GetImage(UUID.nameUUIDFromBytes(String.valueOf(linkedBambino.getID()).getBytes()));
+            Bitmap loadedImage = ImageStore.getInstance().GetImage(itemView.getContext(), UUID.nameUUIDFromBytes(String.valueOf(linkedBambino.getID()).getBytes()));
             if(loadedImage != null)
                 this.imgPreviewBambino.setImageBitmap(loadedImage);
             else
