@@ -18,6 +18,7 @@
 .idea/**/sqlDataSources.xml
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
+.idea/compiler.xml
 
 # Gradle:
 .idea/**/libraries/**
@@ -104,4 +105,6 @@ hs_err_pid*
 #Sincronizza la librerie
 !libs/**
 
+#Android Files
 local.properties
+childcare-android/src/main/gen
