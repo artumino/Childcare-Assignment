@@ -5,6 +5,7 @@ import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.IStageController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
@@ -32,10 +33,12 @@ public class HomeSceneController implements ISubSceneController
     private Parent root;
 
     @FXML private AnchorPane rootPane;
-    @FXML private TableView<Persona> tableList;
+
+    //Presenze
+    @FXML private TableView<Bambino> tableList;
 
     //Lista persone da visualizzare
-    private ObservableList<Persona> listaPersone;
+    private ObservableList<Bambino> listaPersone;
 
     @FXML
     protected void initialize()
@@ -43,23 +46,19 @@ public class HomeSceneController implements ISubSceneController
         listaPersone = FXCollections.observableArrayList();
 
         //Imposto la scena
-        TableColumn<Persona, String> name = new TableColumn<>("Nome");
-        TableColumn<Persona, String> surname = new TableColumn<>("Cognome");
-        TableColumn<Persona, String> fiscalCode = new TableColumn<>("Codice Fiscale");
-        TableColumn<Persona, String> dateOfBirth = new TableColumn<>("Data di Nascita");
-        TableColumn<Persona, Integer> id = new TableColumn<>("Matricola");
+        TableColumn<Bambino, String> name = new TableColumn<>("Nome");
+        TableColumn<Bambino, String> surname = new TableColumn<>("Cognome");
+        TableColumn<Bambino, String> fiscalCode = new TableColumn<>("Codice Fiscale");
+        TableColumn<Bambino, Integer> id = new TableColumn<>("Matricola");
 
         name.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getNome()));
         surname.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCognome()));
         fiscalCode.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCodiceFiscale()));
 
-        dateOfBirth.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(
-                DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.ofInstant(cellData.getValue().getDataNascita().toInstant(), ZoneId.systemDefault()))));
-
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
 
         if(tableList != null) {
-            tableList.getColumns().addAll(name, surname, fiscalCode, dateOfBirth, id);
+            tableList.getColumns().addAll(name, surname, fiscalCode, id);
             tableList.setItems(listaPersone);
             //tableList.setColumnResizePolicy(p -> true);
         }
