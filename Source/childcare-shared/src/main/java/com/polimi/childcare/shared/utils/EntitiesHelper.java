@@ -3,6 +3,7 @@ package com.polimi.childcare.shared.utils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class EntitiesHelper
@@ -38,11 +39,70 @@ public class EntitiesHelper
             if(presenza.getBambino() != null)
             {
                 Bambino bambino = presenza.getBambino();
-                if(!mappaPresenze.containsKey(bambino) || mappaPresenze.get(bambino).getTimeStamp().before(presenza.getTimeStamp()))
+                if(!mappaPresenze.containsKey(bambino) || mappaPresenze.get(bambino).getTimeStamp().isBefore(presenza.getTimeStamp()))
                     mappaPresenze.put(bambino, presenza);
             }
         }
 
         return mappaPresenze;
+    }
+
+
+    /**
+     * Metodo per cambiare lo stato della presenza
+     * @param lista
+     * @param dt
+     * @param isUscita
+     * @return
+     * @throws Exception
+     */
+    public static RegistroPresenze.StatoPresenza presenzeChanger(RegistroPresenze lista, LocalDateTime dt, boolean isUscita) throws Exception
+    {
+        if(lista.getTimeStamp().isAfter(dt))
+            throw new Exception("Formato Errato!");
+
+        else if(lista.getDate().equals(dt.toLocalDate()))
+        {
+            if(lista.getStato() == RegistroPresenze.StatoPresenza.Presente)
+            {
+                if (isUscita)
+                {
+                    if (dt.getHour() > 18)
+                        return RegistroPresenze.StatoPresenza.Uscito;
+                    else
+                        return RegistroPresenze.StatoPresenza.UscitoInAnticipo;
+                }
+            }
+            else if(lista.getStato() == RegistroPresenze.StatoPresenza.Uscito || lista.getStato() == RegistroPresenze.StatoPresenza.UscitoInAnticipo)
+                return null;
+
+
+            else
+            {
+                if(dt.getHour() < 8)
+                    return RegistroPresenze.StatoPresenza.Presente;
+
+                else
+                    return RegistroPresenze.StatoPresenza.EntratoInRitardo;
+            }
+        }
+
+        else
+        {
+            if(isUscita)
+                return null;
+            else
+            {
+                if(dt.getHour() < 8)
+                    return RegistroPresenze.StatoPresenza.Presente;
+
+                else
+                    return RegistroPresenze.StatoPresenza.EntratoInRitardo;
+            }
+
+
+        }
+
+        return null;
     }
 }

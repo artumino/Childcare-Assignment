@@ -3,6 +3,9 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Objects;
 
@@ -20,11 +23,11 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.DATE)
-    private Date Date;
+    private LocalDate Date;
 
     @Column(nullable = false)
     @Temporal(value = TemporalType.TIMESTAMP)
-    private Date TimeStamp;
+    private LocalDateTime TimeStamp;
 
     @Column(nullable = false)
     private short Ora;
@@ -47,7 +50,17 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     public RegistroPresenze() { }
 
-    public RegistroPresenze(StatoPresenza stato, java.util.Date date, java.util.Date timeStamp, short ora, Bambino bambino, Gita gita) {
+    public RegistroPresenze(StatoPresenza stato, LocalDate date, LocalDateTime timeStamp, short ora, Bambino bambino)
+    {
+        Stato = stato;
+        Date = date;
+        TimeStamp = timeStamp;
+        Ora = ora;
+        this.bambino = bambino;
+    }
+
+    public RegistroPresenze(StatoPresenza stato, LocalDate date, LocalDateTime timeStamp, short ora, Bambino bambino, Gita gita)
+    {
         Stato = stato;
         Date = date;
         TimeStamp = timeStamp;
@@ -68,21 +81,13 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
         Stato = stato;
     }
 
-    public java.util.Date getDate() {
-        return Date;
-    }
+    public LocalDate getDate() { return Date; }
 
-    public void setDate(java.util.Date date) {
-        Date = date;
-    }
+    public void setDate(LocalDate date) { Date = date; }
 
-    public java.util.Date getTimeStamp() {
-        return TimeStamp;
-    }
+    public LocalDateTime getTimeStamp() { return TimeStamp; }
 
-    public void setTimeStamp(java.util.Date timeStamp) {
-        TimeStamp = timeStamp;
-    }
+    public void setTimeStamp(LocalDateTime timeStamp) { TimeStamp = timeStamp; }
 
     public short getOra() {
         return Ora;
@@ -129,7 +134,7 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     public enum StatoPresenza
     {
-        Presente(), Assente(), EntratoInRitardo(), UscitoInAnticipo(), Disperso();
+        Presente(), Assente(), EntratoInRitardo(), UscitoInAnticipo(), Uscito(), Disperso();
     }
 
     //endregion

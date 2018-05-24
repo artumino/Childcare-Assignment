@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.database.DatabaseSession;

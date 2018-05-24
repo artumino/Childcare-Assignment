@@ -16,9 +16,8 @@ public class Menu extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false)
-    @Temporal(value = TemporalType.DATE)
-    private Date DataInizio;
+    @Column
+    private boolean attivo;
 
     @Column(nullable = false)
     private int Ricorrenza;
@@ -36,8 +35,9 @@ public class Menu extends TransferableEntity implements Serializable
 
     public Menu() { }
 
-    public Menu(Date dataInizio, int ricorrenza) {
-        DataInizio = dataInizio;
+    public Menu(boolean attivo, int ricorrenza)
+    {
+        this.attivo = attivo;
         Ricorrenza = ricorrenza;
     }
 
@@ -45,21 +45,13 @@ public class Menu extends TransferableEntity implements Serializable
         return ID;
     }
 
-    public Date getDataInizio() {
-        return DataInizio;
-    }
+    public boolean isAttivo() { return attivo; }
 
-    public void setDataInizio(Date dataInizio) {
-        DataInizio = dataInizio;
-    }
+    public void setAttivo(boolean attivo) { this.attivo = attivo; }
 
-    public int getRicorrenza() {
-        return Ricorrenza;
-    }
+    public int getRicorrenza() { return Ricorrenza; }
 
-    public void setRicorrenza(int ricorrenza) {
-        Ricorrenza = ricorrenza;
-    }
+    public void setRicorrenza(int ricorrenza) { Ricorrenza = ricorrenza; }
 
     public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
 
@@ -77,7 +69,7 @@ public class Menu extends TransferableEntity implements Serializable
         Menu menu = (Menu) o;
         return getID() == menu.getID() &&
                 getRicorrenza() == menu.getRicorrenza() &&
-                getDataInizio().compareTo(menu.getDataInizio()) == 0;
+                isAttivo() == menu.isAttivo();
     }
 
     //endregion

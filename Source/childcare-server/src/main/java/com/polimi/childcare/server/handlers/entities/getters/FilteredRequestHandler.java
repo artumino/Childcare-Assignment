@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.server.helper.DBHelper;
@@ -12,6 +12,15 @@ import java.util.List;
 
 public class FilteredRequestHandler
 {
+    /**
+     *
+     * @param request Richiesta di Tipo T
+     * @param requestClass Classe del Tipo IT
+     * @param list Lista di Tipo IT
+     * @param <T> Tipo della Richiesta
+     * @param <IT> Tipo della Classe Legata alla Richiesta
+     * @return Lista di Tipo IT
+     */
     public static <T extends FilteredBaseRequest, IT extends TransferableEntity> List<IT> requestManager(T request, Class<?> requestClass, List<IT> list)
     {
         if (request.getCount() == 0)

@@ -1,4 +1,6 @@
-package com.polimi.childcare.shared.networking.requests;
+package com.polimi.childcare.shared.networking.requests.setters;
+
+import com.polimi.childcare.shared.networking.requests.BaseRequest;
 
 public class SetPresenzaRequest extends BaseRequest
 {
@@ -6,7 +8,7 @@ public class SetPresenzaRequest extends BaseRequest
     private int gitaId;
     private boolean isGita;
     private long utcInstant;
-    private boolean uscita;
+    private boolean uscita; //true se uscita
 
     public SetPresenzaRequest(int bambinoId, int gitaId, boolean isGita, long utcInstant, boolean uscita)
     {

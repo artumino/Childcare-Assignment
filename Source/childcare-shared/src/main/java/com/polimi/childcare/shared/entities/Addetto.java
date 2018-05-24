@@ -27,5 +27,10 @@ public class Addetto extends Persona
         return super.hashCode();
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }
