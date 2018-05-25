@@ -9,5 +9,5 @@ public interface IStageController extends ISceneController
 {
     Scene setupStageAndShow(Stage stage, Parent parent);
     void requestSetTitle(String newTitle);
-    void requestClose();
+    void requestClose(Object... returnParams);
 }

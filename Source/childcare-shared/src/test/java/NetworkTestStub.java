@@ -9,6 +9,7 @@ import stubs.BambinoListRequestStub;
 import stubs.BambinoListResponseStub;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +29,7 @@ public class NetworkTestStub
             Bambino bambinoTest = new Bambino(NetworkTestStub.names[rnd.nextInt(NetworkTestStub.names.length)],
                     NetworkTestStub.surnames[rnd.nextInt(NetworkTestStub.surnames.length)],
                     NetworkTestStub.surnames[rnd.nextInt(NetworkTestStub.surnames.length)],
-                    new Date(), "Italia", "Piacenza", "PC", "Italiana",
+                    LocalDateTime.now().toLocalDate(), "Italia", "Piacenza", "PC", "Italiana",
                     "via Pisoni Pise 1", (byte)rnd.nextInt(2));
             bambini.add(bambinoTest);
             bambini.add(bambinoTest);

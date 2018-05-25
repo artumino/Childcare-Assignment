@@ -33,6 +33,7 @@ public class DTOUtils
             try {
                 if(!object.isDTO())
                     object.toDTO();
+                return object;
             } catch (Exception ignored)
             {
                 //Ignore

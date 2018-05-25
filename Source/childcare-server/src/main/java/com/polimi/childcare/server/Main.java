@@ -2,6 +2,7 @@ package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.handlers.entities.getters.FilteredLastPresenzaRequestHandler;
 import com.polimi.childcare.server.handlers.entities.getters.FilteredRegistroPresenzeRequestHandler;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
@@ -59,6 +60,7 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(FilteredQuantitaPastoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredQuantitaPastoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredReazioneAvversaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredRegistroPresenzeRequest.class, new FilteredRegistroPresenzeRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredLastPresenzaRequest.class, new FilteredLastPresenzaRequestHandler());
 
         String command;
         Scanner scanner = new Scanner(System.in);

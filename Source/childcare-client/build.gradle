@@ -12,10 +12,9 @@ repositories {
 dependencies {
     compile project(':childcare-shared')
     compile project(':childcare-client-shared')
+    compile 'com.jfoenix:jfoenix:8.0.4'
     compile 'com.google.zxing:core:3.3.2'
     compile group: 'com.google.zxing', name: 'javase', version: '3.3.2'
-    compile 'com.jfoenix:jfoenix:8.0.3'
-    //compile 'org.hibernate:hibernate-core:5.2.17.Final'
     testCompile 'junit:junit:4.12'
 }
 

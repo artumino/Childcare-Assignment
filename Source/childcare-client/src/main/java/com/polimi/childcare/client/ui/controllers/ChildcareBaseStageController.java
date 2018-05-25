@@ -33,6 +33,9 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
     private byte toolBarButtonVisibilityMask = (byte)0xff;
     private ISubSceneController contentScene;
 
+    //Return Callback
+    private OnStageClosingCallback onClosingCallback;
+
     @Override protected Node getWindowDragParent() {
         return this.dragToolbar;
     }
@@ -51,6 +54,11 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
     //Ritorna la dimensione impostata da SceneBuilder oppure quella di default
     public double getControllerWidth() {
         return rootStackPane != null ? rootStackPane.getPrefWidth() : super.getControllerWidth();
+    }
+
+    public void setOnClosingCallback(OnStageClosingCallback onClosingCallback)
+    {
+        this.onClosingCallback = onClosingCallback;
     }
 
     @Override
@@ -106,19 +114,19 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
         return contentScene;
     }
 
-    public void setContentScene(URL contentScene) {
+    public void setContentScene(URL contentScene, Object... args) {
         try {
 
             //Carica la nuova scene
             ISubSceneController newScene = SceneUtils.loadSubScene(contentScene);
-            UpdateContentScene(newScene);
+            UpdateContentScene(newScene, args);
             this.contentScene = newScene;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void UpdateContentScene(ISubSceneController newScene)
+    private void UpdateContentScene(ISubSceneController newScene, Object... args)
     {
 
         //Notifica scene precedente che è stata rimossa dallo stage
@@ -137,7 +145,7 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
             this.linkedStage.setWidth(getControllerWidth());
             this.linkedStage.setHeight(getControllerHeight());
             this.contentPane.getChildren().add(newScene.getRoot());
-            newScene.attached(this);
+            newScene.attached(this, args);
         }
     }
 
@@ -161,5 +169,19 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
             if(isButtonVisible(ToolbarButtons.Close))
                 hboxToolbarButtons.getChildren().add(btnClose);
         }
+    }
+
+    @Override
+    public void requestClose(Object... returnArgs)
+    {
+        if(onClosingCallback != null)
+            onClosingCallback.onResult(returnArgs);
+
+        super.requestClose(returnArgs);
+    }
+
+    public interface OnStageClosingCallback
+    {
+        void onResult(Object... args);
     }
 }

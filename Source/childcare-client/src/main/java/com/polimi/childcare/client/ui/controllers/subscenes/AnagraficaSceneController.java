@@ -99,7 +99,7 @@ public class AnagraficaSceneController implements ISubSceneController
     }
 
     @Override
-    public void attached(ISceneController sceneController)
+    public void attached(ISceneController sceneController, Object... args)
     {
         //Se sono stato collegato ad uno stage, imposto un titolo opportuno
         if(sceneController instanceof IStageController)
