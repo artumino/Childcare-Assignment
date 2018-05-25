@@ -132,8 +132,13 @@ public class InsertTest
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Inventato ORA", contattoget.getIndirizzo());
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", diagnosiget.getPersona(), addetto1);
 
+        genitoreget.unsafeRemoveBambino(bambinoget);    //Non va
+        bambino1.removeGenitore(genitore1);             //Non va
+
 
         DatabaseSession.getInstance().execute(session ->{
+            //session.update(genitore1);
+            //session.update(bambino1);
             session.deleteByID(NumeroTelefono.class, idTelefono);
             session.deleteByID(Genitore.class, idGenitore);
             session.deleteByID(Fornitore.class, idFornitore);
@@ -154,6 +159,7 @@ public class InsertTest
         reazioneavversaget = DatabaseSession.getInstance().getByID(ReazioneAvversa.class, idReazione);
         diagnosiget = DatabaseSession.getInstance().getByID(Diagnosi.class, idDiagnosi);
         contattoget = DatabaseSession.getInstance().getByID(Contatto.class, idContatto);
+        bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino);
 
 
         Assert.assertNull("Controllo che i due oggetti si equivalgano", pastoget);
@@ -162,6 +168,7 @@ public class InsertTest
         Assert.assertNull("Controllo che i due oggetti si equivalgano", reazioneavversaget);
         Assert.assertNull("Controllo che i due oggetti si equivalgano", contattoget);
         Assert.assertNull("Controllo che i due oggetti si equivalgano", diagnosiget);
+        Assert.assertNull("Controllo che i due oggetti si equivalgano", bambinoget);
 
     }
 
