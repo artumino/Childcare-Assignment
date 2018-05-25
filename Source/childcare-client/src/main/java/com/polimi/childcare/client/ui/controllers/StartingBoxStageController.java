@@ -80,7 +80,7 @@ public class StartingBoxStageController implements ISubSceneController
     }
 
     @Override
-    public void attached(ISceneController sceneController) {
+    public void attached(ISceneController sceneController, Object... args) {
         if(sceneController instanceof ChildcareBaseStageController)
         {
             this.linkedStageController = (ChildcareBaseStageController) sceneController;

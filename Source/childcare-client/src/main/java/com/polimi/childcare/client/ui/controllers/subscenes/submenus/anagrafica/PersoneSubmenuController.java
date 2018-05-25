@@ -8,7 +8,10 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
+import com.polimi.childcare.client.ui.OrderedFilteredList;
+import com.polimi.childcare.client.ui.components.FilterComponent;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
+import com.polimi.childcare.client.ui.filters.PersonaFilters;
 import com.polimi.childcare.client.ui.utils.DateUtils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Persona;
@@ -40,10 +43,10 @@ import java.util.HashMap;
 public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 {
 
-    //Lista persone da visualizzare
-    private ObservableList<Persona> listaPersone;
-    private FilteredList<Persona> filteredPersone;
-    private SortedList<Persona> sortedPersone;
+    private OrderedFilteredList<Persona> listaPersone;
+
+    //Filter Component
+    private FilterComponent<Persona> filterComponent;
 
     //Generated
     private TextField filterField;
@@ -58,7 +61,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
     @Override
     protected void initialize()
     {
-        listaPersone = FXCollections.observableArrayList();
+        listaPersone = new OrderedFilteredList<>();
 
         //Imposto la scena
         TableColumn<Persona, String> name = new TableColumn<>("Nome");
@@ -76,16 +79,10 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
 
-        //Crea Lista filtrata ed imposto filtro
-        filteredPersone = new FilteredList<>(listaPersone, p -> true);
-
-        //Crea lista ordinata
-        sortedPersone = new SortedList<>(filteredPersone);
-
         if(tableView != null) {
             tableView.getColumns().addAll(name, surname, fiscalCode, dateOfBirth, id);
-            sortedPersone.comparatorProperty().bind(tableView.comparatorProperty());
-            tableView.setItems(sortedPersone);
+            listaPersone.comparatorProperty().bind(tableView.comparatorProperty());
+            tableView.setItems(listaPersone.list());
             //tableList.setColumnResizePolicy(p -> true);
         }
 
@@ -94,14 +91,10 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         //Crea filtri
         filterField = new TextField();
         filterField.setPromptText("Filtra...");
-        filterField.textProperty().addListener((observable, oldValue, newValue) ->
-        {
-            //Se diverso filtra, sennò accetta tutti i valori
-            if(newValue != null && !newValue.isEmpty() && !oldValue.equals(newValue))
-                filterList();
-            else
-                filteredPersone.setPredicate(p -> true);
-        });
+
+        filterComponent = new FilterComponent<>(listaPersone.predicateProperty());
+        filterComponent.addFilterField(filterField, (persona -> PersonaFilters.filterPersona(persona, filterField.getText())));
+
         vboxFilters.getChildren().add(filterField);
 
         tableView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldPersona, newPersona) -> {
@@ -160,40 +153,8 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
     }
 
-    private void filterList()
-    {
-        if(filteredPersone != null)
-        {
-            filteredPersone.setPredicate(persona -> {
-                String lowerCaseFilter = filterField.getText().toLowerCase();
-                boolean spaced = lowerCaseFilter.contains(" ");
-
-                try
-                {
-                    //Se è una matricola
-                    Integer.parseInt(lowerCaseFilter);
-                    return String.valueOf(persona.getID()).contains(lowerCaseFilter);
-                }
-                catch (Exception ex)
-                {
-                    //Se è qualcos'altro
-                    if(persona.getNome().toLowerCase().contains(lowerCaseFilter))
-                        return true;
-                    if(persona.getCognome().toLowerCase().contains(lowerCaseFilter))
-                        return true;
-                    if(DateUtils.dateToShortString(persona.getDataNascita()).contains(lowerCaseFilter))
-                        return true;
-                    if(persona.getCodiceFiscale().toLowerCase().contains(lowerCaseFilter))
-                        return true;
-                    return spaced && ((persona.getNome().toLowerCase() + " " + persona.getCognome().toLowerCase()).contains(lowerCaseFilter)
-                                        || (persona.getCognome().toLowerCase() + " " + persona.getNome().toLowerCase()).contains(lowerCaseFilter));
-                }
-            });
-        }
-    }
-
     @Override
-    public void attached(ISceneController sceneController)
+    public void attached(ISceneController sceneController, Object... args)
     {
         if(this.pendingOperation != null)
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
@@ -219,16 +180,8 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         }
 
         ListPersoneResponse bambiniResponse = (ListPersoneResponse)response;
-
-        //Aggiorno i valori
-        listaPersone.clear();
-
-        //Aggiungo tutti i bambini
-        if(bambiniResponse.getPayload() != null)
-        {
-            listaPersone.addAll(bambiniResponse.getPayload());
-            tableView.sort();
-        }
+        listaPersone.updateDataSet(bambiniResponse.getPayload());
+        tableView.sort();
     }
 
     @Override

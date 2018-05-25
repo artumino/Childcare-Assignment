@@ -5,7 +5,7 @@ import javafx.scene.layout.Region;
 
 public interface ISubSceneController extends ISceneController
 {
-    void attached(ISceneController sceneController);
+    void attached(ISceneController sceneController, Object... args);
     void detached();
 
     Region getSceneRegion();

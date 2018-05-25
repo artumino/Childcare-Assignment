@@ -44,7 +44,7 @@ public abstract class BaseStageController implements IStageController
     }
 
     @Override
-    public void requestClose()
+    public void requestClose(Object... returnArgs)
     {
         if(this.linkedStage != null)
             this.linkedStage.close();
