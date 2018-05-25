@@ -128,7 +128,7 @@ public class HomeSceneController implements ISubSceneController
 
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
 
-        filterBambini.addFilterField(txtFiltro, (persona -> PersonaFilters.filterPersona(persona, txtFiltro.getText())));
+        filterBambini.addFilterField(txtFiltro.textProperty(), (persona -> PersonaFilters.filterPersona(persona, txtFiltro.getText())));
 
         if(tablePresenze != null) {
             tablePresenze.getColumns().addAll(id, name, surname, fiscalCode, editPresenza);

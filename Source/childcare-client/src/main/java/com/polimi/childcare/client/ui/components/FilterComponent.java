@@ -3,7 +3,6 @@ package com.polimi.childcare.client.ui.components;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.TextField;
 
 import java.util.HashMap;
@@ -13,19 +12,19 @@ import java.util.function.Predicate;
  * Classe generica per la creazione veloce di filtri per FilteredList con campi multipli
  * @param <T> Tipo di oggetto contenuto nella lista
  */
-public class FilterComponent<T> implements ChangeListener<String>
+public class FilterComponent<T> implements ChangeListener
 {
     private ObjectProperty<Predicate<? super T>> filteredListPredicate;
 
-    private HashMap<TextField, Predicate<T>> filterTextFields;
+    private HashMap<ObservableValue, Predicate<T>> filterFields;
 
 
-    public FilterComponent(ObjectProperty<Predicate<? super T>> filteredListPredicate, HashMap<TextField, Predicate<T>> filterTextFields)
+    public FilterComponent(ObjectProperty<Predicate<? super T>> filteredListPredicate, HashMap<ObservableValue, Predicate<T>> filterFields)
     {
         this.filteredListPredicate = filteredListPredicate;
-        this.filterTextFields = new HashMap<>();
+        this.filterFields = new HashMap<>();
 
-        addAllFilterFields(filterTextFields);
+        addAllFilterFields(filterFields);
 
         this.filteredListPredicate.set(p -> true);
     }
@@ -35,42 +34,48 @@ public class FilterComponent<T> implements ChangeListener<String>
         this(filteredListPredicate, null);
     }
 
-    public void addAllFilterFields(HashMap<TextField, Predicate<T>> filterTextFields)
+    public void addAllFilterFields(HashMap<ObservableValue, Predicate<T>> filterFields)
     {
-        if(filterTextFields == null)
+        if(filterFields == null)
             return;
 
-        for (TextField filterField: filterTextFields.keySet() )
-            addFilterField(filterField, filterTextFields.get(filterField));
+        for (ObservableValue observableValue: filterFields.keySet() )
+            addFilterField(observableValue, filterFields.get(observableValue));
     }
 
-    public void addFilterField(javafx.scene.control.TextField textField, Predicate<T> predicate)
+    public void addFilterField(ObservableValue observableValue, Predicate<T> predicate)
     {
-        this.filterTextFields.put(textField, predicate);
-        textField.textProperty().addListener(this);
+        this.filterFields.put(observableValue, predicate);
+        observableValue.addListener(this);
     }
 
-    public void removeFilterField(TextField textField)
+    public void removeFilterField(ObservableValue observableValue)
     {
-        if(this.filterTextFields.containsKey(textField))
-            textField.textProperty().removeListener(this);
+        if(this.filterFields.containsKey(observableValue))
+            observableValue.removeListener(this);
 
-        this.filterTextFields.remove(textField);
+        this.filterFields.remove(observableValue);
         filter();
     }
 
     private void filter()
     {
         this.filteredListPredicate.set(p -> true);
-        for (TextField filterField: filterTextFields.keySet() )
+        for (ObservableValue observableValue: filterFields.keySet() )
         {
-            if(!filterField.getText().isEmpty())
-                this.filteredListPredicate.set(filterTextFields.get(filterField).and(this.filteredListPredicate.get()));
+            if(observableValue.getValue() != null)
+            {
+                if(observableValue.getValue() instanceof String && observableValue.getValue().toString().isEmpty())
+                    return;
+
+                this.filteredListPredicate.set(filterFields.get(observableValue).and(this.filteredListPredicate.get()));
+
+            }
         }
     }
 
     @Override
-    public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+    public void changed(ObservableValue observable, Object oldValue, Object newValue)
     {
         if(!newValue.equals(oldValue))
             filter();
