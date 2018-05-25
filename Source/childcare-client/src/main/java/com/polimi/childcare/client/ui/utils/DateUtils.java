@@ -1,5 +1,6 @@
 package com.polimi.childcare.client.ui.utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -14,8 +15,8 @@ public class DateUtils
         return DateTimeFormatter.ofPattern(pattern).format(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
     }
 
-    public static String dateToShortString(Date date)
+    public static String dateToShortString(LocalDate date)
     {
-        return shotDateFormat.format(LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault()));
+        return shotDateFormat.format(date);
     }
 }

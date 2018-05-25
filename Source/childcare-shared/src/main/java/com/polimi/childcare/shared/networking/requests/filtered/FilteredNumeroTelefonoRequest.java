@@ -1,13 +1,14 @@
 package com.polimi.childcare.shared.networking.requests.filtered;
 
-import org.jinq.orm.stream.JinqStream;
+import com.polimi.childcare.shared.entities.NumeroTelefono;
 
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class FilteredNumeroTelefonoRequest extends FilteredBaseRequest
 {
-    public FilteredNumeroTelefonoRequest(int count, int pageNumber, boolean detailed, List<JinqStream.Where> filters, HashMap<JinqStream.CollectComparable, Boolean> orderBy) {
+    public FilteredNumeroTelefonoRequest(int count, int pageNumber, boolean detailed, List<Predicate<NumeroTelefono>> filters, List<Comparator<NumeroTelefono>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);
     }
 }

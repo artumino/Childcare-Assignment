@@ -17,6 +17,6 @@ public class FilteredPersonaRequestHandler implements IRequestHandler<FilteredPe
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListPersoneResponse(200, FilteredRequestHandler.requestManager(request, Persona.class, new ArrayList<Persona>()));
+        return new ListPersoneResponse(200, FilteredRequestHandler.requestManager(request, Persona.class, new ArrayList<>()));
     }
 }

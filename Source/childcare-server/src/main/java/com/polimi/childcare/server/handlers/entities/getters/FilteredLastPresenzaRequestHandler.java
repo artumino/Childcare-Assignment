@@ -9,10 +9,11 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredLastPres
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
-import org.jinq.orm.stream.JinqStream;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FilteredLastPresenzaRequestHandler implements IRequestHandler<FilteredLastPresenzaRequest>
 {
@@ -26,21 +27,21 @@ public class FilteredLastPresenzaRequestHandler implements IRequestHandler<Filte
 
         if (request.getCount() == 0)
             DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(RegistroPresenze.class);
+                Stream<RegistroPresenze> query = session.stream(RegistroPresenze.class);
 
                 try {
-                    //DBHelper.filterAdd(query, request.getOrderBy(), query.where("TimeStamp", ));
+                    //DBHelper.filterAdd(stream, request.getOrderBy(), stream.where("TimeStamp", ));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
-                list.addAll(session.query(RegistroPresenze.class).toList());
+                CollectionUtils.addAll(list, session.stream(RegistroPresenze.class).iterator());
                 return true;
             });
 
         else
             DatabaseSession.getInstance().execute(session -> {
-                JinqStream query = session.query(RegistroPresenze.class);
+                Stream<RegistroPresenze> query = session.stream(RegistroPresenze.class);
 
                 try {
                     DBHelper.filterAdd(query, request.getOrderBy(), request.getFilters());
@@ -48,7 +49,7 @@ public class FilteredLastPresenzaRequestHandler implements IRequestHandler<Filte
                     e.printStackTrace();
                 }
 
-                list.addAll( session.query(RegistroPresenze.class).limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).toList());
+                CollectionUtils.addAll(list, session.stream(RegistroPresenze.class).limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).iterator());
                 return true;
             });
 

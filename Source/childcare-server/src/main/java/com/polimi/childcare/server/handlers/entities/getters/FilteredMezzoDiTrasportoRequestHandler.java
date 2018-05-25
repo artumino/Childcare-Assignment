@@ -17,6 +17,6 @@ public class FilteredMezzoDiTrasportoRequestHandler implements IRequestHandler<F
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListMezzoDiTrasportoResponse(200, FilteredRequestHandler.requestManager(request, MezzoDiTrasporto.class, new ArrayList<MezzoDiTrasporto>()));
+        return new ListMezzoDiTrasportoResponse(200, FilteredRequestHandler.requestManager(request, MezzoDiTrasporto.class, new ArrayList<>()));
     }
 }

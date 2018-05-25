@@ -17,6 +17,6 @@ public class FilteredFornitoreRequestHandler implements IRequestHandler<Filtered
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListFornitoriResponse(200, FilteredRequestHandler.requestManager(request, Fornitore.class, new ArrayList<Fornitore>()));
+        return new ListFornitoriResponse(200, FilteredRequestHandler.requestManager(request, Fornitore.class, new ArrayList<>()));
     }
 }

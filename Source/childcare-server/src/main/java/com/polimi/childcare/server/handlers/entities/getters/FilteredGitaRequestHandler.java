@@ -17,7 +17,7 @@ public class FilteredGitaRequestHandler implements IRequestHandler<FilteredGitaR
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListGitaResponse(200, FilteredRequestHandler.requestManager(request, Gita.class, new ArrayList<Gita>()));
+        return new ListGitaResponse(200, FilteredRequestHandler.requestManager(request, Gita.class, new ArrayList<>()));
 
     }
 }

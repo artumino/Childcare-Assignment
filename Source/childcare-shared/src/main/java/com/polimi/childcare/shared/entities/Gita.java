@@ -17,11 +17,9 @@ public class Gita extends TransferableEntity implements Serializable
     private int ID;
 
     @Column(nullable = false)
-    @Temporal(value = TemporalType.DATE)
     private Date DataInizio;
 
     @Column(nullable = false)
-    @Temporal(value = TemporalType.DATE)
     private Date DataFine;
 
     @Column(nullable = false, length = 50)

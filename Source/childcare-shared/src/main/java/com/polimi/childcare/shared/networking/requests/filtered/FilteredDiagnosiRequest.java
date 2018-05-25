@@ -1,13 +1,15 @@
 package com.polimi.childcare.shared.networking.requests.filtered;
 
-import org.jinq.orm.stream.JinqStream;
 
-import java.util.HashMap;
+import com.polimi.childcare.shared.entities.Diagnosi;
+
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class FilteredDiagnosiRequest extends FilteredBaseRequest
 {
-    public FilteredDiagnosiRequest(int count, int pageNumber, boolean detailed, List<JinqStream.Where> filters, HashMap<JinqStream.CollectComparable, Boolean> orderBy) {
+    public FilteredDiagnosiRequest(int count, int pageNumber, boolean detailed, List<Predicate<Diagnosi>> filters, List<Comparator<Diagnosi>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);
     }
 }
