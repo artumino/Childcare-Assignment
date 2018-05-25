@@ -12,7 +12,7 @@ repositories {
 dependencies {
     compile project(':childcare-shared')
     compile project(':childcare-client-shared')
-    compile 'com.jfoenix:jfoenix:8.0.3'
+    compile 'com.jfoenix:jfoenix:8.0.4'
     compile 'com.google.zxing:core:3.3.2'
     compile group: 'com.google.zxing', name: 'javase', version: '3.3.2'
     compile 'org.jinq:jinq-jpa:1.8.22'

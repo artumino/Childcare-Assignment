@@ -41,6 +41,7 @@ public class HomeSceneController implements ISubSceneController
     private Parent root;
 
     @FXML private AnchorPane rootPane;
+    @FXML private Button btnRefresh;
 
     //Presenze
     @FXML private TableView<Bambino> tablePresenze;
@@ -70,6 +71,9 @@ public class HomeSceneController implements ISubSceneController
         filterBambini = new FilterComponent<>(listaBambini.predicateProperty());
         statoPresenze = new HashMap<>();
 
+        //RefreshDelleListe
+        btnRefresh.setOnMouseClicked(event -> RefreshData());
+
         //Imposto la scena
         TableColumn<Bambino, Integer> id = new TableColumn<>("Matricola");
         TableColumn<Bambino, String> name = new TableColumn<>("Nome");
@@ -92,7 +96,7 @@ public class HomeSceneController implements ISubSceneController
                     Bambino bambino = (Bambino) getTableRow().getItem();
                     RegistroPresenze statoPresenza = statoPresenze.get(bambino);
                     RegistroPresenze.StatoPresenza statoCorrente = ((statoPresenza != null) ?
-                            (statoPresenza.getDate().toInstant().toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
+                            (statoPresenza.getTimeStamp().toInstant().toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
                                     statoPresenza.getStato() :
                                     RegistroPresenze.StatoPresenza.Assente
                             : RegistroPresenze.StatoPresenza.Assente);
@@ -142,6 +146,11 @@ public class HomeSceneController implements ISubSceneController
         if(sceneController instanceof IStageController)
             ((IStageController)sceneController).requestSetTitle("Home");
 
+        RefreshData();
+    }
+
+    private void RefreshData()
+    {
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
                 new FilteredBambiniRequest(0, 0, false, null, new HashMap<>()),
@@ -149,7 +158,7 @@ public class HomeSceneController implements ISubSceneController
                 true));
 
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredLastPresenzaRequest(0, 0, false, null, new HashMap<>()),
+                new FilteredLastPresenzaRequest(0, 0, false, null, null),
                 this::OnPresenzeRecived,
                 true));
     }
