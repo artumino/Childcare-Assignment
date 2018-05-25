@@ -197,5 +197,10 @@ public class Fornitore extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(pasti) && DTOUtils.isDTO(mezzi) && DTOUtils.isDTO(fax) && DTOUtils.isDTO(telefoni);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

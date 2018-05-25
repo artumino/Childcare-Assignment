@@ -1,7 +1,6 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
-import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.Diagnosi;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredDiagnosiRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;

@@ -4,6 +4,7 @@ import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -26,7 +27,7 @@ public abstract class Persona extends TransferableEntity implements Serializable
     protected String CodiceFiscale;
 
     @Column(nullable = false)
-    protected Date DataNascita;
+    protected LocalDate DataNascita;
 
     @Column(nullable = false, length = 20)
     protected String Stato;
@@ -67,7 +68,7 @@ public abstract class Persona extends TransferableEntity implements Serializable
 
     public Persona() { }
 
-    public Persona(String nome, String cognome, String codiceFiscale, Date dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
+    public Persona(String nome, String cognome, String codiceFiscale, LocalDate dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
     {
         Nome = nome;
         Cognome = cognome;
@@ -108,11 +109,11 @@ public abstract class Persona extends TransferableEntity implements Serializable
         CodiceFiscale = codiceFiscale;
     }
 
-    public Date getDataNascita() {
+    public LocalDate getDataNascita() {
         return DataNascita;
     }
 
-    public void setDataNascita(Date dataNascita) {
+    public void setDataNascita(LocalDate dataNascita) {
         DataNascita = dataNascita;
     }
 
@@ -189,7 +190,7 @@ public abstract class Persona extends TransferableEntity implements Serializable
                 getNome().equals(persona.getNome()) &&
                 getCognome().equals(persona.getCognome()) &&
                 getCodiceFiscale().equals(persona.getCodiceFiscale()) &&
-                getDataNascita().compareTo(persona.getDataNascita())  == 0 &&
+                getDataNascita().isEqual(persona.getDataNascita()) &&
                 getStato().equals(persona.getStato()) &&
                 getComune().equals(persona.getComune()) &&
                 getProvincia().equals(persona.getProvincia()) &&

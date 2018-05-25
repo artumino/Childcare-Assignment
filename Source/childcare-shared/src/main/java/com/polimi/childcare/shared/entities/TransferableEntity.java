@@ -1,6 +1,8 @@
 package com.polimi.childcare.shared.entities;
 
-public abstract class TransferableEntity
+import java.io.Serializable;
+
+public abstract class TransferableEntity implements IIdentificable, Serializable
 {
 
     /**
@@ -14,4 +16,9 @@ public abstract class TransferableEntity
      * Ritorna true se l'istanza di questo oggetto è un DTO
      */
     public abstract boolean isDTO();
+
+    /**
+     * Calcola un hash dell'istanza di una classe per controllare eventuali conflitti
+     */
+    public abstract int consistecyHashCode();
 }

@@ -149,5 +149,10 @@ public class Contatto extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(telefoni) && DTOUtils.isDTO(bambini);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }
