@@ -168,16 +168,11 @@ public class HomeSceneController implements ISubSceneController
             StageUtils.showChildcareStageForResults(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"),
                     true,
                     (returnArgs) -> {
-                        LocalDateTime dateTime = LocalDateTime.now();
-                        if(statoPresenze.containsKey(bambino))
-                            statoPresenze.get(bambino).setStato(RegistroPresenze.StatoPresenza.Presente);
-                        else
-                            statoPresenze.put(bambino, new RegistroPresenze(RegistroPresenze.StatoPresenza.Presente,
-                                    dateTime.toLocalDate(),
-                                    dateTime,
-                                    (short)10,
-                                    bambino,
-                                    null));
+                        if(returnArgs.length > 0 && returnArgs[0] instanceof RegistroPresenze)
+                        {
+                            RegistroPresenze nuovoStatoPresenza = (RegistroPresenze)returnArgs[0];
+                            statoPresenze.put(nuovoStatoPresenza.getBambino(), nuovoStatoPresenza);
+                        }
 
                         tablePresenze.refresh();
                     },
@@ -192,8 +187,7 @@ public class HomeSceneController implements ISubSceneController
     {
         if(!(response instanceof ListBambiniResponse))
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
-            alert.showAndWait();
+            StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
             return;
         }
 
@@ -209,8 +203,7 @@ public class HomeSceneController implements ISubSceneController
     {
         if(!(response instanceof ListRegistroPresenzeResponse))
         {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
-            alert.showAndWait();
+            StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
             return;
         }
 

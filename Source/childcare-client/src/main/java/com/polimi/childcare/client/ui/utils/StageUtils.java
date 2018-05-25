@@ -4,6 +4,7 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -59,5 +60,11 @@ public class StageUtils
     public static BaseStageController showStage(Stage stage, URL fxmlPath) throws IOException
     {
         return StageUtils.showGenericStage(stage, fxmlPath);
+    }
+
+    public static void ShowAlert(Alert.AlertType type, String contentText)
+    {
+        Alert alert = new Alert(type, contentText);
+        alert.showAndWait();
     }
 }

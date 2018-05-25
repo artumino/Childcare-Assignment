@@ -94,7 +94,7 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
 
         if(getCloseButton() != null)
             getCloseButton().setOnMouseClicked(mouseEvent ->
-                    this.linkedStage.close());
+                    close());
 
         if(getMaximizeButton() != null)
             getMaximizeButton().setOnMouseClicked(mouseEvent ->
@@ -108,6 +108,11 @@ public abstract class UndecoratedDraggableStageController  extends BaseStageCont
         //Gestisce gli eventi di resize
         //if(getRootNode() != null)
         //    getRootNode().setOnMouseDragged(this::OnResizeEvent);
+    }
+
+    public void close()
+    {
+        this.linkedStage.close();
     }
 
     public boolean isMaximized()

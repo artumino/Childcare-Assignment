@@ -4,11 +4,13 @@ import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.handlers.entities.getters.FilteredLastPresenzaRequestHandler;
 import com.polimi.childcare.server.handlers.entities.getters.FilteredRegistroPresenzeRequestHandler;
+import com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
+import com.polimi.childcare.shared.networking.requests.setters.SetPresenzaRequest;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,6 +44,8 @@ public class Main
         System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
 
         //Aggiunge handler al network manager
+
+        //region Getters
         NetworkManager.getInstance().addRequestHandler(FilteredAddettoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredAddettiRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredBambiniRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredContattoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredContattoRequestHandler());
@@ -61,6 +65,15 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredReazioneAvversaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredRegistroPresenzeRequest.class, new FilteredRegistroPresenzeRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredLastPresenzaRequest.class, new FilteredLastPresenzaRequestHandler());
+        //endregion
+
+        //region Setters
+
+        //endregion
+
+        //region Special
+        NetworkManager.getInstance().addRequestHandler(SetPresenzaRequest.class, new SetPresenzaRequestHandler());
+        //endregion
 
         String command;
         Scanner scanner = new Scanner(System.in);

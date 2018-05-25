@@ -29,6 +29,7 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
 
     @FXML private Pane contentPane;
 
+    private boolean locked;
     private String title;
     private byte toolBarButtonVisibilityMask = (byte)0xff;
     private ISubSceneController contentScene;
@@ -169,6 +170,23 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
             if(isButtonVisible(ToolbarButtons.Close))
                 hboxToolbarButtons.getChildren().add(btnClose);
         }
+    }
+
+    @Override
+    public void close()
+    {
+        if(!this.locked)
+            super.close();
+    }
+
+    public void lock()
+    {
+        this.locked = true;
+    }
+
+    public void unlock()
+    {
+        this.locked = false;
     }
 
     @Override
