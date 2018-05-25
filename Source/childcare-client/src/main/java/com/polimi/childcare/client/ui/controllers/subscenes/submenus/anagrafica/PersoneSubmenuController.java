@@ -181,7 +181,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
         ListPersoneResponse bambiniResponse = (ListPersoneResponse)response;
         listaPersone.updateDataSet(bambiniResponse.getPayload());
-        tableView.sort();
+        tableView.refresh();
     }
 
     @Override

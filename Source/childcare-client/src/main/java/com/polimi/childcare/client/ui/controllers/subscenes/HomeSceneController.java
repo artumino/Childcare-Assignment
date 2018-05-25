@@ -22,20 +22,16 @@ import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -96,12 +92,12 @@ public class HomeSceneController implements ISubSceneController
                     Bambino bambino = (Bambino) getTableRow().getItem();
                     RegistroPresenze statoPresenza = statoPresenze.get(bambino);
                     RegistroPresenze.StatoPresenza statoCorrente = ((statoPresenza != null) ?
-                            (statoPresenza.getDate().after(new Date(LocalDate.now().atStartOfDay().toEpochSecond(ZoneOffset.UTC)))) ?
+                            (statoPresenza.getDate().toInstant().toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
                                     statoPresenza.getStato() :
                                     RegistroPresenze.StatoPresenza.Assente
                             : RegistroPresenze.StatoPresenza.Assente);
 
-                    JFXButton graphicButton = new JFXButton(statoCorrente.name());
+                    Button graphicButton = new JFXButton(statoCorrente.name());
                     graphicButton.setOnMouseClicked((event -> OnEditPresenzaBambino(bambino)));
 
                     graphicButton.setStyle("-fx-background-color: #f00;");
@@ -169,13 +165,13 @@ public class HomeSceneController implements ISubSceneController
                             statoPresenze.get(bambino).setStato(RegistroPresenze.StatoPresenza.Presente);
                         else
                             statoPresenze.put(bambino, new RegistroPresenze(RegistroPresenze.StatoPresenza.Presente,
-                                    new Date(dateTime.toLocalDate().atStartOfDay().toEpochSecond(ZoneOffset.UTC)),
-                                    new Date(dateTime.toEpochSecond(ZoneOffset.UTC)),
+                                    new Date(dateTime.toLocalDate().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()),
+                                    new Date(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()),
                                     (short)10,
                                     bambino,
                                     null));
 
-                        tableGite.sort();
+                        tablePresenze.refresh();
                     },
                     bambino);
 
@@ -197,7 +193,7 @@ public class HomeSceneController implements ISubSceneController
 
         //Aggiorno i valori
         listaBambini.updateDataSet(bambiniResponse.getPayload());
-        tablePresenze.sort();
+        tablePresenze.refresh();
 
     }
 
@@ -214,7 +210,7 @@ public class HomeSceneController implements ISubSceneController
 
         //Aggiorno i valori
         this.statoPresenze = EntitiesHelper.presenzeToSearchMap(presenzeResponse.getPayload());
-        tablePresenze.sort();
+        tablePresenze.refresh();
     }
 
     @Override

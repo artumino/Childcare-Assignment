@@ -9,6 +9,7 @@ import com.polimi.childcare.shared.entities.Bambino;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
@@ -16,6 +17,7 @@ public class SetPresenzaStage implements ISubSceneController
 {
     private Parent root;
     @FXML private AnchorPane rootPane;
+    @FXML private Button btnClose;
 
     private IStageController stageController;
     private Bambino linkedBambino;
@@ -39,6 +41,8 @@ public class SetPresenzaStage implements ISubSceneController
             this.linkedBambino = (Bambino)args[0];
             this.stageController.requestSetTitle("Aggiorna - " + linkedBambino.getNome() + " " + linkedBambino.getCognome());
         }
+
+        btnClose.setOnMouseClicked(event -> stageController.requestClose());
     }
 
     @Override
