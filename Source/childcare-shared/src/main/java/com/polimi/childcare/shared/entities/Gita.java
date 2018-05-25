@@ -137,5 +137,10 @@ public class Gita extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

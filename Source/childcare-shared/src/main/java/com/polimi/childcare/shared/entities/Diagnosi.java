@@ -104,5 +104,10 @@ public class Diagnosi extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(persona) && DTOUtils.isDTO(reazioneAvversa);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

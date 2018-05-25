@@ -159,5 +159,10 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(bambino) && DTOUtils.isDTO(gita);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

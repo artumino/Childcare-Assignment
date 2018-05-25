@@ -103,5 +103,10 @@ public class PianoViaggi extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(mezzo) && DTOUtils.isDTO(gita);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

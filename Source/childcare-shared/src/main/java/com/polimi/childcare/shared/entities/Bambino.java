@@ -111,5 +111,10 @@ public class Bambino extends Persona
         return super.isDTO() && DTOUtils.isDTO(gruppo) && DTOUtils.isDTO(pediatra) && DTOUtils.isDTO(genitori) &&  DTOUtils.isDTO(contatti);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

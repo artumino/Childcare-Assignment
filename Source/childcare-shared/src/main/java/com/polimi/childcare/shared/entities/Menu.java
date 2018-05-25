@@ -94,5 +94,10 @@ public class Menu extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(quantitaPasto);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

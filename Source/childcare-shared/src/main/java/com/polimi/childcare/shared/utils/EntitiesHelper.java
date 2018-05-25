@@ -105,4 +105,59 @@ public class EntitiesHelper
 
         return null;
     }
+
+    public static void presenzeChangerRecursive(List<RegistroPresenze> list, RegistroPresenze.StatoPresenza nuovo, LocalDateTime dt, boolean isUscita)
+    {
+        RegistroPresenze.StatoPresenza st = null;
+
+        for (RegistroPresenze r : list)
+        {
+            try
+            {
+                st = presenzeChanger(r, dt, isUscita);
+
+                if(st == null)
+                    return;
+                
+                else
+                {
+                    int i = list.indexOf(r) - 1;
+
+                    if(st == nuovo)
+                    {
+                        if(r.getTimeStamp().isAfter(dt))
+                        {
+                            list.remove(r);
+
+                            if(r.getGita() == null)
+                                list.add(i, new RegistroPresenze(st, dt.toLocalDate(), dt, (short)dt.getHour(), r.getBambino()));
+
+                            else
+                                list.add(i, new RegistroPresenze(st, dt.toLocalDate(), dt, (short)dt.getHour(), r.getBambino(), r.getGita()));
+                        }
+
+                        else
+                            return;
+                    }
+
+                    else
+                    {
+                        if(r.getGita() == null)
+                            list.add(i, new RegistroPresenze(st, dt.toLocalDate(), dt, (short)dt.getHour(), r.getBambino()));
+
+                        else
+                            list.add(i, new RegistroPresenze(st, dt.toLocalDate(), dt, (short)dt.getHour(), r.getBambino(), r.getGita()));
+
+                    }
+                }
+
+            }
+
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

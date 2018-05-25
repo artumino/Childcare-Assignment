@@ -137,5 +137,10 @@ public class Pasto extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(fornitori) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

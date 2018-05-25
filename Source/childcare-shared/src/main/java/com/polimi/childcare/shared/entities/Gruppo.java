@@ -101,5 +101,10 @@ public class Gruppo extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(pianoviaggi) && DTOUtils.isDTO(bambini) && DTOUtils.isDTO(sorvergliante);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

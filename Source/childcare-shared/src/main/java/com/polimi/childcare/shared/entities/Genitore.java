@@ -64,5 +64,10 @@ public class Genitore extends Persona
         return super.isDTO() && DTOUtils.isDTO(bambini);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

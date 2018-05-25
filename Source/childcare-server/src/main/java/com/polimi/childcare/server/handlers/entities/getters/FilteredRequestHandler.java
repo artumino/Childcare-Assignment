@@ -13,7 +13,7 @@ import java.util.List;
 public class FilteredRequestHandler
 {
     /**
-     *
+     *Classe helper che gestisce le varie richieste e ritorna in risposta una lista con il risultato della query
      * @param request Richiesta di Tipo T
      * @param requestClass Classe del Tipo IT
      * @param list Lista di Tipo IT
