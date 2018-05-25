@@ -245,7 +245,7 @@ public class DatabaseDemo
         persona.setCognome(cognomiComuni[rnd.nextInt(cognomiComuni.length)]);
         persona.setCodiceFiscale("TEST" + (1000000 + rnd.nextInt(9000000)));
         persona.setCittadinanza("Italiana");
-        persona.setDataNascita(new Date(LocalDateTime.now().minusDays(rnd.nextInt(18250)).withMinute(rnd.nextInt(59)).withHour(rnd.nextInt(23)).toInstant(ZoneOffset.UTC).toEpochMilli()));
+        persona.setDataNascita(LocalDateTime.now().minusDays(rnd.nextInt(18250)).withMinute(rnd.nextInt(59)).withHour(rnd.nextInt(23)).toLocalDate());
         int ComuneProvincia = rnd.nextInt(cittaProvincia.length);
         persona.setComune(cittaProvincia[ComuneProvincia][0]);
         persona.setProvincia(cittaProvincia[ComuneProvincia][1]);
