@@ -25,7 +25,6 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
     private LocalDate Date;
 
     @Column(nullable = false)
-    @Temporal(value = TemporalType.TIMESTAMP)
     private LocalDateTime TimeStamp;
 
     @Column(nullable = false)

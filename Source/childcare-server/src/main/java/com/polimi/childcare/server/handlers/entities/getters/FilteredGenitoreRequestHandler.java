@@ -17,6 +17,6 @@ public class FilteredGenitoreRequestHandler implements IRequestHandler<FilteredG
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListGenitoriResponse(200, FilteredRequestHandler.requestManager(request, Genitore.class, new ArrayList<Genitore>()));
+        return new ListGenitoriResponse(200, FilteredRequestHandler.requestManager(request, Genitore.class, new ArrayList<>()));
     }
 }

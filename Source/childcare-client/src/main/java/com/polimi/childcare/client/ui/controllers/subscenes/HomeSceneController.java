@@ -24,6 +24,7 @@ import javafx.scene.layout.Region;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
@@ -54,7 +55,7 @@ public class HomeSceneController implements ISubSceneController
         fiscalCode.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCodiceFiscale()));
 
         dateOfBirth.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(
-                DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.ofInstant(cellData.getValue().getDataNascita().toInstant(), ZoneId.systemDefault()))));
+                DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.ofInstant(cellData.getValue().getDataNascita().atStartOfDay().toInstant(ZoneOffset.UTC), ZoneId.systemDefault()))));
 
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
 
@@ -74,7 +75,7 @@ public class HomeSceneController implements ISubSceneController
 
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredBambiniRequest(0, 0, false, null, new HashMap<>()),
+                new FilteredBambiniRequest(0, 0, false, null, null),
                 this::OnBambiniResponseRecived,
                 true));
     }

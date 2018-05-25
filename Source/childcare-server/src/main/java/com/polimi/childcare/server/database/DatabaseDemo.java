@@ -1,17 +1,10 @@
 package com.polimi.childcare.server.database;
 
 import com.polimi.childcare.shared.entities.*;
+import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.sql.Delete;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 
 /**
@@ -71,12 +64,12 @@ public class DatabaseDemo
         List<ReazioneAvversa> reazioniAvverse = null;
         long ReazioniCount = 0;
         Session session = DatabaseSession.getInstance().openSession();
-        ReazioniCount = DatabaseSession.getInstance().query(ReazioneAvversa.class, session).count();
+        ReazioniCount = DatabaseSession.getInstance().stream(ReazioneAvversa.class, session).count();
 
         if(ReazioniCount > 0)
         {
             reazioniAvverse = new ArrayList<>((int)ReazioniCount);
-            reazioniAvverse = DatabaseSession.getInstance().query(ReazioneAvversa.class, session).toList();
+            CollectionUtils.addAll(reazioniAvverse, DatabaseSession.getInstance().stream(ReazioneAvversa.class, session).iterator());
         }
         session.close();
 

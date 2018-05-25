@@ -3,16 +3,19 @@ package com.polimi.childcare.server.database;
 
 import com.polimi.childcare.server.helper.DBHelper;
 import org.hibernate.*;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
-import org.jinq.jpa.JinqJPAStreamProvider;
-import org.jinq.orm.stream.JinqStream;
+import org.hibernate.query.Query;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.stream.Stream;
 
 public class DatabaseSession
 {
@@ -26,26 +29,33 @@ public class DatabaseSession
     //endregion
 
     private SessionFactory sessionFactory;
-    private EntityManagerFactory entityManagerFactory;
-    private JinqJPAStreamProvider streams;
 
     /**
-     * Effettua la connessione al DB ed inizializza le variabili per la corretta esecuzione di query
+     * Effettua la connessione al DB ed inizializza le variabili per la corretta esecuzione di stream
      */
     public void setUp()
     {
-        if(entityManagerFactory != null)
+        if(sessionFactory != null)
             return;
 
-        entityManagerFactory = Persistence.createEntityManagerFactory("hbr");
-        sessionFactory = entityManagerFactory.unwrap(SessionFactory.class);
-        streams = new JinqJPAStreamProvider(sessionFactory);
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+            .configure() // configures settings from hibernate.cfg.xml
+            .build();
+        try {
+            sessionFactory = new MetadataSources( registry ).buildMetadata().buildSessionFactory();
+        }
+        catch (Exception e) {
+            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+            // so destroy it manually.
+            StandardServiceRegistryBuilder.destroy( registry );
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Crea una sessione per l'esecuzione diretta di query sul DB
+     * Crea una sessione per l'esecuzione diretta di stream sul DB
      * @implNote Ricordarsi di chiamare opportunamente close() al termine delle operazioni per evitare leak di connesioni al DB
-     * @return Una nuova sessione verso il DB per l'esecuzione diretta di query (senza i metodi helper di questa classe)
+     * @return Una nuova sessione verso il DB per l'esecuzione diretta di stream (senza i metodi helper di questa classe)
      */
     //@ensures (\result == true) <==> (sessionFactory != null)
     public Session openSession()
@@ -202,18 +212,21 @@ public class DatabaseSession
     //endregion
 
     /**
-     * Esegue una query di tipo JINQ sul DB
-     * @param tClass Classe della tabella delle entità su cui effettuare la query
-     * @param session Sessione del DB su cui effettuare la query
+     * Esegue una stream di tipo JINQ sul DB
+     * @param tClass Classe della tabella delle entità su cui effettuare la stream
+     * @param session Sessione del DB su cui effettuare la stream
      * @param <T> Tipo delle entità di ritorno
      * @return Ritorna uno stream JINQ filtrabile tramite i relativi metodi
      */
-    public <T> JinqStream<T> query(Class<T> tClass, Session session)
+    public <T> Stream<T> stream(Class<T> tClass, Session session)
     {
-        if(streams == null)
+        if(session == null)
             return null;
 
-        return streams.streamAll(session, tClass);
+        CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+        CriteriaQuery<T> query = criteriaBuilder.createQuery(tClass);
+        query.from(tClass);
+        return session.createQuery(query).stream();
     }
 
     /**
@@ -230,7 +243,7 @@ public class DatabaseSession
         try(Session session = sessionFactory.openSession())
         {
             tx = session.beginTransaction();
-            DatabaseSessionInstance exec = new DatabaseSessionInstance(session, streams, tx);
+            DatabaseSessionInstance exec = new DatabaseSessionInstance(session, tx);
             if(execution.execute(exec))
                 tx.commit();
             else
@@ -267,12 +280,6 @@ public class DatabaseSession
         if(sessionFactory != null)
             sessionFactory.close();
         sessionFactory = null;
-
-        streams = null;
-
-        if(entityManagerFactory != null)
-            entityManagerFactory.close();
-        entityManagerFactory = null;
     }
 
     /**
@@ -284,12 +291,10 @@ public class DatabaseSession
     {
         private Session session;
         private Transaction transaction;
-        private JinqJPAStreamProvider streams;
 
-        DatabaseSessionInstance(Session session, JinqJPAStreamProvider streams, Transaction transaction)
+        DatabaseSessionInstance(Session session, Transaction transaction)
         {
             this.session = session;
-            this.streams = streams;
             this.transaction = transaction;
         }
 
@@ -373,12 +378,12 @@ public class DatabaseSession
 
         //endregion
 
-        public <T> JinqStream<T> query(Class<T> tClass)
+        public <T> Stream<T> stream(Class<T> tClass)
         {
-            if(streams == null)
-                return null;
-
-            return streams.streamAll(session, tClass);
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<T> query = criteriaBuilder.createQuery(tClass);
+            query.from(tClass);
+            return session.createQuery(query).stream();
         }
     }
 

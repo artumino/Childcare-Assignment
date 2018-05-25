@@ -1,21 +1,20 @@
 package com.polimi.childcare.shared.networking.requests.filtered;
 
 import com.polimi.childcare.shared.networking.requests.BaseRequest;
-import org.jinq.orm.stream.JinqStream.CollectComparable;
-import org.jinq.orm.stream.JinqStream.Where;
 
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Predicate;
 
-public abstract class FilteredBaseRequest extends BaseRequest
+public abstract class FilteredBaseRequest<T> extends BaseRequest
 {
     private int count;
     private int pageNumber;
     private boolean detailed;
-    private List<Where> filters;
-    private HashMap<CollectComparable,Boolean> orderBy;
+    private List<Predicate<T>> filters;
+    private List<Comparator<T>> orderBy;
 
-    public FilteredBaseRequest(int count, int pageNumber, boolean detailed, List<Where> filters, HashMap<CollectComparable,Boolean> orderBy)
+    public FilteredBaseRequest(int count, int pageNumber, boolean detailed, List<Predicate<T>> filters, List<Comparator<T>> orderBy)
     {
         this.count = count;
         this.pageNumber = pageNumber;
@@ -32,11 +31,11 @@ public abstract class FilteredBaseRequest extends BaseRequest
         return pageNumber;
     }
 
-    public List<Where> getFilters() {
+    public List<Predicate<T>> getFilters() {
         return filters;
     }
 
-    public HashMap<CollectComparable, Boolean> getOrderBy() {
+    public List<Comparator<T>> getOrderBy() {
         return orderBy;
     }
 

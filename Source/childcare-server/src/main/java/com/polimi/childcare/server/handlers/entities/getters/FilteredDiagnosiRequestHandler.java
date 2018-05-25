@@ -17,6 +17,6 @@ public class FilteredDiagnosiRequestHandler implements IRequestHandler<FilteredD
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListDiagnosiResponse(200, FilteredRequestHandler.requestManager(request, Diagnosi.class, new ArrayList<Diagnosi>()));
+        return new ListDiagnosiResponse(200, FilteredRequestHandler.requestManager(request, Diagnosi.class, new ArrayList<>()));
     }
 }
