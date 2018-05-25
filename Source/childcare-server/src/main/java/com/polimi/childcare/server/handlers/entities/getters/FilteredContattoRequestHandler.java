@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Contatto;
@@ -17,6 +17,6 @@ public class FilteredContattoRequestHandler implements IRequestHandler<FilteredC
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListContattoResponse(200, FilteredRequestHandler.requestManager(request, Contatto.class, new ArrayList<Contatto>()));
+        return new ListContattoResponse(200, FilteredRequestHandler.requestManager(request, Contatto.class, new ArrayList<>()));
     }
 }

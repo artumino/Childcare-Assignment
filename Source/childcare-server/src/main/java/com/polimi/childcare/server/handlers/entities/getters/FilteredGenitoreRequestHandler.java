@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Genitore;
@@ -17,6 +17,6 @@ public class FilteredGenitoreRequestHandler implements IRequestHandler<FilteredG
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListGenitoriResponse(200, FilteredRequestHandler.requestManager(request, Genitore.class, new ArrayList<Genitore>()));
+        return new ListGenitoriResponse(200, FilteredRequestHandler.requestManager(request, Genitore.class, new ArrayList<>()));
     }
 }

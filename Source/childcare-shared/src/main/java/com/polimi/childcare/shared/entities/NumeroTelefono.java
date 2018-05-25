@@ -68,5 +68,10 @@ public class NumeroTelefono extends TransferableEntity implements Serializable
         return true;
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

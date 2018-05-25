@@ -115,5 +115,10 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(pasti) && DTOUtils.isDTO(diagnosi);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

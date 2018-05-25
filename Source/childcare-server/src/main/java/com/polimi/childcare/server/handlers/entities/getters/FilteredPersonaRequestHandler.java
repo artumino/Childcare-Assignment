@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Persona;
@@ -17,6 +17,6 @@ public class FilteredPersonaRequestHandler implements IRequestHandler<FilteredPe
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListPersoneResponse(200, FilteredRequestHandler.requestManager(request, Persona.class, new ArrayList<Persona>()));
+        return new ListPersoneResponse(200, FilteredRequestHandler.requestManager(request, Persona.class, new ArrayList<>()));
     }
 }

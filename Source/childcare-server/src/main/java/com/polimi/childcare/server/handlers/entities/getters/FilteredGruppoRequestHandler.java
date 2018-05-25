@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Gruppo;
@@ -17,6 +17,6 @@ public class FilteredGruppoRequestHandler implements IRequestHandler<FilteredGru
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListGruppoResponse(200, FilteredRequestHandler.requestManager(request, Gruppo.class, new ArrayList<Gruppo>()));
+        return new ListGruppoResponse(200, FilteredRequestHandler.requestManager(request, Gruppo.class, new ArrayList<>()));
     }
 }

@@ -32,7 +32,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,7 +95,7 @@ public class HomeSceneController implements ISubSceneController
                     Bambino bambino = (Bambino) getTableRow().getItem();
                     RegistroPresenze statoPresenza = statoPresenze.get(bambino);
                     RegistroPresenze.StatoPresenza statoCorrente = ((statoPresenza != null) ?
-                            (statoPresenza.getTimeStamp().toInstant().toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
+                            (statoPresenza.getTimeStamp().toInstant(ZoneOffset.UTC).toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
                                     statoPresenza.getStato() :
                                     RegistroPresenze.StatoPresenza.Assente
                             : RegistroPresenze.StatoPresenza.Assente);
@@ -153,7 +152,7 @@ public class HomeSceneController implements ISubSceneController
     {
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredBambiniRequest(0, 0, false, null, new HashMap<>()),
+                new FilteredBambiniRequest(0, 0, false, null, null),
                 this::OnBambiniResponseRecived,
                 true));
 
@@ -174,8 +173,8 @@ public class HomeSceneController implements ISubSceneController
                             statoPresenze.get(bambino).setStato(RegistroPresenze.StatoPresenza.Presente);
                         else
                             statoPresenze.put(bambino, new RegistroPresenze(RegistroPresenze.StatoPresenza.Presente,
-                                    new Date(dateTime.toLocalDate().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()),
-                                    new Date(dateTime.toInstant(ZoneOffset.UTC).toEpochMilli()),
+                                    dateTime.toLocalDate(),
+                                    dateTime,
                                     (short)10,
                                     bambino,
                                     null));

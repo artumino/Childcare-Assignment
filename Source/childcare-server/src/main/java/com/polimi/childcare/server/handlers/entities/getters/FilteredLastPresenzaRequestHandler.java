@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
@@ -8,13 +8,18 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredLastPres
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
+import org.apache.commons.collections4.CollectionUtils;
+import org.hibernate.mapping.Collection;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class FilteredLastPresenzaRequestHandler implements IRequestHandler<FilteredLastPresenzaRequest>
 {
@@ -29,7 +34,7 @@ public class FilteredLastPresenzaRequestHandler implements IRequestHandler<Filte
 
         DatabaseSession.getInstance().execute(session -> {
             CriteriaBuilder queryBuilder = session.getSession().getCriteriaBuilder();
-            CriteriaQuery criteriaQuery = queryBuilder.createQuery();
+            CriteriaQuery<Object[]> criteriaQuery = queryBuilder.createQuery(Object[].class);
             Root<RegistroPresenze> registroPresenzeRoot = criteriaQuery.from(RegistroPresenze.class);
             criteriaQuery.multiselect(
                     registroPresenzeRoot.get("ID"),
@@ -45,7 +50,12 @@ public class FilteredLastPresenzaRequestHandler implements IRequestHandler<Filte
                 for(Object[] row : resultQuery)
                     lastPresenzeIDs.add((Integer)row[0]);
 
-                list.addAll(session.query(RegistroPresenze.class).where(rp -> lastPresenzeIDs.contains(rp.getID())).toList());
+                CriteriaQuery<RegistroPresenze> criteriaSelectIn = queryBuilder.createQuery(RegistroPresenze.class);
+                Root<RegistroPresenze> criteriaSelectFrom = criteriaSelectIn.from(RegistroPresenze.class);
+                Path<Integer> ID = criteriaSelectFrom.get("ID");
+                criteriaSelectIn.select(criteriaSelectFrom);
+                criteriaSelectIn.where(ID.in(lastPresenzeIDs));
+                CollectionUtils.addAll(list, session.getSession().createQuery(criteriaSelectIn).getResultStream().iterator());
             }
             return true;
         });

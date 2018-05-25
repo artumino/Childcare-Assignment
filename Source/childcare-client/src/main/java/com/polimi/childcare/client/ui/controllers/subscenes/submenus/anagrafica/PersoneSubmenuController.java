@@ -31,12 +31,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 
-import java.awt.image.BufferedImage;
 import java.util.Base64;
 import java.util.HashMap;
 
@@ -160,7 +157,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredPersonaRequest(0, 0, false, null, new HashMap<>()),
+                new FilteredPersonaRequest(0, 0, false, null, null),
                 this::OnPersoneResponseRecived,
                 true);
 

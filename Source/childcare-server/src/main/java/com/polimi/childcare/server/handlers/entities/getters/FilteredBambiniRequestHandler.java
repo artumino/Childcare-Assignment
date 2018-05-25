@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Bambino;
@@ -17,6 +17,6 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListBambiniResponse(200, FilteredRequestHandler.requestManager(request, Bambino.class, new ArrayList<Bambino>()));
+        return new ListBambiniResponse(200, FilteredRequestHandler.requestManager(request, Bambino.class, new ArrayList<>()));
     }
 }

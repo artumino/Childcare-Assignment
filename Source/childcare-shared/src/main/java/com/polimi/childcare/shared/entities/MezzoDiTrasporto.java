@@ -142,5 +142,10 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(pianoViaggi) && DTOUtils.isDTO(fornitore);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

@@ -104,5 +104,10 @@ public class QuantitaPasto extends TransferableEntity implements Serializable
         return DTOUtils.isDTO(menu) && DTOUtils.isDTO(pasto);
     }
 
+    @Override
+    public int consistecyHashCode() {
+        return 0;
+    }
+
     //endregion
 }

@@ -1,10 +1,11 @@
 package com.polimi.childcare.server.helper;
 
 import org.hibernate.Hibernate;
-import org.jinq.orm.stream.JinqStream;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class DBHelper
 {
@@ -46,31 +47,21 @@ public class DBHelper
         }
     }
 
-    public static void filterAdd(JinqStream query, HashMap<JinqStream.CollectComparable, Boolean> param, List<JinqStream.Where> filters) throws Exception
+    public static <T> void filterAdd(Stream<T> query, List<Comparator<T>> param, List<Predicate<T>> filters)
     {
         if(filters != null)
         {
-            for (JinqStream.Where entry : filters) {
-                query = query.where(entry);
+            for (Predicate<T> entry : filters) {
+                query = query.filter(entry);
             }
         }
 
         if(param != null)
         {
-            Iterator it = param.entrySet().iterator();
-
-            if (!it.hasNext())
-                return; // throw new Exception("Ordinamento vuoto!"); (Non ha senso ritornare un'eccezione, se param è null non ci sono ordinamenti
-
-            Map.Entry entry = (Map.Entry) it.next();
-
-            if ((Boolean) entry.getValue())
-                query = query.sortedBy((JinqStream.CollectComparable) entry.getKey());
-
-            else
-                query = query.sortedDescendingBy((JinqStream.CollectComparable) entry.getKey());
+            for (Comparator<T> entry : param) {
+                query = query.sorted(entry);
+            }
         }
-
     }
 
 }

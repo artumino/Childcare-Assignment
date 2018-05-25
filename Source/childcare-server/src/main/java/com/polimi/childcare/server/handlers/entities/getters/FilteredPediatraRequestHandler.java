@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Pediatra;
@@ -17,6 +17,6 @@ public class FilteredPediatraRequestHandler implements IRequestHandler<FilteredP
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListPediatraResponse(200, FilteredRequestHandler.requestManager(request, Pediatra.class, new ArrayList<Pediatra>()));
+        return new ListPediatraResponse(200, FilteredRequestHandler.requestManager(request, Pediatra.class, new ArrayList<>()));
     }
 }

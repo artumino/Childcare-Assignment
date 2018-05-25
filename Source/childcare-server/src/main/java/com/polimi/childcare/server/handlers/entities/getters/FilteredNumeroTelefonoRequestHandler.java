@@ -1,4 +1,4 @@
-package com.polimi.childcare.server.handlers;
+package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.NumeroTelefono;
@@ -17,6 +17,6 @@ public class FilteredNumeroTelefonoRequestHandler implements IRequestHandler<Fil
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListNumeroTelefonoResponse(200, FilteredRequestHandler.requestManager(request, NumeroTelefono.class, new ArrayList<NumeroTelefono>()));
+        return new ListNumeroTelefonoResponse(200, FilteredRequestHandler.requestManager(request, NumeroTelefono.class, new ArrayList<>()));
     }
 }
