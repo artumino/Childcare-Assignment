@@ -1,6 +1,8 @@
 package com.polimi.childcare.shared.entities;
 
-public abstract class TransferableEntity
+import java.io.Serializable;
+
+public abstract class TransferableEntity implements IIdentificable, Serializable
 {
 
     /**

@@ -13,13 +13,21 @@ public class SetEntityRequest<T extends TransferableEntity> extends BaseRequest
     private boolean toDelete;
     private int oldHashCode;
 
-    public SetEntityRequest(T entity, boolean toDelete) {
+    public SetEntityRequest(T entity, boolean toDelete, int oldHashCode) {
         this.entity = entity;
         this.toDelete = toDelete;
+        this.oldHashCode = oldHashCode;
+    }
+
+    public SetEntityRequest(T entity, int oldHashCode) {
+        this.entity = entity;
+        this.toDelete = false;
+        this.oldHashCode = oldHashCode;
     }
 
     public SetEntityRequest(T entity) {
         this.entity = entity;
+        this.oldHashCode = 0;
         this.toDelete = false;
     }
 
@@ -30,4 +38,6 @@ public class SetEntityRequest<T extends TransferableEntity> extends BaseRequest
     public boolean isToDelete() {
         return toDelete;
     }
+
+    public int getOldHashCode() { return oldHashCode; }
 }
