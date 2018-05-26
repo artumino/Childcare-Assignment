@@ -5,6 +5,7 @@ import com.polimi.childcare.shared.entities.RegistroPresenze;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EntitiesHelper
 {
@@ -159,5 +160,46 @@ public class EntitiesHelper
             }
         }
 
+    }
+
+    //Gestione dei telefoni (per evitare relazioni complicate sul DB con il conseguente aumento delle complessità)
+    public static List<String> getNumeriTelefonoFromString(String telefoni)
+    {
+        if(telefoni == null || telefoni.isEmpty())
+            return new ArrayList<>();
+        return Arrays.asList(telefoni.split("\n"));
+    }
+
+    public static String getTelefoniStringFromIterable(Iterable<String> telefoni)
+    {
+        if(telefoni == null)
+            return "";
+
+        StringBuilder returnStr = new StringBuilder();
+        for (String telefono : telefoni)
+            returnStr.append(telefono.trim()).append("\n");
+        return returnStr.toString();
+    }
+
+    public static String addTelefonoToString(String telefoni, String newTelefono)
+    {
+        List<String> telefoniList = getNumeriTelefonoFromString(telefoni);
+        newTelefono = newTelefono.trim();
+        if(telefoniList.contains(newTelefono))
+            return telefoni;
+
+        if(telefoni == null)
+            telefoni = "";
+        return telefoni.concat(newTelefono + "\n");
+    }
+
+    public static String removeTelefonoToString(String telefoni, String telefono)
+    {
+        List<String> telefoniList = getNumeriTelefonoFromString(telefoni);
+        telefono = telefono.trim();
+        if(!telefoniList.remove(telefono))
+            return telefoni;
+
+        return getTelefoniStringFromIterable(telefoniList);
     }
 }

@@ -33,6 +33,12 @@ public class Fornitore extends TransferableEntity implements Serializable
     @Column(length = 27)
     private String IBAN;    //Ancora caso Italiano 27 caratteri
 
+    @Column
+    private String telefoni;
+
+    @Column
+    private String fax;
+
     //Manca Numeri di Telefono (campo multiplo)
     //endregion
 
@@ -43,22 +49,6 @@ public class Fornitore extends TransferableEntity implements Serializable
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
     private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
-
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Fornitore_Fax_Rubrica",
-            joinColumns = { @JoinColumn(name = "Fornitore_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
-    )
-    private Set<NumeroTelefono> fax = new HashSet<>();
-
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Fornitore_Rubrica",
-            joinColumns = { @JoinColumn(name = "Fornitore_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
-    )
-    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -125,13 +115,21 @@ public class Fornitore extends TransferableEntity implements Serializable
         this.IBAN = IBAN;
     }
 
-    public void addFax(NumeroTelefono f) { fax.add(f); }
+    public List<String> getFax() { return EntitiesHelper.getNumeriTelefonoFromString(fax); }
 
-    public void removeFax(NumeroTelefono f) { fax.remove(f); }
+    public void setFax(List<String> fax) { this.fax = EntitiesHelper.getTelefoniStringFromIterable(fax); }
 
-    public void addTelefono(NumeroTelefono t) { telefoni.add(t); }
+    public void addFax(String fax) { this.fax = EntitiesHelper.addTelefonoToString(this.fax, fax); }
 
-    public void removeTelefono(NumeroTelefono t) { telefoni.remove(t); }
+    public void removeFax(String fax) { this.fax = EntitiesHelper.removeTelefonoToString(this.fax, fax); }
+
+    public List<String> getTelefoni() { return EntitiesHelper.getNumeriTelefonoFromString(telefoni); }
+
+    public void setTelefoni(List<String> telefoni) { this.telefoni = EntitiesHelper.getTelefoniStringFromIterable(telefoni); }
+
+    public void addTelefono(String telefono) { telefoni = EntitiesHelper.addTelefonoToString(telefoni, telefono); }
+
+    public void removeTelefono(String telefono) { telefoni = EntitiesHelper.removeTelefonoToString(telefoni, telefono); }
 
     public void unsafeAddPasto(Pasto p) { pasti.add(p); }
 
@@ -144,10 +142,6 @@ public class Fornitore extends TransferableEntity implements Serializable
     public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
 
     public Set<MezzoDiTrasporto> getMezzi() { return EntitiesHelper.unmodifiableListReturn(mezzi); }
-
-    public Set<NumeroTelefono> getFax() { return EntitiesHelper.unmodifiableListReturn(fax); }
-
-    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Fornitore.class); }
@@ -181,12 +175,8 @@ public class Fornitore extends TransferableEntity implements Serializable
         //Aggiorna figli
         pasti = DTOUtils.iterableToDTO(pasti);
         mezzi = DTOUtils.iterableToDTO(mezzi);
-        fax = DTOUtils.iterableToDTO(fax);
-        telefoni = DTOUtils.iterableToDTO(telefoni);
 
         //Trasforma in non modificabili
-        fax = this.getFax();
-        telefoni = this.getTelefoni();
         pasti = this.getPasti();
         mezzi = this.getMezzi();
     }
@@ -194,7 +184,7 @@ public class Fornitore extends TransferableEntity implements Serializable
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(pasti) && DTOUtils.isDTO(mezzi) && DTOUtils.isDTO(fax) && DTOUtils.isDTO(telefoni);
+        return DTOUtils.isDTO(pasti) && DTOUtils.isDTO(mezzi);
     }
 
     @Override

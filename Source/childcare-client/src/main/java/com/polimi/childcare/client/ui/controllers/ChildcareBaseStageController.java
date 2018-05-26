@@ -2,14 +2,8 @@ package com.polimi.childcare.client.ui.controllers;
 
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
-import com.polimi.childcare.client.ui.utils.StageUtils;
-import com.sun.deploy.uitoolkit.impl.fx.ui.FXModalityHelper;
-import com.sun.javafx.scene.SceneHelper;
-import com.sun.javafx.stage.StageHelper;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.ImageView;
@@ -52,7 +46,7 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
     @Override protected Node getMinimizeButton() { return this.btnMinimize; }
     @Override protected Node getMaximizeButton() { return this.btnMaximize; }
     @Override protected Node getCloseButton() { return this.btnClose; }
-    @Override protected Pane getToolbarButtonsPane() { return hboxToolbarButtons; }
+    @Override protected Pane getToolbarButtonsPane() { return this.hboxToolbarButtons; }
     @Override protected Node getRootNode() { return this.rootStackPane; }
     @Override protected Label getTitleLabel() { return this.lblTitle; }
 

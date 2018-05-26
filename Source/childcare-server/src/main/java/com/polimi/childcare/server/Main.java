@@ -57,7 +57,6 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(FilteredGruppoRequest.class, new FilteredGruppoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredMenuRequest.class, new FilteredMenuRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredMezzoDiTrasportoRequest.class, new FilteredMezzoDiTrasportoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredNumeroTelefonoRequest.class, new FilteredNumeroTelefonoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPediatraRequest.class, new FilteredPediatraRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
@@ -79,7 +78,6 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(SetGruppoRequest.class, new SetGruppo());
         NetworkManager.getInstance().addRequestHandler(SetMenuRequest.class, new SetMenu());
         NetworkManager.getInstance().addRequestHandler(SetMezzoDiTrasportoRequest.class, new SetMezzoDiTrasporto());
-        NetworkManager.getInstance().addRequestHandler(SetNumeroDiTelefonoRequest.class, new SetNumeroDiTelefono());
         NetworkManager.getInstance().addRequestHandler(SetPastiRequest.class, new SetPasti());
         NetworkManager.getInstance().addRequestHandler(SetPediatraRequest.class, new SetPediatra());
         NetworkManager.getInstance().addRequestHandler(SetPersonaRequest.class, new SetPersona());

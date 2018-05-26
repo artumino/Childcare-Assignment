@@ -47,6 +47,9 @@ public abstract class Persona extends TransferableEntity implements Serializable
     @Column(nullable = false)
     protected byte Sesso;
 
+    @Column()
+    private String telefoni;
+
     //endregion
 
     //region Relazioni
@@ -54,13 +57,6 @@ public abstract class Persona extends TransferableEntity implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
     private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "Persona_Rubrica",
-            joinColumns = { @JoinColumn(name = "Persona_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
-    )
-    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -165,17 +161,19 @@ public abstract class Persona extends TransferableEntity implements Serializable
         Sesso = sesso;
     }
 
-    public void addTelefono(NumeroTelefono n) { telefoni.add(n); }
+    public List<String> getTelefoni() { return EntitiesHelper.getNumeriTelefonoFromString(telefoni); }
 
-    public void removeTelefono(NumeroTelefono n) { telefoni.remove(n); }
+    public void setTelefoni(List<String> telefoni) { this.telefoni = EntitiesHelper.getTelefoniStringFromIterable(telefoni); }
+
+    public void addTelefono(String telefono) { telefoni = EntitiesHelper.addTelefonoToString(telefoni, telefono); }
+
+    public void removeTelefono(String telefono) { telefoni = EntitiesHelper.removeTelefonoToString(telefoni, telefono); }
 
     public void unsafeAddDiagnosi(Diagnosi d) { diagnosi.add(d); }
 
     public void unsafeRemoveDiagnosi(Diagnosi d) { diagnosi.remove(d); }
 
     public Set<Diagnosi> getDiagnosi() { return EntitiesHelper.unmodifiableListReturn(diagnosi); }
-
-    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Persona.class); }
@@ -212,17 +210,15 @@ public abstract class Persona extends TransferableEntity implements Serializable
     {
         //Aggiorna figli
         diagnosi = DTOUtils.iterableToDTO(diagnosi);
-        telefoni = DTOUtils.iterableToDTO(telefoni);
 
         //Trasformo in Set
-        telefoni = this.getTelefoni();
         diagnosi = this.getDiagnosi();
     }
 
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(telefoni) &&  DTOUtils.isDTO(diagnosi);
+        return DTOUtils.isDTO(diagnosi);
     }
 
     //endregion

@@ -120,9 +120,8 @@ public class DatabaseDemo
         DatabaseSession.getInstance().insertAll(pasti);
     }
 
-    private static List<NumeroTelefono> generateTelefoni(int count)
+    private static List<String> generateTelefoni(int count)
     {
-        ArrayList<NumeroTelefono> telefoni = new ArrayList<>(count);
         ArrayList<String> telefoniStr = new ArrayList<>(count);
         Random rnd = new Random();
         StringBuilder telephoneNumber;
@@ -140,10 +139,7 @@ public class DatabaseDemo
             telefoniStr.add(newPhoneNumber);
         }
 
-        for(String telefono : telefoniStr)
-            telefoni.add(new NumeroTelefono(telefono));
-
-        return telefoni;
+        return telefoniStr;
     }
 
     //region Reazioni Avverse
@@ -196,7 +192,7 @@ public class DatabaseDemo
     //endregion
 
     //region Contatti e Pediatri
-    private static void populateContatto(Contatto contatto, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    private static void populateContatto(Contatto contatto, List<String> numeriDiTelefonoDisponibili)
     {
         Random rnd = new Random();
         contatto.setNome(nomiComuni[rnd.nextInt(nomiComuni.length)]);
@@ -213,15 +209,15 @@ public class DatabaseDemo
 
         for(int i = 0; i < numeroNumeriDiTelefono; i++)
         {
-            NumeroTelefono telefono;
+            String telefono;
             do {
                 telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
             } while (contatto.getTelefoni().contains(telefono));
-            contatto.addNumero(telefono);
+            contatto.addTelefono(telefono);
         }
     }
 
-    private static List<Contatto> generateContatti(int count, List<NumeroTelefono> telefoni)
+    private static List<Contatto> generateContatti(int count, List<String> telefoni)
     {
         ArrayList<Contatto> contatti = new ArrayList<>(count);
         for(int i = 0; i < count; i++)
@@ -233,7 +229,7 @@ public class DatabaseDemo
         return contatti;
     }
 
-    private static List<Pediatra> generatePediatri(int count, List<NumeroTelefono> telefoni)
+    private static List<Pediatra> generatePediatri(int count, List<String> telefoni)
     {
         ArrayList<Pediatra> pediatri = new ArrayList<>(count);
         for(int i = 0; i < count; i++)
@@ -249,7 +245,7 @@ public class DatabaseDemo
 
     //region Persone (Bambini, Genitori e Addetti)
 
-    private static void populatePersona(Persona persona, List<ReazioneAvversa> reazioniAvverse, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    private static void populatePersona(Persona persona, List<ReazioneAvversa> reazioniAvverse, List<String> numeriDiTelefonoDisponibili)
     {
         Random rnd = new Random();
         persona.setNome(nomiComuni[rnd.nextInt(nomiComuni.length)]);
@@ -277,7 +273,7 @@ public class DatabaseDemo
 
         for(int i = 0; i < numeroNumeriDiTelefono; i++)
         {
-            NumeroTelefono telefono;
+            String telefono;
             do {
                 telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
             } while (persona.getTelefoni().contains(telefono));
@@ -304,7 +300,7 @@ public class DatabaseDemo
         }
     }
 
-    private static List<Addetto> generateAddetti(int count, List<ReazioneAvversa> reazioniAvverse, List<NumeroTelefono> telefoni)
+    private static List<Addetto> generateAddetti(int count, List<ReazioneAvversa> reazioniAvverse, List<String> telefoni)
     {
         ArrayList<Addetto> addetti = new ArrayList<>(count);
         for(int i = 0; i < count; i++)
@@ -316,7 +312,7 @@ public class DatabaseDemo
         return addetti;
     }
 
-    private static List<Genitore> generateGenitori(int count, List<ReazioneAvversa> reazioniAvverse, List<NumeroTelefono> telefoni)
+    private static List<Genitore> generateGenitori(int count, List<ReazioneAvversa> reazioniAvverse, List<String> telefoni)
     {
         ArrayList<Genitore> genitori = new ArrayList<>(count);
         for(int i = 0; i < count; i++)
@@ -328,7 +324,7 @@ public class DatabaseDemo
         return genitori;
     }
 
-    private static List<Bambino> generateBambini(int count, List<Genitore> generatedGenitori, List<Contatto> generatedContatti, List<Pediatra> generatedPediatri, List<ReazioneAvversa> reazioniAvverse, List<NumeroTelefono> telefoni)
+    private static List<Bambino> generateBambini(int count, List<Genitore> generatedGenitori, List<Contatto> generatedContatti, List<Pediatra> generatedPediatri, List<ReazioneAvversa> reazioniAvverse, List<String> telefoni)
     {
         Random rnd = new Random();
         ArrayList<Bambino> bambini = new ArrayList<>(count);
@@ -377,7 +373,7 @@ public class DatabaseDemo
 
     //region Fornitori, Mezzi di Trasporto, Pasti
 
-    private static void populateFornitore(Fornitore fornitore, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    private static void populateFornitore(Fornitore fornitore, List<String> numeriDiTelefonoDisponibili)
     {
         Random rnd = new Random();
         fornitore.setRagioneSociale(nomiComuni[rnd.nextInt(nomiComuni.length)]+cognomiComuni[rnd.nextInt(cognomiComuni.length)] + tipiOrganizzazione[rnd.nextInt(tipiOrganizzazione.length)]);
@@ -390,7 +386,7 @@ public class DatabaseDemo
         int numeriDiTelefono = rnd.nextInt(3);
         for(int i = 0; i < numeriDiTelefono; i++)
         {
-            NumeroTelefono telefono;
+            String telefono;
             do {
                 telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
             } while (fornitore.getTelefoni().contains(telefono));
@@ -400,7 +396,7 @@ public class DatabaseDemo
         int numeriFax = rnd.nextInt(2);
         for(int i = 0; i < numeriFax; i++)
         {
-            NumeroTelefono telefono;
+            String telefono;
             do {
                 telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
             } while (fornitore.getFax().contains(telefono));
@@ -408,7 +404,7 @@ public class DatabaseDemo
         }
     }
 
-    private static List<Fornitore> generateFornitori(int count, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    private static List<Fornitore> generateFornitori(int count, List<String> numeriDiTelefonoDisponibili)
     {
         ArrayList<Fornitore> fornitori = new ArrayList<>(count);
         for(int i = 0; i < count; i++)

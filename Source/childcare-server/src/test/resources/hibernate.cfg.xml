@@ -44,7 +44,6 @@
         <mapping class="com.polimi.childcare.shared.entities.PianoViaggi"/>
         <mapping class="com.polimi.childcare.shared.entities.Diagnosi"/>
         <mapping class="com.polimi.childcare.shared.entities.QuantitaPasto"/>
-        <mapping class="com.polimi.childcare.shared.entities.NumeroTelefono"/>
 
     </session-factory>
 </hibernate-configuration>

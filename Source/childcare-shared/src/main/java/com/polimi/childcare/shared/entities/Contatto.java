@@ -31,6 +31,9 @@ public class Contatto extends TransferableEntity implements Serializable
     @Column(nullable = false, length = 75)
     private String Indirizzo;
 
+    @Column
+    private String telefoni;
+
     //endregion
 
     //region Relazioni
@@ -43,13 +46,6 @@ public class Contatto extends TransferableEntity implements Serializable
     )
     private Set<Bambino> bambini = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Contatto_Rubrica",
-            joinColumns = { @JoinColumn(name = "Contatto_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Rubrica_FK") }
-    )
-    private Set<NumeroTelefono> telefoni = new HashSet<>();
 
     //endregion
 
@@ -98,17 +94,19 @@ public class Contatto extends TransferableEntity implements Serializable
         Indirizzo = indirizzo;
     }
 
-    public void addNumero(NumeroTelefono n) { telefoni.add(n); }
+    public List<String> getTelefoni() { return EntitiesHelper.getNumeriTelefonoFromString(telefoni); }
 
-    public void removeNumero(NumeroTelefono n) { telefoni.remove(n); }
+    public void setTelefoni(List<String> telefoni) { this.telefoni = EntitiesHelper.getTelefoniStringFromIterable(telefoni); }
+
+    public void addTelefono(String telefono) { telefoni = EntitiesHelper.addTelefonoToString(telefoni, telefono); }
+
+    public void removeTelefono(String telefono) { telefoni = EntitiesHelper.removeTelefonoToString(telefoni, telefono); }
 
     public void addBambino(Bambino b) { bambini.add(b); }
 
     public void removeBambino(Bambino b) { bambini.remove(b); }
 
     public Set<Bambino> getBambini() { return EntitiesHelper.unmodifiableListReturn(bambini); }
-
-    public Set<NumeroTelefono> getTelefoni() { return EntitiesHelper.unmodifiableListReturn(telefoni); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Contatto.class); }
@@ -138,15 +136,13 @@ public class Contatto extends TransferableEntity implements Serializable
     public void toDTO()
     {
         bambini = DTOUtils.iterableToDTO(bambini);
-        telefoni = DTOUtils.iterableToDTO(telefoni);
 
-        telefoni = getTelefoni();
         bambini = getBambini();
     }
 
     @Override
     public boolean isDTO() {
-        return DTOUtils.isDTO(telefoni) && DTOUtils.isDTO(bambini);
+        return DTOUtils.isDTO(bambini);
     }
 
     @Override
