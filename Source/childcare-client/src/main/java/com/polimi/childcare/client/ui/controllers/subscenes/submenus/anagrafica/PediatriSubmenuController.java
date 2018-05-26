@@ -1,54 +1,31 @@
 package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica;
 
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.shared.entities.Pediatra;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredContattoOnlyRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPediatraRequest;
+import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 
 import java.util.Collection;
 
-public class PediatriSubmenuController extends AnagraficaSubmenuBase<Pediatra>
+public class PediatriSubmenuController extends ContattiSubmenuController
 {
-
     @Override
-    protected Collection<TableColumn<Pediatra, ?>> setupColumns()
+    protected void refreshData()
     {
-        return null;
-    }
+        if(this.pendingOperation != null)
+            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
-    @Override
-    protected void setupFilterNodes()
-    {
+        this.pendingOperation = new NetworkOperation(
+                new FilteredPediatraRequest(0, 0, false, null, null),
+                this::OnContattiResponseRecived,
+                true);
 
-    }
-
-    @Override
-    protected void setupControlNodes()
-    {
-
-    }
-
-    @Override
-    protected Collection<Node> getShownFilterElements()
-    {
-        return null;
-    }
-
-    @Override
-    protected Collection<Node> getShownControlElements()
-    {
-        return null;
-    }
-
-    @Override
-    public void attached(ISceneController sceneController, Object... args)
-    {
-
-    }
-
-    @Override
-    public void detached()
-    {
-
+        //Provo ad aggiornare i dati
+        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
     }
 }

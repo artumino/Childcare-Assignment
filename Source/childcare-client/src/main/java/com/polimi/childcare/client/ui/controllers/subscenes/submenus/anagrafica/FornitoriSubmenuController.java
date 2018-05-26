@@ -1,5 +1,6 @@
 package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica;
 
+import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
@@ -13,6 +14,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListFornitoriRespo
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 
@@ -24,6 +26,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
 {
     //Generated
     private TextField filterField;
+    private Button btnUpdate;
 
     //Network
     private NetworkOperation pendingOperation;
@@ -62,7 +65,12 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
     @Override
     protected void setupControlNodes()
     {
-        //DO NOTHING
+        if(btnUpdate == null)
+        {
+            btnUpdate = new JFXButton("Aggiorna");
+            btnUpdate.setMaxWidth(Double.MAX_VALUE);
+            btnUpdate.setOnMousePressed(event -> refreshData());
+        }
     }
 
     @Override
@@ -74,7 +82,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
     @Override
     protected Collection<Node> getShownControlElements()
     {
-        return null;
+        return Collections.singletonList(btnUpdate);
     }
 
     @Override

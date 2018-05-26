@@ -43,7 +43,7 @@ public class Contatto extends TransferableEntity implements Serializable
     )
     private Set<Bambino> bambini = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Contatto_Rubrica",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },

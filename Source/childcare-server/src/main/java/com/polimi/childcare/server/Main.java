@@ -4,6 +4,7 @@ import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.handlers.entities.getters.*;
 import com.polimi.childcare.server.handlers.entities.setters.*;
+import com.polimi.childcare.server.handlers.entities.special.FilteredContattoOnlyRequestHandler;
 import com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
@@ -90,6 +91,7 @@ public class Main
 
         //region Special
         NetworkManager.getInstance().addRequestHandler(SetPresenzaRequest.class, new SetPresenzaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredContattoOnlyRequest.class, new FilteredContattoOnlyRequestHandler());
         //endregion
 
         String command;
