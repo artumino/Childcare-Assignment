@@ -9,10 +9,8 @@ import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
-import com.polimi.childcare.client.ui.OrderedFilteredList;
-import com.polimi.childcare.client.ui.components.FilterComponent;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
-import com.polimi.childcare.client.ui.filters.PersonaFilters;
+import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.DateUtils;
 import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.entities.Bambino;
@@ -25,68 +23,62 @@ import com.polimi.childcare.shared.serialization.SerializationUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.print.PrinterJob;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.MouseEvent;
 
-import java.util.Base64;
-import java.util.HashMap;
+import java.util.*;
 
 public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 {
-
-    private OrderedFilteredList<Persona> listaPersone;
-
-    //Filter Component
-    private FilterComponent<Persona> filterComponent;
-
     //Generated
     private TextField filterField;
     private ComboBox<String> filterBox;
     private Button btnPrintQR;
     private Button btnUpdate;
 
-    //Watchers
-    private Persona selectedPersona;
-
     //Network
     private NetworkOperation pendingOperation;
 
     @Override
-    protected void initialize()
+    protected List<TableColumn<Persona, ?>> setupColumns()
     {
-        listaPersone = new OrderedFilteredList<>();
-
-        //Imposto la scena
         TableColumn<Persona, String> name = new TableColumn<>("Nome");
         TableColumn<Persona, String> surname = new TableColumn<>("Cognome");
         TableColumn<Persona, String> fiscalCode = new TableColumn<>("Codice Fiscale");
         TableColumn<Persona, String> dateOfBirth = new TableColumn<>("Data di Nascita");
         TableColumn<Persona, Integer> id = new TableColumn<>("Matricola");
+        TableColumn<Persona, String> type = new TableColumn<>("Tipo");
 
         name.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getNome()));
+        name.setMinWidth(75);
         surname.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCognome()));
+        surname.setMinWidth(75);
         fiscalCode.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCodiceFiscale()));
+        fiscalCode.setMinWidth(75);
 
         dateOfBirth.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(
                 DateUtils.dateToShortString(cellData.getValue().getDataNascita())));
+        dateOfBirth.setMinWidth(75);
 
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
+        id.setMinWidth(75);
 
-        if(tableView != null) {
-            tableView.getColumns().addAll(name, surname, fiscalCode, dateOfBirth, id);
-            listaPersone.comparatorProperty().bind(tableView.comparatorProperty());
-            tableView.setItems(listaPersone.list());
-            //tableList.setColumnResizePolicy(p -> true);
-        }
+        type.setCellValueFactory((cellData -> new ReadOnlyObjectWrapper<>(cellData.getValue().getClass().getSimpleName())));
+        type.setPrefWidth(75);
+        type.setMaxWidth(75);
+        type.setMinWidth(75);
 
-        vboxFilters.getChildren().clear();
+        return Arrays.asList(name, surname, fiscalCode, dateOfBirth, id, type);
+    }
 
+    @Override
+    protected void setupFilterNodes()
+    {
         //Crea filtri
         filterField = new TextField();
         filterField.setPromptText("Filtra...");
@@ -95,8 +87,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         filterBox.getSelectionModel().select(0);
         filterBox.setMaxWidth(Double.MAX_VALUE); //Fill
 
-        filterComponent = new FilterComponent<>(listaPersone.predicateProperty());
-        filterComponent.addFilterField(filterField.textProperty(), (persona -> PersonaFilters.filterPersona(persona, filterField.getText())));
+        filterComponent.addFilterField(filterField.textProperty(), (persona -> Filters.filterPersona(persona, filterField.getText())));
         filterComponent.addFilterField(filterBox.getSelectionModel().selectedIndexProperty(), persona -> {
             switch(filterBox.getSelectionModel().getSelectedIndex())
             {
@@ -110,72 +101,42 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             //Case "Tutti"
             return true;
         });
-
-        vboxFilters.getChildren().addAll(filterField, filterBox);
-
-        tableView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldPersona, newPersona) -> {
-            selectedPersona = newPersona;
-            redrawControls();
-        }));
-
-        redrawControls();
     }
 
-    private void redrawControls()
+    @Override
+    protected void setupControlNodes()
     {
-        vboxControls.getChildren().clear();
-
         if(btnUpdate == null)
         {
             btnUpdate = new JFXButton("Aggiorna");
             btnUpdate.setMaxWidth(Double.MAX_VALUE);
             btnUpdate.setOnMousePressed(event -> refreshData());
         }
-        vboxControls.getChildren().add(btnUpdate);
 
-        //Crea Controlli
-        if(selectedPersona instanceof Bambino)
+        if(btnPrintQR == null)
         {
-            if(btnPrintQR == null)
-            {
-                btnPrintQR = new Button("Stampa QR");
-                btnPrintQR.setMaxWidth(Double.MAX_VALUE); //Fill
-                btnPrintQR.setOnMouseClicked((event) -> {
-                    if (selectedPersona instanceof Bambino) {
-                        Bambino bambino = (Bambino) selectedPersona;
-                        BambinoQRUnit qrUnit = new BambinoQRUnit(bambino);
-                        byte[] data = SerializationUtils.serializeToByteArray(qrUnit);
-
-                        if (data != null) {
-                            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-                            try {
-                                BitMatrix bitMatrix = qrCodeWriter.encode(Base64.getEncoder().encodeToString(data), BarcodeFormat.QR_CODE, 512, 512);
-                                ImageView qrView = new ImageView();
-
-                                WritableImage image = SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(bitMatrix), null);
-                                qrView.setImage(image);
-                                qrView.prefHeight(512);
-                                qrView.prefWidth(512);
-
-                                PrinterJob printerJob = PrinterJob.createPrinterJob();
-                                if (printerJob != null && printerJob.showPrintDialog(this.rootPane.getScene().getWindow())) {
-                                    boolean success = printerJob.printPage(qrView);
-                                    if (success) {
-                                        printerJob.endJob();
-                                    } else
-                                        System.err.println("Errore durante la stampa...");
-                                }
-                                printerJob.printPage(qrView);
-                            } catch (WriterException ex) {
-                                ex.printStackTrace();
-                            }
-                        }
-                    }
-                });
-            }
-            vboxControls.getChildren().add(btnPrintQR);
+            btnPrintQR = new Button("Stampa QR");
+            btnPrintQR.setMaxWidth(Double.MAX_VALUE); //Fill
+            btnPrintQR.setOnMouseClicked(this::OnPrintQRCodeClicked);
         }
+    }
 
+    @Override
+    protected Collection<Node> getShownFilterElements()
+    {
+        return Arrays.asList(filterField, filterBox);
+    }
+
+    @Override
+    protected Collection<Node> getShownControlElements()
+    {
+        ArrayList<Node> controlNodes = new ArrayList<>(2);
+
+        controlNodes.add(btnUpdate);
+        if(selectedItem instanceof Bambino)
+            controlNodes.add(btnPrintQR);
+
+        return controlNodes;
     }
 
     @Override
@@ -209,9 +170,44 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             return;
         }
 
-        ListPersoneResponse bambiniResponse = (ListPersoneResponse)response;
-        listaPersone.updateDataSet(bambiniResponse.getPayload());
+        ListPersoneResponse personeResponse = (ListPersoneResponse)response;
+        filteredList.updateDataSet(personeResponse.getPayload());
         tableView.refresh();
+    }
+
+    private void OnPrintQRCodeClicked(MouseEvent event)
+    {
+        if (selectedItem instanceof Bambino)
+        {
+            Bambino bambino = (Bambino) selectedItem;
+            BambinoQRUnit qrUnit = new BambinoQRUnit(bambino);
+            byte[] data = SerializationUtils.serializeToByteArray(qrUnit);
+
+            if (data != null) {
+                QRCodeWriter qrCodeWriter = new QRCodeWriter();
+                try {
+                    BitMatrix bitMatrix = qrCodeWriter.encode(Base64.getEncoder().encodeToString(data), BarcodeFormat.QR_CODE, 512, 512);
+                    ImageView qrView = new ImageView();
+
+                    WritableImage image = SwingFXUtils.toFXImage(MatrixToImageWriter.toBufferedImage(bitMatrix), null);
+                    qrView.setImage(image);
+                    qrView.prefHeight(512);
+                    qrView.prefWidth(512);
+
+                    PrinterJob printerJob = PrinterJob.createPrinterJob();
+                    if (printerJob != null && printerJob.showPrintDialog(this.rootPane.getScene().getWindow())) {
+                        boolean success = printerJob.printPage(qrView);
+                        if (success) {
+                            printerJob.endJob();
+                        } else
+                            System.err.println("Errore durante la stampa...");
+                    }
+                    printerJob.printPage(qrView);
+                } catch (WriterException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

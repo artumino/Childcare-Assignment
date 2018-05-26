@@ -9,7 +9,7 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
-import com.polimi.childcare.client.ui.filters.PersonaFilters;
+import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Pasto;
@@ -129,7 +129,7 @@ public class HomeSceneController implements ISubSceneController
 
         id.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
 
-        filterBambini.addFilterField(txtFiltro.textProperty(), (persona -> PersonaFilters.filterPersona(persona, txtFiltro.getText())));
+        filterBambini.addFilterField(txtFiltro.textProperty(), (persona -> Filters.filterPersona(persona, txtFiltro.getText())));
 
         if(tablePresenze != null) {
             tablePresenze.getColumns().addAll(id, name, surname, fiscalCode, editPresenza);

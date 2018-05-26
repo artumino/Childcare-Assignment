@@ -4,8 +4,12 @@ import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.ContattiSubmenuController;
+import com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.FornitoriSubmenuController;
+import com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PediatriSubmenuController;
 import com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PersoneSubmenuController;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
+import com.polimi.childcare.shared.entities.Fornitore;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -56,9 +60,9 @@ public class AnagraficaSceneController implements ISubSceneController
 
         try {
             subMenuItemsMap.put(btnPersone, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), PersoneSubmenuController.class));
-            subMenuItemsMap.put(btnFornitori, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), PersoneSubmenuController.class));
-            subMenuItemsMap.put(btnContatti, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), PersoneSubmenuController.class));
-            subMenuItemsMap.put(btnPediatri, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), PersoneSubmenuController.class));
+            subMenuItemsMap.put(btnFornitori, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), FornitoriSubmenuController.class));
+            subMenuItemsMap.put(btnContatti, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), ContattiSubmenuController.class));
+            subMenuItemsMap.put(btnPediatri, SceneUtils.loadSubSceneWithController(getClass().getClassLoader().getResource("fxml/AnagraficaSubMenuBase.fxml"), PediatriSubmenuController.class));
         } catch (IOException e) {
             e.printStackTrace();
         }

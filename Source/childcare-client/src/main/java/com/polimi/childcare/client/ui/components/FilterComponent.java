@@ -15,7 +15,6 @@ import java.util.function.Predicate;
 public class FilterComponent<T> implements ChangeListener
 {
     private ObjectProperty<Predicate<? super T>> filteredListPredicate;
-
     private HashMap<ObservableValue, Predicate<T>> filterFields;
 
 
