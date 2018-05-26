@@ -62,7 +62,8 @@ public class StartingBoxStageController implements ISubSceneController
             {
                 try
                 {
-                    StageUtils.showGenericStage(this.getClass().getClassLoader().getResource("fxml/MainStage.fxml"));
+                    MainMenuStageController mainMenu = new MainMenuStageController();
+                    mainMenu.show();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

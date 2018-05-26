@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 public class MainMenuStageController extends UndecoratedDraggableStageController
@@ -34,13 +35,25 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
 
     @FXML private Pane contentPane;
 
+    public MainMenuStageController() throws IOException
+    {
+        this(MainMenuStageController.class.getClassLoader().getResource("fxml/MainStage.fxml"));
+    }
+
+    private MainMenuStageController(URL fxmlPath) throws IOException
+    {
+        super(fxmlPath);
+    }
+
     @Override protected Node getWindowDragParent() {
         return this.dragToolbar;
     }
     @Override protected Node getMinimizeButton() { return this.btnMinimize; }
     @Override protected Node getMaximizeButton() { return this.btnMaximize; }
     @Override protected Node getCloseButton() { return this.btnClose; }
+    @Override protected Pane getToolbarButtonsPane() { return null; }
     @Override protected Node getRootNode() { return this.rootStackPane; }
+    @Override protected Label getTitleLabel() { return lblTitle; }
 
     //Mappa usata per associare ad ogni bottone una ed una sola scene istanziata all'apertura dello stage
     private HashMap<Node,ISubSceneController> menuItemsMap;

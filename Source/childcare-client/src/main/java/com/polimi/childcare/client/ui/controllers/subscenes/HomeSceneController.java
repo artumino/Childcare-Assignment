@@ -5,8 +5,9 @@ import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.controllers.BaseStageController;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
-import com.polimi.childcare.client.ui.controllers.IStageController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.filters.PersonaFilters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -27,10 +28,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -142,8 +143,8 @@ public class HomeSceneController implements ISubSceneController
     public void attached(ISceneController sceneController, Object... args)
     {
         //Se sono stato collegato ad uno stage, imposto un titolo opportuno
-        if(sceneController instanceof IStageController)
-            ((IStageController)sceneController).requestSetTitle("Home");
+        if(sceneController instanceof BaseStageController)
+            ((BaseStageController)sceneController).requestSetTitle("Home");
 
         RefreshData();
     }
@@ -165,19 +166,20 @@ public class HomeSceneController implements ISubSceneController
     private void OnEditPresenzaBambino(Bambino bambino)
     {
         try {
-            StageUtils.showChildcareStageForResults(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"),
-                    true,
-                    (returnArgs) -> {
-                        if(returnArgs.length > 0 && returnArgs[0] instanceof RegistroPresenze)
-                        {
-                            RegistroPresenze nuovoStatoPresenza = (RegistroPresenze)returnArgs[0];
-                            statoPresenze.put(nuovoStatoPresenza.getBambino(), nuovoStatoPresenza);
-                        }
+            ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
+            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"), bambino);
+            setPresenzeStage.initModality(Modality.WINDOW_MODAL);
+            setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+                if(returnArgs.length > 0 && returnArgs[0] instanceof RegistroPresenze)
+                {
+                    RegistroPresenze nuovoStatoPresenza = (RegistroPresenze)returnArgs[0];
+                    statoPresenze.put(nuovoStatoPresenza.getBambino(), nuovoStatoPresenza);
+                }
 
-                        tablePresenze.refresh();
-                    },
-                    bambino);
-
+                tablePresenze.refresh();
+            });
+            setPresenzeStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

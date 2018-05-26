@@ -1,8 +1,8 @@
 package com.polimi.childcare.client.ui.controllers.subscenes;
 
 import com.jfoenix.controls.JFXButton;
+import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
-import com.polimi.childcare.client.ui.controllers.IStageController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PersoneSubmenuController;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
@@ -102,8 +102,8 @@ public class AnagraficaSceneController implements ISubSceneController
     public void attached(ISceneController sceneController, Object... args)
     {
         //Se sono stato collegato ad uno stage, imposto un titolo opportuno
-        if(sceneController instanceof IStageController)
-            ((IStageController)sceneController).requestSetTitle("Home");
+        if(sceneController instanceof BaseStageController)
+            ((BaseStageController)sceneController).requestSetTitle("Anagrafica");
     }
 
     @Override

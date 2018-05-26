@@ -1,52 +1,62 @@
 package com.polimi.childcare.client.ui.controllers;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public abstract class BaseStageController implements IStageController
+import java.io.IOException;
+import java.net.URL;
+
+public abstract class BaseStageController extends Stage implements ISceneController
 {
-    protected Stage linkedStage;
-    
-    private String title;
-
     //Class constant properties
-    public String getTitle() { return title; }
-
-    public void setTitle(String title)
-    {
-        this.title = title;
-        if(this.linkedStage != null)
-            this.linkedStage.setTitle(title);
-    }
     
     public double getControllerWidth() { return 100; }
     public double getControllerHeight() { return 100; }
-    public boolean isResizable() { return true; }
 
-    @Override
-    public Scene setupScene(Parent parent)
+    //Return Callback
+    private OnStageClosingCallback onClosingCallback;
+
+    BaseStageController(URL fxmlPath) throws IOException
     {
-        Scene scene = new Scene(parent, this.getControllerWidth(), this.getControllerHeight());
-        this.linkedStage.setScene(scene);
-        return scene;
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(fxmlPath);
+        loader.setController(this);
+        Parent parent = loader.load(fxmlPath.openStream());
+        setScene(setupScene(parent));
     }
 
     @Override
-    public Scene setupStageAndShow(Stage stage, Parent parent)
-    {
-        this.linkedStage = stage;
-        this.linkedStage.setTitle(this.getTitle());
-        this.linkedStage.setResizable(this.isResizable());
-        this.linkedStage.show();
-
-        return setupScene(parent);
+    public Scene setupScene(Parent parent) {
+        return new Scene(parent, this.getControllerWidth(), this.getControllerHeight());
     }
 
-    @Override
     public void requestClose(Object... returnArgs)
     {
-        if(this.linkedStage != null)
-            this.linkedStage.close();
+        this.close(returnArgs);
+    }
+
+    public void setOnClosingCallback(OnStageClosingCallback onClosingCallback)
+    {
+        this.onClosingCallback = onClosingCallback;
+    }
+
+    public final void close(Object... data)
+    {
+        if(this.onClosingCallback != null)
+            this.onClosingCallback.onResult(data);
+
+        super.close();
+    }
+
+    public void requestSetTitle(String title)
+    {
+        setTitle(title);
+    }
+
+    public interface OnStageClosingCallback
+    {
+        void onResult(Object... args);
     }
 }
