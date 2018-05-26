@@ -26,12 +26,12 @@ public class InsertTest
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
         Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", LocalDateTime.now().toLocalDate(), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
-        NumeroTelefono numero = new NumeroTelefono("3333");
+        String numero = "3333";
         addetto1.addTelefono(numero);
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
 
         bambino1.addGenitore(genitore1);
-        pasto1.addFornitore(fornitore1);
+        pasto1.setFornitore(fornitore1);
         pasto1.addReazione(reazioneavversa1);
 
         Pasto pastoget;
@@ -43,11 +43,10 @@ public class InsertTest
         ReazioneAvversa reazioneavversaget;
         Contatto contattoget;
         Genitore genitoreget;
-        NumeroTelefono telefonoget;
 
         DatabaseSession.getInstance().execute(session ->{   //Ordine nel database dipende da insert nella session
-            session.insert(pasto1);
             session.insert(fornitore1);
+            session.insert(pasto1);
             session.insert(pediatra1);
             session.insert(bambino1);
             session.insert(addetto1);
@@ -69,7 +68,6 @@ public class InsertTest
         int idReazione = reazioneavversa1.getID();
         int idPasto = pasto1.getID();
         int idFornitore = fornitore1.getID();
-        int idTelefono = numero.getID();
 
         pastoget = DatabaseSession.getInstance().getByID(Pasto.class, idPasto);
         fornitoreget = DatabaseSession.getInstance().getByID(Fornitore.class, idFornitore);
@@ -80,7 +78,6 @@ public class InsertTest
         genitoreget = DatabaseSession.getInstance().getByID(Genitore.class, idGenitore, true);
         bambinoget = DatabaseSession.getInstance().getByID(Bambino.class, idBambino, true);
         addettoget = DatabaseSession.getInstance().getByID(Addetto.class, idAddetto, true);
-        telefonoget = DatabaseSession.getInstance().getByID(NumeroTelefono.class, idTelefono);
 
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", pastoget, pasto1);   //So che è il messaggio di errore ma lo lascio così per ora
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", fornitoreget, fornitore1);
@@ -131,6 +128,7 @@ public class InsertTest
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Grano", reazioneavversaget.getNome());
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", "Inventato ORA", contattoget.getIndirizzo());
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", diagnosiget.getPersona(), addetto1);
+        Assert.assertEquals("Controllo che il numero di addetto sia invariato", numero, addettoget.getTelefoni().get(0));
 
         genitoreget.unsafeRemoveBambino(bambinoget);    //Non va
         bambino1.removeGenitore(genitore1);             //Non va
@@ -139,7 +137,6 @@ public class InsertTest
         DatabaseSession.getInstance().execute(session ->{
             //session.update(genitore1);
             //session.update(bambino1);
-            session.deleteByID(NumeroTelefono.class, idTelefono);
             session.deleteByID(Genitore.class, idGenitore);
             session.deleteByID(Fornitore.class, idFornitore);
             session.deleteByID(Pasto.class, idPasto);
@@ -175,19 +172,15 @@ public class InsertTest
     @Test
     public void deleteTest()    //Ormai superfluo
     {
-        Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
+        Fornitore fornitore1 = new Fornitore("test", "dsadsadas", "test", "prova", "email.email@test.it", "IBAN");
         DatabaseSession.getInstance().execute(session -> {
-            session.insert(pasto1); //Da ora p è PERSISTENT
-            Pasto pastoget = session.getByID(Pasto.class, 1);
-            System.out.println("ID: " + pastoget.getID() + " - " + "Nome: " + pastoget.getNome() + " - " + "Descrizione: " + pastoget.getDescrizione());
-            session.delete(pasto1); //Consentito NO ERRORI
-            pastoget = session.getByID(Pasto.class, 1);
-            if(pastoget != null)
-                System.out.println("ID: " + pastoget.getID() + " - " + "Nome: " + pastoget.getNome() + " - " + "Descrizione: " + pastoget.getDescrizione());
+            session.insert(fornitore1); //Da ora p è PERSISTENT
+            Fornitore fornitoreget = session.getByID(Fornitore.class, 1);
+            session.delete(fornitore1); //Consentito NO ERRORI
 
             return true;
         });
 
-        Assert.assertTrue("Eliminato correttamente elemento creato nel test precendente", DatabaseSession.getInstance().getByID(Pasto.class, 1) == null);
+        Assert.assertTrue("Eliminato correttamente elemento creato nel test precendente", DatabaseSession.getInstance().getByID(Fornitore.class, 1) == null);
     }
 }
