@@ -66,7 +66,7 @@ public class FilterComponent<T> implements ChangeListener
             if(observableValue.getValue() != null)
             {
                 if(observableValue.getValue() instanceof String && observableValue.getValue().toString().isEmpty())
-                    return;
+                    continue;
 
                 this.filteredListPredicate.set(filterFields.get(observableValue).and(this.filteredListPredicate.get()));
 
