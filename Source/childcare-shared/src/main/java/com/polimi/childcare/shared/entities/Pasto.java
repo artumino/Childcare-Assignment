@@ -16,25 +16,21 @@ public class Pasto extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 65)
     private String Nome;
 
-    @Column(length = 50)
+    @Column(length = 250)
     private String Descrizione;
 
     //endregion
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "Fornitore_Pasto",
-            joinColumns = { @JoinColumn(name = "Pasto_FK") },
-            inverseJoinColumns = { @JoinColumn(name = "Fornitore_FK") }
-    )
-    private Set<Fornitore> fornitori = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "Fornitore_FK")
+    private Fornitore fornitore;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
@@ -42,7 +38,7 @@ public class Pasto extends TransferableEntity implements Serializable
     )
     private Set<ReazioneAvversa> reazione = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "pasto")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
     private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
 
     //endregion
@@ -77,9 +73,9 @@ public class Pasto extends TransferableEntity implements Serializable
         Descrizione = descrizione;
     }
 
-    public void addFornitore(Fornitore f) { fornitori.add(f); }
+    public void setFornitore(Fornitore fornitore) { this.fornitore = fornitore; }
 
-    public void removeFornitore(Fornitore f) { fornitori.remove(f); }
+    public Fornitore getFornitore() { return fornitore; }
 
     public void addReazione(ReazioneAvversa r) { reazione.add(r); }
 
@@ -88,8 +84,6 @@ public class Pasto extends TransferableEntity implements Serializable
     public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
 
     public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
-
-    public Set<Fornitore> getFornitori() { return EntitiesHelper.unmodifiableListReturn(fornitori); }
 
     public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }
 
@@ -122,11 +116,10 @@ public class Pasto extends TransferableEntity implements Serializable
     public void toDTO()
     {
         //Aggiorna figli
-        fornitori = DTOUtils.iterableToDTO(fornitori);
+        fornitore = DTOUtils.objectToDTO(fornitore);
         reazione = DTOUtils.iterableToDTO(reazione);
         quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto);
 
-        fornitori = this.getFornitori();
         reazione = this.getReazione();
         quantitaPasto = this.getQuantitaPasto();
     }
@@ -134,7 +127,7 @@ public class Pasto extends TransferableEntity implements Serializable
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(fornitori) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
+        return DTOUtils.isDTO(fornitore) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
     }
 
     @Override

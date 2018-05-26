@@ -4,6 +4,7 @@ import com.polimi.childcare.shared.entities.*;
 import org.apache.commons.collections4.CollectionUtils;
 import org.hibernate.Session;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -54,6 +55,14 @@ public class DatabaseDemo
             new String[] {"Treviso","TV"}, new String[] {"Trieste","TS"}, new String[] {"Udine","UD"}, new String[] {"Varese","VA"}
 
     };
+
+    private static String[] tipiOrganizzazione = new String[] { "S.r.l.", "S.r.l.s.", "S.p.A.", "Inc.", "Org.", "S.p.p." };
+
+
+    private static String[] nomiPasti = new String[] { "Carote", "Pasto con Ragu", "Pasta in Bianco", "Riso in bianco", "Risotto alla Milanese",
+                                                        "Scampi", "Prosciutto Crudo", "Pane", "Patate", "Zuppa di Pesce", "Cavolfiori",
+                                                        "Cotoletta", "Merluzzo", "Caviale"};
+
     //endregion
 
     public static void runDemoGeneration(int approximateBambiniCount)
@@ -98,6 +107,17 @@ public class DatabaseDemo
                 if(!contatti.contains(contatto))
                     contatti.add(contatto);
         DatabaseSession.getInstance().insertAll(contatti);
+
+        //Genero i fornitori
+        int nFornitori = 10;
+        List<Fornitore> fornitori = generateFornitori(nFornitori, generateTelefoni(20));
+        DatabaseSession.getInstance().insertAll(fornitori);
+
+        List<MezzoDiTrasporto> mezziDiTrasporto =generateMezziDiTasporto(approximateBambiniCount / 5, fornitori);
+        DatabaseSession.getInstance().insertAll(mezziDiTrasporto);
+
+        List<Pasto> pasti = generatePasti(20, reazioniAvverse, fornitori);
+        DatabaseSession.getInstance().insertAll(pasti);
     }
 
     private static List<NumeroTelefono> generateTelefoni(int count)
@@ -182,9 +202,7 @@ public class DatabaseDemo
         contatto.setNome(nomiComuni[rnd.nextInt(nomiComuni.length)]);
         contatto.setCognome(cognomiComuni[rnd.nextInt(cognomiComuni.length)]);
         contatto.setDescrizione("TEST" + (1000000 + rnd.nextInt(9000000)));
-        int ComuneProvincia = rnd.nextInt(cittaProvincia.length);
-        contatto.setIndirizzo("via " + nomiComuni[rnd.nextInt(nomiComuni.length)] + " " + cognomiComuni[rnd.nextInt(cognomiComuni.length)]
-                                + " " + (1 + rnd.nextInt(200)) + ", " + cittaProvincia[ComuneProvincia][0] + ", Italia");
+        contatto.setIndirizzo(generateFullAddress());
 
         //Calcola quanti numeri di telefono sono opportuni
         int numeroNumeriDiTelefono = 0;
@@ -244,7 +262,7 @@ public class DatabaseDemo
         persona.setProvincia(cittaProvincia[ComuneProvincia][1]);
         persona.setStato("Italia");
         persona.setSesso((byte)rnd.nextInt(3));
-        persona.setResidenza("via " + nomiComuni[rnd.nextInt(nomiComuni.length)] + " " + cognomiComuni[rnd.nextInt(cognomiComuni.length)] + " " + (1 + rnd.nextInt(200)));
+        persona.setResidenza(generateAddress());
 
         //Calcola quanti numeri di telefono sono opportuni
         int numeroNumeriDiTelefono = 0;
@@ -356,4 +374,119 @@ public class DatabaseDemo
     }
 
     //endregion
+
+    //region Fornitori, Mezzi di Trasporto, Pasti
+
+    private static void populateFornitore(Fornitore fornitore, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    {
+        Random rnd = new Random();
+        fornitore.setRagioneSociale(nomiComuni[rnd.nextInt(nomiComuni.length)]+cognomiComuni[rnd.nextInt(cognomiComuni.length)] + tipiOrganizzazione[rnd.nextInt(tipiOrganizzazione.length)]);
+        fornitore.setEmail("test" + rnd.nextInt(1000) + "@childcare.com");
+        fornitore.setIBAN("ITA00000" + (10000000 + rnd.nextInt(90000000)));
+        fornitore.setPartitaIVA("TEST" + (1000000 + rnd.nextInt(8999999)));
+        fornitore.setNumeroRegistroImprese(String.valueOf(10000000 + rnd.nextInt(90000000)));
+        fornitore.setSedeLegale(generateFullAddress());
+
+        int numeriDiTelefono = rnd.nextInt(3);
+        for(int i = 0; i < numeriDiTelefono; i++)
+        {
+            NumeroTelefono telefono;
+            do {
+                telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
+            } while (fornitore.getTelefoni().contains(telefono));
+            fornitore.addTelefono(telefono);
+        }
+
+        int numeriFax = rnd.nextInt(2);
+        for(int i = 0; i < numeriFax; i++)
+        {
+            NumeroTelefono telefono;
+            do {
+                telefono  = numeriDiTelefonoDisponibili.get(rnd.nextInt(numeriDiTelefonoDisponibili.size()));
+            } while (fornitore.getFax().contains(telefono));
+            fornitore.addFax(telefono);
+        }
+    }
+
+    private static List<Fornitore> generateFornitori(int count, List<NumeroTelefono> numeriDiTelefonoDisponibili)
+    {
+        ArrayList<Fornitore> fornitori = new ArrayList<>(count);
+        for(int i = 0; i < count; i++)
+        {
+            Fornitore fornitore = new Fornitore();
+            populateFornitore(fornitore, numeriDiTelefonoDisponibili);
+            fornitori.add(fornitore);
+        }
+        return fornitori;
+    }
+
+    private static void populateMezziDiTrasporto(MezzoDiTrasporto mezzoDiTrasporto, List<Fornitore> fornitoriDisponibili)
+    {
+        Random rnd = new Random();
+        mezzoDiTrasporto.setCapienza(50 + rnd.nextInt(200));
+        mezzoDiTrasporto.setCostoOrario(3 + rnd.nextInt(10));
+        mezzoDiTrasporto.setNumeroIdentificativo(1000000 + rnd.nextInt(10000000));
+        mezzoDiTrasporto.setTarga(String.format("%c%c%c%c%c%c%c", (char)('A'+rnd.nextInt(25)),
+                                        (char)('A'+rnd.nextInt(25)),
+                                        (char)('0'+rnd.nextInt(9)),
+                                        (char)('0'+rnd.nextInt(9)),
+                                        (char)('0'+rnd.nextInt(9)),
+                                        (char)('A'+rnd.nextInt(25)),
+                                        (char)('A'+rnd.nextInt(25))));
+        mezzoDiTrasporto.setFornitore(fornitoriDisponibili.get(rnd.nextInt(fornitoriDisponibili.size())));
+    }
+
+    private static List<MezzoDiTrasporto> generateMezziDiTasporto(int count, List<Fornitore> fornitoriDisponibili)
+    {
+        ArrayList<MezzoDiTrasporto> mezzi = new ArrayList<>(count);
+        for(int i = 0; i < count; i++)
+        {
+            MezzoDiTrasporto mezzoDiTrasporto = new MezzoDiTrasporto();
+            populateMezziDiTrasporto(mezzoDiTrasporto, fornitoriDisponibili);
+            mezzi.add(mezzoDiTrasporto);
+        }
+        return mezzi;
+    }
+
+    private static void populatePasto(Pasto pasto, List<ReazioneAvversa> reazioniAvverse, List<Fornitore> fornitoriDisponibili)
+    {
+        Random rnd = new Random();
+        pasto.setNome(nomiPasti[rnd.nextInt(nomiPasti.length)]);
+        pasto.setDescrizione("Test " + rnd.nextInt());
+        pasto.setFornitore(fornitoriDisponibili.get(rnd.nextInt(fornitoriDisponibili.size())));
+
+        int nReazioniAvverse = rnd.nextInt(reazioniAvverse.size());
+        for(int i = 0;  i < nReazioniAvverse; i++)
+            pasto.addReazione(reazioniAvverse.get(rnd.nextInt(reazioniAvverse.size())));
+    }
+
+    private static List<Pasto> generatePasti(int count, List<ReazioneAvversa> reazioniAvverse, List<Fornitore> fornitoriDisponibili)
+    {
+        ArrayList<Pasto> pasti = new ArrayList<>(count);
+        for(int i = 0; i < count; i++)
+        {
+            Pasto pasto = new Pasto();
+            populatePasto(pasto, reazioniAvverse, fornitoriDisponibili);
+            pasti.add(pasto);
+        }
+        return pasti;
+    }
+
+    //endregion
+    private static String generateAddress()
+    {
+        Random rnd = new Random();
+        return "via " + nomiComuni[rnd.nextInt(nomiComuni.length)] + " " + cognomiComuni[rnd.nextInt(cognomiComuni.length)] + " " + (1 + rnd.nextInt(200));
+    }
+
+    private static String generateFullAddress(int ComuneProvincia)
+    {
+        return generateAddress() + ", " + cittaProvincia[ComuneProvincia][0] + " " + cittaProvincia[ComuneProvincia][1]+ ", Italia";
+    }
+
+    private static String generateFullAddress()
+    {
+        Random rnd = new Random();
+        return generateFullAddress(rnd.nextInt(cittaProvincia.length));
+    }
 }

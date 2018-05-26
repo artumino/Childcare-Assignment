@@ -32,11 +32,11 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "mezzo")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
     private Set<PianoViaggi> pianoViaggi = new HashSet<>();
 
     //endregion

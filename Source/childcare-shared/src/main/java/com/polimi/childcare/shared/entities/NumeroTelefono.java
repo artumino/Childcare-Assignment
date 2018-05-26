@@ -52,6 +52,11 @@ public class NumeroTelefono extends TransferableEntity implements Serializable
                 getNumero().equals(that.getNumero());
     }
 
+    @Override
+    public String toString() {
+        return getNumero();
+    }
+
     //endregion
 
     //region DTO

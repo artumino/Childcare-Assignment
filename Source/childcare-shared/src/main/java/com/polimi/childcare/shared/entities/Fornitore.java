@@ -21,7 +21,7 @@ public class Fornitore extends TransferableEntity implements Serializable
     @Column(nullable = false, length = 11)  //In Italia 11 cifre, problemi sono con Olanda e Svezia che sono a 12, ma abbiamo detto che deve essere Italiana e iscritta al Registro Imprese
     private String PartitaIVA;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 125)
     private String SedeLegale;
 
     @Column(nullable = false, length = 15)  //Lascio a 15, non ho trovato un documento ufficiale che ne attesti la lunghezza
@@ -38,13 +38,13 @@ public class Fornitore extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(mappedBy = "fornitori", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
     private Set<Pasto> pasti = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "fornitore")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "fornitore")
     private Set<MezzoDiTrasporto> mezzi = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Fax_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },
@@ -52,7 +52,7 @@ public class Fornitore extends TransferableEntity implements Serializable
     )
     private Set<NumeroTelefono> fax = new HashSet<>();
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(
             name = "Fornitore_Rubrica",
             joinColumns = { @JoinColumn(name = "Fornitore_FK") },

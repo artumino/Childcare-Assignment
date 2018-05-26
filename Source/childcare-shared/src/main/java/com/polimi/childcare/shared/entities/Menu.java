@@ -16,8 +16,11 @@ public class Menu extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column
-    private boolean attivo;
+    @Column(nullable = false)
+    private String Nome;
+
+    @Column(nullable = false)
+    private boolean Attivo;
 
     @Column(nullable = false)
     private int Ricorrenza;
@@ -35,9 +38,10 @@ public class Menu extends TransferableEntity implements Serializable
 
     public Menu() { }
 
-    public Menu(boolean attivo, int ricorrenza)
+    public Menu(String nome, boolean attivo, int ricorrenza)
     {
-        this.attivo = attivo;
+        Nome = nome;
+        this.Attivo = attivo;
         Ricorrenza = ricorrenza;
     }
 
@@ -45,13 +49,17 @@ public class Menu extends TransferableEntity implements Serializable
         return ID;
     }
 
-    public boolean isAttivo() { return attivo; }
+    public boolean isAttivo() { return Attivo; }
 
-    public void setAttivo(boolean attivo) { this.attivo = attivo; }
+    public void setAttivo(boolean attivo) { this.Attivo = attivo; }
 
     public int getRicorrenza() { return Ricorrenza; }
 
     public void setRicorrenza(int ricorrenza) { Ricorrenza = ricorrenza; }
+
+    public String getNome() { return Nome; }
+
+    public void setNome(String nome) { Nome = nome; }
 
     public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
 

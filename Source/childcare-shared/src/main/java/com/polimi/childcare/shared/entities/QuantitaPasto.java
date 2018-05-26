@@ -22,11 +22,11 @@ public class QuantitaPasto extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Pasto_FK")
     private Pasto pasto;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "Menu_FK")
     private Menu menu;
 
