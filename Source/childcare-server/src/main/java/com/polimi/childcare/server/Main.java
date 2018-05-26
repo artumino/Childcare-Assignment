@@ -2,15 +2,15 @@ package com.polimi.childcare.server;
 
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.handlers.entities.getters.FilteredLastPresenzaRequestHandler;
-import com.polimi.childcare.server.handlers.entities.getters.FilteredRegistroPresenzeRequestHandler;
+import com.polimi.childcare.server.handlers.entities.getters.*;
+import com.polimi.childcare.server.handlers.entities.setters.*;
 import com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
-import com.polimi.childcare.shared.networking.requests.setters.SetPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.setters.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -46,29 +46,46 @@ public class Main
         //Aggiunge handler al network manager
 
         //region Getters
-        NetworkManager.getInstance().addRequestHandler(FilteredAddettoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredAddettiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredBambiniRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredContattoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredContattoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredDiagnosiRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredDiagnosiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredFornitoriRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredFornitoreRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredGenitoriRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredGenitoreRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredGitaRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredGitaRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredGruppoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredGruppoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredMenuRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredMenuRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredMezzoDiTrasportoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredMezzoDiTrasportoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredNumeroTelefonoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredNumeroTelefonoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredPastiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPediatraRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredPediatraRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredPersonaRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredPianoViaggiRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredPianoViaggiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredQuantitaPastoRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredQuantitaPastoRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new com.polimi.childcare.server.handlers.entities.getters.FilteredReazioneAvversaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredAddettoRequest.class, new FilteredAddettiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredBambiniRequest.class, new FilteredBambiniRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredContattoRequest.class, new FilteredContattoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredDiagnosiRequest.class, new FilteredDiagnosiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredFornitoriRequest.class, new FilteredFornitoreRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGenitoriRequest.class, new FilteredGenitoreRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGitaRequest.class, new FilteredGitaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredGruppoRequest.class, new FilteredGruppoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredMenuRequest.class, new FilteredMenuRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredMezzoDiTrasportoRequest.class, new FilteredMezzoDiTrasportoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredNumeroTelefonoRequest.class, new FilteredNumeroTelefonoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPastoRequest.class, new FilteredPastiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPediatraRequest.class, new FilteredPediatraRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredPianoViaggiRequest.class, new FilteredPianoViaggiRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredQuantitaPastoRequest.class, new FilteredQuantitaPastoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new FilteredReazioneAvversaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredRegistroPresenzeRequest.class, new FilteredRegistroPresenzeRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredLastPresenzaRequest.class, new FilteredLastPresenzaRequestHandler());
         //endregion
 
         //region Setters
-
+        NetworkManager.getInstance().addRequestHandler(SetAddettoRequest.class, new SetAddetto());
+        NetworkManager.getInstance().addRequestHandler(SetBambinoRequest.class, new SetBambino());
+        NetworkManager.getInstance().addRequestHandler(SetContattoRequest.class, new SetContatto());
+        NetworkManager.getInstance().addRequestHandler(SetDiagnosiRequest.class, new SetDiagnosi());
+        NetworkManager.getInstance().addRequestHandler(SetFornitoreRequest.class, new SetFornitore());
+        NetworkManager.getInstance().addRequestHandler(SetGenitoreRequest.class, new SetGenitore());
+        NetworkManager.getInstance().addRequestHandler(SetGitaRequest.class, new SetGita());
+        NetworkManager.getInstance().addRequestHandler(SetGruppoRequest.class, new SetGruppo());
+        NetworkManager.getInstance().addRequestHandler(SetMenuRequest.class, new SetMenu());
+        NetworkManager.getInstance().addRequestHandler(SetMezzoDiTrasportoRequest.class, new SetMezzoDiTrasporto());
+        NetworkManager.getInstance().addRequestHandler(SetNumeroDiTelefonoRequest.class, new SetNumeroDiTelefono());
+        NetworkManager.getInstance().addRequestHandler(SetPastiRequest.class, new SetPasti());
+        NetworkManager.getInstance().addRequestHandler(SetPediatraRequest.class, new SetPediatra());
+        NetworkManager.getInstance().addRequestHandler(SetPersonaRequest.class, new SetPersona());
+        NetworkManager.getInstance().addRequestHandler(SetPianoViaggiRequest.class, new SetPianoViaggi());
+        NetworkManager.getInstance().addRequestHandler(SetQuantitaPastoRequest.class, new SetQuantitaPasto());
+        NetworkManager.getInstance().addRequestHandler(SetReazioneAvversaRequest.class, new SetReazioneAvversa());
+        NetworkManager.getInstance().addRequestHandler(SetRegistroPresenzeRequest.class, new SetRegistroPresenze());
         //endregion
 
         //region Special
