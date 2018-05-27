@@ -21,9 +21,10 @@ public class SetContatto implements IRequestHandler<SetEntityRequest<Contatto>>
             Contatto contattoget = session.getByID(Contatto.class, request.getEntity().getID(), true);
             Set<Bambino> bambiniset = contattoget.getBambini();
 
-            for (Bambino b : bambiniset)
-            {
-                contattoget.removeBambino(b);
+            if(request.isToDelete()) {
+                for (Bambino b : bambiniset) {
+                    contattoget.removeBambino(b);
+                }
             }
 
 

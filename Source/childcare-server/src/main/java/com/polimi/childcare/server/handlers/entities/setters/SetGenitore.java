@@ -20,12 +20,13 @@ public class SetGenitore implements IRequestHandler<SetEntityRequest<Genitore>>
             Genitore genitoreget = session.getByID(Genitore.class, request.getEntity().getID(), true);
             Set<Bambino> bambini = request.getEntity().getBambini();
 
-            for (Bambino b : bambini)
-            {
-                if(b.getGenitori().size() == 1)
-                    throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
-                b.removeGenitore(genitoreget);
-                session.update(b);
+            if(request.isToDelete()) {
+                for (Bambino b : bambini) {
+                    if (b.getGenitori().size() == 1)
+                        throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+                    b.removeGenitore(genitoreget);
+                    session.update(b);
+                }
             }
 
 
