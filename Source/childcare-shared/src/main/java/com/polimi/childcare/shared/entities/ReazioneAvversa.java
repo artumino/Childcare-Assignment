@@ -99,11 +99,11 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
         //Aggiorna figli
-        pasti = DTOUtils.iterableToDTO(pasti);
-        diagnosi = DTOUtils.iterableToDTO(diagnosi);
+        pasti = DTOUtils.iterableToDTO(pasti, processed);
+        diagnosi = DTOUtils.iterableToDTO(diagnosi, processed);
 
         pasti = this.getPasti();
         diagnosi = this.getDiagnosi();

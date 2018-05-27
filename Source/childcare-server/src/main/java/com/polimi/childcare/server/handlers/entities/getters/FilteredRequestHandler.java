@@ -59,7 +59,7 @@ public class FilteredRequestHandler
 
         
         //Trasforma i proxy
-        DTOUtils.iterableToDTO(list);
+        DTOUtils.iterableToDTO(list, null);
         
         return list;
     }

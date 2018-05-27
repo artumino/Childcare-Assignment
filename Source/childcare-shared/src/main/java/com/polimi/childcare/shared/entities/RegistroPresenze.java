@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -145,10 +146,10 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        bambino = DTOUtils.objectToDTO(bambino);
-        gita = DTOUtils.objectToDTO(gita);
+        bambino = DTOUtils.objectToDTO(bambino, processed);
+        gita = DTOUtils.objectToDTO(gita, processed);
     }
 
     @Override

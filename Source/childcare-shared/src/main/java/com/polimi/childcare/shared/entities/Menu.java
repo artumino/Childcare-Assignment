@@ -90,9 +90,9 @@ public class Menu extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto);
+        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto, processed);
         quantitaPasto = this.getQuantitaPasto();
     }
 

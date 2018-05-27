@@ -3,6 +3,7 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -90,11 +91,11 @@ public class PianoViaggi extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        gruppo = DTOUtils.objectToDTO(gruppo);
-        mezzo = DTOUtils.objectToDTO(mezzo);
-        gita = DTOUtils.objectToDTO(gita);
+        gruppo = DTOUtils.objectToDTO(gruppo, processed);
+        mezzo = DTOUtils.objectToDTO(mezzo, processed);
+        gita = DTOUtils.objectToDTO(gita, processed);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.polimi.childcare.shared.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 public abstract class TransferableEntity implements IIdentificable, Serializable
 {
@@ -9,7 +10,7 @@ public abstract class TransferableEntity implements IIdentificable, Serializable
      * Utilizzato per create oggetti non dipendenti dalle implementazioni di Hibernate
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
-    public abstract void toDTO();
+    public abstract void toDTO(List<Object> processed);
 
 
     /**

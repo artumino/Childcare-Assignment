@@ -3,6 +3,7 @@ import com.polimi.childcare.shared.dto.DTOUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -92,10 +93,10 @@ public class Diagnosi extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        persona = DTOUtils.objectToDTO(persona);
-        reazioneAvversa = DTOUtils.objectToDTO(reazioneAvversa);
+        persona = DTOUtils.objectToDTO(persona, processed);
+        reazioneAvversa = DTOUtils.objectToDTO(reazioneAvversa, processed);
     }
 
     @Override

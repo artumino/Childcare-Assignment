@@ -61,7 +61,7 @@ public class FilteredLastPresenzaRequestHandler implements IRequestHandler<Filte
         });
 
         //Trasforma i proxy
-        DTOUtils.iterableToDTO(list);
+        DTOUtils.iterableToDTO(list, null);
 
         return new ListRegistroPresenzeResponse(200, list);
     }

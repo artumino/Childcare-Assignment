@@ -93,18 +93,18 @@ public class Bambino extends Persona
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        gruppo = DTOUtils.objectToDTO(gruppo);
-        pediatra = DTOUtils.objectToDTO(pediatra);
+        gruppo = DTOUtils.objectToDTO(gruppo,processed);
+        pediatra = DTOUtils.objectToDTO(pediatra,processed);
 
-        genitori = DTOUtils.iterableToDTO(genitori);
-        contatti = DTOUtils.iterableToDTO(contatti);
+        genitori = DTOUtils.iterableToDTO(genitori,processed);
+        contatti = DTOUtils.iterableToDTO(contatti,processed);
 
         genitori = getGenitori();
         contatti = getContatti();
 
-        super.toDTO();
+        super.toDTO(processed);
     }
 
     @Override

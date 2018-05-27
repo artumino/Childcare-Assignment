@@ -206,10 +206,10 @@ public abstract class Persona extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
         //Aggiorna figli
-        diagnosi = DTOUtils.iterableToDTO(diagnosi);
+        diagnosi = DTOUtils.iterableToDTO(diagnosi, processed);
 
         //Trasformo in Set
         diagnosi = this.getDiagnosi();

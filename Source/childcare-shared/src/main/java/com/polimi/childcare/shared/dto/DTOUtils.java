@@ -9,14 +9,16 @@ import java.util.Set;
 
 public class DTOUtils
 {
-    public static <T extends TransferableEntity, IT extends Iterable<T>> IT iterableToDTO(IT iterable)
+    public static <T extends TransferableEntity, IT extends Iterable<T>> IT iterableToDTO(IT iterable, List<Object> processed)
     {
+        if(processed == null)
+            processed = new ArrayList<>();
         try {
             if(iterable == null)
                 return null;
 
             for (T proxy : iterable)
-                objectToDTO(proxy);
+                objectToDTO(proxy, processed);
             return iterable;
         }
         catch (Exception ignored)
@@ -26,13 +28,19 @@ public class DTOUtils
         return null;
     }
 
-    public static <T extends TransferableEntity> T objectToDTO(T object)
+    public static <T extends TransferableEntity> T objectToDTO(T object, List<Object> processed)
     {
+        if(processed == null)
+            processed = new ArrayList<>();
+
         if(object != null)
         {
             try {
-                if(!object.isDTO())
-                    object.toDTO();
+                if(!object.isDTO() && !processed.contains(object))
+                {
+                    processed.add(object);
+                    object.toDTO(processed);
+                }
                 return object;
             } catch (Exception ignored)
             {

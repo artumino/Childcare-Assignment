@@ -50,12 +50,12 @@ public class Pediatra extends Contatto
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        bambini = DTOUtils.iterableToDTO(bambini);
+        bambini = DTOUtils.iterableToDTO(bambini, processed);
         bambini = getBambini();
 
-        super.toDTO();
+        super.toDTO(processed);
     }
 
     @Override

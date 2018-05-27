@@ -13,9 +13,13 @@ public class SetFornitore implements IRequestHandler<SetEntityRequest<Fornitore>
     public BaseResponse processRequest(SetEntityRequest<Fornitore> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = SetGenericEntity.Setter(request, Fornitore.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

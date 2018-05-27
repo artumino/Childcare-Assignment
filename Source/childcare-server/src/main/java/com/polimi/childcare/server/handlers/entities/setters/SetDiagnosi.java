@@ -13,9 +13,13 @@ public class SetDiagnosi implements IRequestHandler<SetEntityRequest<Diagnosi>>
     public BaseResponse processRequest(SetEntityRequest<Diagnosi> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = SetGenericEntity.Setter(request, Diagnosi.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

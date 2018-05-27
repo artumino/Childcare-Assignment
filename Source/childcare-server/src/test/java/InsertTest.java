@@ -1,12 +1,16 @@
 import com.polimi.childcare.server.Main;
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.*;
 import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListContattoResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListFornitoriResponse;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -203,20 +207,53 @@ public class InsertTest
         Main.initHandlers();
         DatabaseDemo.runDemoGeneration(100);
         BaseResponse bambinoResponse = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(2,0, true, null, null));
+        BaseResponse addettoResponse = NetworkManager.getInstance().processRequest(new FilteredAddettoRequest(1,0, true, null, null));
+        BaseResponse contattoResponse = NetworkManager.getInstance().processRequest(new FilteredContattoOnlyRequest(2,0,true, null, null));
+        BaseResponse fornitoriResponse = NetworkManager.getInstance().processRequest(new FilteredFornitoriRequest(2,0,true,null,null));
+
         if(!(bambinoResponse instanceof ListBambiniResponse))
             Assert.fail("Risposta di tipo errato");
+        if(!(addettoResponse instanceof ListAddettiResponse))
+            Assert.fail("Risposta di tipo errato");
+        if(!(contattoResponse instanceof ListContattoResponse))
+            Assert.fail("Risposta di tipo errato");
+        if(!(fornitoriResponse instanceof ListFornitoriResponse))
+            Assert.fail("Risposta di tipo errato");
+
         Bambino bambinoReq = ((ListBambiniResponse) bambinoResponse).getPayload().get(0);
         Bambino modder = ((ListBambiniResponse) bambinoResponse).getPayload().get(1);
+        Addetto dt = ((ListAddettiResponse) addettoResponse).getPayload().get(0);
+        List<Contatto> ct = ((ListContattoResponse) contattoResponse).getPayload();
+        List<Fornitore> ft = ((ListFornitoriResponse) fornitoriResponse).getPayload();
         Genitore g = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
+
         if(!modder.getGenitori().isEmpty())
             modder.removeGenitore((Genitore) modder.getGenitori().toArray()[0]);
-        if(!modder.getContatti().isEmpty())
-            modder.unsafeRemoveContatto((Contatto) modder.getContatti().toArray()[0]);
+        if(!modder.getContatti().isEmpty()) {
+            Contatto temp = DatabaseSession.getInstance().getByID(Contatto.class, ((Contatto) modder.getContatti().toArray()[0]).getID(), true);
+            temp.removeBambino(modder);
+            DatabaseSession.getInstance().update(temp);
+            modder.unsafeRemoveContatto(temp);
+        }
 
         Contatto contatto1 = new Contatto("Contatto Test", "Ciso", "Giovanni", "Via Sesto 2, Cremona");
+        contatto1.addBambino(modder);
+        DatabaseSession.getInstance().insertOrUpdate(contatto1);
         modder.unsafeAddContatto(contatto1);
+
         modder.setPediatra(null);
+
+        DatabaseSession.getInstance().insert(g);
         modder.addGenitore(g);
+        DatabaseSession.getInstance().delete(dt);
+
+        for(Contatto contatto : ct)
+            DatabaseSession.getInstance().delete(contatto);
+
+
+        for(Fornitore fornitore : ft)
+            DatabaseSession.getInstance().delete(fornitore);
+
         DatabaseSession.getInstance().insertOrUpdate(modder);
         BaseResponse response = NetworkManager.getInstance().processRequest(new SetBambinoRequest(bambinoReq, true, bambinoReq.consistecyHashCode()));
         Bambino b = DatabaseSession.getInstance().getByID(Bambino.class, ((ListBambiniResponse) bambinoResponse).getPayload().get(0).getID(), true);

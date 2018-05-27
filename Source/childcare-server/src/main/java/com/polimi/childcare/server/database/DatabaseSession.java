@@ -183,7 +183,7 @@ public class DatabaseSession
             try (Session session = sessionFactory.openSession())
             {
                 entity = session.get(tClass, ID);
-                if(eager)
+                if(eager && entity != null)
                     DBHelper.recursiveObjectInitialize(entity);
             } catch (HibernateException e) {
                 e.printStackTrace();
