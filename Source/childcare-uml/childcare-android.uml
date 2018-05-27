@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1005.919540229885" y="244.5">com.polimi.childcare.client.android.viewholders.annotations.LayoutAnnotation</node>
+    <node x="241.919540229885" y="144.0">com.polimi.childcare.client.shared.networking.NetworkOperation</node>
+    <node x="2124.794540229885" y="1367.0">com.polimi.childcare.shared.networking.responses.BadRequestResponse.BadRequestResponseWithMessage</node>
+    <node x="0.0" y="498.0">com.polimi.childcare.client.shared.networking.ClientNetworkManager</node>
+    <node x="927.544540229885" y="564.5">com.polimi.childcare.client.android.viewholders.BambinoViewHolder</node>
+    <node x="1146.9375" y="0.0">com.polimi.childcare.shared.networking.responses.BaseResponse</node>
+    <node x="452.0" y="675.5">com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback</node>
+    <node x="2151.794540229885" y="675.5">com.polimi.childcare.shared.networking.responses.BadRequestResponse</node>
+    <node x="329.09852216748766" y="22.5">com.polimi.childcare.shared.networking.requests.BaseRequest</node>
+    <node x="1023.1695402298849" y="1026.0">com.polimi.childcare.client.android.PresenzeActivity</node>
+    <node x="1093.669540229885" y="1832.0">com.polimi.childcare.client.android.LoginActivity</node>
+    <node x="34.5" y="1367.5">com.polimi.childcare.client.android.ChildcareApp</node>
+    <node x="1362.7945402298851" y="222.0">com.polimi.childcare.client.android.viewholders.GenericViewHolder</node>
+    <node x="1817.7945402298851" y="553.0">com.polimi.childcare.client.android.CacheManager</node>
+    <node x="1751.5445402298851" y="233.5">com.polimi.childcare.shared.serialization.SerializationUtils</node>
+    <node x="1252.5445402298851" y="476.0">com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter</node>
+    <node x="707.919540229885" y="199.5">com.polimi.childcare.client.android.ImageStore</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.polimi.childcare.client.android.viewholders.BambinoViewHolder" target="com.polimi.childcare.client.android.viewholders.GenericViewHolder">
+      <point x="114.375" y="-136.5" />
+      <point x="1194.4195402298851" y="456.0" />
+      <point x="1440.0445402298851" y="456.0" />
+      <point x="-25.75" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
+      <point x="-180.74999999999977" y="-378.0" />
+      <point x="1083.4195402298851" y="996.0" />
+      <point x="697.1875" y="996.0" />
+      <point x="697.1875" y="426.0" />
+      <point x="591.5623973727421" y="426.0" />
+      <point x="127.14285714285711" y="126.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter" target="com.polimi.childcare.client.android.viewholders.annotations.LayoutAnnotation">
+      <point x="-159.33333333333337" y="-225.0" />
+      <point x="1332.2112068965516" y="436.0" />
+      <point x="1113.9195402298851" y="436.0" />
+      <point x="36.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.CacheManager" target="com.polimi.childcare.shared.serialization.SerializationUtils">
+      <point x="0.0" y="-148.0" />
+      <point x="1974.7945402298851" y="456.0" />
+      <point x="1960.7945402298851" y="456.0" />
+      <point x="69.75" y="36.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.android.CacheManager">
+      <point x="180.75" y="-378.0" />
+      <point x="1444.919540229885" y="986.0" />
+      <point x="1896.2945402298851" y="986.0" />
+      <point x="-78.5" y="148.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
+      <point x="84.375" y="-25.5" />
+      <point x="648.875" y="456.0" />
+      <point x="697.419540229885" y="456.0" />
+      <point x="697.419540229885" y="124.0" />
+      <point x="1216.9375" y="124.0" />
+      <point x="-14.0" y="37.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.LoginActivity" target="com.polimi.childcare.client.android.PresenzeActivity">
+      <point x="0.0" y="-114.0" />
+      <point x="0.0" y="378.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
+      <point x="-144.0" y="-203.0" />
+      <point x="72.0" y="456.0" />
+      <point x="142.4203612479473" y="456.0" />
+      <point x="142.4203612479473" y="104.0" />
+      <point x="1160.9375" y="104.0" />
+      <point x="-70.0" y="37.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.viewholders.BambinoViewHolder" target="com.polimi.childcare.client.android.viewholders.annotations.LayoutAnnotation">
+      <point x="-38.125" y="-136.5" />
+      <point x="-36.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter">
+      <point x="20.083333333333485" y="-378.0" />
+      <point x="1284.2528735632184" y="946.0" />
+      <point x="1372.0445402298851" y="946.0" />
+      <point x="-119.5" y="225.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.networking.responses.BadRequestResponse.BadRequestResponseWithMessage" target="com.polimi.childcare.shared.networking.responses.BadRequestResponse">
+      <point x="0.0" y="-37.0" />
+      <point x="24.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.shared.networking.responses.BadRequestResponse">
+      <point x="220.91666666666674" y="-378.0" />
+      <point x="1485.0862068965516" y="996.0" />
+      <point x="2175.794540229885" y="996.0" />
+      <point x="-72.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.LoginActivity" target="com.polimi.childcare.client.shared.networking.ClientNetworkManager">
+      <point x="-113.66666666666674" y="-114.0" />
+      <point x="1150.5028735632181" y="1807.0" />
+      <point x="216.0" y="1807.0" />
+      <point x="0.0" y="203.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
+      <point x="100.41666666666674" y="-378.0" />
+      <point x="1364.5862068965516" y="966.0" />
+      <point x="1741.0445402298851" y="966.0" />
+      <point x="1741.0445402298851" y="124.0" />
+      <point x="1244.9375" y="124.0" />
+      <point x="14.0" y="37.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.networking.responses.BadRequestResponse" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
+      <point x="-48.0" y="-25.5" />
+      <point x="2199.794540229885" y="456.0" />
+      <point x="2242.294540229885" y="456.0" />
+      <point x="2242.294540229885" y="114.0" />
+      <point x="1272.9375" y="114.0" />
+      <point x="42.0" y="37.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.shared.serialization.SerializationUtils">
+      <point x="140.58333333333326" y="-378.0" />
+      <point x="1404.7528735632181" y="976.0" />
+      <point x="1807.2945402298851" y="976.0" />
+      <point x="1807.2945402298851" y="456.0" />
+      <point x="1821.2945402298851" y="456.0" />
+      <point x="-69.75" y="36.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation" target="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback">
+      <point x="63.57142857142867" y="126.0" />
+      <point x="527.9909688013137" y="436.0" />
+      <point x="592.625" y="436.0" />
+      <point x="28.125" y="-25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.LoginActivity" target="com.polimi.childcare.client.android.CacheManager">
+      <point x="113.66666666666674" y="-114.0" />
+      <point x="1377.8362068965516" y="1807.0" />
+      <point x="2053.294540229885" y="1807.0" />
+      <point x="78.5" y="148.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.viewholders.BambinoViewHolder" target="com.polimi.childcare.client.android.ImageStore">
+      <point x="-114.375" y="-136.5" />
+      <point x="965.669540229885" y="456.0" />
+      <point x="916.419540229885" y="456.0" />
+      <point x="69.5" y="70.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
+      <point x="148.33333333333326" y="-126.0" />
+      <point x="612.7528735632183" y="114.0" />
+      <point x="1188.9375" y="114.0" />
+      <point x="-42.0" y="37.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.android.ImageStore">
+      <point x="-100.41666666666652" y="-378.0" />
+      <point x="1163.7528735632184" y="976.0" />
+      <point x="777.419540229885" y="976.0" />
+      <point x="-69.5" y="70.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.android.viewholders.BambinoViewHolder">
+      <point x="-60.25" y="-378.0" />
+      <point x="1203.919540229885" y="966.0" />
+      <point x="1003.794540229885" y="966.0" />
+      <point x="-76.25" y="136.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
+      <point x="-84.375" y="-25.5" />
+      <point x="480.125" y="456.0" />
+      <point x="400.84811165845633" y="456.0" />
+      <point x="-63.57142857142867" y="126.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.PresenzeActivity" target="com.polimi.childcare.client.shared.networking.ClientNetworkManager">
+      <point x="-220.9166666666664" y="-378.0" />
+      <point x="1043.2528735632186" y="1006.0" />
+      <point x="360.0" y="1006.0" />
+      <point x="144.0" y="203.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
+      <point x="0.0" y="-126.0" />
+      <point x="464.419540229885" y="94.0" />
+      <point x="414.59852216748766" y="94.0" />
+      <point x="28.5" y="14.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
+      <point x="144.0" y="-203.0" />
+      <point x="360.0" y="456.0" />
+      <point x="337.2766830870279" y="456.0" />
+      <point x="-127.14285714285711" y="126.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.ChildcareApp" target="com.polimi.childcare.client.shared.networking.ClientNetworkManager">
+      <point x="0.0" y="-36.5" />
+      <point x="120.0" y="1006.0" />
+      <point x="72.0" y="1006.0" />
+      <point x="-144.0" y="203.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter" target="com.polimi.childcare.client.android.viewholders.GenericViewHolder">
+      <point x="159.33333333333337" y="-225.0" />
+      <point x="1650.8778735632184" y="456.0" />
+      <point x="1543.0445402298851" y="456.0" />
+      <point x="77.25" y="48.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4274038461538462" x="1420.589919874006" y="592.3806499851484" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
