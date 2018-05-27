@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FilteredPastoRequest extends FilteredBaseRequest
+public class FilteredPastoRequest extends FilteredBaseRequest<Pasto>
 {
     public FilteredPastoRequest(int count, int pageNumber, boolean detailed, List<Predicate<Pasto>> filters, List<Comparator<Pasto>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);

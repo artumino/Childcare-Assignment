@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>com.polimi.childcare.client.ui.controllers.StartingBoxStageController</OriginalElement>
+  <nodes>
+    <node x="1538.0" y="1597.5">com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException</node>
+    <node x="1124.0" y="2538.0">com.polimi.childcare.client.ui.controls.LabelTextViewComponent</node>
+    <node x="294.25" y="302.0">com.polimi.childcare.client.ui.controllers.BaseStageController</node>
+    <node x="2124.0" y="2615.0">com.polimi.childcare.client.Main</node>
+    <node x="3944.0" y="745.0">com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController</node>
+    <node x="200.35920329670307" y="878.0">com.polimi.childcare.client.ui.controllers.BaseStageController.OnStageClosingCallback</node>
+    <node x="2838.0" y="346.5">com.polimi.childcare.client.ui.controllers.ISubSceneController</node>
+    <node x="392.0" y="1288.0">com.polimi.childcare.client.ui.controllers.MainMenuStageController</node>
+    <node x="1426.0" y="2419.0">com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PediatriSubmenuController</node>
+    <node x="0.0" y="2706.0">com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient</node>
+    <node x="1474.0" y="2538.0">com.polimi.childcare.client.ui.OrderedFilteredList</node>
+    <node x="311.0" y="2750.0">com.polimi.childcare.client.networking.rmi.RMIInterfaceClient</node>
+    <node x="4026.0" y="2538.0">com.polimi.childcare.client.ui.utils.TableUtils</node>
+    <node x="1765.0" y="1420.5">com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.AnagraficaSubmenuBase</node>
+    <node x="2458.0" y="734.0">com.polimi.childcare.client.ui.controllers.stages.presenze.SetPresenzaStage</node>
+    <node x="3516.0" y="767.0">com.polimi.childcare.client.ui.controllers.subscenes.AnagraficaSceneController</node>
+    <node x="977.0" y="1464.0">com.polimi.childcare.client.ui.controls.DragAndDropTableView</node>
+    <node x="2817.0" y="668.0">com.polimi.childcare.client.ui.controllers.subscenes.HomeSceneController</node>
+    <node x="413.3592032967031" y="645.5">com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController</node>
+    <node x="0.0" y="1288.0">com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController</node>
+    <node x="3242.0" y="2538.0">com.polimi.childcare.client.ui.filters.Filters</node>
+    <node x="647.0" y="2538.0">com.polimi.childcare.client.shared.networking.ClientNetworkManager</node>
+    <node x="2533.0" y="2538.0">com.polimi.childcare.client.ui.utils.DateUtils</node>
+    <node x="0.0" y="3002.0">com.polimi.childcare.client.ui.utils.StageUtils</node>
+    <node x="155.5" y="2538.0">com.polimi.childcare.client.shared.networking.IClientNetworkInterface</node>
+    <node x="1744.5" y="2019.0">com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.FornitoriSubmenuController</node>
+    <node x="1573.125" y="100.5">com.polimi.childcare.client.ui.controllers.ISceneController</node>
+    <node x="1217.75" y="889.0">java.io.Serializable</node>
+    <node x="3757.0" y="2538.0">com.polimi.childcare.client.ui.utils.EffectsUtils</node>
+    <node x="3567.0" y="2538.0">com.polimi.childcare.client.ui.constants.ToolbarButtons</node>
+    <node x="2138.5" y="1986.0">com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PersoneSubmenuController</node>
+    <node x="2054.0" y="756.0">com.polimi.childcare.client.ui.controllers.StartingBoxStageController</node>
+    <node x="3978.0" y="0.0">com.polimi.childcare.client.shared.networking.NetworkOperation</node>
+    <node x="777.0" y="1530.5">com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController.EResizeDirection</node>
+    <node x="1304.0" y="1542.0">com.polimi.childcare.client.shared.qrcode.BambinoQRUnit</node>
+    <node x="3165.0" y="569.0">com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona</node>
+    <node x="1829.0" y="810.5">com.polimi.childcare.client.ui.controllers.subscenes.submenus.SubMenuBase</node>
+    <node x="4088.0" y="380.0">com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback</node>
+    <node x="1351.5" y="2019.0">com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.ContattiSubmenuController</node>
+    <node x="2881.0" y="2538.0">com.polimi.childcare.client.ui.utils.SceneUtils</node>
+  </nodes>
+  <notes>
+    <note x="1929.0" y="2538.0">
+      <node>com.polimi.childcare.client.Main</node>
+      <value>Esegue un ChildCareBaseStage contenente StartingBoxController come sottoscena</value>
+      <edge>
+        <point x="0.0" y="-47.5" />
+        <point x="0.0" y="13.5" />
+      </edge>
+    </note>
+  </notes>
+  <edges>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.ContattiSubmenuController" target="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.AnagraficaSubmenuBase">
+      <point x="0.0" y="-158.5" />
+      <point x="1538.0" y="1961.0" />
+      <point x="1820.5" y="1961.0" />
+      <point x="-111.0" y="191.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controls.DragAndDropTableView" target="java.io.Serializable">
+      <point x="0.0" y="-148.0" />
+      <point x="1130.5" y="1268.0" />
+      <point x="1257.5" y="1268.0" />
+      <point x="-13.25" y="14.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.MainMenuStageController" target="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController">
+      <point x="0.0" y="-324.0" />
+      <point x="574.5" y="1268.0" />
+      <point x="572.3592032967031" y="1268.0" />
+      <point x="0.0" y="258.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.FornitoriSubmenuController" target="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.AnagraficaSubmenuBase">
+      <point x="0.0" y="-158.5" />
+      <point x="0.0" y="191.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.ISubSceneController" target="com.polimi.childcare.client.ui.controllers.ISceneController">
+      <point x="0.0" y="-59.0" />
+      <point x="2981.0" y="277.0" />
+      <point x="1726.875" y="277.0" />
+      <point x="51.25" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.client.shared.networking.IClientNetworkInterface">
+      <point x="0.0" y="-125.5" />
+      <point x="145.5" y="2681.0" />
+      <point x="228.25" y="2681.0" />
+      <point x="-72.75" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.AnagraficaSubmenuBase" target="com.polimi.childcare.client.ui.controllers.subscenes.submenus.SubMenuBase">
+      <point x="0.0" y="-191.5" />
+      <point x="0.0" y="93.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.StartingBoxStageController" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-147.5" />
+      <point x="2246.0" y="539.0" />
+      <point x="2899.285714285714" y="539.0" />
+      <point x="-81.71428571428578" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController.EResizeDirection" target="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController">
+      <point x="-45.0" y="-81.5" />
+      <point x="822.0" y="1268.0" />
+      <point x="678.3592032967031" y="1268.0" />
+      <point x="106.0" y="258.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PediatriSubmenuController" target="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.ContattiSubmenuController">
+      <point x="0.0" y="-37.0" />
+      <point x="0.0" y="158.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException" target="java.io.Serializable">
+      <point x="0.0" y="-14.5" />
+      <point x="1641.5" y="1258.0" />
+      <point x="1310.5" y="1258.0" />
+      <point x="39.75" y="14.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.stages.presenze.SetPresenzaStage" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-169.5" />
+      <point x="2627.5" y="549.0" />
+      <point x="2940.1428571428573" y="549.0" />
+      <point x="-40.85714285714266" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.qrcode.BambinoQRUnit" target="java.io.Serializable">
+      <point x="0.0" y="-70.0" />
+      <point x="1411.0" y="1268.0" />
+      <point x="1284.0" y="1268.0" />
+      <point x="13.25" y="14.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController.EResizeDirection" target="java.io.Serializable">
+      <point x="45.0" y="-81.5" />
+      <point x="912.0" y="1258.0" />
+      <point x="1231.0" y="1258.0" />
+      <point x="-39.75" y="14.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController" target="com.polimi.childcare.client.ui.controllers.BaseStageController">
+      <point x="0.0" y="-258.0" />
+      <point x="572.3592032967031" y="549.0" />
+      <point x="508.0" y="549.0" />
+      <point x="71.25" y="103.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.HomeSceneController" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-235.5" />
+      <point x="0.0" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.client.shared.networking.IClientNetworkInterface">
+      <point x="0.0" y="-81.5" />
+      <point x="456.5" y="2681.0" />
+      <point x="373.75" y="2681.0" />
+      <point x="72.75" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.PersoneSubmenuController" target="com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.AnagraficaSubmenuBase">
+      <point x="0.0" y="-191.5" />
+      <point x="2304.5" y="1961.0" />
+      <point x="2042.5" y="1961.0" />
+      <point x="111.0" y="191.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="-85.5" y="-158.5" />
+      <point x="4029.5" y="529.0" />
+      <point x="3103.5714285714284" y="529.0" />
+      <point x="122.57142857142844" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.BaseStageController.OnStageClosingCallback" target="com.polimi.childcare.client.ui.controllers.BaseStageController">
+      <point x="0.0" y="-25.5" />
+      <point x="296.8592032967031" y="549.0" />
+      <point x="365.5" y="549.0" />
+      <point x="-71.25" y="103.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController" target="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback">
+      <point x="85.5" y="-158.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController" target="com.polimi.childcare.client.ui.controllers.UndecoratedDraggableStageController">
+      <point x="0.0" y="-324.0" />
+      <point x="186.0" y="1268.0" />
+      <point x="466.3592032967031" y="1268.0" />
+      <point x="-106.0" y="258.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.AnagraficaSceneController" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-136.5" />
+      <point x="3720.0" y="539.0" />
+      <point x="3062.714285714286" y="539.0" />
+      <point x="81.71428571428578" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-334.5" />
+      <point x="3330.5" y="549.0" />
+      <point x="3021.8571428571427" y="549.0" />
+      <point x="40.85714285714266" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.subscenes.submenus.SubMenuBase" target="com.polimi.childcare.client.ui.controllers.ISubSceneController">
+      <point x="0.0" y="-93.0" />
+      <point x="1931.5" y="529.0" />
+      <point x="2858.4285714285716" y="529.0" />
+      <point x="-122.57142857142844" y="59.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="126.0" />
+    </edge>
+    <edge source="com.polimi.childcare.client.ui.controllers.BaseStageController" target="com.polimi.childcare.client.ui.controllers.ISceneController">
+      <point x="0.0" y="-103.5" />
+      <point x="436.75" y="277.0" />
+      <point x="1624.375" y="277.0" />
+      <point x="-51.25" y="25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.30000000000000016" x="2065.4999999999995" y="1289.7499999999993" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

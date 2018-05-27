@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="1389.011775362319" y="1221.0">com.polimi.childcare.server.Main</node>
+    <node x="10.5" y="676.0">com.polimi.childcare.server.database.DatabaseSession.IDatabaseExecution</node>
+    <node x="141.8668478260871" y="0.0">com.polimi.childcare.server.helper.DBHelper</node>
+    <node x="759.6068840579712" y="864.5">com.polimi.childcare.server.networking.NetworkManager</node>
+    <node x="794.25" y="676.0">com.polimi.childcare.server.networking.IRequestHandler</node>
+    <node x="410.6068840579712" y="975.5">com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler</node>
+    <node x="300.00000000000006" y="1232.0">com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler</node>
+    <node x="1281.6068840579712" y="975.5">com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler</node>
+    <node x="1309.6068840579712" y="676.0">com.polimi.childcare.server.helper.query.RegistroPresenzeQuery</node>
+    <node x="163.35688405797123" y="167.0">com.polimi.childcare.server.database.DatabaseSession</node>
+    <node x="66.8786231884061" y="831.0">com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance</node>
+    <node x="401.8786231884061" y="632.0">com.polimi.childcare.shared.dto.DTOUtils</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler" target="com.polimi.childcare.server.networking.IRequestHandler">
+      <point x="123.0" y="-25.5" />
+      <point x="697.6068840579712" y="791.0" />
+      <point x="814.5" y="791.0" />
+      <point x="-101.25" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler" target="com.polimi.childcare.server.database.DatabaseSession">
+      <point x="-123.0" y="-25.5" />
+      <point x="451.6068840579712" y="801.0" />
+      <point x="354.7617753623191" y="801.0" />
+      <point x="52.125" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.networking.NetworkManager" target="com.polimi.childcare.server.networking.IRequestHandler">
+      <point x="-167.33333333333337" y="-136.5" />
+      <point x="843.2735507246377" y="811.0" />
+      <point x="895.5" y="811.0" />
+      <point x="-20.25" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.Main" target="com.polimi.childcare.server.database.DatabaseSession">
+      <point x="56.66666666666674" y="-36.5" />
+      <point x="1530.678442028986" y="1196.0" />
+      <point x="1774.1068840579712" y="1196.0" />
+      <point x="1774.1068840579712" y="602.0" />
+      <point x="423.98188405797123" y="602.0" />
+      <point x="121.625" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler" target="com.polimi.childcare.shared.dto.DTOUtils">
+      <point x="-41.0" y="-25.5" />
+      <point x="533.6068840579712" y="811.0" />
+      <point x="527.8786231884061" y="811.0" />
+      <point x="0.0" y="69.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession" target="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance">
+      <point x="-17.375" y="202.5" />
+      <point x="284.98188405797123" y="602.0" />
+      <point x="332.7617753623191" y="602.0" />
+      <point x="332.7617753623191" y="811.0" />
+      <point x="305.3786231884061" y="811.0" />
+      <point x="79.5" y="-170.0" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession.IDatabaseExecution" target="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance">
+      <point x="73.5" y="25.5" />
+      <point x="231.0" y="811.0" />
+      <point x="199.3786231884061" y="811.0" />
+      <point x="-26.5" y="-170.0" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler" target="com.polimi.childcare.server.helper.query.RegistroPresenzeQuery">
+      <point x="85.0" y="-25.5" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance" target="com.polimi.childcare.server.database.DatabaseSession.IDatabaseExecution">
+      <point x="-79.5" y="-170.0" />
+      <point x="146.3786231884061" y="801.0" />
+      <point x="84.0" y="801.0" />
+      <point x="-73.5" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance" target="com.polimi.childcare.server.helper.DBHelper">
+      <point x="-132.5" y="-170.0" />
+      <point x="93.3786231884061" y="811.0" />
+      <point x="0.0" y="811.0" />
+      <point x="0.0" y="142.0" />
+      <point x="216.53351449275385" y="142.0" />
+      <point x="-149.33333333333326" y="58.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler" target="com.polimi.childcare.server.networking.IRequestHandler">
+      <point x="-85.0" y="-25.5" />
+      <point x="1366.6068840579712" y="791.0" />
+      <point x="1017.0" y="791.0" />
+      <point x="101.25" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler" target="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance">
+      <point x="-103.0" y="-25.5" />
+      <point x="403.00000000000006" y="1196.0" />
+      <point x="225.8786231884061" y="1196.0" />
+      <point x="0.0" y="170.0" />
+    </edge>
+    <edge source="com.polimi.childcare.server.Main" target="com.polimi.childcare.server.networking.NetworkManager">
+      <point x="-56.66666666666674" y="-36.5" />
+      <point x="1417.3451086956525" y="1196.0" />
+      <point x="1010.6068840579712" y="1196.0" />
+      <point x="0.0" y="136.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.Main" target="com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler">
+      <point x="0.0" y="-36.5" />
+      <point x="1474.011775362319" y="1196.0" />
+      <point x="1451.6068840579712" y="1196.0" />
+      <point x="0.0" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession" target="com.polimi.childcare.server.helper.DBHelper">
+      <point x="0.0" y="-202.5" />
+      <point x="302.35688405797123" y="142.0" />
+      <point x="365.8668478260871" y="142.0" />
+      <point x="0.0" y="58.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler" target="com.polimi.childcare.server.helper.DBHelper">
+      <point x="41.0" y="-25.5" />
+      <point x="615.6068840579712" y="811.0" />
+      <point x="664.3786231884061" y="811.0" />
+      <point x="664.3786231884061" y="142.0" />
+      <point x="515.2001811594206" y="142.0" />
+      <point x="149.33333333333348" y="58.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession.IDatabaseExecution" target="com.polimi.childcare.server.database.DatabaseSession">
+      <point x="-73.5" y="-25.5" />
+      <point x="84.0" y="612.0" />
+      <point x="180.73188405797123" y="612.0" />
+      <point x="-121.625" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.helper.query.RegistroPresenzeQuery" target="com.polimi.childcare.server.database.DatabaseSession">
+      <point x="0.0" y="-25.5" />
+      <point x="1536.6068840579712" y="612.0" />
+      <point x="389.23188405797123" y="612.0" />
+      <point x="86.875" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession.DatabaseSessionInstance" target="com.polimi.childcare.server.database.DatabaseSession">
+      <point x="26.5" y="-170.0" />
+      <point x="252.3786231884061" y="801.0" />
+      <point x="315.00000000000006" y="801.0" />
+      <point x="315.00000000000006" y="612.0" />
+      <point x="250.23188405797123" y="612.0" />
+      <point x="-52.125" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler" target="com.polimi.childcare.server.networking.IRequestHandler">
+      <point x="103.0" y="-25.5" />
+      <point x="609.0" y="1196.0" />
+      <point x="749.1068840579712" y="1196.0" />
+      <point x="749.1068840579712" y="801.0" />
+      <point x="855.0" y="801.0" />
+      <point x="-60.75" y="25.5" />
+    </edge>
+    <edge source="com.polimi.childcare.server.database.DatabaseSession" target="com.polimi.childcare.server.database.DatabaseSession.IDatabaseExecution">
+      <point x="-86.875" y="202.5" />
+      <point x="215.48188405797123" y="612.0" />
+      <point x="231.0" y="612.0" />
+      <point x="73.5" y="-25.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.9" x="1282.9166666666665" y="1148.375" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

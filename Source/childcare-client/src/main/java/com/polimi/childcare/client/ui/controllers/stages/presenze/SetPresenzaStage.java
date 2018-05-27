@@ -8,7 +8,7 @@ import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.Bambino;
-import com.polimi.childcare.shared.networking.requests.setters.SetPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import javafx.fxml.FXML;
@@ -17,7 +17,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBoxBase;
-import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 

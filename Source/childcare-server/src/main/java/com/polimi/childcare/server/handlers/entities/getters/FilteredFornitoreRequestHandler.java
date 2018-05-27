@@ -1,6 +1,5 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Fornitore;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredFornitoriRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -9,7 +8,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListFornitoriRespo
 
 import java.util.ArrayList;
 
-public class FilteredFornitoreRequestHandler implements IRequestHandler<FilteredFornitoriRequest>
+public class FilteredFornitoreRequestHandler extends FilteredRequestHandler<FilteredFornitoriRequest, Fornitore>
 {
     @Override
     public BaseResponse processRequest(FilteredFornitoriRequest request)
@@ -17,6 +16,6 @@ public class FilteredFornitoreRequestHandler implements IRequestHandler<Filtered
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListFornitoriResponse(200, FilteredRequestHandler.requestManager(request, Fornitore.class, new ArrayList<>()));
+        return new ListFornitoriResponse(200, getFilteredResult(request, Fornitore.class, new ArrayList<>()));
     }
 }

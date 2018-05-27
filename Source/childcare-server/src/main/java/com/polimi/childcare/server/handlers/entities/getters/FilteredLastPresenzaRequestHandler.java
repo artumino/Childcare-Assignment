@@ -1,15 +1,13 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredLastPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import org.apache.commons.collections4.CollectionUtils;
-import org.hibernate.mapping.Collection;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,11 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
-public class FilteredLastPresenzaRequestHandler implements IRequestHandler<FilteredLastPresenzaRequest>
+public class FilteredLastPresenzaRequestHandler extends FilteredRequestHandler<FilteredLastPresenzaRequest, RegistroPresenze>
 {
     @Override
     @SuppressWarnings("Unchecked")

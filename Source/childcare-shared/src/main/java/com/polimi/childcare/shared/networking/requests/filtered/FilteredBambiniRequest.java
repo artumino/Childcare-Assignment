@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FilteredBambiniRequest extends FilteredBaseRequest
+public class FilteredBambiniRequest extends FilteredBaseRequest<Bambino>
 {
     public FilteredBambiniRequest(int count, int pageNumber, boolean detailed, List<Predicate<Bambino>> filters, List<Comparator<Bambino>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);

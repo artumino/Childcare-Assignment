@@ -1,6 +1,5 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -9,7 +8,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListBambiniRespons
 
 import java.util.ArrayList;
 
-public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBambiniRequest>
+public class FilteredBambiniRequestHandler extends FilteredRequestHandler<FilteredBambiniRequest, Bambino>
 {
     @Override
     public BaseResponse processRequest(FilteredBambiniRequest request)
@@ -17,6 +16,6 @@ public class FilteredBambiniRequestHandler implements IRequestHandler<FilteredBa
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListBambiniResponse(200, FilteredRequestHandler.requestManager(request, Bambino.class, new ArrayList<>()));
+        return new ListBambiniResponse(200, getFilteredResult(request, Bambino.class, new ArrayList<>()));
     }
 }

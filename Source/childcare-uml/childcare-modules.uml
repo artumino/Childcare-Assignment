@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>MODULES</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="117.0" y="151.0">mdl-childcare-shared</node>
+    <node x="103.0" y="0.0">mdl-childcare-client-shared</node>
+    <node x="118.0" y="286.0">mdl-childcare-server</node>
+    <node x="241.0" y="81.0">mdl-childcare-android</node>
+    <node x="0.0" y="78.0">mdl-childcare-client</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="mdl-childcare-client" target="mdl-childcare-client-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="mdl-childcare-android" target="mdl-childcare-client-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="mdl-childcare-server" target="mdl-childcare-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="mdl-childcare-client" target="mdl-childcare-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="mdl-childcare-client-shared" target="mdl-childcare-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="mdl-childcare-android" target="mdl-childcare-shared">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="208.0" y="157.5" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Libraries</Category>
+  </Categories>
+</Diagram>
+
