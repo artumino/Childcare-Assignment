@@ -12,9 +12,13 @@ public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
     public BaseResponse processRequest(SetEntityRequest<Menu> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = requestSet(request, Menu.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

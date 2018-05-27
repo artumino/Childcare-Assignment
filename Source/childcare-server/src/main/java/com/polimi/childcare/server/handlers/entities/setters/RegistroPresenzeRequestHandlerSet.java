@@ -12,9 +12,13 @@ public class RegistroPresenzeRequestHandlerSet extends GenericSetEntityRequestHa
     public BaseResponse processRequest(SetEntityRequest<RegistroPresenze> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = requestSet(request, RegistroPresenze.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

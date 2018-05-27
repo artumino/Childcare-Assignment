@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -12,9 +13,13 @@ public class PersonaRequestHandlerSet extends GenericSetEntityRequestHandler<Set
     public BaseResponse processRequest(SetEntityRequest<Persona> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = requestSet(request, Persona.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

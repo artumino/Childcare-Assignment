@@ -31,6 +31,7 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
 
         if(exception != null)
             return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

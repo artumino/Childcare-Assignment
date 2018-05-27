@@ -28,7 +28,7 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Mezzo_FK")
     private MezzoDiTrasporto mezzo;
 
