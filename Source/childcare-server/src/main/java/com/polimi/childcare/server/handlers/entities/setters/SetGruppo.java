@@ -32,6 +32,7 @@ public class SetGruppo implements IRequestHandler<SetEntityRequest<Gruppo>>
 
         if(exception != null)
             return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }

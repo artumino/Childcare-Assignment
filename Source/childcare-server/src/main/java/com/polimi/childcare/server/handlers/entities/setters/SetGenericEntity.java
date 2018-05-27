@@ -6,8 +6,6 @@ import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;

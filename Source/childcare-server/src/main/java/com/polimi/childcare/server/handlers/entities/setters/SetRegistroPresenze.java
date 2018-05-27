@@ -13,9 +13,13 @@ public class SetRegistroPresenze implements IRequestHandler<SetEntityRequest<Reg
     public BaseResponse processRequest(SetEntityRequest<RegistroPresenze> request)
     {
         final BaseResponse[] response = new BaseResponse[1];
-        DatabaseSession.getInstance().execute(session -> {
+        Throwable exception = DatabaseSession.getInstance().execute(session -> {
             return !((response[0] = SetGenericEntity.Setter(request, RegistroPresenze.class, session)) instanceof BadRequestResponse);
         });
+
+        if(exception != null)
+            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
         return response[0];
     }
 }
