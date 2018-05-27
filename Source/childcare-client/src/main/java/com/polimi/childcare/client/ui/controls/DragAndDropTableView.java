@@ -2,7 +2,10 @@ package com.polimi.childcare.client.ui.controls;
 
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 import javafx.beans.DefaultProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,8 +32,9 @@ import java.util.Base64;
 public class DragAndDropTableView<T extends Serializable> extends TableView<T>
 {
     private ArrayList<T> startingTableViewItems;
-    private Class<T> acceptedClasses;
+    private Class<? extends T> acceptedClasses;
     private boolean deleteOnExit;
+    private IntegerProperty maximumRows = new SimpleIntegerProperty();
 
     public DragAndDropTableView()
     {
@@ -46,6 +50,7 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
 
     private void dragInit(ObservableList<T> items)
     {
+        maximumRowsProperty().setValue(null);
         startingTableViewItems = new ArrayList<>();
         deleteOnExit = true;
 
@@ -97,7 +102,10 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
             if(acceptedClasses != null)
             {
                 Dragboard db = event.getDragboard();
-                if (db.hasString()) {
+                if (db.hasString() && (maximumRowsProperty().getValue() == null ||
+                                        maximumRowsProperty().getValue() == 0 ||
+                                        maximumRowsProperty().getValue() > getItems().size()))
+                {
                     String dataString = db.getString();
                     byte[] data = Base64.getDecoder().decode(dataString);
                     T element = SerializationUtils.deserializeByteArray(data, acceptedClasses);
@@ -117,10 +125,14 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
         this.deleteOnExit = deleteOnExit;
     }
 
-    public void dragForClass(Class<T> tClass)
+    public void dragForClass(Class<? extends T> tClass)
     {
         this.acceptedClasses = tClass;
     }
+
+    public IntegerProperty maximumRowsProperty() { return maximumRows; }
+    public void setMaximumRows(Integer value) { maximumRowsProperty().setValue(value); }
+    public Integer getMaximumRows() { return maximumRowsProperty().getValue(); }
 
     public void setStartingTableViewItems(ArrayList<T> items)
     {

@@ -9,7 +9,9 @@ import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
+import com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.DateUtils;
 import com.polimi.childcare.shared.entities.Addetto;
@@ -31,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.util.*;
 
 public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
@@ -73,6 +76,24 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         type.setMaxWidth(75);
         type.setMinWidth(75);
 
+
+        tableView.setOnMousePressed(event -> {
+            if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+            {
+                try {
+                    ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
+                    setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), this.selectedItem);
+                    setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+                    setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+                        //Niente
+                    });
+                    setPresenzeStage.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return Arrays.asList(name, surname, fiscalCode, dateOfBirth, id, type);
     }
 
@@ -110,7 +131,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         {
             btnUpdate = new JFXButton("Aggiorna");
             btnUpdate.setMaxWidth(Double.MAX_VALUE);
-            btnUpdate.setOnMousePressed(event -> refreshData());
+            btnUpdate.setOnMouseClicked(event -> refreshData());
         }
 
         if(btnPrintQR == null)

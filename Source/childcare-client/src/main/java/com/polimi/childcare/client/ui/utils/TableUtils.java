@@ -1,5 +1,9 @@
 package com.polimi.childcare.client.ui.utils;
 
+import javafx.scene.layout.Pane;
+
+import javax.swing.text.TableView;
+
 public class TableUtils
 {
     /**

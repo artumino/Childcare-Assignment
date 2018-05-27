@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBoxBase;
+import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
@@ -28,6 +29,7 @@ import java.time.ZoneOffset;
 public class SetPresenzaStage implements ISubSceneController
 {
     private Parent root;
+
     @FXML private AnchorPane rootPane;
     @FXML private Button btnEnter;
     @FXML private Button btnExit;
@@ -67,7 +69,6 @@ public class SetPresenzaStage implements ISubSceneController
     {
         if(this.pickerEventHour.getValue() != null && pendingOperation == null)
         {
-
             this.pendingOperation = new NetworkOperation(new SetPresenzaRequest(linkedBambino.getID(),
                     0,
                     false,

@@ -79,6 +79,15 @@ public class NetworkOperation
     }
 
     /**
+     * Imposta se il callback verrà eseguito o meno sull'interfaccia grafica (N.B. vale solo per JavaFX, Android usa una tecnica differente)
+     * @param runOnUiThread true il callback verrà eseguito sul thread di JavaFX, false il callback verrà eseguito sul thread di rete
+     */
+    public void setRunOnUiThread(boolean runOnUiThread)
+    {
+        this.runOnUiThread = runOnUiThread;
+    }
+
+    /**
      * @return Richiesta da effettuare al server
      */
     public BaseRequest getRequest()
