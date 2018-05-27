@@ -206,10 +206,8 @@
       <point x="-51.25" y="25.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.9" x="1856.5" y="2164.125" />
-  <SelectedNodes>
-    <node>com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica.FornitoriSubmenuController</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="0.30000000000000016" x="2065.4999999999995" y="1289.7499999999993" />
+  <SelectedNodes />
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>

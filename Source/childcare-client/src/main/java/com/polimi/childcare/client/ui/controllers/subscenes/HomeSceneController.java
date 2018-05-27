@@ -15,7 +15,7 @@ import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredLastPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;

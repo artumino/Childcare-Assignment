@@ -12,6 +12,8 @@ import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
 import com.polimi.childcare.shared.networking.requests.setters.*;
+import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
 
 import java.io.IOException;
 import java.util.HashMap;

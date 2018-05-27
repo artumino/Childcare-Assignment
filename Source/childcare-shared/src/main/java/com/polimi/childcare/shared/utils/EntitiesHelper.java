@@ -1,7 +1,6 @@
 package com.polimi.childcare.shared.utils;
 
-import com.polimi.childcare.shared.entities.Bambino;
-import com.polimi.childcare.shared.entities.RegistroPresenze;
+import com.polimi.childcare.shared.entities.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,6 +43,20 @@ public class EntitiesHelper
                     mappaPresenze.put(bambino, presenza);
             }
         }
+
+        return mappaPresenze;
+    }
+
+    /**
+     * Converte una lista di piani viaggio in una mappa per l'associazione di un gruppo ad un veicolo
+     * @param pianoViaggi Lista piano viaggi nella stessa gita
+     * @return Mappa che associa un gruppo a 0/1 MezziDiTrasporto
+     */
+    public static HashMap<Gruppo, MezzoDiTrasporto> gruppoToMezzoDiTrasportoMap(Iterable<PianoViaggi> pianoViaggi, Gita gita)
+    {
+        HashMap<Gruppo,MezzoDiTrasporto> mappaPresenze = new HashMap<>();
+
+        //TODO: Implementare
 
         return mappaPresenze;
     }

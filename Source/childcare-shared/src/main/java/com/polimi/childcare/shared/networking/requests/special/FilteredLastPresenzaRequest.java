@@ -1,6 +1,7 @@
-package com.polimi.childcare.shared.networking.requests.filtered;
+package com.polimi.childcare.shared.networking.requests.special;
 
 import com.polimi.childcare.shared.entities.RegistroPresenze;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredBaseRequest;
 
 import java.util.Comparator;
 import java.util.List;

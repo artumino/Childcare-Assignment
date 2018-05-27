@@ -3,7 +3,7 @@ package com.polimi.childcare.server.handlers.entities.getters;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredLastPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
