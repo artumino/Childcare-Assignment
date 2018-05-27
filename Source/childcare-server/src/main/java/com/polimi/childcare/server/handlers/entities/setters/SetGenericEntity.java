@@ -6,6 +6,8 @@ import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,42 +22,29 @@ public class SetGenericEntity
      * @param <T> Enità generica
      * @return
      */
-    public static <T extends TransferableEntity> BaseResponse Setter(SetEntityRequest<T> request, Class<T> classe)
+    public static <T extends TransferableEntity> BaseResponse Setter(SetEntityRequest<T> request, Class<T> classe, DatabaseSession.DatabaseSessionInstance session)
     {
         List<T> lista = new ArrayList<>();
 
-        if(request == null)
+        if (request == null)
             return new BadRequestResponse();
+        else {
+            lista.add(session.getByID(classe, request.getEntity().getID(), true));
 
-        else
-        {
-            if(lista == null)
-                return new BadRequestResponse();
-
-            lista.add(DatabaseSession.getInstance().getByID(classe, request.getEntity().getID(), true));
-
-            if(lista.contains(request.getEntity()))
-            {
-                if(lista.get(0).consistecyHashCode() == request.getOldHashCode())
-                {
-                    if(request.isToDelete())
-                        DatabaseSession.getInstance().delete(request.getEntity());
-
+            if (lista.contains(request.getEntity())) {
+                if (lista.get(0).consistecyHashCode() == request.getOldHashCode()) {
+                    if (request.isToDelete())
+                        session.delete(request.getEntity());
                     else
-                        DatabaseSession.getInstance().insertOrUpdate(request.getEntity());
-                }
-
-                else
+                        session.insertOrUpdate(request.getEntity());
+                } else
                     return new ListResponse<>(100, lista);
-            }
-
-            else
-            {
-                if(request.isToDelete())
+            } else {
+                if (request.isToDelete())
                     return new BadRequestResponse();
 
                 else
-                    DatabaseSession.getInstance().insertOrUpdate(request.getEntity());
+                    session.insertOrUpdate(request.getEntity());
             }
         }
 

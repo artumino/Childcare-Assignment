@@ -34,6 +34,9 @@ public class FilteredRequestHandler
                 }
 
                 CollectionUtils.addAll(list, stream.iterator());
+
+                if(request.isDetailed())
+                    DBHelper.recursiveIterableIntitialize(list);
                 return true;
             });
 
@@ -48,11 +51,12 @@ public class FilteredRequestHandler
                 }
 
                 CollectionUtils.addAll(list, stream.limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).iterator());
+
+                if(request.isDetailed())
+                    DBHelper.recursiveIterableIntitialize(list);
                 return true;
             });
 
-        if(request.isDetailed())
-            DBHelper.recursiveObjectInitialize(list);
         
         //Trasforma i proxy
         DTOUtils.iterableToDTO(list);

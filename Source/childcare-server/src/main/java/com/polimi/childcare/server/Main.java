@@ -19,31 +19,8 @@ import java.util.Scanner;
 
 public class Main
 {
-    public static void main(String... args)
+    public static void initHandlers()
     {
-        System.out.println("Hello Server...");
-
-        NetworkManager networkManager = NetworkManager.getInstance();
-        try
-        {
-            //Inizializza due interfacce di rete
-            //Socket: localhost:55403
-            //RMI: localhost:55404
-            networkManager.listen("localhost", new HashMap<IServerNetworkInterface, Integer>(2)
-            {{
-                put(new SocketInterfaceServer(), 55403);
-                put(new RMIInterfaceServer(), 55404);
-            }});
-        } catch (IOException e)
-        {
-            System.out.println("Errore durante l'avvio dell'interfaccia di rete");
-            e.printStackTrace();
-        }
-
-        System.out.println("Setting up server...");
-        DatabaseSession.getInstance().setUp();
-        System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
-
         //Aggiunge handler al network manager
 
         //region Getters
@@ -91,6 +68,34 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(SetPresenzaRequest.class, new SetPresenzaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredContattoOnlyRequest.class, new FilteredContattoOnlyRequestHandler());
         //endregion
+    }
+
+    public static void main(String... args)
+    {
+        System.out.println("Hello Server...");
+
+        NetworkManager networkManager = NetworkManager.getInstance();
+        try
+        {
+            //Inizializza due interfacce di rete
+            //Socket: localhost:55403
+            //RMI: localhost:55404
+            networkManager.listen("localhost", new HashMap<IServerNetworkInterface, Integer>(2)
+            {{
+                put(new SocketInterfaceServer(), 55403);
+                put(new RMIInterfaceServer(), 55404);
+            }});
+        } catch (IOException e)
+        {
+            System.out.println("Errore durante l'avvio dell'interfaccia di rete");
+            e.printStackTrace();
+        }
+
+        System.out.println("Setting up server...");
+        DatabaseSession.getInstance().setUp();
+        System.out.println("Server setup complete " + DatabaseSession.getInstance().getCurrentConnectionURL());
+
+        initHandlers();
 
         String command;
         Scanner scanner = new Scanner(System.in);

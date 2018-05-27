@@ -6,4 +6,18 @@ public class BadRequestResponse extends BaseResponse
     {
         super(403);
     }
+
+    public static class BadRequestResponseWithMessage extends BadRequestResponse
+    {
+        private String message;
+
+        public BadRequestResponseWithMessage(String message) {
+            super();
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+    }
 }
