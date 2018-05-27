@@ -36,7 +36,7 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mezzo")
     private Set<PianoViaggi> pianoViaggi = new HashSet<>();
 
     //endregion
@@ -128,10 +128,10 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        fornitore = DTOUtils.objectToDTO(fornitore);
-        pianoViaggi = DTOUtils.iterableToDTO(pianoViaggi);
+        fornitore = DTOUtils.objectToDTO(fornitore, processed);
+        pianoViaggi = DTOUtils.iterableToDTO(pianoViaggi, processed);
 
         pianoViaggi = getPianoViaggi();
     }

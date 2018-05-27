@@ -120,10 +120,10 @@ public class Gita extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        pianiViaggi = DTOUtils.iterableToDTO(pianiViaggi);
-        registriPresenze = DTOUtils.iterableToDTO(registriPresenze);
+        pianiViaggi = DTOUtils.iterableToDTO(pianiViaggi, processed);
+        registriPresenze = DTOUtils.iterableToDTO(registriPresenze, processed);
 
         pianiViaggi = getPianiViaggi();
         registriPresenze = getRegistriPresenze();

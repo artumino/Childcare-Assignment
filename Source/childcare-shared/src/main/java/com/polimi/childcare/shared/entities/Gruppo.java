@@ -20,10 +20,10 @@ public class Gruppo extends TransferableEntity implements Serializable
     //endregion
 
     //region Relazioni
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppo")
     private Set<Bambino> bambini  = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
@@ -84,12 +84,12 @@ public class Gruppo extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
         //Aggiorna figli
-        sorvergliante = DTOUtils.objectToDTO(sorvergliante);
-        bambini = DTOUtils.iterableToDTO(bambini);
-        pianoviaggi = DTOUtils.iterableToDTO(pianoviaggi);
+        sorvergliante = DTOUtils.objectToDTO(sorvergliante, processed);
+        bambini = DTOUtils.iterableToDTO(bambini, processed);
+        pianoviaggi = DTOUtils.iterableToDTO(pianoviaggi, processed);
 
         bambini = this.getBambini();
         pianoviaggi = this.getPianoviaggi();

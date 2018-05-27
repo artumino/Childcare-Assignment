@@ -30,7 +30,7 @@ public class Pasto extends TransferableEntity implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },
@@ -113,12 +113,12 @@ public class Pasto extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
         //Aggiorna figli
-        fornitore = DTOUtils.objectToDTO(fornitore);
-        reazione = DTOUtils.iterableToDTO(reazione);
-        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto);
+        fornitore = DTOUtils.objectToDTO(fornitore, processed);
+        reazione = DTOUtils.iterableToDTO(reazione, processed);
+        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto, processed);
 
         reazione = this.getReazione();
         quantitaPasto = this.getQuantitaPasto();

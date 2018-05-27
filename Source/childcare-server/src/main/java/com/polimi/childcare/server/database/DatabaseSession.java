@@ -183,7 +183,7 @@ public class DatabaseSession
             try (Session session = sessionFactory.openSession())
             {
                 entity = session.get(tClass, ID);
-                if(eager)
+                if(eager && entity != null)
                     DBHelper.recursiveObjectInitialize(entity);
             } catch (HibernateException e) {
                 e.printStackTrace();
@@ -232,12 +232,12 @@ public class DatabaseSession
     /**
      * Esegue una transazione sul DB
      * @param execution Codice della transazione da eseguire, in base al risultato della transazione effettua automaticamente il commit() o rollback()
-     * @return true in caso di commit, false in caso di rollback()
+     * @return null in caso di commit, Throwable in caso di errore
      */
-    public boolean execute(IDatabaseExecution execution)
+    public Throwable execute(IDatabaseExecution execution)
     {
         if(sessionFactory == null)
-            return false;
+            return new Throwable("No session factory");
 
         Transaction tx = null;
         try(Session session = sessionFactory.openSession())
@@ -255,7 +255,7 @@ public class DatabaseSession
                 {
                     ex.printStackTrace();
                 }
-                return false;
+                return new Throwable("Error during transaction");
             }
         }catch (PersistenceException ex)
         {
@@ -266,10 +266,10 @@ public class DatabaseSession
             {
                 thr.printStackTrace();
             }
-            return false;
+            return ex;
         }
 
-        return true;
+        return null;
     }
 
     /**
@@ -319,16 +319,22 @@ public class DatabaseSession
 
         public <T> void update(T element) throws HibernateException
         {
+            if(!contains(element))
+                element = merge(element);
             session.update(element);
         }
 
         public <T> void insertOrUpdate(T element) throws HibernateException
         {
+            if(!contains(element))
+                element = merge(element);
             session.saveOrUpdate(element);
         }
 
         public <T> void delete(T element) throws HibernateException
         {
+            if(!contains(element))
+                element = merge(element);
             session.delete(element);
         }
 

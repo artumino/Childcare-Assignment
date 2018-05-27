@@ -38,7 +38,7 @@ public class Contatto extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "Riferimenti",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
@@ -133,9 +133,9 @@ public class Contatto extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        bambini = DTOUtils.iterableToDTO(bambini);
+        bambini = DTOUtils.iterableToDTO(bambini, processed);
 
         bambini = getBambini();
     }

@@ -170,11 +170,11 @@ public class Fornitore extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
         //Aggiorna figli
-        pasti = DTOUtils.iterableToDTO(pasti);
-        mezzi = DTOUtils.iterableToDTO(mezzi);
+        pasti = DTOUtils.iterableToDTO(pasti, processed);
+        mezzi = DTOUtils.iterableToDTO(mezzi, processed);
 
         //Trasforma in non modificabili
         pasti = this.getPasti();

@@ -9,10 +9,13 @@ import java.util.stream.Stream;
 
 public class DBHelper
 {
-    public static <T> void objectInitialize(T object)
+    public static <T> T objectInitialize(T object)
     {
+
         if(!Hibernate.isInitialized(object))
             Hibernate.initialize(object);
+        T unproxiedobj = (T)Hibernate.unproxy(object);
+        return unproxiedobj;
     }
 
     public static <T> void recursiveObjectInitialize(T object)
@@ -36,7 +39,7 @@ public class DBHelper
                     field.setAccessible(true);
 
                 Object fieldValue = field.get(object);
-                objectInitialize(fieldValue);
+                field.set(object, objectInitialize(fieldValue));
 
                 //Ben tornato private :)
                 if(!normallyAccessible)
@@ -44,6 +47,13 @@ public class DBHelper
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static <T> void recursiveIterableIntitialize(Iterable<T> iterable)
+    {
+        for (T item : iterable) {
+            recursiveObjectInitialize(item);
         }
     }
 

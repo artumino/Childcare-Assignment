@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -34,11 +35,11 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "Gita_FK")
     private Gita gita;
 
@@ -145,10 +146,10 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO()
+    public void toDTO(List<Object> processed)
     {
-        bambino = DTOUtils.objectToDTO(bambino);
-        gita = DTOUtils.objectToDTO(gita);
+        bambino = DTOUtils.objectToDTO(bambino, processed);
+        gita = DTOUtils.objectToDTO(gita, processed);
     }
 
     @Override

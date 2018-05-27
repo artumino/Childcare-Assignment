@@ -98,6 +98,10 @@ public class DatabaseDemo
 
         //Genero bambini dai genitori(evitando genitori orfani)
         List<Bambino> bambini = generateBambini(approximateBambiniCount, generateGenitori((approximateBambiniCount / 3), reazioniAvverse, generateTelefoni(approximateBambiniCount)), generateContatti((int)(approximateBambiniCount * 1.5), generateTelefoni(approximateBambiniCount)), pediatri, reazioniAvverse, generateTelefoni(approximateBambiniCount));
+        List<Genitore> genitoriUsati = new ArrayList<>();
+        for (Bambino bambino : bambini)
+            genitoriUsati.addAll(bambino.getGenitori());
+        DatabaseSession.getInstance().insertAll(genitoriUsati);
         DatabaseSession.getInstance().insertAll(bambini);
 
         //Inserisco tutti i contatti
