@@ -1,18 +1,21 @@
 package com.polimi.childcare.client.ui.controls;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.StringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
-public class LabelTextViewComponent extends HBox
+public class LabelTextViewComponent extends GridPane
 {
     @FXML private Label txtLabel;
     @FXML private TextField txtTextField;
+
 
     public LabelTextViewComponent()
     {
@@ -26,8 +29,20 @@ public class LabelTextViewComponent extends HBox
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+
     }
 
+    public DoubleProperty labelPercentWidthProperty() { return getColumnConstraints().get(0).percentWidthProperty(); }
+
+    public double getLabelPercentWidth()
+    {
+        return labelPercentWidthProperty().get();
+    }
+
+    public void setLabelPercentWidth(double percentWidth)
+    {
+        labelPercentWidthProperty().set(percentWidth);
+    }
 
     public StringProperty labelTextProperty() {
         return txtLabel.textProperty();

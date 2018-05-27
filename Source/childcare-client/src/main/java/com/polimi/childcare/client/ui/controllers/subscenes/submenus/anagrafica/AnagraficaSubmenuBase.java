@@ -2,6 +2,7 @@ package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica
 
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.subscenes.submenus.SubMenuBase;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -49,6 +51,23 @@ public abstract class AnagraficaSubmenuBase<T> extends SubMenuBase
                 tableView.getColumns().addAll(columnsToShow);
             filteredList.comparatorProperty().bind(tableView.comparatorProperty());
             tableView.setItems(filteredList.list());
+
+            tableView.setOnMousePressed(event -> {
+                if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
+                {
+                    try {
+                        ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
+                        setPresenzeStage.setContentScene(getClass().getClassLoader().getResource("fxml/stages/anagrafica/EditPersona.fxml"), this.selectedItem);
+                        setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+                        setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+                            //Niente
+                        });
+                        setPresenzeStage.show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
             tableView.getSelectionModel().selectedItemProperty().addListener(((observableValue, oldPersona, newPersona) -> {
                 selectedItem = newPersona;
