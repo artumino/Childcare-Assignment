@@ -1,10 +1,14 @@
-package com.polimi.childcare.client.ui.controllers;
+package com.polimi.childcare.client.ui.controllers.subscenes;
 
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.networking.rmi.RMIInterfaceClient;
 import com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient;
 import com.polimi.childcare.client.ui.constants.ToolbarButtons;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
+import com.polimi.childcare.client.ui.controllers.ISceneController;
+import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.MainMenuStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.Fornitore;
@@ -29,7 +33,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class StartingBoxStageController implements ISubSceneController
+public class StartingSubsceneController implements ISubSceneController
 {
     @FXML private StackPane paneRoot;
     @FXML private Button btnConnect;

@@ -21,7 +21,7 @@ import javafx.scene.layout.Region;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class AnagraficaSceneController implements ISubSceneController
+public class AnagraficaSubsceneController implements ISubSceneController
 {
     private Parent root;
 

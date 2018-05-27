@@ -36,7 +36,7 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeSceneController implements ISubSceneController
+public class HomeSubsceneController implements ISubSceneController
 {
     private Parent root;
 
