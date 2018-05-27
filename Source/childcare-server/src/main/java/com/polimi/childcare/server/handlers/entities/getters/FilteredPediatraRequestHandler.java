@@ -1,6 +1,5 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Pediatra;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPediatraRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -9,7 +8,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListPediatraRespon
 
 import java.util.ArrayList;
 
-public class FilteredPediatraRequestHandler implements IRequestHandler<FilteredPediatraRequest>
+public class FilteredPediatraRequestHandler extends FilteredRequestHandler<FilteredPediatraRequest, Pediatra>
 {
     @Override
     public BaseResponse processRequest(FilteredPediatraRequest request)
@@ -17,6 +16,6 @@ public class FilteredPediatraRequestHandler implements IRequestHandler<FilteredP
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListPediatraResponse(200, FilteredRequestHandler.requestManager(request, Pediatra.class, new ArrayList<>()));
+        return new ListPediatraResponse(200, getFilteredResult(request, Pediatra.class, new ArrayList<>()));
     }
 }

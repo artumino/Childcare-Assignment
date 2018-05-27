@@ -1,6 +1,5 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.PianoViaggi;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPianoViaggiRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -9,7 +8,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListPianoViaggiRes
 
 import java.util.ArrayList;
 
-public class FilteredPianoViaggiRequestHandler implements IRequestHandler<FilteredPianoViaggiRequest>
+public class FilteredPianoViaggiRequestHandler extends FilteredRequestHandler<FilteredPianoViaggiRequest, PianoViaggi>
 {
     @Override
     public BaseResponse processRequest(FilteredPianoViaggiRequest request)
@@ -17,6 +16,6 @@ public class FilteredPianoViaggiRequestHandler implements IRequestHandler<Filter
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListPianoViaggiResponse(200, FilteredRequestHandler.requestManager(request, PianoViaggi.class, new ArrayList<PianoViaggi>()));
+        return new ListPianoViaggiResponse(200, getFilteredResult(request, PianoViaggi.class, new ArrayList<>()));
     }
 }

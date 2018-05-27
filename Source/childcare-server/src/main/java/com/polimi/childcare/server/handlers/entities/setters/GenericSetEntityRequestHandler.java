@@ -1,30 +1,32 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.TransferableEntity;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SetGenericEntity
+/**
+ * Classe per la gestione delle richieste di Set
+ * @param <T> Tipo richiesta da gestire
+ * @param <IT> Enità generica
+ */
+public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<IT>, IT extends TransferableEntity> implements IRequestHandler<T>
 {
-
     /**
      * Gestore dei setter generico
-     * @param request Tipo di richiesta
+     * @param request Richiesta
      * @param classe Classe di tipo IT
-     * @param <T> Enità generica
      * @return
      */
-    public static <T extends TransferableEntity> BaseResponse Setter(SetEntityRequest<T> request, Class<T> classe, DatabaseSession.DatabaseSessionInstance session)
+    public BaseResponse requestSet(T request, Class<IT> classe, DatabaseSession.DatabaseSessionInstance session)
     {
-        List<T> lista = new ArrayList<>();
+        List<IT> lista = new ArrayList<>();
 
         if (request == null)
             return new BadRequestResponse();

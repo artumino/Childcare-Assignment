@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FilteredLastPresenzaRequest extends FilteredBaseRequest
+public class FilteredLastPresenzaRequest extends FilteredBaseRequest<RegistroPresenze>
 {
     public FilteredLastPresenzaRequest(int count, int pageNumber, boolean detailed, List<Predicate<RegistroPresenze>> filters, List<Comparator<RegistroPresenze>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);

@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FilteredContattoRequest extends FilteredBaseRequest
+public class FilteredContattoRequest extends FilteredBaseRequest<Contatto>
 {
     public FilteredContattoRequest(int count, int pageNumber, boolean detailed, List<Predicate<Contatto>> filters, List<Comparator<Contatto>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);

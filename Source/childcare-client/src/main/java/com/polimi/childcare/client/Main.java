@@ -1,6 +1,7 @@
 package com.polimi.childcare.client;
 
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import javafx.application.Application;

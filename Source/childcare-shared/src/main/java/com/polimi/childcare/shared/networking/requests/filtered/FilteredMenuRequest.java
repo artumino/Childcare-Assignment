@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class FilteredMenuRequest extends FilteredBaseRequest
+public class FilteredMenuRequest extends FilteredBaseRequest<Menu>
 {
     public FilteredMenuRequest(int count, int pageNumber, boolean detailed, List<Predicate<Menu>> filters, List<Comparator<Menu>> orderBy) {
         super(count, pageNumber, detailed, filters, orderBy);

@@ -1,7 +1,6 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Contatto;
 import com.polimi.childcare.shared.entities.Genitore;
@@ -12,7 +11,7 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
-public class SetBambino implements IRequestHandler<SetEntityRequest<Bambino>>
+public class BambinoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Bambino>, Bambino>
 {
     @Override
     public BaseResponse processRequest(SetEntityRequest<Bambino> request)
@@ -67,7 +66,7 @@ public class SetBambino implements IRequestHandler<SetEntityRequest<Bambino>>
                 }
 
 
-            response[0] = SetGenericEntity.Setter(request, Bambino.class, session);
+            response[0] = requestSet(request, Bambino.class, session);
 
             return !(response[0] instanceof BadRequestResponse);
         });

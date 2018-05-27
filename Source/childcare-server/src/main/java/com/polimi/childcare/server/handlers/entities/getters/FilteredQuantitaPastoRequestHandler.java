@@ -1,6 +1,5 @@
 package com.polimi.childcare.server.handlers.entities.getters;
 
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.QuantitaPasto;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredQuantitaPastoRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -9,7 +8,7 @@ import com.polimi.childcare.shared.networking.responses.lists.ListQuantitaPastoR
 
 import java.util.ArrayList;
 
-public class FilteredQuantitaPastoRequestHandler implements IRequestHandler<FilteredQuantitaPastoRequest>
+public class FilteredQuantitaPastoRequestHandler extends FilteredRequestHandler<FilteredQuantitaPastoRequest, QuantitaPasto>
 {
     @Override
     public BaseResponse processRequest(FilteredQuantitaPastoRequest request)
@@ -17,6 +16,6 @@ public class FilteredQuantitaPastoRequestHandler implements IRequestHandler<Filt
         if(request.getCount() < 0 || request.getPageNumber() < 0)
             return new BadRequestResponse();
 
-        return new ListQuantitaPastoResponse(200, FilteredRequestHandler.requestManager(request, QuantitaPasto.class, new ArrayList<QuantitaPasto>()));
+        return new ListQuantitaPastoResponse(200, getFilteredResult(request, QuantitaPasto.class, new ArrayList<>()));
     }
 }
