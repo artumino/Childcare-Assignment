@@ -13,11 +13,11 @@ public class Bambino extends Persona
 {
     //region Relazioni
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY) //Non posso fare confronti se è LAZY :S
+    @ManyToOne(fetch = FetchType.LAZY) //Non posso fare confronti se è LAZY :S
     @JoinColumn(name = "Pediatra_FK")
     private Pediatra pediatra;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "TutoriLegali",
             joinColumns = { @JoinColumn(name = "Bambino_FK") },
@@ -28,7 +28,7 @@ public class Bambino extends Persona
     @ManyToMany(mappedBy = "bambini", fetch = FetchType.LAZY)
     private Set<Contatto> contatti = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
 

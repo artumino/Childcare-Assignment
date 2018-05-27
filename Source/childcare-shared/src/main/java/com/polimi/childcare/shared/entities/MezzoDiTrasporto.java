@@ -36,7 +36,7 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "mezzo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mezzo")
     private Set<PianoViaggi> pianoViaggi = new HashSet<>();
 
     //endregion

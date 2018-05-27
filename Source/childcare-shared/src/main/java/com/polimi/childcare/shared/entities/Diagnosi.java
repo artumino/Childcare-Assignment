@@ -22,11 +22,11 @@ public class Diagnosi extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Persona_FK")
     private Persona persona;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = { CascadeType.ALL })
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "ReazioneAvversa_FK")
     private ReazioneAvversa reazioneAvversa;
 

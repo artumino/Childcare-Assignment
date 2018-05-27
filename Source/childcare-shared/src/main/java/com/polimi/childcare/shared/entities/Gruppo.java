@@ -20,10 +20,10 @@ public class Gruppo extends TransferableEntity implements Serializable
     //endregion
 
     //region Relazioni
-    @OneToOne(optional = false, cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "gruppo")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppo")
     private Set<Bambino> bambini  = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")

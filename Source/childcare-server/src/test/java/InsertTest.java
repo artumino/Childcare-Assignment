@@ -1,3 +1,4 @@
+import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.*;
 import org.junit.Assert;
@@ -53,7 +54,6 @@ public class InsertTest
             session.insert(reazioneavversa1);
             session.insert(diagnosi1);
             session.insert(contatto1);
-            session.insert(numero);
             session.insert(genitore1);
 
             return true;
@@ -106,6 +106,7 @@ public class InsertTest
             session.update(pasto1);
             session.update(fornitore1);
             session.update(pediatra1);
+            session.insert(n2);
             session.update(bambino1);
             session.update(addetto1);
             session.update(reazioneavversa1);
@@ -182,5 +183,11 @@ public class InsertTest
         });
 
         Assert.assertTrue("Eliminato correttamente elemento creato nel test precendente", DatabaseSession.getInstance().getByID(Fornitore.class, 1) == null);
+    }
+
+    @Test
+    public void demoGeneration()
+    {
+        DatabaseDemo.runDemoGeneration(100);
     }
 }

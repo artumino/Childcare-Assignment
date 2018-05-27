@@ -34,11 +34,11 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(name="Bambino_FK")
     private Bambino bambino;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = true, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "Gita_FK")
     private Gita gita;
 

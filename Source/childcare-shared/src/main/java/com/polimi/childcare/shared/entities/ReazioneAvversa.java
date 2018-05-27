@@ -29,7 +29,7 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "reazioneAvversa")
     private Set<Diagnosi> diagnosi = new HashSet<>();
 
-    @ManyToMany(mappedBy = "reazione", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "reazione", fetch = FetchType.EAGER)
     private Set<Pasto> pasti = new HashSet<>();
 
     //endregion

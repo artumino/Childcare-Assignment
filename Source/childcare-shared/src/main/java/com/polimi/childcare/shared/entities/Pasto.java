@@ -30,7 +30,7 @@ public class Pasto extends TransferableEntity implements Serializable
     @JoinColumn(name = "Fornitore_FK")
     private Fornitore fornitore;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "ReazioneAvversa_Pasto",
             joinColumns = { @JoinColumn(name = "Pasto_FK") },

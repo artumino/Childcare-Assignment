@@ -11,7 +11,7 @@ public class Pediatra extends Contatto
 {
     //region Relazioni
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pediatra")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pediatra")
     private Set<Bambino> bambini = new HashSet<>();
 
     //endregion

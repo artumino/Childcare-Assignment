@@ -38,7 +38,7 @@ public class Contatto extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "Riferimenti",
             joinColumns = { @JoinColumn(name = "Contatto_FK") },
