@@ -187,7 +187,7 @@ public class Contatto extends TransferableEntity implements Serializable
             @Override
             public IManyToManyOwned<Contatto, Bambino> getInverse(Bambino item)
             {
-                return item.asBambinoContattoRelation();
+                return item.asBambiniContattiRelation();
             }
         };
     }

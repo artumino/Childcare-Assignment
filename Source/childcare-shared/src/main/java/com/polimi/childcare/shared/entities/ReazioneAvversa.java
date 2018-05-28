@@ -1,5 +1,9 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -118,6 +122,71 @@ public class ReazioneAvversa extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IOneToMany<Diagnosi, ReazioneAvversa> asReazioniAvverseDiagnosiRelation()
+    {
+        return new IOneToMany<Diagnosi, ReazioneAvversa>() {
+            @Override
+            public ReazioneAvversa getItem() {
+                return ReazioneAvversa.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Diagnosi item) {
+                unsafeAddDiagnosi(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Diagnosi item) {
+                unsafeRemoveDiagnosi(item);
+            }
+
+            @Override
+            public Set<Diagnosi> getUnmodifiableRelation() {
+                return getDiagnosi();
+            }
+
+            @Override
+            public IManyToOne<ReazioneAvversa, Diagnosi> getInverse(Diagnosi item) {
+                return item.asDiagnosiReazioneAvversaRelation();
+            }
+        };
+    }
+
+    public IManyToManyOwned<Pasto, ReazioneAvversa> asReazioniAvversePastiRelation()
+    {
+        return new IManyToManyOwned<Pasto, ReazioneAvversa>() {
+            @Override
+            public ReazioneAvversa getItem() {
+                return ReazioneAvversa.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Pasto item) {
+                unsafeAddPasto(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Pasto item) {
+                unsafeRemovePasto(item);
+            }
+
+            @Override
+            public Set<Pasto> getUnmodifiableRelation() {
+                return getPasti();
+            }
+
+            @Override
+            public IManyToManyOwner<ReazioneAvversa, Pasto> getInverse(Pasto item) {
+                return item.asPastoReazioniAvverseRelation();
+            }
+        };
     }
 
     //endregion

@@ -117,7 +117,7 @@ public class Diagnosi extends TransferableEntity implements Serializable
 
     //region Relations Interfaces
 
-    public IManyToOne<Persona, Diagnosi> setDiagnosiPersonaRelation()
+    public IManyToOne<Persona, Diagnosi> asDiagnosiPersonaRelation()
     {
         return new IManyToOne<Persona, Diagnosi>() {
 
@@ -128,17 +128,17 @@ public class Diagnosi extends TransferableEntity implements Serializable
 
             @Override
             public void setRelation(Persona item) {
-
+                setPersona(item);
             }
 
             @Override
             public Persona getRelation() {
-                return null;
+                return getPersona();
             }
 
             @Override
             public IOneToMany<Diagnosi, Persona> getInverse(Persona item) {
-                return null;
+                return item.asPersonaDiagnosiRelation();
             }
         };
     }
@@ -153,17 +153,17 @@ public class Diagnosi extends TransferableEntity implements Serializable
 
             @Override
             public void setRelation(ReazioneAvversa item) {
-
+                setReazioneAvversa(item);
             }
 
             @Override
             public ReazioneAvversa getRelation() {
-                return null;
+                return getReazioneAvversa();
             }
 
             @Override
             public IOneToMany<Diagnosi, ReazioneAvversa> getInverse(ReazioneAvversa item) {
-                return null;
+                return item.asReazioniAvverseDiagnosiRelation();
             }
         };
     }

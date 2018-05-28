@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -190,6 +192,70 @@ public class Fornitore extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IOneToMany<MezzoDiTrasporto, Fornitore> asFornitoreMezziDiTrasportoRelation()
+    {
+        return new IOneToMany<MezzoDiTrasporto, Fornitore>() {
+            @Override
+            public Fornitore getItem() {
+                return Fornitore.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(MezzoDiTrasporto item) {
+                unsafeAddMezzo(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(MezzoDiTrasporto item) {
+                unsafeRemoveMezzo(item);
+            }
+
+            @Override
+            public Set<MezzoDiTrasporto> getUnmodifiableRelation() {
+                return getMezzi();
+            }
+
+            @Override
+            public IManyToOne<Fornitore, MezzoDiTrasporto> getInverse(MezzoDiTrasporto item) {
+                return item.asMezziDiTrasportoFornitoreRelation();
+            }
+        };
+    }
+
+    public IOneToMany<Pasto, Fornitore> asFornitorePastiRelation()
+    {
+        return new IOneToMany<Pasto, Fornitore>() {
+            @Override
+            public Fornitore getItem() {
+                return Fornitore.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Pasto item) {
+                unsafeAddPasto(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Pasto item) {
+                unsafeRemovePasto(item);
+            }
+
+            @Override
+            public Set<Pasto> getUnmodifiableRelation() {
+                return getPasti();
+            }
+
+            @Override
+            public IManyToOne<Fornitore, Pasto> getInverse(Pasto item) {
+                return item.asPastoFornitoreRelation();
+            }
+        };
     }
 
     //endregion

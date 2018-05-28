@@ -3,6 +3,9 @@ package com.polimi.childcare.server.helper;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.TransferableEntity;
 import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.ContainsHelper;
 import org.hibernate.Hibernate;
 
@@ -78,19 +81,78 @@ public class DBHelper
         }
     }
 
+    public static <T extends TransferableEntity, U extends TransferableEntity>
+    void deletedManyToManyOwned(IManyToManyOwned<U,T> detachedDeletedEntityRelation, IManyToManyOwned<U,T> attachedDeletedEntityRelation, Class<U> ownerClass, DatabaseSession.DatabaseSessionInstance session)
+    {
+        //Rimuove le relazioni di cui non è owner
+        for (U updated : attachedDeletedEntityRelation.getUnmodifiableRelation())
+        {
+            detachedDeletedEntityRelation.unsafeRemoveRelation(updated);
+            if (updated != null)
+            {
+                attachedDeletedEntityRelation.getInverse(updated).removeRelation(attachedDeletedEntityRelation.getItem());
+                session.update(updated);
+            }
+        }
+    }
+
+    public static <T extends TransferableEntity, U extends TransferableEntity>
+    void updateManyToOne(IManyToOne<U,T> detachedEntityRelation,  Class<U> ownedClass, DatabaseSession.DatabaseSessionInstance session)
+    {
+        //Qualunque sia U, se non è null prendo l'ID del nuovo U e ne aggiorno i dati con quello sul DB
+        if(detachedEntityRelation.getItem() != null)
+        {
+            //Questo check risolve il caso in cui:
+            /*
+                Utente A: aggiorna in locale T senza modificare il U (ID=1)
+                Utente B: manda al DB una modifica per U con ID = 1 in cui cambia qualche parametro
+                Utente A: conclude le modifiche a T e manda la richiesta di set
+                   Se non facessimo questo check, relation.getItem() ritornerebbe l'ID di U giusto ma con le vecchie modifiche
+                   e quindi l'update andrebbe a modificarne la tabella
+                Facendo il controllo, imposto U al valore che ho nel DB quindi ha ID giusto e dati giusti, così facendo l'update non sovrascrive nulla
+             */
+            U pediatraGet = session.getByID(ownedClass, detachedEntityRelation.getItem().getID());
+            detachedEntityRelation.setRelation(pediatraGet);
+        }
+    }
+
+    /**
+     * Metodo generico che aggiorna la relazione MoltiAMolti di un oggetto owner
+     * @param detachedEntityRelation Relazione tra T Detached(Modificato) e U (Detached)
+     * @param ownedClass Classe dell'oggetto della relazione Owned
+     * @param session Sessione attuale del DataBase
+     * @param <T> Tipo dell'oggetto Owned
+     * @param <U> Tipo dell'oggetto Owner
+     */
+    public static <T extends TransferableEntity, U extends TransferableEntity>
+        void updateManyToManyOwner(IManyToManyOwner<U,T> detachedEntityRelation, Class<U> ownedClass, DatabaseSession.DatabaseSessionInstance session)
+    {
+        // Dato che sono owner devo preoccuparmi che gli U che andrò a salvare devono essere consistenti con quelli sul DB,
+        // essendo owner non mi preoccupo di modificare la relazione per gli U rimossi dato che sarà aggiornata automaticamente
+        Set<U> detachedSet = detachedEntityRelation.getUnmodifiableRelation();
+        for (U unupdated : detachedSet)
+        {
+            detachedEntityRelation.removeRelation(unupdated); //Rimuovo l'istanza con i dati vecchi di U
+            U updated = session.getByID(ownedClass, unupdated.getID()); //Ottengo i dati nuovi
+            if (updated != null) //Se i dati nuovi esistono (U non è stato cancellato nel frattempo)
+                detachedEntityRelation.addRelation(updated); //Riaggiungo U con i dati nuovi
+            //Noto che se un U è stato tolto dalla lista, la relazione verrà aggiornata automaticamente da Hibernate dato che sono l'owner
+        }
+    }
+
     /**
      * Metodo generico che date 2 istanze delle stesso oggetto (una detached ma modificata, una attached che rappresenta quell'oggetto nella
      * sessione attuale sul DB) effettua l'update corretto della relazione specificata
-     * @param detachedEntityRelation Relazione tra Oggetto Detached(Modificato) e Contatti (Detached)
-     * @param attachedEntity Relazione tra Oggetto Attached (Dati vecchi) e Contatti (Attached)
+     * @param detachedEntityRelation Relazione tra T Detached(Modificato) e U (Detached)
+     * @param attachedEntity Relazione tra T Attached (Dati vecchi) e U (Attached)
      * @param ownerClass Classe dell'oggetto della relazione Owner
      * @param session Sessione attuale del DataBase
-     * @param <T> Tipo dell'oggetto Owner
-     * @param <U> Tipo dell'oggetto Owned
+     * @param <T> Tipo dell'oggetto Owned
+     * @param <U> Tipo dell'oggetto Owner
      */
     public static <T extends TransferableEntity, U extends TransferableEntity>
-                void updateManyToManyOwned(IManyToManyOwned<U,T> detachedEntityRelation, IManyToManyOwned<U,T> attachedEntity,
-                                                            Class<U> ownerClass, DatabaseSession.DatabaseSessionInstance session)
+        void updateManyToManyOwned(IManyToManyOwned<U,T> detachedEntityRelation, IManyToManyOwned<U,T> attachedEntity,
+                                                Class<U> ownerClass, DatabaseSession.DatabaseSessionInstance session)
     {
         //Se non sono owner non mi preoccupo tanto dei dati ma delle relazioni. Non avendo potere sulle relazioni devo fare l'update di ogni
         //U nuovo e rimosso (quelli che non sono stati toccati possono rimanere nella lista anche con dati sbgliati dato che non verranno modificati da hibernate)

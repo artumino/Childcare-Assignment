@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -145,6 +147,65 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IManyToOne<Fornitore, MezzoDiTrasporto> asMezziDiTrasportoFornitoreRelation()
+    {
+        return new IManyToOne<Fornitore, MezzoDiTrasporto>() {
+            @Override
+            public MezzoDiTrasporto getItem() {
+                return MezzoDiTrasporto.this;
+            }
+
+            @Override
+            public void setRelation(Fornitore item) {
+                setFornitore(item);
+            }
+
+            @Override
+            public Fornitore getRelation() {
+                return getFornitore();
+            }
+
+            @Override
+            public IOneToMany<MezzoDiTrasporto, Fornitore> getInverse(Fornitore item) {
+                return item.asFornitoreMezziDiTrasportoRelation();
+            }
+        };
+    }
+
+    public IOneToMany<PianoViaggi, MezzoDiTrasporto> asMezzoDiTrasportoPianiViaggo()
+    {
+        return new IOneToMany<PianoViaggi, MezzoDiTrasporto>() {
+            @Override
+            public MezzoDiTrasporto getItem() {
+                return MezzoDiTrasporto.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(PianoViaggi item) {
+                unsafeAddPianoViaggi(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(PianoViaggi item) {
+                unsafeRemovePianoViaggi(item);
+            }
+
+            @Override
+            public Set<PianoViaggi> getUnmodifiableRelation() {
+                return getPianoViaggi();
+            }
+
+            @Override
+            public IManyToOne<MezzoDiTrasporto, PianoViaggi> getInverse(PianoViaggi item) {
+                return item.as;
+            }
+        };
     }
 
     //endregion

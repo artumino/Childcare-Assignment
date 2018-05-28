@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -161,6 +163,61 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IManyToOne<Bambino, RegistroPresenze> asRegistroPresenzeBambinoRelation()
+    {
+        return new IManyToOne<Bambino, RegistroPresenze>() {
+            @Override
+            public RegistroPresenze getItem() {
+                return RegistroPresenze.this;
+            }
+
+            @Override
+            public void setRelation(Bambino item) {
+                setBambino(item);
+            }
+
+            @Override
+            public Bambino getRelation() {
+                return getBambino();
+            }
+
+            @Override
+            public IOneToMany<RegistroPresenze, Bambino> getInverse(Bambino item) {
+                return null; //CASO SPECIALE
+            }
+        };
+    }
+
+    public IManyToOne<Gita, RegistroPresenze> asRegistroPresenzeGitaRelation()
+    {
+        return new IManyToOne<Gita, RegistroPresenze>() {
+            @Override
+            public RegistroPresenze getItem() {
+                return RegistroPresenze.this;
+            }
+
+            @Override
+            public void setRelation(Gita item) {
+                setGita(item);
+            }
+
+            @Override
+            public Gita getRelation() {
+                return getGita();
+            }
+
+            @Override
+            public IOneToMany<RegistroPresenze, Gita> getInverse(Gita item) {
+                return item.asGitaRegistroPresenzeRelation();
+            }
+        };
     }
 
     //endregion

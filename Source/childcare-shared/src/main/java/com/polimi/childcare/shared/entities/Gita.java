@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -141,4 +143,64 @@ public class Gita extends TransferableEntity implements Serializable
     }
 
     //endregion
+
+    public IOneToMany<PianoViaggi, Gita> asGitaPianiViaggioRelation()
+    {
+        return new IOneToMany<PianoViaggi, Gita>() {
+            @Override
+            public Gita getItem() {
+                return Gita.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(PianoViaggi item) {
+                unsafeAddPianoViaggi(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(PianoViaggi item) {
+                unsafeRemovePianoViaggi(item);
+            }
+
+            @Override
+            public Set<PianoViaggi> getUnmodifiableRelation() {
+                return getPianiViaggi();
+            }
+
+            @Override
+            public IManyToOne<Gita, PianoViaggi> getInverse(PianoViaggi item) {
+                return item.asPianiViaggioGitaRelation();
+            }
+        };
+    }
+
+    public IOneToMany<RegistroPresenze, Gita> asGitaRegistroPresenzeRelation()
+    {
+        return new IOneToMany<RegistroPresenze, Gita>() {
+            @Override
+            public Gita getItem() {
+                return Gita.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(RegistroPresenze item) {
+                unsafeAddRegistroPresenza(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(RegistroPresenze item) {
+                unsafeRemoveRegistroPresenza(item);
+            }
+
+            @Override
+            public Set<RegistroPresenze> getUnmodifiableRelation() {
+                return getRegistriPresenze();
+            }
+
+            @Override
+            public IManyToOne<Gita, RegistroPresenze> getInverse(RegistroPresenze item) {
+                return item.asRegistroPresenzeGitaRelation();
+            }
+        };
+    }
 }

@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -71,4 +73,34 @@ public class Genitore extends Persona
     }
 
     //endregion
+
+    public IManyToManyOwned<Bambino, Genitore> asGenitoriBambiniRelation()
+    {
+        return new IManyToManyOwned<Bambino,Genitore>() {
+            @Override
+            public Genitore getItem() {
+                return Genitore.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Bambino item) {
+                unsafeAddBambino(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Bambino item) {
+                unsafeRemoveBambino(item);
+            }
+
+            @Override
+            public Set<Bambino> getUnmodifiableRelation() {
+                return getBambini();
+            }
+
+            @Override
+            public IManyToManyOwner<Genitore, Bambino> getInverse(Bambino item) {
+                return item.asBambiniGenitoriRelation();
+            }
+        };
+    }
 }

@@ -125,7 +125,7 @@ public class Bambino extends Persona
 
     //region Relations Interfaces
 
-    public IManyToOne<Pediatra, Bambino> asBambinoPediatraRelation()
+    public IManyToOne<Pediatra, Bambino> asBambiniPediatraRelation()
     {
         return new IManyToOne<Pediatra, Bambino>() {
             @Override
@@ -147,12 +147,39 @@ public class Bambino extends Persona
 
             @Override
             public IOneToMany<Bambino, Pediatra> getInverse(Pediatra item) {
-                return null;
+                return item.asPediatraBambiniRelation();
             }
         };
     }
 
-    public IManyToManyOwned<Contatto, Bambino> asBambinoContattoRelation()
+    public IManyToOne<Gruppo, Bambino> asBambiniGruppoRelation()
+    {
+        return new IManyToOne<Gruppo, Bambino>() {
+            @Override
+            public Bambino getItem() {
+                return Bambino.this;
+            }
+
+            @Override
+            public void setRelation(Gruppo item)
+            {
+                setGruppo(item);
+            }
+
+            @Override
+            public Gruppo getRelation()
+            {
+                return getGruppo();
+            }
+
+            @Override
+            public IOneToMany<Bambino, Gruppo> getInverse(Gruppo item) {
+                return item.asGruppoBambiniRelation();
+            }
+        };
+    }
+
+    public IManyToManyOwned<Contatto, Bambino> asBambiniContattiRelation()
     {
         return new IManyToManyOwned<Contatto, Bambino>() {
             @Override
@@ -183,7 +210,7 @@ public class Bambino extends Persona
         };
     }
 
-    public IManyToManyOwner<Genitore, Bambino> asBambinoGenitoreRelation()
+    public IManyToManyOwner<Genitore, Bambino> asBambiniGenitoriRelation()
     {
         return new IManyToManyOwner<Genitore, Bambino>() {
             @Override
@@ -208,7 +235,7 @@ public class Bambino extends Persona
 
             @Override
             public IManyToManyOwned<Bambino, Genitore> getInverse(Genitore item) {
-                return null;
+                return item.asGenitoriBambiniRelation();
             }
         };
     }
