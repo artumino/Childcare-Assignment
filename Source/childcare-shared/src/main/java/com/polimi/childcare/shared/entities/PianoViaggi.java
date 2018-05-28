@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -107,6 +109,86 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IManyToOne<Gita, PianoViaggi> asPianiViaggioGitaRelation()
+    {
+        return new IManyToOne<Gita, PianoViaggi>() {
+            @Override
+            public PianoViaggi getItem() {
+                return PianoViaggi.this;
+            }
+
+            @Override
+            public void setRelation(Gita item) {
+                setGita(item);
+            }
+
+            @Override
+            public Gita getRelation() {
+                return getGita();
+            }
+
+            @Override
+            public IOneToMany<PianoViaggi, Gita> getInverse(Gita item) {
+                return item.asGitaPianiViaggioRelation();
+            }
+        };
+    }
+
+    public IManyToOne<Gruppo, PianoViaggi> asPianiViaggioGruppoRelation()
+    {
+        return new IManyToOne<Gruppo, PianoViaggi>() {
+            @Override
+            public PianoViaggi getItem() {
+                return PianoViaggi.this;
+            }
+
+            @Override
+            public void setRelation(Gruppo item) {
+                setGruppo(item);
+            }
+
+            @Override
+            public Gruppo getRelation() {
+                return getGruppo();
+            }
+
+            @Override
+            public IOneToMany<PianoViaggi, Gruppo> getInverse(Gruppo item) {
+                return item.asGruppoPianiViaggioRelation();
+            }
+        };
+    }
+
+    public IManyToOne<MezzoDiTrasporto, PianoViaggi> asPianiViaggioMezzoDiTrasportoRelation()
+    {
+        return new IManyToOne<MezzoDiTrasporto, PianoViaggi>() {
+            @Override
+            public PianoViaggi getItem() {
+                return PianoViaggi.this;
+            }
+
+            @Override
+            public void setRelation(MezzoDiTrasporto item) {
+                setMezzo(item);
+            }
+
+            @Override
+            public MezzoDiTrasporto getRelation() {
+                return getMezzo();
+            }
+
+            @Override
+            public IOneToMany<PianoViaggi, MezzoDiTrasporto> getInverse(MezzoDiTrasporto item) {
+                return item.asMezzoDiTrasportoPianiViaggo();
+            }
+        };
     }
 
     //endregion

@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -63,5 +65,38 @@ public class Pediatra extends Contatto
         return super.isDTO() && DTOUtils.isDTO(bambini);
     }
 
+    //endregion
+
+    //region Relations Interfaces
+
+    public IOneToMany<Bambino, Pediatra> asPediatraBambiniRelation()
+    {
+        return new IOneToMany<Bambino, Pediatra>() {
+            @Override
+            public Pediatra getItem() {
+                return Pediatra.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Bambino item) {
+                unsafeAddBambino(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Bambino item) {
+                unsafeRemoveBambino(item);
+            }
+
+            @Override
+            public Set<Bambino> getUnmodifiableRelation() {
+                return getBambiniCurati();
+            }
+
+            @Override
+            public IManyToOne<Pediatra, Bambino> getInverse(Bambino item) {
+                return item.asBambiniPediatraRelation();
+            }
+        };
+    }
     //endregion
 }

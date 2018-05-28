@@ -12,29 +12,23 @@ import java.util.Set;
 public class GenitoreRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Genitore>, Genitore>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Genitore> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            Genitore genitoreget = session.getByID(Genitore.class, request.getEntity().getID(), true);
-            Set<Bambino> bambini = request.getEntity().getBambini();
+    protected Class<Genitore> getQueryClass() {
+        return Genitore.class;
+    }
 
-            if(request.isToDelete()) {
-                for (Bambino b : bambini) {
-                    if (b.getGenitori().size() == 1)
-                        throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
-                    b.removeGenitore(genitoreget);
-                    session.update(b);
-                }
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Genitore> request, Genitore dbEntity) {
+
+        //FIXME: Da sistemare
+        Set<Bambino> bambini = request.getEntity().getBambini();
+
+        if(request.isToDelete()) {
+            for (Bambino b : bambini) {
+                if (b.getGenitori().size() == 1)
+                    throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+                b.removeGenitore(dbEntity);
+                session.update(b);
             }
-
-
-            return !((response[0] = requestSet(request, Genitore.class, session)) instanceof BadRequestResponse);
-        });
-
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+        }
     }
 }

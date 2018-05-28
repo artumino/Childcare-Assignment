@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -220,6 +222,42 @@ public abstract class Persona extends TransferableEntity implements Serializable
     {
         return DTOUtils.isDTO(diagnosi);
     }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IOneToMany<Diagnosi, Persona> asPersonaDiagnosiRelation()
+    {
+        return new IOneToMany<Diagnosi, Persona>() {
+            @Override
+            public Persona getItem() {
+                return Persona.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Diagnosi item) {
+                unsafeAddDiagnosi(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Diagnosi item) {
+                unsafeRemoveDiagnosi(item);
+            }
+
+            @Override
+            public Set<Diagnosi> getUnmodifiableRelation() {
+                return getDiagnosi();
+            }
+
+            @Override
+            public IManyToOne<Persona, Diagnosi> getInverse(Diagnosi item) {
+                return item.asDiagnosiPersonaRelation();
+            }
+        };
+    }
+
 
     //endregion
 }

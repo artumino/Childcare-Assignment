@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -105,6 +107,40 @@ public class Menu extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IOneToMany<QuantitaPasto, Menu> asMenuQuantitaPastiRelation()
+    {
+        return new IOneToMany<QuantitaPasto, Menu>() {
+            @Override
+            public Menu getItem() {
+                return Menu.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(QuantitaPasto item) {
+                unsafeAddQuantitaPasto(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(QuantitaPasto item) {
+                unsafeRemoveQuantitaPasto(item);
+            }
+
+            @Override
+            public Set<QuantitaPasto> getUnmodifiableRelation() {
+                return getQuantitaPasto();
+            }
+
+            @Override
+            public IManyToOne<Menu, QuantitaPasto> getInverse(QuantitaPasto item) {
+                return item.asQuantitaPastiMenuRelation();
+            }
+        };
     }
 
     //endregion

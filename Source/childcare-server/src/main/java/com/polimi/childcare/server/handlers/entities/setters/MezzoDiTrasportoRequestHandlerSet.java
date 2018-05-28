@@ -12,29 +12,22 @@ import java.util.Set;
 public class MezzoDiTrasportoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<MezzoDiTrasporto>, MezzoDiTrasporto>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<MezzoDiTrasporto> request)
-    {
+    protected Class<MezzoDiTrasporto> getQueryClass() {
+        return MezzoDiTrasporto.class;
+    }
+
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<MezzoDiTrasporto> request, MezzoDiTrasporto dbEntity) {
         //FIXME: Fixarlo
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session ->
+        Set<PianoViaggi> pv = dbEntity.getPianoViaggi();
+
+        if(request.isToDelete())
         {
-            MezzoDiTrasporto mezzoget = session.getByID(MezzoDiTrasporto.class, request.getEntity().getID(), true);
-            Set<PianoViaggi> pv = mezzoget.getPianoViaggi();
-
-            if(request.isToDelete())
+            for (PianoViaggi p : pv)
             {
-                for (PianoViaggi p : pv)
-                {
-                    p.setMezzo(null);
-                    session.update(p);
-                }
+                p.setMezzo(null);
+                session.update(p);
             }
-            return !((response[0] = requestSet(request, MezzoDiTrasporto.class, session)) instanceof BadRequestResponse);
-        });
-
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+        }
     }
 }

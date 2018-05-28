@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -108,6 +110,62 @@ public class QuantitaPasto extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IManyToOne<Pasto, QuantitaPasto> asQuantitaPastiPastoRelation()
+    {
+        return new IManyToOne<Pasto, QuantitaPasto>() {
+            @Override
+            public QuantitaPasto getItem() {
+                return QuantitaPasto.this;
+            }
+
+            @Override
+            public void setRelation(Pasto item) {
+                setPasto(item);
+            }
+
+            @Override
+            public Pasto getRelation() {
+                return getPasto();
+            }
+
+            @Override
+            public IOneToMany<QuantitaPasto, Pasto> getInverse(Pasto item) {
+                return item.asPastoQuantitaPastiRelation();
+            }
+        };
+    }
+
+    public IManyToOne<Menu, QuantitaPasto> asQuantitaPastiMenuRelation()
+    {
+        return new IManyToOne<Menu, QuantitaPasto>() {
+            @Override
+            public QuantitaPasto getItem() {
+                return QuantitaPasto.this;
+            }
+
+            @Override
+            public void setRelation(Menu item) {
+                setMenu(item);
+            }
+
+            @Override
+            public Menu getRelation() {
+                return getMenu();
+            }
+
+            @Override
+            public IOneToMany<QuantitaPasto, Menu> getInverse(Menu item) {
+                return item.asMenuQuantitaPastiRelation();
+            }
+        };
+
     }
 
     //endregion

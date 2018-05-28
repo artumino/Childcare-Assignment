@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class RegistroPresenzeRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<RegistroPresenze>, RegistroPresenze>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<RegistroPresenze> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, RegistroPresenze.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<RegistroPresenze> getQueryClass() {
+        return RegistroPresenze.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<RegistroPresenze> request, RegistroPresenze dbEntity) {
+        //TODO: Da fare
     }
 }

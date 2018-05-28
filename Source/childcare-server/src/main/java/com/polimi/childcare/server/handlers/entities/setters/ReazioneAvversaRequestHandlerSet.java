@@ -11,29 +11,24 @@ import java.util.Set;
 
 public class ReazioneAvversaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<ReazioneAvversa>, ReazioneAvversa>
 {
+
     @Override
-    public BaseResponse processRequest(SetEntityRequest<ReazioneAvversa> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            ReazioneAvversa reazioneget = session.getByID(ReazioneAvversa.class, request.getEntity().getID(), true);
-            Set<Pasto> pastoset = reazioneget.getPasti();
+    protected Class<ReazioneAvversa> getQueryClass() {
+        return ReazioneAvversa.class;
+    }
 
-            if(request.isToDelete())
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<ReazioneAvversa> request, ReazioneAvversa dbEntity) {
+        //FIXME: Da sistemare
+        Set<Pasto> pastoset = dbEntity.getPasti();
+
+        if(request.isToDelete())
+        {
+            for (Pasto p : pastoset)
             {
-                for (Pasto p : pastoset)
-                {
-                    p.removeReazione(reazioneget);
-                    session.update(p);
-                }
+                p.removeReazione(dbEntity);
+                session.update(p);
             }
-
-            return !((response[0] = requestSet(request, ReazioneAvversa.class, session)) instanceof BadRequestResponse);
-        });
-
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+        }
     }
 }

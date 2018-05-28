@@ -1,5 +1,9 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -134,6 +138,96 @@ public class Pasto extends TransferableEntity implements Serializable
     public int consistecyHashCode() {
         return 0;
     }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IManyToOne<Fornitore, Pasto> asPastoFornitoreRelation()
+    {
+        return new IManyToOne<Fornitore, Pasto>() {
+            @Override
+            public Pasto getItem() {
+                return Pasto.this;
+            }
+
+            @Override
+            public void setRelation(Fornitore item) {
+                setFornitore(item);
+            }
+
+            @Override
+            public Fornitore getRelation() {
+                return getFornitore();
+            }
+
+            @Override
+            public IOneToMany<Pasto, Fornitore> getInverse(Fornitore item) {
+                return item.asFornitorePastiRelation();
+            }
+        };
+    }
+
+    public IManyToManyOwner<ReazioneAvversa, Pasto> asPastoReazioniAvverseRelation()
+    {
+        return new IManyToManyOwner<ReazioneAvversa, Pasto>() {
+            @Override
+            public Pasto getItem() {
+                return Pasto.this;
+            }
+
+            @Override
+            public void addRelation(ReazioneAvversa item) {
+                addReazione(item);
+            }
+
+            @Override
+            public void removeRelation(ReazioneAvversa item) {
+                removeReazione(item);
+            }
+
+            @Override
+            public Set<ReazioneAvversa> getUnmodifiableRelation() {
+                return getReazione();
+            }
+
+            @Override
+            public IManyToManyOwned<Pasto, ReazioneAvversa> getInverse(ReazioneAvversa item) {
+                return item.asReazioniAvversePastiRelation();
+            }
+        };
+    }
+
+    public IOneToMany<QuantitaPasto, Pasto> asPastoQuantitaPastiRelation()
+    {
+        return new IOneToMany<QuantitaPasto, Pasto>() {
+            @Override
+            public Pasto getItem() {
+                return Pasto.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(QuantitaPasto item) {
+                unsafeAddQuantitaPasto(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(QuantitaPasto item) {
+                unsafeRemoveQuantitaPasto(item);
+            }
+
+            @Override
+            public Set<QuantitaPasto> getUnmodifiableRelation() {
+                return getQuantitaPasto();
+            }
+
+            @Override
+            public IManyToOne<Pasto, QuantitaPasto> getInverse(QuantitaPasto item) {
+                return item.asQuantitaPastiPastoRelation();
+            }
+        };
+    }
+
 
     //endregion
 }
