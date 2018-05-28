@@ -3,378 +3,173 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="1129.0580198577218" y="2732.0">com.polimi.childcare.shared.entities.PianoViaggi</node>
-    <node x="533.9999999999998" y="874.0">com.polimi.childcare.shared.entities.Pediatra</node>
-    <node x="1317.92764886893" y="1435.5">com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza</node>
-    <node x="2059.0318155355967" y="3718.5">com.polimi.childcare.shared.entities.QuantitaPasto</node>
-    <node x="842.9999999999998" y="797.0">com.polimi.childcare.shared.entities.Gruppo</node>
-    <node x="1856.066112006758" y="0.0">com.polimi.childcare.shared.entities.IIdentificable</node>
-    <node x="1988.3166666666664" y="3097.0">com.polimi.childcare.shared.entities.Menu</node>
-    <node x="1646.3166666666664" y="3075.0">com.polimi.childcare.shared.entities.MezzoDiTrasporto</node>
-    <node x="2013.1830198577218" y="4749.0">com.polimi.childcare.shared.entities.ReazioneAvversa</node>
-    <node x="0.0" y="863.0">com.polimi.childcare.shared.entities.Genitore</node>
-    <node x="1810.566112006758" y="101.0">com.polimi.childcare.shared.entities.TransferableEntity</node>
-    <node x="1210.2166666666665" y="2180.0">com.polimi.childcare.shared.entities.Gita</node>
-    <node x="391.8651488689302" y="1313.0">com.polimi.childcare.shared.entities.Bambino</node>
-    <node x="1942.8080198577218" y="4249.0">com.polimi.childcare.shared.entities.Pasto</node>
-    <node x="1669.2166666666662" y="3531.0">com.polimi.childcare.shared.entities.Fornitore</node>
-    <node x="538.5416666666665" y="287.0">com.polimi.childcare.shared.entities.Contatto</node>
-    <node x="1258.8374999999996" y="6180.0">com.polimi.childcare.shared.entities.Addetto</node>
-    <node x="1749.4330198577218" y="5570.0">com.polimi.childcare.shared.entities.Persona</node>
-    <node x="1104.3166666666666" y="1769.0">com.polimi.childcare.shared.entities.RegistroPresenze</node>
-    <node x="1960.0580198577218" y="5227.0">com.polimi.childcare.shared.entities.Diagnosi</node>
+    <node x="2017.5" y="483.5">com.polimi.childcare.shared.entities.PianoViaggi</node>
+    <node x="23.5" y="1159.0">com.polimi.childcare.shared.entities.Pediatra</node>
+    <node x="5708.0" y="1215.5">com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza</node>
+    <node x="3101.5" y="494.5">com.polimi.childcare.shared.entities.QuantitaPasto</node>
+    <node x="3554.5" y="417.0">com.polimi.childcare.shared.entities.Gruppo</node>
+    <node x="6553.5" y="605.0">com.polimi.childcare.shared.entities.relations.IManyToOne</node>
+    <node x="4173.0" y="0.0">com.polimi.childcare.shared.entities.IIdentificable</node>
+    <node x="6820.5" y="583.0">com.polimi.childcare.shared.entities.relations.IOneToMany</node>
+    <node x="0.0" y="1588.0">com.polimi.childcare.shared.entities.relations.IOneToOne</node>
+    <node x="493.25" y="461.0">com.polimi.childcare.shared.entities.Menu</node>
+    <node x="7087.5" y="583.0">com.polimi.childcare.shared.entities.relations.IManyToManyOwned</node>
+    <node x="7397.5" y="583.0">com.polimi.childcare.shared.entities.relations.IManyToManyOwner</node>
+    <node x="1488.5" y="428.0">com.polimi.childcare.shared.entities.MezzoDiTrasporto</node>
+    <node x="2583.5" y="417.0">com.polimi.childcare.shared.entities.ReazioneAvversa</node>
+    <node x="1883.2745098039218" y="1148.0">com.polimi.childcare.shared.entities.Genitore</node>
+    <node x="4127.5" y="101.0">com.polimi.childcare.shared.entities.TransferableEntity</node>
+    <node x="4008.5" y="395.0">com.polimi.childcare.shared.entities.Gita</node>
+    <node x="966.5" y="1049.0">com.polimi.childcare.shared.entities.Bambino</node>
+    <node x="5002.5" y="395.0">com.polimi.childcare.shared.entities.Pasto</node>
+    <node x="4473.5" y="307.0">com.polimi.childcare.shared.entities.Fornitore</node>
+    <node x="0.0" y="417.0">com.polimi.childcare.shared.entities.Contatto</node>
+    <node x="446.5" y="1226.0">com.polimi.childcare.shared.entities.Addetto</node>
+    <node x="969.5" y="362.0">com.polimi.childcare.shared.entities.Persona</node>
+    <node x="5521.5" y="450.5">com.polimi.childcare.shared.entities.RegistroPresenze</node>
+    <node x="6040.5" y="494.5">com.polimi.childcare.shared.entities.Diagnosi</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="com.polimi.childcare.shared.entities.Diagnosi" target="com.polimi.childcare.shared.entities.ReazioneAvversa">
-      <point x="0.0" y="-136.5" />
-      <point x="-34.125" y="214.0" />
-    </edge>
     <edge source="com.polimi.childcare.shared.entities.MezzoDiTrasporto" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="128.4000000000001" y="-203.0" />
-      <point x="1935.2166666666665" y="3055.0" />
-      <point x="1914.066112006758" y="3055.0" />
-      <point x="0.0" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.PianoViaggi" target="com.polimi.childcare.shared.entities.Gita">
-      <point x="34.66666666666674" y="-136.5" />
-      <point x="1319.7246865243885" y="2712.0" />
-      <point x="1344.8416666666665" y="2712.0" />
-      <point x="-44.875" y="236.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gita" target="com.polimi.childcare.shared.entities.PianoViaggi">
-      <point x="44.875" y="236.0" />
-      <point x="1434.5916666666665" y="2692.0" />
-      <point x="1354.391353191055" y="2692.0" />
-      <point x="69.33333333333326" y="-136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Bambino" target="com.polimi.childcare.shared.entities.Pediatra">
-      <point x="-47.34375" y="-203.0" />
-      <point x="597.0213988689302" y="1273.0" />
-      <point x="568.6249999999998" y="1273.0" />
-      <point x="-103.875" y="126.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.RegistroPresenze" target="com.polimi.childcare.shared.entities.Bambino">
-      <point x="-124.75" y="-180.5" />
-      <point x="1229.0666666666666" y="1739.0" />
-      <point x="833.7401488689302" y="1739.0" />
-      <point x="189.375" y="203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Fornitore" target="com.polimi.childcare.shared.entities.MezzoDiTrasporto">
-      <point x="-137.5999999999999" y="-324.0" />
-      <point x="1703.6166666666663" y="3511.0" />
-      <point x="1686.4416666666664" y="3511.0" />
-      <point x="-120.375" y="203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.MezzoDiTrasporto" target="com.polimi.childcare.shared.entities.Fornitore">
-      <point x="40.125" y="203.0" />
-      <point x="1846.9416666666664" y="3511.0" />
-      <point x="1841.2166666666662" y="3511.0" />
-      <point x="0.0" y="-324.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Pasto" target="com.polimi.childcare.shared.entities.QuantitaPasto">
-      <point x="36.77777777777783" y="-225.0" />
-      <point x="2145.0857976354996" y="4229.0" />
-      <point x="2149.4068155355967" y="4229.0" />
-      <point x="-30.125" y="136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.ReazioneAvversa" target="com.polimi.childcare.shared.entities.Pasto">
-      <point x="-54.59999999999991" y="-214.0" />
-      <point x="2095.083019857722" y="4724.0" />
-      <point x="2066.933019857722" y="4724.0" />
-      <point x="-41.375" y="225.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Addetto" target="com.polimi.childcare.shared.entities.Persona">
-      <point x="62.5" y="-70.0" />
-      <point x="1571.3374999999996" y="6150.0" />
-      <point x="1874.1830198577218" y="6150.0" />
-      <point x="-124.75" y="280.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Fornitore" target="com.polimi.childcare.shared.entities.Pasto">
-      <point x="129.0" y="324.0" />
-      <point x="1970.2166666666662" y="4199.0" />
-      <point x="2071.530242079944" y="4199.0" />
-      <point x="-36.77777777777783" y="-225.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.RegistroPresenze" target="com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza">
-      <point x="-41.58333333333326" y="-180.5" />
-      <point x="1312.2333333333331" y="1749.0" />
-      <point x="1338.92764886893" y="1749.0" />
-      <point x="-42.0" y="80.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Pasto" target="com.polimi.childcare.shared.entities.Fornitore">
-      <point x="-110.33333333333326" y="-225.0" />
-      <point x="1997.9746865243885" y="4219.0" />
-      <point x="1798.2166666666662" y="4219.0" />
-      <point x="-43.0" y="324.0" />
+      <point x="0.0" y="-225.0" />
+      <point x="1743.0" y="247.0" />
+      <point x="4170.117647058823" y="247.0" />
+      <point x="-60.88235294117658" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.TransferableEntity" target="com.polimi.childcare.shared.entities.IIdentificable">
       <point x="0.0" y="-48.0" />
       <point x="0.0" y="25.5" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Genitore" target="com.polimi.childcare.shared.entities.Persona">
-      <point x="-209.16666666666674" y="137.0" />
-      <point x="41.83333333333326" y="1293.0" />
-      <point x="173.22252466221607" y="1293.0" />
-      <point x="173.22252466221607" y="5550.0" />
-      <point x="1777.155242079944" y="5550.0" />
-      <point x="-221.77777777777783" y="-280.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza" target="com.polimi.childcare.shared.entities.RegistroPresenze">
-      <point x="42.0" y="80.5" />
-      <point x="1422.92764886893" y="1749.0" />
-      <point x="1478.5666666666666" y="1749.0" />
-      <point x="124.75" y="-180.5" />
+      <point x="0.0" y="-148.0" />
+      <point x="2134.274509803922" y="1024.0" />
+      <point x="1385.333333333333" y="1024.0" />
+      <point x="166.33333333333303" y="291.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.RegistroPresenze" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="207.91666666666674" y="-180.5" />
-      <point x="1561.7333333333331" y="1739.0" />
-      <point x="1468.0494453400913" y="1739.0" />
-      <point x="1468.0494453400913" y="237.0" />
-      <point x="1850.3738043144504" y="237.0" />
-      <point x="-63.69230769230762" y="48.0" />
+      <point x="0.0" y="-202.5" />
+      <point x="5771.0" y="267.0" />
+      <point x="4267.529411764705" y="267.0" />
+      <point x="36.529411764705856" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Contatto" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="0.0" y="-225.0" />
-      <point x="673.0416666666665" y="217.0" />
-      <point x="1818.5276504682963" y="217.0" />
-      <point x="-95.53846153846166" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Bambino" target="com.polimi.childcare.shared.entities.Genitore">
-      <point x="-236.71875" y="-203.0" />
-      <point x="407.6463988689302" y="1293.0" />
-      <point x="209.16666666666652" y="1293.0" />
-      <point x="-41.83333333333337" y="137.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Persona" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="221.77777777777783" y="-280.0" />
-      <point x="2220.7107976354996" y="5550.0" />
-      <point x="2375.8105564512025" y="5550.0" />
-      <point x="2375.8105564512025" y="217.0" />
-      <point x="2009.6045735452196" y="217.0" />
-      <point x="95.53846153846166" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Pasto" target="com.polimi.childcare.shared.entities.ReazioneAvversa">
-      <point x="124.125" y="225.0" />
-      <point x="2232.433019857722" y="4724.0" />
-      <point x="2204.2830198577217" y="4724.0" />
-      <point x="54.59999999999991" y="-214.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Contatto" target="com.polimi.childcare.shared.entities.Bambino">
-      <point x="-112.08333333333326" y="225.0" />
-      <point x="560.9583333333333" y="757.0" />
-      <point x="512.4999999999998" y="757.0" />
-      <point x="512.4999999999998" y="1293.0" />
-      <point x="533.8963988689302" y="1293.0" />
-      <point x="-110.46875" y="-203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Genitore" target="com.polimi.childcare.shared.entities.Bambino">
-      <point x="209.16666666666674" y="137.0" />
-      <point x="460.16666666666674" y="1263.0" />
-      <point x="502.3338988689302" y="1263.0" />
-      <point x="-142.03125" y="-203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Persona" target="com.polimi.childcare.shared.entities.Diagnosi">
-      <point x="55.44444444444446" y="-280.0" />
-      <point x="2054.377464302166" y="5550.0" />
-      <point x="2076.683019857722" y="5550.0" />
-      <point x="-38.875" y="136.5" />
+      <point x="0.0" y="-236.0" />
+      <point x="225.0" y="217.0" />
+      <point x="4133.588235294117" y="217.0" />
+      <point x="-97.41176470588243" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Pasto" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="147.1111111111111" y="-225.0" />
-      <point x="2255.419130968833" y="4229.0" />
-      <point x="2340.8166666666666" y="4229.0" />
-      <point x="2340.8166666666666" y="237.0" />
-      <point x="1977.7584196990656" y="237.0" />
-      <point x="63.69230769230762" y="48.0" />
+      <point x="0.0" y="-258.0" />
+      <point x="5252.0" y="277.0" />
+      <point x="4255.35294117647" y="277.0" />
+      <point x="24.352941176470722" y="48.0" />
     </edge>
-    <edge source="com.polimi.childcare.shared.entities.Diagnosi" target="com.polimi.childcare.shared.entities.Persona">
-      <point x="38.875" y="136.5" />
-      <point x="2154.433019857722" y="5550.0" />
-      <point x="2109.8219087466105" y="5550.0" />
-      <point x="110.88888888888891" y="-280.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.PianoViaggi" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="138.66666666666674" y="-136.5" />
-      <point x="1423.7246865243885" y="2712.0" />
-      <point x="1624.8166666666666" y="2712.0" />
-      <point x="1624.8166666666666" y="257.0" />
-      <point x="1882.2199581606042" y="257.0" />
-      <point x="-31.84615384615381" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.MezzoDiTrasporto" target="com.polimi.childcare.shared.entities.PianoViaggi">
-      <point x="-128.4000000000001" y="-203.0" />
-      <point x="1678.4166666666663" y="3055.0" />
-      <point x="1168.0580198577218" y="3055.0" />
-      <point x="-117.0" y="136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Menu" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="0.0" y="-181.0" />
-      <point x="2153.8166666666666" y="257.0" />
-      <point x="1945.9122658529118" y="257.0" />
-      <point x="31.84615384615381" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Bambino" target="com.polimi.childcare.shared.entities.Contatto">
-      <point x="78.90625" y="-203.0" />
-      <point x="723.2713988689302" y="1243.0" />
-      <point x="821.4999999999998" y="1243.0" />
-      <point x="821.4999999999998" y="767.0" />
-      <point x="740.2916666666665" y="767.0" />
-      <point x="67.25" y="225.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gruppo" target="com.polimi.childcare.shared.entities.PianoViaggi">
-      <point x="107.44999999999993" y="203.0" />
-      <point x="1103.9499999999998" y="1283.0" />
-      <point x="1082.8166666666666" y="1283.0" />
-      <point x="1082.8166666666666" y="2692.0" />
-      <point x="1215.7246865243885" y="2692.0" />
-      <point x="-69.33333333333326" y="-136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Pediatra" target="com.polimi.childcare.shared.entities.Bambino">
-      <point x="103.875" y="126.0" />
-      <point x="776.3749999999998" y="1233.0" />
-      <point x="691.7088988689302" y="1233.0" />
-      <point x="47.34375" y="-203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Pediatra" target="com.polimi.childcare.shared.entities.Contatto">
-      <point x="69.25" y="-126.0" />
-      <point x="741.7499999999998" y="777.0" />
-      <point x="695.4583333333333" y="777.0" />
-      <point x="22.416666666666742" y="225.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Diagnosi" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="-124.40000000000009" y="-136.5" />
-      <point x="1991.1580198577217" y="5202.0" />
-      <point x="1635.8166666666664" y="5202.0" />
-      <point x="1635.8166666666664" y="267.0" />
-      <point x="1898.143035083681" y="267.0" />
-      <point x="-15.923076923076906" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gruppo" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="0.0" y="-203.0" />
-      <point x="996.4999999999998" y="227.0" />
-      <point x="1834.4507273913734" y="227.0" />
-      <point x="-79.61538461538453" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Bambino" target="com.polimi.childcare.shared.entities.Gruppo">
-      <point x="142.03125" y="-203.0" />
-      <point x="786.3963988689302" y="1263.0" />
-      <point x="858.3499999999998" y="1263.0" />
-      <point x="-138.15" y="203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Menu" target="com.polimi.childcare.shared.entities.QuantitaPasto">
-      <point x="124.125" y="181.0" />
-      <point x="2277.9416666666666" y="3501.0" />
-      <point x="2227.731815535597" y="3501.0" />
-      <point x="48.200000000000045" y="-136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.ReazioneAvversa" target="com.polimi.childcare.shared.entities.Diagnosi">
-      <point x="102.375" y="214.0" />
-      <point x="2252.058019857722" y="5202.0" />
-      <point x="2239.958019857722" y="5202.0" />
-      <point x="124.40000000000009" y="-136.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gita" target="com.polimi.childcare.shared.entities.RegistroPresenze">
-      <point x="-71.79999999999995" y="-236.0" />
-      <point x="1317.9166666666665" y="2160.0" />
-      <point x="1291.4416666666666" y="2160.0" />
-      <point x="-62.375" y="180.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gruppo" target="com.polimi.childcare.shared.entities.Addetto">
-      <point x="-15.350000000000023" y="203.0" />
-      <point x="981.1499999999997" y="1293.0" />
-      <point x="1030.3999999999996" y="1293.0" />
-      <point x="1030.3999999999996" y="6160.0" />
-      <point x="1321.3374999999996" y="6160.0" />
-      <point x="-187.5" y="-70.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.PianoViaggi" target="com.polimi.childcare.shared.entities.Gruppo">
-      <point x="-34.666666666666515" y="-136.5" />
-      <point x="1250.3913531910553" y="2682.0" />
-      <point x="1093.8166666666666" y="2682.0" />
-      <point x="1093.8166666666666" y="1293.0" />
-      <point x="1134.6499999999996" y="1293.0" />
-      <point x="138.14999999999992" y="203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.QuantitaPasto" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="96.40000000000009" y="-136.5" />
-      <point x="2275.931815535597" y="3511.0" />
-      <point x="2329.8166666666666" y="3511.0" />
-      <point x="2329.8166666666666" y="247.0" />
-      <point x="1961.8353427759887" y="247.0" />
-      <point x="47.76923076923072" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.PianoViaggi" target="com.polimi.childcare.shared.entities.MezzoDiTrasporto">
-      <point x="39.0" y="136.5" />
-      <point x="1324.0580198577218" y="3035.0" />
-      <point x="1806.8166666666664" y="3035.0" />
-      <point x="0.0" y="-203.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.QuantitaPasto" target="com.polimi.childcare.shared.entities.Pasto">
-      <point x="90.375" y="136.5" />
-      <point x="2269.9068155355967" y="4219.0" />
-      <point x="2218.641353191055" y="4219.0" />
-      <point x="110.33333333333326" y="-225.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.Gruppo" target="com.polimi.childcare.shared.entities.Bambino">
-      <point x="-76.75" y="203.0" />
-      <point x="919.7499999999998" y="1283.0" />
-      <point x="849.5213988689302" y="1283.0" />
-      <point x="205.15625" y="-203.0" />
+    <edge source="com.polimi.childcare.shared.entities.relations.IManyToManyOwner" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-70.0" />
+      <point x="7544.0" y="217.0" />
+      <point x="4328.411764705882" y="217.0" />
+      <point x="97.41176470588243" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Gita" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="143.5999999999999" y="-236.0" />
-      <point x="1533.3166666666664" y="2160.0" />
-      <point x="1613.8166666666666" y="2160.0" />
-      <point x="1613.8166666666666" y="247.0" />
-      <point x="1866.2968812375273" y="247.0" />
-      <point x="-47.76923076923072" y="48.0" />
+      <point x="-4.547473508864641E-13" y="-258.0" />
+      <point x="0.0" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.relations.IManyToOne" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-48.0" />
+      <point x="6677.0" y="247.0" />
+      <point x="4291.882352941177" y="247.0" />
+      <point x="60.88235294117658" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Addetto" target="com.polimi.childcare.shared.entities.Persona">
+      <point x="-4.547473508864641E-13" y="-70.0" />
+      <point x="696.4999999999995" y="1024.0" />
+      <point x="1052.666666666667" y="1024.0" />
+      <point x="-166.33333333333303" y="291.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza" target="com.polimi.childcare.shared.entities.RegistroPresenze">
+      <point x="0.0" y="-80.5" />
+      <point x="0.0" y="202.5" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Persona" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-291.0" />
+      <point x="1219.0" y="237.0" />
+      <point x="4157.941176470587" y="237.0" />
+      <point x="-73.05882352941171" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.PianoViaggi" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-169.5" />
+      <point x="2290.5" y="257.0" />
+      <point x="4182.294117647059" y="257.0" />
+      <point x="-48.70588235294099" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Menu" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-192.0" />
+      <point x="709.75" y="227.0" />
+      <point x="4145.764705882353" y="227.0" />
+      <point x="-85.23529411764684" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Pediatra" target="com.polimi.childcare.shared.entities.Contatto">
+      <point x="0.0" y="-137.0" />
+      <point x="0.0" y="236.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Diagnosi" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-158.5" />
+      <point x="6287.0" y="257.0" />
+      <point x="4279.7058823529405" y="257.0" />
+      <point x="48.70588235294099" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.relations.IOneToMany" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-70.0" />
+      <point x="6944.0" y="237.0" />
+      <point x="4304.058823529411" y="237.0" />
+      <point x="73.05882352941171" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.Gruppo" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-236.0" />
+      <point x="3771.5" y="287.0" />
+      <point x="4218.823529411764" y="287.0" />
+      <point x="-12.176470588235134" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.QuantitaPasto" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-158.5" />
+      <point x="3318.0" y="277.0" />
+      <point x="4206.647058823529" y="277.0" />
+      <point x="-24.352941176470722" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Bambino" target="com.polimi.childcare.shared.entities.Persona">
-      <point x="-189.375" y="203.0" />
-      <point x="454.9901488689302" y="1749.0" />
-      <point x="552.6580198577218" y="1749.0" />
-      <point x="552.6580198577218" y="5530.0" />
-      <point x="1888.0441309688329" y="5530.0" />
-      <point x="-110.88888888888891" y="-280.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.QuantitaPasto" target="com.polimi.childcare.shared.entities.Menu">
-      <point x="-96.40000000000009" y="-136.5" />
-      <point x="2083.1318155355966" y="3511.0" />
-      <point x="2029.6916666666664" y="3511.0" />
-      <point x="-124.125" y="181.0" />
+      <point x="0.0" y="-247.0" />
+      <point x="0.0" y="291.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.ReazioneAvversa" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="109.20000000000005" y="-214.0" />
-      <point x="2258.8830198577216" y="4724.0" />
-      <point x="2351.8166666666666" y="4724.0" />
-      <point x="2351.8166666666666" y="227.0" />
-      <point x="1993.6814966221425" y="227.0" />
-      <point x="79.61538461538453" y="48.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.entities.RegistroPresenze" target="com.polimi.childcare.shared.entities.Gita">
-      <point x="62.375" y="180.5" />
-      <point x="1416.1916666666666" y="2160.0" />
-      <point x="1389.7166666666665" y="2160.0" />
       <point x="0.0" y="-236.0" />
+      <point x="2832.5" y="267.0" />
+      <point x="4194.470588235294" y="267.0" />
+      <point x="-36.529411764705856" y="48.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.entities.Fornitore" target="com.polimi.childcare.shared.entities.TransferableEntity">
-      <point x="137.5999999999999" y="-324.0" />
-      <point x="1977.8166666666664" y="267.0" />
-      <point x="1929.9891889298349" y="267.0" />
-      <point x="15.923076923076906" y="48.0" />
+      <point x="0.0" y="-346.0" />
+      <point x="4728.0" y="287.0" />
+      <point x="4243.176470588234" y="287.0" />
+      <point x="12.176470588235134" y="48.0" />
+    </edge>
+    <edge source="com.polimi.childcare.shared.entities.relations.IManyToManyOwned" target="com.polimi.childcare.shared.entities.TransferableEntity">
+      <point x="0.0" y="-70.0" />
+      <point x="7232.5" y="227.0" />
+      <point x="4316.235294117647" y="227.0" />
+      <point x="85.2352941176473" y="48.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.30000000000000016" x="1123.944444444444" y="6814.777777777777" />
+  <settings layout="Hierarchic Group" zoom="0.8" x="6587.8650793650795" y="833.6388888888889" />
   <SelectedNodes>
-    <node>com.polimi.childcare.shared.entities.Persona</node>
+    <node>com.polimi.childcare.shared.entities.RegistroPresenze.StatoPresenza</node>
   </SelectedNodes>
   <Categories>
     <Category>Fields</Category>
     <Category>Constructors</Category>
     <Category>Methods</Category>
-    <Category>Inner Classes</Category>
     <Category>Properties</Category>
+    <Category>Inner Classes</Category>
   </Categories>
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>
