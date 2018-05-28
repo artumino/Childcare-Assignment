@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class FornitoreRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Fornitore>, Fornitore>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Fornitore> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, Fornitore.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<Fornitore> getQueryClass() {
+        return Fornitore.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Fornitore> request, Fornitore dbEntity) {
+        //TODO: Da fare
     }
 }

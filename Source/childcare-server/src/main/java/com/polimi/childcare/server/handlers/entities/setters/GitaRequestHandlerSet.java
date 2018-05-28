@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Gita>, Gita>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Gita> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, Gita.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<Gita> getQueryClass() {
+        return Gita.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gita> request, Gita dbEntity) {
+        //TODO: Da fare
     }
 }

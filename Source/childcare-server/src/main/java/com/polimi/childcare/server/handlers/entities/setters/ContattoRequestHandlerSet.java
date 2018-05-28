@@ -12,29 +12,19 @@ import java.util.Set;
 public class ContattoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Contatto>, Contatto>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Contatto> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute((session) -> {
+    protected Class<Contatto> getQueryClass() {
+        return Contatto.class;
+    }
 
-            Contatto contattoget = session.getByID(Contatto.class, request.getEntity().getID(), true);
-            Set<Bambino> bambiniset = contattoget.getBambini();
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Contatto> request, Contatto dbEntity) {
+        //FIXME: Da mettere aposto
+        Set<Bambino> bambiniset = dbEntity.getBambini();
 
-            if(request.isToDelete()) {
-                for (Bambino b : bambiniset) {
-                    contattoget.removeBambino(b);
-                }
+        if(request.isToDelete()) {
+            for (Bambino b : bambiniset) {
+                dbEntity.removeBambino(b);
             }
-
-
-            response[0] = requestSet(request, Contatto.class, session);
-
-            return !(response[0] instanceof BadRequestResponse);
-        });
-
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+        }
     }
 }

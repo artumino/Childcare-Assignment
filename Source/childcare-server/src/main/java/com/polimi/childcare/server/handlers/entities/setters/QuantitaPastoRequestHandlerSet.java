@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class QuantitaPastoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<QuantitaPasto>, QuantitaPasto>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<QuantitaPasto> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, QuantitaPasto.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<QuantitaPasto> getQueryClass() {
+        return QuantitaPasto.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<QuantitaPasto> request, QuantitaPasto dbEntity) {
+        //TODO: Da fare
     }
 }

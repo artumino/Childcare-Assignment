@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Menu>, Menu>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Menu> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, Menu.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<Menu> getQueryClass() {
+        return Menu.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Menu> request, Menu dbEntity) {
+        //TODO: Da fare
     }
 }

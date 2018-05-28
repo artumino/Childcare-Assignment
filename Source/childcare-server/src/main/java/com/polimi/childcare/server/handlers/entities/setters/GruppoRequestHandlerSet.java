@@ -12,26 +12,20 @@ import java.util.Set;
 public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Gruppo>, Gruppo>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Gruppo> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            Gruppo gruppoget = session.getByID(Gruppo.class, request.getEntity().getID(), true);
-            Set<Bambino> bambini = gruppoget.getBambini();
+    protected Class<Gruppo> getQueryClass() {
+        return Gruppo.class;
+    }
 
-            if(request.isToDelete()) {
-                for (Bambino b : bambini) {
-                    b.setGruppo(null);
-                    session.update(b);
-                }
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gruppo> request, Gruppo dbEntity) {
+        //FIXME: Da sistemare
+        Set<Bambino> bambini = dbEntity.getBambini();
+
+        if(request.isToDelete()) {
+            for (Bambino b : bambini) {
+                b.setGruppo(null);
+                session.update(b);
             }
-
-            return !((response[0] = requestSet(request, Gruppo.class, session)) instanceof BadRequestResponse);
-        });
-
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+        }
     }
 }

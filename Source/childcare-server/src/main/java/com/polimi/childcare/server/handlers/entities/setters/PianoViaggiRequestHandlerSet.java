@@ -9,15 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class PianoViaggiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<PianoViaggi>, PianoViaggi>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<PianoViaggi> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, PianoViaggi.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<PianoViaggi> getQueryClass() {
+        return PianoViaggi.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<PianoViaggi> request, PianoViaggi dbEntity) {
+        //TODO: Da fare
     }
 }

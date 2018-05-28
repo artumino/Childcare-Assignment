@@ -10,16 +10,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class PersonaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Persona>, Persona>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Persona> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, Persona.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<Persona> getQueryClass() {
+        return Persona.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Persona> request, Persona dbEntity) {
+        //TODO: Da fare
     }
 }

@@ -9,16 +9,12 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 public class DiagnosiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Diagnosi>, Diagnosi>
 {
     @Override
-    public BaseResponse processRequest(SetEntityRequest<Diagnosi> request)
-    {
-        final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute(session -> {
-            return !((response[0] = requestSet(request, Diagnosi.class, session)) instanceof BadRequestResponse);
-        });
+    protected Class<Diagnosi> getQueryClass() {
+        return Diagnosi.class;
+    }
 
-        if(exception != null)
-            return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
-
-        return response[0];
+    @Override
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Diagnosi> request, Diagnosi dbEntity) {
+        //TODO: Da fare
     }
 }

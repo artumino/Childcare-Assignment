@@ -203,7 +203,7 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
 
             @Override
             public IManyToOne<MezzoDiTrasporto, PianoViaggi> getInverse(PianoViaggi item) {
-                return item.as;
+                return item.asPianiViaggioMezzoDiTrasportoRelation();
             }
         };
     }
