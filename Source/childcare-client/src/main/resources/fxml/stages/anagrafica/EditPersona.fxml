@@ -126,7 +126,8 @@
               <content>
                 <AnchorPane fx:id="tabDiagnosi" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DragAndDropTableView fx:id="tableDiagnosi" layoutX="67.0" layoutY="11.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <DragAndDropTableView fx:id="tableDiagnosi" layoutX="67.0" layoutY="11.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXButton fx:id="btnShowReazioniAvverse" layoutX="393.0" layoutY="383.0" text="Mostra Reazioni Avverse" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                      </children>
                   </AnchorPane>
               </content>

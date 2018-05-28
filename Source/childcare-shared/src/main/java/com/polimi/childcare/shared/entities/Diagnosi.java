@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -108,6 +110,62 @@ public class Diagnosi extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+
+    //region Relations Interfaces
+
+    public IManyToOne<Persona, Diagnosi> setDiagnosiPersonaRelation()
+    {
+        return new IManyToOne<Persona, Diagnosi>() {
+
+            @Override
+            public Diagnosi getItem() {
+                return Diagnosi.this;
+            }
+
+            @Override
+            public void setRelation(Persona item) {
+
+            }
+
+            @Override
+            public Persona getRelation() {
+                return null;
+            }
+
+            @Override
+            public IOneToMany<Diagnosi, Persona> getInverse(Persona item) {
+                return null;
+            }
+        };
+    }
+
+    public IManyToOne<ReazioneAvversa, Diagnosi> asDiagnosiReazioneAvversaRelation()
+    {
+        return new IManyToOne<ReazioneAvversa, Diagnosi>() {
+            @Override
+            public Diagnosi getItem() {
+                return Diagnosi.this;
+            }
+
+            @Override
+            public void setRelation(ReazioneAvversa item) {
+
+            }
+
+            @Override
+            public ReazioneAvversa getRelation() {
+                return null;
+            }
+
+            @Override
+            public IOneToMany<Diagnosi, ReazioneAvversa> getInverse(ReazioneAvversa item) {
+                return null;
+            }
+        };
     }
 
     //endregion

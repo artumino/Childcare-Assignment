@@ -1,5 +1,9 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
+import com.polimi.childcare.shared.entities.relations.IManyToOne;
+import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -115,6 +119,98 @@ public class Bambino extends Persona
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IManyToOne<Pediatra, Bambino> asBambinoPediatraRelation()
+    {
+        return new IManyToOne<Pediatra, Bambino>() {
+            @Override
+            public Bambino getItem() {
+                return Bambino.this;
+            }
+
+            @Override
+            public void setRelation(Pediatra item)
+            {
+                setPediatra(item);
+            }
+
+            @Override
+            public Pediatra getRelation()
+            {
+                return getPediatra();
+            }
+
+            @Override
+            public IOneToMany<Bambino, Pediatra> getInverse(Pediatra item) {
+                return null;
+            }
+        };
+    }
+
+    public IManyToManyOwned<Contatto, Bambino> asBambinoContattoRelation()
+    {
+        return new IManyToManyOwned<Contatto, Bambino>() {
+            @Override
+            public Bambino getItem() {
+                return Bambino.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Contatto item) {
+                unsafeAddContatto(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Contatto item) {
+                unsafeRemoveContatto(item);
+            }
+
+            @Override
+            public Set<Contatto> getUnmodifiableRelation() {
+                return getContatti();
+            }
+
+            @Override
+            public IManyToManyOwner<Bambino, Contatto> getInverse(Contatto item)
+            {
+                return item.asContattiBambiniRelation();
+            }
+        };
+    }
+
+    public IManyToManyOwner<Genitore, Bambino> asBambinoGenitoreRelation()
+    {
+        return new IManyToManyOwner<Genitore, Bambino>() {
+            @Override
+            public Bambino getItem() {
+                return Bambino.this;
+            }
+
+            @Override
+            public void addRelation(Genitore item) {
+                addGenitore(item);
+            }
+
+            @Override
+            public void removeRelation(Genitore item) {
+                removeGenitore(item);
+            }
+
+            @Override
+            public Set<Genitore> getUnmodifiableRelation() {
+                return getGenitori();
+            }
+
+            @Override
+            public IManyToManyOwned<Bambino, Genitore> getInverse(Genitore item) {
+                return null;
+            }
+        };
     }
 
     //endregion

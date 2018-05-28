@@ -1,5 +1,7 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -148,6 +150,46 @@ public class Contatto extends TransferableEntity implements Serializable
     @Override
     public int consistecyHashCode() {
         return 0;
+    }
+
+    //endregion
+
+    //region Relations Interfaces
+
+    public IManyToManyOwner<Bambino, Contatto> asContattiBambiniRelation()
+    {
+        return new IManyToManyOwner<Bambino, Contatto>() {
+
+            @Override
+            public Contatto getItem()
+            {
+                return Contatto.this;
+            }
+
+            @Override
+            public void addRelation(Bambino item)
+            {
+                addBambino(item);
+            }
+
+            @Override
+            public void removeRelation(Bambino item)
+            {
+                removeBambino(item);
+            }
+
+            @Override
+            public Set<Bambino> getUnmodifiableRelation()
+            {
+                return getBambini();
+            }
+
+            @Override
+            public IManyToManyOwned<Contatto, Bambino> getInverse(Bambino item)
+            {
+                return item.asBambinoContattoRelation();
+            }
+        };
     }
 
     //endregion
