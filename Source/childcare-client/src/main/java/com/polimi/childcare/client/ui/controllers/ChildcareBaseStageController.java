@@ -120,8 +120,8 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
             this.contentPane.getChildren().clear();
             this.rootStackPane.setPrefHeight(getWindowDragParent().getPrefHeight() + newScene.getSceneRegion().getPrefHeight());
             this.rootStackPane.setPrefWidth(newScene.getSceneRegion().getPrefWidth());
-            this.setMinWidth(getControllerWidth());
-            this.setMinHeight(getControllerHeight());
+            this.setMinWidth(getControllerWidth() - 1);
+            this.setMinHeight(getControllerHeight() - 1);
             setWidth(getControllerWidth());
             setHeight(getControllerHeight());
             this.contentPane.getChildren().add(newScene.getRoot());
