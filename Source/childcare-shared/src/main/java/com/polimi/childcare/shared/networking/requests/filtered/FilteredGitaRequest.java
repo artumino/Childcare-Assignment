@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredGitaRequest extends FilteredBaseRequest<Gita>
 {
-    public FilteredGitaRequest(int count, int pageNumber, boolean detailed, List<Predicate<Gita>> filters, List<Comparator<Gita>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredGitaRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredGitaRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

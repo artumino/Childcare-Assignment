@@ -9,7 +9,11 @@ import java.util.function.Predicate;
 
 public class FilteredLastPresenzaRequest extends FilteredBaseRequest<RegistroPresenze>
 {
-    public FilteredLastPresenzaRequest(int count, int pageNumber, boolean detailed, List<Predicate<RegistroPresenze>> filters, List<Comparator<RegistroPresenze>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredLastPresenzaRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredLastPresenzaRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

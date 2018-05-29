@@ -64,23 +64,6 @@ public class DBHelper
         }
     }
 
-    public static <T> void filterAdd(Stream<T> query, List<Comparator<T>> param, List<Predicate<T>> filters)
-    {
-        if(filters != null)
-        {
-            for (Predicate<T> entry : filters) {
-                query = query.filter(entry);
-            }
-        }
-
-        if(param != null)
-        {
-            for (Comparator<T> entry : param) {
-                query = query.sorted(entry);
-            }
-        }
-    }
-
     public static <T extends TransferableEntity, U extends TransferableEntity>
     void deletedManyToManyOwned(IManyToManyOwned<U,T> detachedDeletedEntityRelation, IManyToManyOwned<U,T> attachedDeletedEntityRelation, Class<U> ownerClass, DatabaseSession.DatabaseSessionInstance session)
     {

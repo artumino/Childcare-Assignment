@@ -47,7 +47,8 @@ public abstract class Persona extends TransferableEntity implements Serializable
     protected String Residenza;
 
     @Column(nullable = false)
-    protected byte Sesso;
+    @Enumerated(EnumType.ORDINAL)
+    protected ESesso Sesso;
 
     @Column()
     private String telefoni;
@@ -66,7 +67,7 @@ public abstract class Persona extends TransferableEntity implements Serializable
 
     public Persona() { }
 
-    public Persona(String nome, String cognome, String codiceFiscale, LocalDate dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, byte sesso)
+    public Persona(String nome, String cognome, String codiceFiscale, LocalDate dataNascita, String stato, String comune, String provincia, String cittadinanza, String residenza, ESesso sesso)
     {
         Nome = nome;
         Cognome = cognome;
@@ -155,11 +156,11 @@ public abstract class Persona extends TransferableEntity implements Serializable
         Residenza = residenza;
     }
 
-    public byte getSesso() {
+    public ESesso getSesso() {
         return Sesso;
     }
 
-    public void setSesso(byte sesso) {
+    public void setSesso(ESesso sesso) {
         Sesso = sesso;
     }
 
@@ -200,6 +201,15 @@ public abstract class Persona extends TransferableEntity implements Serializable
 
     //endregion
 
+    //region Enumeratori
+
+    public enum ESesso
+    {
+        Maschio(), Femmina(), Altro()
+    }
+
+    //endregion
+
     //region DTO
 
 
@@ -224,7 +234,6 @@ public abstract class Persona extends TransferableEntity implements Serializable
     }
 
     //endregion
-
 
     //region Relations Interfaces
 

@@ -97,7 +97,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredFornitoriRequest(0, 0, false, null, null),
+                new FilteredFornitoriRequest(0, 0, false),
                 this::OnFornitoriResponseRecived,
                 true);
 

@@ -28,15 +28,11 @@ public  abstract class FilteredRequestHandler<T extends FilteredBaseRequest<IT>,
      */
     public List<IT> getFilteredResult(T request, Class<IT> itemClass, List<IT> list)
     {
-        if (request.getCount() == 0)
+        if(request.getCount() == 1 && !request.isGroup())
+            list.add(DatabaseSession.getInstance().getByID(itemClass, request.getID(), request.isDetailed()));
+        else if (request.getCount() == 0)
             DatabaseSession.getInstance().execute(session -> {
                 Stream<IT> stream =  session.stream(itemClass);
-
-                try {
-                    DBHelper.filterAdd(stream, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 CollectionUtils.addAll(list, stream.iterator());
 
@@ -48,12 +44,6 @@ public  abstract class FilteredRequestHandler<T extends FilteredBaseRequest<IT>,
         else
             DatabaseSession.getInstance().execute(session -> {
                 Stream<IT> stream =  session.stream(itemClass);
-
-                try {
-                    DBHelper.filterAdd(stream, request.getOrderBy(), request.getFilters());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
                 CollectionUtils.addAll(list, stream.limit(request.getCount() * (request.getPageNumber() + 1)).skip(request.getCount() * request.getPageNumber()).iterator());
 

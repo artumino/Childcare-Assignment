@@ -73,7 +73,7 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
 
         //Rimuove elementi trascinati fuori
         setOnDragExited((event -> {
-            if(acceptedClasses != null && deleteOnExit)
+            if(acceptedClasses != null && deleteOnExit && event.getGestureSource() == this)
             {
                 Dragboard db = event.getDragboard();
                 if (db.hasString()) {

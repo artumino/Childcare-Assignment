@@ -144,7 +144,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         //Se non sto cercando di aggiornare la lista presenze
         if(requestPresenzeUpdate == null)
         {
-            requestPresenzeUpdate = new NetworkOperation(new FilteredBambiniRequest(0, 0, false, null, null),
+            requestPresenzeUpdate = new NetworkOperation(new FilteredBambiniRequest(0, 0, false),
                                                         this::OnPresenzeUpdate, false);
             ClientNetworkManager.getInstance().submitOperation(requestPresenzeUpdate);
         }

@@ -153,12 +153,12 @@ public class HomeSubsceneController implements ISubSceneController
     {
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredBambiniRequest(0, 0, false, null, null),
+                new FilteredBambiniRequest(0, 0, false),
                 this::OnBambiniResponseRecived,
                 true));
 
         ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
-                new FilteredLastPresenzaRequest(0, 0, false, null, null),
+                new FilteredLastPresenzaRequest(0, 0, false),
                 this::OnPresenzeRecived,
                 true));
     }

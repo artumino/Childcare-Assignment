@@ -8,8 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredContattoOnlyRequest extends FilteredBaseRequest<Contatto>
 {
-    public FilteredContattoOnlyRequest(int count, int pageNumber, boolean detailed, List<Predicate<Contatto>> filters, List<Comparator<Contatto>> orderBy)
-    {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredContattoOnlyRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredContattoOnlyRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

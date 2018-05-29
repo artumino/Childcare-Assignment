@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredFornitoriRequest extends FilteredBaseRequest<Fornitore>
 {
-    public FilteredFornitoriRequest(int count, int pageNumber, boolean detailed, List<Predicate<Fornitore>> filters, List<Comparator<Fornitore>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredFornitoriRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredFornitoriRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

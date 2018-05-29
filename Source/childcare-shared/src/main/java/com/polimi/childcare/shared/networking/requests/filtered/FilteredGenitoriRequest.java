@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredGenitoriRequest extends FilteredBaseRequest<Genitore>
 {
-    public FilteredGenitoriRequest(int count, int pageNumber, boolean detailed, List<Predicate<Genitore>> filters, List<Comparator<Genitore>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredGenitoriRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredGenitoriRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

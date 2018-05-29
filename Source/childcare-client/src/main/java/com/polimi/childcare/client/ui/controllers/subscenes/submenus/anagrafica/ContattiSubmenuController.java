@@ -92,7 +92,7 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredContattoOnlyRequest(0, 0, false, null, null),
+                new FilteredContattoOnlyRequest(0, 0, false),
                 this::OnContattiResponseRecived,
                 true);
 

@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredMezzoDiTrasportoRequest extends FilteredBaseRequest<MezzoDiTrasporto>
 {
-    public FilteredMezzoDiTrasportoRequest(int count, int pageNumber, boolean detailed, List<Predicate<MezzoDiTrasporto>> filters, List<Comparator<MezzoDiTrasporto>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredMezzoDiTrasportoRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredMezzoDiTrasportoRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

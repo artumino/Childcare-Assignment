@@ -1,6 +1,7 @@
 import com.polimi.childcare.client.shared.networking.IClientNetworkInterface;
 import com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException;
 import com.polimi.childcare.shared.entities.Bambino;
+import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.networking.requests.NullRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
@@ -30,7 +31,7 @@ public class NetworkTestStub
                     NetworkTestStub.surnames[rnd.nextInt(NetworkTestStub.surnames.length)],
                     NetworkTestStub.surnames[rnd.nextInt(NetworkTestStub.surnames.length)],
                     LocalDateTime.now().toLocalDate(), "Italia", "Piacenza", "PC", "Italiana",
-                    "via Pisoni Pise 1", (byte)rnd.nextInt(2));
+                    "via Pisoni Pise 1", Persona.ESesso.Maschio);
             bambini.add(bambinoTest);
             bambini.add(bambinoTest);
         }

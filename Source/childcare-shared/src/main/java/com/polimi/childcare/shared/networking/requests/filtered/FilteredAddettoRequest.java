@@ -10,7 +10,11 @@ import java.util.function.Predicate;
 
 public class FilteredAddettoRequest extends FilteredBaseRequest<Addetto>
 {
-    public FilteredAddettoRequest(int count, int pageNumber, boolean detailed, List<Predicate<Addetto>> filters, List<Comparator<Addetto>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredAddettoRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredAddettoRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

@@ -32,11 +32,11 @@ public class InsertTest
         Pediatra pediatra1 = new Pediatra("Pediatra Test", "Francesco", "Giovanni", "Via Sesto 2, Cremona");
         Contatto contatto1 = new Contatto("Contatto Test", "Ciso", "Giovanni", "Via Sesto 2, Cremona");
         ReazioneAvversa reazioneavversa1 = new ReazioneAvversa("Latte", "Se lo bevi muori");
-        Bambino bambino1 = new Bambino("Paolo", "Rossi", "CF", LocalDateTime.now().toLocalDate(), "Nigeria", "Fiorenzuola", "Piacenza", "Nigeriana", "Via Inesistente, 10", (byte)0);
-        Genitore genitore1 = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
+        Bambino bambino1 = new Bambino("Paolo", "Rossi", "CF", LocalDateTime.now().toLocalDate(), "Nigeria", "Fiorenzuola", "Piacenza", "Nigeriana", "Via Inesistente, 10", Persona.ESesso.Maschio);
+        Genitore genitore1 = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", Persona.ESesso.Maschio);
         bambino1.setPediatra(pediatra1);   //Senza non passa il test
         Diagnosi diagnosi1 = new Diagnosi(true, bambino1, reazioneavversa1);
-        Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", LocalDateTime.now().toLocalDate(), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", (byte)1);
+        Addetto addetto1 = new Addetto("Lavoratore", "Schiavizzato", "CF", LocalDateTime.now().toLocalDate(), "Italia", "Comune", "Provincia", "Cittadino", "Ressidente: si", Persona.ESesso.Femmina);
         String numero = "3333";
         addetto1.addTelefono(numero);
         Pasto pasto1 = new Pasto("Minestrina", "Succcosa Minestra in Brodo");
@@ -225,7 +225,7 @@ public class InsertTest
         Addetto dt = ((ListAddettiResponse) addettoResponse).getPayload().get(0);
         List<Contatto> ct = ((ListContattoResponse) contattoResponse).getPayload();
         List<Fornitore> ft = ((ListFornitoriResponse) fornitoriResponse).getPayload();
-        Genitore g = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", (byte)0);
+        Genitore g = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", Persona.ESesso.Maschio);
 
         if(!modder.getGenitori().isEmpty())
             modder.removeGenitore((Genitore) modder.getGenitori().toArray()[0]);

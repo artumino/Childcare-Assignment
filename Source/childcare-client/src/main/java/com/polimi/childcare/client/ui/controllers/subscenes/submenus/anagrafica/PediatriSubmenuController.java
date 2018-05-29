@@ -21,7 +21,7 @@ public class PediatriSubmenuController extends ContattiSubmenuController
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredPediatraRequest(0, 0, false, null, null),
+                new FilteredPediatraRequest(0, 0, false),
                 this::OnContattiResponseRecived,
                 true);
 

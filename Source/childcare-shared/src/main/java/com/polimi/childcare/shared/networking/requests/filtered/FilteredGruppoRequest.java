@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredGruppoRequest extends FilteredBaseRequest<Gruppo>
 {
-    public FilteredGruppoRequest(int count, int pageNumber, boolean detailed, List<Predicate<Gruppo>> filters, List<Comparator<Gruppo>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredGruppoRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredGruppoRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

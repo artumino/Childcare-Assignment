@@ -6,18 +6,19 @@ import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
-import com.polimi.childcare.shared.entities.Contatto;
-import com.polimi.childcare.shared.entities.Genitore;
-import com.polimi.childcare.shared.entities.Pediatra;
-import com.polimi.childcare.shared.entities.Persona;
+import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 public class EditPersona implements ISubSceneController
 {
@@ -29,8 +30,10 @@ public class EditPersona implements ISubSceneController
 
     @FXML private AnchorPane rootPane;
 
+    @FXML private TabPane layoutTabPane;
     @FXML private Tab tabDettagli;
     @FXML private Tab tabGenitori;
+    @FXML private Tab tabBambini;
     @FXML private Tab tabContatti;
     @FXML private Tab tabTelefoni;
 
@@ -49,6 +52,10 @@ public class EditPersona implements ISubSceneController
     @FXML private DragAndDropTableView<Pediatra> tablePediatra;
 
     @FXML private DragAndDropTableView<Genitore> tableGenitori;
+
+    @FXML private DragAndDropTableView<Bambino> tableBambini;
+
+    @FXML private DragAndDropTableView<Diagnosi> tableDiagnosi;
 
     @FXML private ListView<String> listTelefoni;
     @FXML private Button btnResetNumeri;
@@ -70,43 +77,212 @@ public class EditPersona implements ISubSceneController
             if(args != null && args.length > 0 && args[0] instanceof Persona)
                 this.linkedPersona = (Persona)args[0];
 
-            this.stageController.requestSetTitle("Aggiorna - " + linkedPersona.getNome() + " " + linkedPersona.getCognome());
+            if(this.linkedPersona.getNome() != null)
+                this.stageController.requestSetTitle(linkedPersona.getNome() + " " + linkedPersona.getCognome());
+            else
+                this.stageController.requestSetTitle("Crea " + linkedPersona.getClass().getSimpleName());
 
-            TableColumn<Genitore, String> cName = new TableColumn<>("Nome");
-            cName.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
 
-            //Nascondo l'header della tabella del pediatra
-            /*tablePediatra.skinProperty().addListener((a, b, newSkin) -> {
-                TableHeaderRow headerRow = ((TableViewSkinBase) newSkin).getTableHeaderRow();
-                headerRow.setVisible(false);
-                headerRow.setMaxHeight(0);
-                headerRow.setMinHeight(0);
-                headerRow.setPrefHeight(0);
-            });*/
-            TableColumn<Pediatra, String> cNomeContatto = new TableColumn<>("Nome");
-            TableColumn<Pediatra, String> cCognomeContatto = new TableColumn<>("Congome");
-            TableColumn<Pediatra, String> cDescrizioneContatto = new TableColumn<>("Descrizione");
-            TableColumn<Pediatra, String> cTelefoniContatto = new TableColumn<>("Telefoni");
-            cNomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
-            cCognomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
-            cDescrizioneContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getDescrizione()));
-            cTelefoniContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(c.getValue().getTelefoni())));
+            //Tabelle Generali
+            printPersonaDetails();
+            setupPhoneList();
+            setupDiagnosi();
 
-            tablePediatra.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
-            //tableContatti.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
+            setupTableBambini();
 
-            //Tabella da un solo elemento
-            tablePediatra.itemsProperty().addListener(((observable, oldValue, newValue) -> {
-                if(oldValue.size() > 0)
+            //Tabelle per bambini
+            setupTablePediatra();
+            setupContatti();
+            setupTableGenitori();
+
+            updateLayout();
+        }
+    }
+
+    private void setupDiagnosi()
+    {
+        TableColumn<Diagnosi, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Diagnosi, String> cDescrizione = new TableColumn<>("Descrizione");
+        TableColumn<Diagnosi, Boolean> cAllergia= new TableColumn<>("Allergia");
+        cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getReazioneAvversa().getNome()));
+        cDescrizione.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getReazioneAvversa().getDescrizione()));
+        //cDescrizione.setMaxWidth(300);
+        cAllergia.setCellFactory((cellData) -> new TableCell<Diagnosi, Boolean>()
+        {
+            @Override
+            protected void updateItem(Boolean item, boolean empty)
+            {
+                if(!empty)
                 {
-                    newValue.remove(oldValue.get(0));
-                    tablePediatra.getItems().clear();
+                    Diagnosi diagnosi = (Diagnosi) getTableRow().getItem();
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.setSelected(diagnosi.isAllergia());
+                    checkBox.setOnMouseClicked(mouse -> diagnosi.setAllergia(checkBox.isSelected()));
+                    setGraphic(checkBox);
                 }
-            }));
-            tablePediatra.dragForClass(Pediatra.class);
+                else
+                    setGraphic(null);
+            }
+        });
 
-            tableGenitori.getColumns().addAll(cName);
-            tableGenitori.dragForClass(Genitore.class);
+        tableDiagnosi.getColumns().addAll(cNome, cDescrizione, cAllergia);
+
+
+        tableDiagnosi.dragForClass(Diagnosi.class);
+
+        if(linkedPersona != null)
+            tableDiagnosi.getItems().addAll(linkedPersona.getDiagnosi());
+    }
+
+    private void setupPhoneList()
+    {
+        listTelefoni.setCellFactory(TextFieldListCell.forListView());
+
+        listTelefoni.setOnEditCommit(t -> {
+            if(!t.getNewValue().isEmpty())
+                listTelefoni.getItems().set(t.getIndex(), t.getNewValue());
+            else
+                listTelefoni.getItems().remove(t.getIndex());
+        });
+
+        listTelefoni.setOnMousePressed(click -> {
+            if(click.isPrimaryButtonDown() && click.getClickCount() == 2)
+            {
+                if(listTelefoni.getSelectionModel().getSelectedItem() == null)
+                    listTelefoni.getItems().add("+39");
+            }
+        });
+
+
+        //listTelefoni.setOnEditCancel();
+
+        if(this.linkedPersona != null && this.linkedPersona.getTelefoni() != null)
+            listTelefoni.getItems().addAll(this.linkedPersona.getTelefoni());
+    }
+
+    private void setupTableBambini()
+    {
+        TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Bambino, String> cCognome = new TableColumn<>("Congome");
+        TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
+        TableColumn<Bambino, String> cMatricola = new TableColumn<>("Matricola");
+        cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
+        cCognome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
+        cCodiceFiscale.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCodiceFiscale()));
+        cMatricola.setCellValueFactory(c -> new ReadOnlyStringWrapper(String.valueOf(c.getValue().getID())));
+
+        tableBambini.getColumns().addAll(cNome, cCognome, cCodiceFiscale, cMatricola);
+
+
+        tableBambini.dragForClass(Bambino.class);
+
+        if((this.linkedPersona instanceof Genitore) && ((Genitore) this.linkedPersona).getBambini() != null)
+            tableBambini.getItems().addAll(((Genitore)linkedPersona).getBambini());
+    }
+
+    private void setupTableGenitori()
+    {
+        TableColumn<Genitore, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Genitore, String> cCognome = new TableColumn<>("Congome");
+        TableColumn<Genitore, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
+        TableColumn<Genitore, String> cTelefoni = new TableColumn<>("Telefoni");
+        cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
+        cCognome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
+        cCodiceFiscale.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCodiceFiscale()));
+        cTelefoni.setCellValueFactory(c -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(c.getValue().getTelefoni())));
+
+        tableGenitori.getColumns().addAll(cNome, cCognome, cCodiceFiscale, cTelefoni);
+
+
+        tableGenitori.dragForClass(Genitore.class);
+
+        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getGenitori() != null)
+            tableGenitori.getItems().addAll(((Bambino)linkedPersona).getGenitori());
+    }
+
+    private void setupTablePediatra()
+    {
+        TableColumn<Pediatra, String> cNomeContatto = new TableColumn<>("Nome");
+        TableColumn<Pediatra, String> cCognomeContatto = new TableColumn<>("Congome");
+        TableColumn<Pediatra, String> cDescrizioneContatto = new TableColumn<>("Descrizione");
+        TableColumn<Pediatra, String> cTelefoniContatto = new TableColumn<>("Telefoni");
+        cNomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
+        cCognomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
+        cDescrizioneContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getDescrizione()));
+        cTelefoniContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(c.getValue().getTelefoni())));
+
+        tablePediatra.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
+        //tableContatti.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
+
+        //Tabella da un solo elemento
+        tablePediatra.itemsProperty().addListener(((observable, oldValue, newValue) -> {
+            if(oldValue.size() > 0)
+            {
+                newValue.remove(oldValue.get(0));
+                tablePediatra.getItems().clear();
+            }
+        }));
+        tablePediatra.dragForClass(Pediatra.class);
+
+        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getPediatra() != null)
+            tablePediatra.getItems().add(((Bambino)linkedPersona).getPediatra());
+    }
+
+    private void setupContatti()
+    {
+        TableColumn<Contatto, String> cNomeContatto = new TableColumn<>("Nome");
+        TableColumn<Contatto, String> cCognomeContatto = new TableColumn<>("Congome");
+        TableColumn<Contatto, String> cDescrizioneContatto = new TableColumn<>("Descrizione");
+        TableColumn<Contatto, String> cTelefoniContatto = new TableColumn<>("Telefoni");
+        cNomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
+        cCognomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
+        cDescrizioneContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getDescrizione()));
+        cTelefoniContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(c.getValue().getTelefoni())));
+
+        tableContatti.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
+
+        tableContatti.dragForClass(Contatto.class);
+
+        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getContatti() != null)
+            tableContatti.getItems().addAll(((Bambino)linkedPersona).getContatti());
+    }
+
+    private void updateLayout()
+    {
+        //Nasconde le tabelle inutili
+        if(!(this.linkedPersona instanceof Bambino))
+        {
+            layoutTabPane.getTabs().remove(tabContatti);
+            layoutTabPane.getTabs().remove(tabGenitori);
+        }
+
+        if(!(this.linkedPersona instanceof Genitore))
+        {
+            layoutTabPane.getTabs().remove(tabBambini);
+        }
+
+        for(Persona.ESesso sesso : Persona.ESesso.values())
+            cbSesso.getItems().add(sesso.name());
+    }
+
+    private void printPersonaDetails()
+    {
+        if(this.linkedPersona != null)
+        {
+            System.out.println(linkedPersona.getNome());
+            txtNome.setTextFieldText(linkedPersona.getNome());
+            txtCognome.setTextFieldText(linkedPersona.getCognome());
+            txtCodiceFiscale.setTextFieldText(linkedPersona.getCodiceFiscale());
+            txtCittadinanza.setTextFieldText(linkedPersona.getCittadinanza());
+            txtComune.setTextFieldText(linkedPersona.getComune());
+            txtProvincia.setTextFieldText(linkedPersona.getProvincia());
+            txtResidenza.setTextFieldText(linkedPersona.getResidenza());
+            txtStato.setTextFieldText(linkedPersona.getStato());
+            if(linkedPersona.getSesso() != null)
+                cbSesso.getSelectionModel().select(linkedPersona.getSesso().name());
+            else
+                cbSesso.getSelectionModel().select(2);
+            dpDataNascita.setValue(linkedPersona.getDataNascita());
         }
     }
 

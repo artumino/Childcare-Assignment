@@ -14,10 +14,12 @@ import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.DateUtils;
+import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Genitore;
 import com.polimi.childcare.shared.entities.Persona;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredBaseRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPersoneResponse;
@@ -34,7 +36,9 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
+import java.util.function.Predicate;
 
 public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 {
@@ -43,6 +47,9 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
     private ComboBox<String> filterBox;
     private Button btnPrintQR;
     private Button btnUpdate;
+    private Button btnAddBambino;
+    private Button btnAddAddetto;
+    private Button btnAddGenitore;
 
     //Network
     private NetworkOperation pendingOperation;
@@ -80,17 +87,17 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         tableView.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
             {
-                try {
-                    ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
-                    setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), this.selectedItem);
-                    setPresenzeStage.initOwner(getRoot().getScene().getWindow());
-                    setPresenzeStage.setOnClosingCallback((returnArgs) -> {
-                        //Niente
-                    });
-                    setPresenzeStage.show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(new FilteredPersonaRequest(this.selectedItem.getID(), true),
+                        response -> {
+                            if(!(response instanceof ListPersoneResponse) || ((ListPersoneResponse)response).getPayload().size() == 0)
+                            {
+                                StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore, risposta non corretta dal server");
+                                return;
+                            }
+
+                            ShowPersonaDetails(((ListPersoneResponse) response).getPayload().get(0));
+                        },
+                        true));
             }
         });
 
@@ -136,9 +143,30 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
         if(btnPrintQR == null)
         {
-            btnPrintQR = new Button("Stampa QR");
+            btnPrintQR = new JFXButton("Stampa QR");
             btnPrintQR.setMaxWidth(Double.MAX_VALUE); //Fill
             btnPrintQR.setOnMouseClicked(this::OnPrintQRCodeClicked);
+        }
+
+        if(btnAddBambino == null)
+        {
+            btnAddBambino = new JFXButton("Aggiungi Bambino");
+            btnAddBambino.setMaxWidth(Double.MAX_VALUE); //Fill
+            btnAddBambino.setOnMouseClicked(this::OnAddPersonaClicked);
+        }
+
+        if(btnAddAddetto == null)
+        {
+            btnAddAddetto = new JFXButton("Aggiungi Addetto");
+            btnAddAddetto.setMaxWidth(Double.MAX_VALUE); //Fill
+            btnAddAddetto.setOnMouseClicked(this::OnAddPersonaClicked);
+        }
+
+        if(btnAddGenitore == null)
+        {
+            btnAddGenitore = new JFXButton("Aggiungi Genitore");
+            btnAddGenitore.setMaxWidth(Double.MAX_VALUE); //Fill
+            btnAddGenitore.setOnMouseClicked(this::OnAddPersonaClicked);
         }
     }
 
@@ -154,6 +182,9 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         ArrayList<Node> controlNodes = new ArrayList<>(2);
 
         controlNodes.add(btnUpdate);
+        controlNodes.add(btnAddAddetto);
+        controlNodes.add(btnAddGenitore);
+        controlNodes.add(btnAddBambino);
         if(selectedItem instanceof Bambino)
             controlNodes.add(btnPrintQR);
 
@@ -172,7 +203,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
 
         this.pendingOperation = new NetworkOperation(
-                new FilteredPersonaRequest(0, 0, false, null, null),
+                new FilteredPersonaRequest(0, 0, false),
                 this::OnPersoneResponseRecived,
                 true);
 
@@ -228,6 +259,33 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
                     ex.printStackTrace();
                 }
             }
+        }
+    }
+
+    private void OnAddPersonaClicked(MouseEvent event)
+    {
+        if(event.getSource() == btnAddBambino)
+            ShowPersonaDetails(new Bambino());
+
+        if(event.getSource() == btnAddAddetto)
+            ShowPersonaDetails(new Addetto());
+
+        if(event.getSource() == btnAddGenitore)
+            ShowPersonaDetails(new Genitore());
+    }
+
+    private void ShowPersonaDetails(Persona persona)
+    {
+        try {
+            ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
+            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
+            setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            setPresenzeStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

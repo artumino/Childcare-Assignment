@@ -261,7 +261,7 @@ public class DatabaseDemo
         persona.setComune(cittaProvincia[ComuneProvincia][0]);
         persona.setProvincia(cittaProvincia[ComuneProvincia][1]);
         persona.setStato("Italia");
-        persona.setSesso((byte)rnd.nextInt(3));
+        persona.setSesso(Persona.ESesso.values()[rnd.nextInt(Persona.ESesso.values().length)]);
         persona.setResidenza(generateAddress());
 
         //Calcola quanti numeri di telefono sono opportuni

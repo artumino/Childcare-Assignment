@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredPianoViaggiRequest extends FilteredBaseRequest<PianoViaggi>
 {
-    public FilteredPianoViaggiRequest(int count, int pageNumber, boolean detailed, List<Predicate<PianoViaggi>> filters, List<Comparator<PianoViaggi>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredPianoViaggiRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredPianoViaggiRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

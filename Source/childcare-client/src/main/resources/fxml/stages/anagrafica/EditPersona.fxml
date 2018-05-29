@@ -17,9 +17,9 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.161-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona">
    <children>
-      <TabPane layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane fx:id="layoutTabPane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
             <Tab fx:id="tabDettagli" text="Dettagli">
                <content>
@@ -93,6 +93,19 @@
                   </AnchorPane>
                </content>
             </Tab>
+            <Tab fx:id="tabBambini" text="Bambini">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <DragAndDropTableView fx:id="tableBambini" layoutX="14.0" layoutY="11.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </DragAndDropTableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
             <Tab fx:id="tabContatti" text="Contatti">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -126,7 +139,10 @@
               <content>
                 <AnchorPane fx:id="tabDiagnosi" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DragAndDropTableView fx:id="tableDiagnosi" layoutX="67.0" layoutY="11.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <DragAndDropTableView fx:id="tableDiagnosi" layoutX="67.0" layoutY="11.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy></DragAndDropTableView>
                         <JFXButton fx:id="btnShowReazioniAvverse" layoutX="393.0" layoutY="383.0" text="Mostra Reazioni Avverse" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                      </children>
                   </AnchorPane>

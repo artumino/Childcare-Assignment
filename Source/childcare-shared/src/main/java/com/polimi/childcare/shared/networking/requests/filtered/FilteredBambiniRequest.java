@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredBambiniRequest extends FilteredBaseRequest<Bambino>
 {
-    public FilteredBambiniRequest(int count, int pageNumber, boolean detailed, List<Predicate<Bambino>> filters, List<Comparator<Bambino>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredBambiniRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredBambiniRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

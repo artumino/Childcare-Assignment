@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredPastoRequest extends FilteredBaseRequest<Pasto>
 {
-    public FilteredPastoRequest(int count, int pageNumber, boolean detailed, List<Predicate<Pasto>> filters, List<Comparator<Pasto>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredPastoRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredPastoRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }

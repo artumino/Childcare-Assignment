@@ -8,7 +8,11 @@ import java.util.function.Predicate;
 
 public class FilteredMenuRequest extends FilteredBaseRequest<Menu>
 {
-    public FilteredMenuRequest(int count, int pageNumber, boolean detailed, List<Predicate<Menu>> filters, List<Comparator<Menu>> orderBy) {
-        super(count, pageNumber, detailed, filters, orderBy);
+    public FilteredMenuRequest(int count, int pageNumber, boolean detailed) {
+        super(count, pageNumber, detailed);
+    }
+
+    public FilteredMenuRequest(int ID, boolean detailed) {
+        super(ID, detailed);
     }
 }
