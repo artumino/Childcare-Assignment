@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Genitore;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
@@ -17,17 +18,24 @@ public class GenitoreRequestHandlerSet extends GenericSetEntityRequestHandler<Se
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Genitore> request, Genitore dbEntity) {
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Genitore> request, Genitore dbEntity)
+    {
 
-        //FIXME: Da sistemare
-        Set<Bambino> bambini = request.getEntity().getBambini();
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
+        {
+            if (!request.isToDelete())
+                DBHelper.updateManyToManyOwned(request.getEntity().asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation() , Bambino.class, session);
 
-        if(request.isToDelete()) {
-            for (Bambino b : bambini) {
-                if (b.getGenitori().size() == 1)
-                    throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
-                b.removeGenitore(dbEntity);
-                session.update(b);
+            else
+            {
+                Set<Bambino> bambini = request.getEntity().getBambini();
+
+                for (Bambino b : bambini) {
+                    if (b.getGenitori().size() == 1)
+                        throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+                    b.removeGenitore(dbEntity);
+                    session.update(b);
+                }
             }
         }
     }

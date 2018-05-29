@@ -23,6 +23,9 @@ public class BambinoRequestHandlerSet extends GenericSetEntityRequestHandler<Set
         //Controllo, se l'entità è già nel BD(quindi Update o Delete)
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
+            if(request.getEntity().getGenitori().size() == 0)
+                throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+
             if (!request.isToDelete())
             {
                 //Sistemo il pediatra

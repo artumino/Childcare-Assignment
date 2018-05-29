@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Contatto;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
@@ -17,14 +18,22 @@ public class ContattoRequestHandlerSet extends GenericSetEntityRequestHandler<Se
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Contatto> request, Contatto dbEntity) {
-        //FIXME: Da mettere aposto
-        Set<Bambino> bambiniset = dbEntity.getBambini();
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Contatto> request, Contatto dbEntity)
+    {
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
+        {
+            if (!request.isToDelete())
+                DBHelper.updateManyToManyOwner(request.getEntity().asContattiBambiniRelation(), Bambino.class, session);
+            else
+            {
+                //TODO: ma qua va bene così?
 
-        if(request.isToDelete()) {
-            for (Bambino b : bambiniset) {
-                dbEntity.removeBambino(b);
+                Set<Bambino> bambiniset = dbEntity.getBambini();
+
+                for (Bambino b : bambiniset)
+                    dbEntity.removeBambino(b);
             }
+
         }
     }
 }

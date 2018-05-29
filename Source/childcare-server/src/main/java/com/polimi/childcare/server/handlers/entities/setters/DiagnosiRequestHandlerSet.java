@@ -14,7 +14,5 @@ public class DiagnosiRequestHandlerSet extends GenericSetEntityRequestHandler<Se
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Diagnosi> request, Diagnosi dbEntity) {
-        //TODO: Da fare
-    }
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Diagnosi> request, Diagnosi dbEntity) { }
 }

@@ -14,7 +14,5 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gita> request, Gita dbEntity) {
-        //TODO: Da fare
-    }
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gita> request, Gita dbEntity) { /*TODO: Cascade fanno già*/ }
 }

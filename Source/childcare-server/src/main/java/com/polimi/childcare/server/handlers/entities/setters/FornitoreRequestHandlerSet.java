@@ -14,7 +14,5 @@ public class FornitoreRequestHandlerSet extends GenericSetEntityRequestHandler<S
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Fornitore> request, Fornitore dbEntity) {
-        //TODO: Da fare
-    }
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Fornitore> request, Fornitore dbEntity) { /*TODO: Da fare nulla ha cascade :D*/ }
 }

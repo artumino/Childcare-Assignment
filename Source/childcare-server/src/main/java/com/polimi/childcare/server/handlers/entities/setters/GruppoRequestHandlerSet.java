@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
@@ -17,8 +18,22 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gruppo> request, Gruppo dbEntity) {
-        //FIXME: Da sistemare
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gruppo> request, Gruppo dbEntity)
+    {
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
+        {
+            if (!request.isToDelete())
+            {
+
+                //FIXME: Da sistemare tutto
+            }
+
+            else
+            {
+
+            }
+        }
+
         Set<Bambino> bambini = dbEntity.getBambini();
 
         if(request.isToDelete()) {
