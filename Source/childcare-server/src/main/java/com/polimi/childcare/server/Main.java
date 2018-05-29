@@ -4,16 +4,14 @@ import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.handlers.entities.getters.*;
 import com.polimi.childcare.server.handlers.entities.setters.*;
-import com.polimi.childcare.server.handlers.entities.special.FilteredContattoOnlyRequestHandler;
-import com.polimi.childcare.server.handlers.entities.special.SetPresenzaRequestHandler;
+import com.polimi.childcare.server.handlers.entities.special.*;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.server.networking.rmi.RMIInterfaceServer;
 import com.polimi.childcare.server.networking.sockets.SocketInterfaceServer;
 import com.polimi.childcare.server.networking.IServerNetworkInterface;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
 import com.polimi.childcare.shared.networking.requests.setters.*;
-import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
-import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -69,6 +67,9 @@ public class Main
         //region Special
         NetworkManager.getInstance().addRequestHandler(SetPresenzaRequest.class, new SetPresenzaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredContattoOnlyRequest.class, new FilteredContattoOnlyRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(GetPersoneWithDisagnosiRequest.class, new GetPersoneConDiagnosiHandler());
+        NetworkManager.getInstance().addRequestHandler(GetCurrentGitaRequest.class, new GetCurrentGitaRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(GeneratePianiViaggioRequest.class, new GeneratePianiViaggoRequestHandler());
         //endregion
     }
 
