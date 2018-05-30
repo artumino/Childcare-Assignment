@@ -1,11 +1,10 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.entities.ReazioneAvversa;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
@@ -18,17 +17,20 @@ public class ReazioneAvversaRequestHandlerSet extends GenericSetEntityRequestHan
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<ReazioneAvversa> request, ReazioneAvversa dbEntity) {
-        //FIXME: Da sistemare
-        Set<Pasto> pastoset = dbEntity.getPasti();
-
-        if(request.isToDelete())
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<ReazioneAvversa> request, ReazioneAvversa dbEntity)
+    {
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
-            for (Pasto p : pastoset)
+            if (!request.isToDelete())
             {
-                p.removeReazione(dbEntity);
-                session.update(p);
+                if(request.getEntity().getNome() == null)
+                    throw new RuntimeException("Nome Null!");
+
+                DBHelper.updateManyToManyOwned(request.getEntity().asReazioniAvversePastiRelation(), dbEntity.asReazioniAvversePastiRelation(), Pasto.class, session);
             }
+
+            else
+                DBHelper.deletedManyToManyOwned(request.getEntity().asReazioniAvversePastiRelation(), dbEntity.asReazioniAvversePastiRelation(), Pasto.class, session);
         }
     }
 }

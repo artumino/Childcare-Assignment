@@ -14,5 +14,17 @@ public class FornitoreRequestHandlerSet extends GenericSetEntityRequestHandler<S
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Fornitore> request, Fornitore dbEntity) { /*TODO: Da fare nulla ha cascade :D*/ }
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Fornitore> request, Fornitore dbEntity)
+    {
+        /*TODO: Da fare nulla ha cascade :D e OneToMany*/
+        if(!request.isToDelete())
+        {
+            if (request.getEntity().getRagioneSociale() == null ||
+                    request.getEntity().getPartitaIVA() == null ||
+                    request.getEntity().getSedeLegale() == null ||
+                    request.getEntity().getNumeroRegistroImprese() == null)
+                throw new RuntimeException("Un campo obbligatorio è null!");
+        }
+
+    }
 }

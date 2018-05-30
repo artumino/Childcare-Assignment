@@ -5,8 +5,6 @@ import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Contatto;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
@@ -23,7 +21,14 @@ public class ContattoRequestHandlerSet extends GenericSetEntityRequestHandler<Se
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
             if (!request.isToDelete())
+            {
+                if(request.getEntity().getNome() == null ||
+                        request.getEntity().getCognome() == null ||
+                        request.getEntity().getIndirizzo() == null)
+                    throw new RuntimeException("Un campo obbligatorio è null!");
+
                 DBHelper.updateManyToManyOwner(request.getEntity().asContattiBambiniRelation(), Bambino.class, session);
+            }
             else
             {
                 //TODO: ma qua va bene così?

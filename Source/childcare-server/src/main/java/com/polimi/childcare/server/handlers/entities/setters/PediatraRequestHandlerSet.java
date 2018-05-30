@@ -1,11 +1,10 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Pediatra;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
@@ -17,14 +16,29 @@ public class PediatraRequestHandlerSet extends GenericSetEntityRequestHandler<Se
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Pediatra> request, Pediatra dbEntity) {
-        //FIXME: Fixarlo
-        Set<Bambino> bambiniset = dbEntity.getBambini();
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Pediatra> request, Pediatra dbEntity)
+    {
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
+        {
+            if (!request.isToDelete())
+            {
+                if(request.getEntity().getNome() == null ||
+                        request.getEntity().getCognome() == null ||
+                        request.getEntity().getIndirizzo() == null)
+                    throw new RuntimeException("Un campo obbligatorio è null!");
 
-        if(request.isToDelete()) {
-            for (Bambino b : bambiniset) {
-                dbEntity.removeBambino(b);
+                DBHelper.updateManyToManyOwner(request.getEntity().asContattiBambiniRelation(), Bambino.class, session);
             }
+            else
+            {
+                //TODO: ma qua va bene così?
+
+                Set<Bambino> bambiniset = dbEntity.getBambini();
+
+                for (Bambino b : bambiniset)
+                    dbEntity.removeBambino(b);
+            }
+
         }
     }
 }

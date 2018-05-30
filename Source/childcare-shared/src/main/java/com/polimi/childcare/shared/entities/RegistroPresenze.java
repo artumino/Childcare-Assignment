@@ -22,6 +22,7 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
     private int ID;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
     private StatoPresenza Stato;
 
     @Column(nullable = false)
@@ -30,7 +31,7 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
     @Column(nullable = false)
     private LocalDateTime TimeStamp;
 
-    @Column(nullable = false)
+    @Column(nullable = false) //Ma short non è nullable di suo :S
     private short Ora;
 
     //endregion

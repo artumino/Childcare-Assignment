@@ -6,6 +6,7 @@ import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -19,10 +20,10 @@ public class Gita extends TransferableEntity implements Serializable
     private int ID;
 
     @Column(nullable = false)
-    private Date DataInizio;
+    private LocalDate DataInizio;
 
     @Column(nullable = false)
-    private Date DataFine;
+    private LocalDate DataFine;
 
     @Column(nullable = false, length = 50)
     private String Luogo;
@@ -46,7 +47,7 @@ public class Gita extends TransferableEntity implements Serializable
 
     public Gita() { }
 
-    public Gita(Date dataInizio, Date dataFine, String luogo, int costo) {
+    public Gita(LocalDate dataInizio, LocalDate dataFine, String luogo, int costo) {
         DataInizio = dataInizio;
         DataFine = dataFine;
         Luogo = luogo;
@@ -57,19 +58,19 @@ public class Gita extends TransferableEntity implements Serializable
         return ID;
     }
 
-    public Date getDataInizio() {
+    public LocalDate getDataInizio() {
         return DataInizio;
     }
 
-    public void setDataInizio(Date dataInizio) {
+    public void setDataInizio(LocalDate dataInizio) {
         DataInizio = dataInizio;
     }
 
-    public Date getDataFine() {
+    public LocalDate getDataFine() {
         return DataFine;
     }
 
-    public void setDataFine(Date dataFine) {
+    public void setDataFine(LocalDate dataFine) {
         DataFine = dataFine;
     }
 

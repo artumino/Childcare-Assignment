@@ -5,8 +5,6 @@ import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Genitore;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
@@ -24,7 +22,21 @@ public class GenitoreRequestHandlerSet extends GenericSetEntityRequestHandler<Se
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
             if (!request.isToDelete())
-                DBHelper.updateManyToManyOwned(request.getEntity().asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation() , Bambino.class, session);
+            {
+                if(request.getEntity().getNome() == null ||
+                        request.getEntity().getCognome() == null ||
+                        request.getEntity().getCodiceFiscale() == null ||
+                        request.getEntity().getDataNascita() == null ||
+                        request.getEntity().getStato() == null ||
+                        request.getEntity().getComune() == null ||
+                        request.getEntity().getProvincia() == null ||
+                        request.getEntity().getCittadinanza() == null ||
+                        request.getEntity().getResidenza() == null ||
+                        request.getEntity().getSesso() == null)
+                    throw new RuntimeException("Un campo obbligatorio è null!");
+
+                DBHelper.updateManyToManyOwned(request.getEntity().asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation(), Bambino.class, session);
+            }
 
             else
             {

@@ -1,7 +1,5 @@
 package com.polimi.childcare.shared.serialization;
 
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
-
 import java.io.*;
 
 public class SerializationUtils

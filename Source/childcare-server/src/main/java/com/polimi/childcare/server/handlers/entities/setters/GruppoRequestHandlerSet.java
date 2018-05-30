@@ -1,12 +1,9 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.util.Set;
 
@@ -22,24 +19,21 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
     {
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
-            if (!request.isToDelete())
+            if(request.getEntity().getSorvergliante() == null && !request.isToDelete())
+                throw new RuntimeException("Sorvegliante Nullo!");
+
+            if (request.isToDelete())
             {
+                Set<Bambino> bambini = dbEntity.getBambini();
 
-                //FIXME: Da sistemare tutto
-            }
-
-            else
-            {
-
-            }
-        }
-
-        Set<Bambino> bambini = dbEntity.getBambini();
-
-        if(request.isToDelete()) {
-            for (Bambino b : bambini) {
-                b.setGruppo(null);
-                session.update(b);
+                if(request.isToDelete())
+                {
+                    for (Bambino b : bambini)
+                    {
+                        b.setGruppo(null);
+                        session.update(b);
+                    }
+                }
             }
         }
     }

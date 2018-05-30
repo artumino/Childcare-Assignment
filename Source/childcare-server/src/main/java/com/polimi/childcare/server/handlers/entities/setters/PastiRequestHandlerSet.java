@@ -1,12 +1,10 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
+import com.polimi.childcare.shared.entities.Fornitore;
 import com.polimi.childcare.shared.entities.Pasto;
-import com.polimi.childcare.shared.entities.ReazioneAvversa;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import java.util.Set;
 
 public class PastiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Pasto>, Pasto>
 {
@@ -17,17 +15,19 @@ public class PastiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEn
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Pasto> request, Pasto dbEntity) {
-        //FIXME: Fixarlo
-        Set<ReazioneAvversa> rv = dbEntity.getReazione();
-
-        if(request.isToDelete())
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Pasto> request, Pasto dbEntity)
+    {
+        if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
-            for (ReazioneAvversa r : rv) {
-                dbEntity.removeReazione(r);
-            }
+            if (!request.isToDelete())
+            {
+                if(request.getEntity().getFornitore() == null || request.getEntity().getNome() == null)
+                    throw new RuntimeException("Fornitore e/o Nome Nullo!");
 
-            session.update(dbEntity);
+                DBHelper.updateManyToOne(request.getEntity().asPastoFornitoreRelation(), Fornitore.class, session);
+            }
+            //else
+                //DBHelper.deletedManyToManyOwned(request.getEntity().asPastoReazioniAvverseRelation(), dbEntity.asPastoReazioniAvverseRelation(), Pasto.class, session);
         }
     }
 }

@@ -19,7 +19,7 @@ public class Diagnosi extends TransferableEntity implements Serializable
     private int ID;
 
     @Column(nullable = false)
-    private boolean Allergia;
+    private boolean Allergia; //boolean non può essere null
 
     //endregion
 

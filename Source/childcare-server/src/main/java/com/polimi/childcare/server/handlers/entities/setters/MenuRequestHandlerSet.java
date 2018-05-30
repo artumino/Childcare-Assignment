@@ -3,8 +3,6 @@ package com.polimi.childcare.server.handlers.entities.setters;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.shared.entities.Menu;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Menu>, Menu>
 {
@@ -14,7 +12,12 @@ public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
     }
 
     @Override
-    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Menu> request, Menu dbEntity) {
-        //TODO: Da fare
+    protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Menu> request, Menu dbEntity)
+    {
+        /*TODO: Ha le OneToMany :S e i Cascade*/
+
+        if(!request.isToDelete())
+            if(request.getEntity().getNome() == null)
+                throw new RuntimeException("Nome è null!");
     }
 }
