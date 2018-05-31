@@ -2,13 +2,10 @@ package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler;
 import com.polimi.childcare.server.helper.DBHelper;
-import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Persona;
-import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
 import com.polimi.childcare.shared.networking.requests.special.GetPersoneWithDisagnosiRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPersoneResponse;
-import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
