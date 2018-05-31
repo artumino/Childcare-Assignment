@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
@@ -18,7 +19,10 @@ import java.util.List;
 public class GetPersoneConDiagnosiHandler extends FilteredRequestHandler<GetPersoneWithDisagnosiRequest ,Persona>
 {
     @Override
-    public BaseResponse processRequest(GetPersoneWithDisagnosiRequest request) {
-        return new ListPersoneResponse(200, new ArrayList<>());//.addAll(getFilteredResult(request, Persona.class, new ArrayList<>()).stream());
+    public BaseResponse processRequest(GetPersoneWithDisagnosiRequest request)
+    {
+        List<Persona> persone = getFilteredResult(request, Persona.class, new ArrayList<>());
+        persone.stream().forEach(persona -> DBHelper.objectInitialize(persona.getDiagnosi()));
+        return new ListPersoneResponse(200, persone);
     }
 }
