@@ -1,7 +1,6 @@
 import com.polimi.childcare.server.Main;
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
@@ -16,7 +15,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import rules.DatabaseSessionRule;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -206,10 +204,10 @@ public class InsertTest
     {
         Main.initHandlers();
         DatabaseDemo.runDemoGeneration(100);
-        BaseResponse bambinoResponse = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(2,0, true, null, null));
-        BaseResponse addettoResponse = NetworkManager.getInstance().processRequest(new FilteredAddettoRequest(1,0, true, null, null));
-        BaseResponse contattoResponse = NetworkManager.getInstance().processRequest(new FilteredContattoOnlyRequest(2,0,true, null, null));
-        BaseResponse fornitoriResponse = NetworkManager.getInstance().processRequest(new FilteredFornitoriRequest(2,0,true,null,null));
+        BaseResponse bambinoResponse = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(2,0, true));
+        BaseResponse addettoResponse = NetworkManager.getInstance().processRequest(new FilteredAddettoRequest(1,0, true));
+        BaseResponse contattoResponse = NetworkManager.getInstance().processRequest(new FilteredContattoOnlyRequest(2,0,true));
+        BaseResponse fornitoriResponse = NetworkManager.getInstance().processRequest(new FilteredFornitoriRequest(2,0,true));
 
         if(!(bambinoResponse instanceof ListBambiniResponse))
             Assert.fail("Risposta di tipo errato");
