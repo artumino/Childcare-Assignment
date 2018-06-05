@@ -86,19 +86,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
         tableView.setOnMousePressed(event -> {
             if (event.isPrimaryButtonDown() && event.getClickCount() == 2)
-            {
-                ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(new FilteredPersonaRequest(this.selectedItem.getID(), true),
-                        response -> {
-                            if(!(response instanceof ListPersoneResponse) || ((ListPersoneResponse)response).getPayload().size() == 0)
-                            {
-                                StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore, risposta non corretta dal server");
-                                return;
-                            }
-
-                            ShowPersonaDetails(((ListPersoneResponse) response).getPayload().get(0));
-                        },
-                        true));
-            }
+                ShowPersonaDetails(this.selectedItem);
         });
 
         return Arrays.asList(name, surname, fiscalCode, dateOfBirth, id, type);
@@ -279,7 +267,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         try {
             ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
             setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
-            setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
             setPresenzeStage.setOnClosingCallback((returnArgs) -> {
                 //Niente
             });

@@ -1,12 +1,17 @@
 package com.polimi.childcare.client.ui.controllers.stages.anagrafica;
 
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.constants.ToolbarButtons;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
+import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.*;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
+import com.polimi.childcare.shared.networking.responses.lists.ListPersoneResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -17,18 +22,24 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
+import javafx.stage.Modality;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
+
+import java.io.IOException;
 
 public class EditPersona implements ISubSceneController
 {
     public static final String FXML_PATH = "fxml/stages/anagrafica/EditPersona.fxml";
+
+    private NetworkOperation pendingOperation;
 
     private Persona linkedPersona;
     private ChildcareBaseStageController stageController;
     private Parent root;
 
     @FXML private AnchorPane rootPane;
+    @FXML private AnchorPane loadingLayout;
 
     @FXML private TabPane layoutTabPane;
     @FXML private Tab tabDettagli;
@@ -77,11 +88,28 @@ public class EditPersona implements ISubSceneController
             if(args != null && args.length > 0 && args[0] instanceof Persona)
                 this.linkedPersona = (Persona)args[0];
 
-            if(this.linkedPersona.getNome() != null)
-                this.stageController.requestSetTitle(linkedPersona.getNome() + " " + linkedPersona.getCognome());
-            else
-                this.stageController.requestSetTitle("Crea " + linkedPersona.getClass().getSimpleName());
 
+            if(pendingOperation == null && linkedPersona != null)
+            {
+                this.loadingLayout.setVisible(true);
+                this.pendingOperation = new NetworkOperation(new FilteredPersonaRequest(this.linkedPersona.getID(), true),
+                        response ->
+                        {
+                            if(!(response instanceof ListPersoneResponse) || ((ListPersoneResponse)response).getPayload().size() == 0)
+                            {
+                                StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore, risposta non corretta dal server");
+                                stageController.requestClose();
+                            }
+                            else
+                            {
+                                this.linkedPersona = ((ListPersoneResponse)response).getPayload().get(0);
+                                updateData();
+                                this.loadingLayout.setVisible(false);
+                            }
+                        },
+                        true);
+                ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+            }
 
             //Tabelle Generali
             printPersonaDetails();
@@ -95,8 +123,56 @@ public class EditPersona implements ISubSceneController
             setupContatti();
             setupTableGenitori();
 
-            updateLayout();
+            //Aggiorna l'interfaccia con i presenti in linkedPersona
+            updateData();
         }
+    }
+
+    private void updateData()
+    {
+        //Diagnosi
+        if(linkedPersona != null && tableDiagnosi != null && linkedPersona.getDiagnosi() != null)
+        {
+            tableDiagnosi.getItems().clear();
+            tableDiagnosi.getItems().addAll(linkedPersona.getDiagnosi());
+        }
+
+        //Telefoni
+        if(this.linkedPersona != null && listTelefoni != null && this.linkedPersona.getTelefoni() != null)
+        {
+            listTelefoni.getItems().clear();
+            listTelefoni.getItems().addAll(this.linkedPersona.getTelefoni());
+        }
+
+        //Bambini
+        if((this.linkedPersona instanceof Genitore) && tableBambini != null && ((Genitore) this.linkedPersona).getBambini() != null)
+        {
+            tableBambini.getItems().clear();
+            tableBambini.getItems().addAll(((Genitore) linkedPersona).getBambini());
+        }
+
+        //Genitori
+        if((this.linkedPersona instanceof Bambino) && tableGenitori != null && ((Bambino) this.linkedPersona).getGenitori() != null)
+        {
+            tableGenitori.getItems().clear();
+            tableGenitori.getItems().addAll(((Bambino) linkedPersona).getGenitori());
+        }
+
+        //Pediatra
+        if((this.linkedPersona instanceof Bambino) && tablePediatra != null && ((Bambino) this.linkedPersona).getPediatra() != null)
+        {
+            tablePediatra.getItems().clear();
+            tablePediatra.getItems().add(((Bambino)linkedPersona).getPediatra());
+        }
+
+        //Contatti
+        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getContatti() != null)
+        {
+            tableContatti.getItems().clear();
+            tableContatti.getItems().addAll(((Bambino) linkedPersona).getContatti());
+        }
+
+        updateLayout();
     }
 
     private void setupDiagnosi()
@@ -129,9 +205,6 @@ public class EditPersona implements ISubSceneController
 
 
         tableDiagnosi.dragForClass(Diagnosi.class);
-
-        if(linkedPersona != null)
-            tableDiagnosi.getItems().addAll(linkedPersona.getDiagnosi());
     }
 
     private void setupPhoneList()
@@ -153,11 +226,12 @@ public class EditPersona implements ISubSceneController
             }
         });
 
+        btnResetNumeri.setOnMouseClicked(click -> {
+            listTelefoni.getItems().clear();
+            listTelefoni.getItems().addAll(linkedPersona.getTelefoni());
+        });
 
         //listTelefoni.setOnEditCancel();
-
-        if(this.linkedPersona != null && this.linkedPersona.getTelefoni() != null)
-            listTelefoni.getItems().addAll(this.linkedPersona.getTelefoni());
     }
 
     private void setupTableBambini()
@@ -173,11 +247,12 @@ public class EditPersona implements ISubSceneController
 
         tableBambini.getColumns().addAll(cNome, cCognome, cCodiceFiscale, cMatricola);
 
+        tableBambini.setOnMousePressed(click -> {
+            if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableBambini.getSelectionModel().getSelectedItem() != null)
+                ShowSubPersona(tableBambini.getSelectionModel().getSelectedItem());
+        });
 
         tableBambini.dragForClass(Bambino.class);
-
-        if((this.linkedPersona instanceof Genitore) && ((Genitore) this.linkedPersona).getBambini() != null)
-            tableBambini.getItems().addAll(((Genitore)linkedPersona).getBambini());
     }
 
     private void setupTableGenitori()
@@ -194,10 +269,12 @@ public class EditPersona implements ISubSceneController
         tableGenitori.getColumns().addAll(cNome, cCognome, cCodiceFiscale, cTelefoni);
 
 
-        tableGenitori.dragForClass(Genitore.class);
+        tableGenitori.setOnMousePressed(click -> {
+            if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableGenitori.getSelectionModel().getSelectedItem() != null)
+                ShowSubPersona(tableGenitori.getSelectionModel().getSelectedItem());
+        });
 
-        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getGenitori() != null)
-            tableGenitori.getItems().addAll(((Bambino)linkedPersona).getGenitori());
+        tableGenitori.dragForClass(Genitore.class);
     }
 
     private void setupTablePediatra()
@@ -223,9 +300,6 @@ public class EditPersona implements ISubSceneController
             }
         }));
         tablePediatra.dragForClass(Pediatra.class);
-
-        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getPediatra() != null)
-            tablePediatra.getItems().add(((Bambino)linkedPersona).getPediatra());
     }
 
     private void setupContatti()
@@ -242,9 +316,6 @@ public class EditPersona implements ISubSceneController
         tableContatti.getColumns().addAll(cNomeContatto, cCognomeContatto, cDescrizioneContatto, cTelefoniContatto);
 
         tableContatti.dragForClass(Contatto.class);
-
-        if((this.linkedPersona instanceof Bambino) && ((Bambino) this.linkedPersona).getContatti() != null)
-            tableContatti.getItems().addAll(((Bambino)linkedPersona).getContatti());
     }
 
     private void updateLayout()
@@ -267,9 +338,16 @@ public class EditPersona implements ISubSceneController
 
     private void printPersonaDetails()
     {
+
         if(this.linkedPersona != null)
         {
-            System.out.println(linkedPersona.getNome());
+            //Setup title
+            if(this.linkedPersona.getNome() != null)
+                this.stageController.requestSetTitle(linkedPersona.getNome() + " " + linkedPersona.getCognome());
+            else
+                this.stageController.requestSetTitle("Crea " + linkedPersona.getClass().getSimpleName());
+
+            //Setup fields
             txtNome.setTextFieldText(linkedPersona.getNome());
             txtCognome.setTextFieldText(linkedPersona.getCognome());
             txtCodiceFiscale.setTextFieldText(linkedPersona.getCodiceFiscale());
@@ -289,7 +367,25 @@ public class EditPersona implements ISubSceneController
     @Override
     public void detached()
     {
+        if(pendingOperation != null)
+            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
+    }
 
+    private void ShowSubPersona(Persona persona)
+    {
+        try {
+            ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
+            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
+            setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            setPresenzeStage.initModality(Modality.WINDOW_MODAL);
+            setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+                //TODO
+                //Niente
+            });
+            setPresenzeStage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

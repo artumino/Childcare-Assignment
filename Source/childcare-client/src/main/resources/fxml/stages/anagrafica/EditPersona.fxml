@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXSpinner?>
 <?import com.polimi.childcare.client.ui.controls.DragAndDropTableView?>
 <?import com.polimi.childcare.client.ui.controls.LabelTextViewComponent?>
 <?import javafx.geometry.Insets?>
@@ -17,7 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.161-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditPersona">
    <children>
       <TabPane fx:id="layoutTabPane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
@@ -152,5 +153,10 @@
       </TabPane>
       <JFXButton fx:id="btnSalva" layoutX="393.0" layoutY="468.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #76d275; -fx-text-fill: #fff;" text="Salva" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
       <JFXButton fx:id="btnElimina" layoutX="314.0" layoutY="466.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #f05545; -fx-text-fill: #fff;" text="Elimina" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <AnchorPane fx:id="loadingLayout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXSpinner layoutX="189.0" layoutY="222.0" prefHeight="80.0" prefWidth="82.0" />
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

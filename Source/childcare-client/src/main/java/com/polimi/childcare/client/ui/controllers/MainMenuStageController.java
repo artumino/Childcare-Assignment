@@ -2,6 +2,8 @@ package com.polimi.childcare.client.ui.controllers;
 
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
+import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -119,6 +121,14 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
                     EffectsUtils.RemoveGlow(node);
             });
         }
+    }
+
+    @Override
+    public void close() {
+        super.close();
+
+        //Force close application
+        Platform.exit();
     }
 
     private void SelectMenuItem(Node item)
