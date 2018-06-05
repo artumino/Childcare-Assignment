@@ -112,6 +112,7 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
                     if (element != null) {
                         if (!this.getItems().contains(element))
                             this.getItems().add(element);
+                        this.refresh();
                         event.setDropCompleted(true);
                     }
                 }

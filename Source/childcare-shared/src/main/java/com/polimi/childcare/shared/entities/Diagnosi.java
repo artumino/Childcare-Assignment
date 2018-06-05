@@ -49,6 +49,8 @@ public class Diagnosi extends TransferableEntity implements Serializable
         return ID;
     }
 
+    public void unsafeSetID(int ID) { this.ID = ID; }
+
     public boolean isAllergia() {
         return Allergia;
     }
@@ -77,11 +79,12 @@ public class Diagnosi extends TransferableEntity implements Serializable
     public int hashCode() { return Objects.hash(ID, Diagnosi.class); }
 
     @Override
+    //In questo caso usiamo anche reazioneAvversa.ID perchè se per caso ho istanze non ancora inserite nel DB di diagnosi diverse, l'equals essendo solo legato all'ID fallirà nel distinguerle
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Diagnosi)) return false;
         Diagnosi diagnosi = (Diagnosi) o;
-        return getID() == diagnosi.getID();
+        return getID() == diagnosi.getID() && Objects.equals(getReazioneAvversa(), diagnosi.getReazioneAvversa());
     }
 
     //endregion

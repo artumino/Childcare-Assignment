@@ -6,6 +6,7 @@ import com.polimi.childcare.client.ui.constants.ToolbarButtons;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.generic.ReazioniAvverseStage;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -67,6 +68,7 @@ public class EditPersona implements ISubSceneController
     @FXML private DragAndDropTableView<Bambino> tableBambini;
 
     @FXML private DragAndDropTableView<Diagnosi> tableDiagnosi;
+    @FXML private Button btnShowReazioniAvverse;
 
     @FXML private ListView<String> listTelefoni;
     @FXML private Button btnResetNumeri;
@@ -188,7 +190,7 @@ public class EditPersona implements ISubSceneController
             @Override
             protected void updateItem(Boolean item, boolean empty)
             {
-                if(!empty)
+                if(!empty && getTableRow().getItem() != null)
                 {
                     Diagnosi diagnosi = (Diagnosi) getTableRow().getItem();
                     CheckBox checkBox = new CheckBox();
@@ -203,6 +205,8 @@ public class EditPersona implements ISubSceneController
 
         tableDiagnosi.getColumns().addAll(cNome, cDescrizione, cAllergia);
 
+
+        btnShowReazioniAvverse.setOnMouseClicked(click -> ShowReazioniAvverse());
 
         tableDiagnosi.dragForClass(Diagnosi.class);
     }
@@ -374,15 +378,32 @@ public class EditPersona implements ISubSceneController
     private void ShowSubPersona(Persona persona)
     {
         try {
-            ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
-            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
-            setPresenzeStage.initOwner(getRoot().getScene().getWindow());
-            setPresenzeStage.initModality(Modality.WINDOW_MODAL);
-            setPresenzeStage.setOnClosingCallback((returnArgs) -> {
+            ChildcareBaseStageController personaDetails = new ChildcareBaseStageController();
+            personaDetails.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
+            personaDetails.initOwner(getRoot().getScene().getWindow());
+            personaDetails.initModality(Modality.WINDOW_MODAL);
+            personaDetails.setOnClosingCallback((returnArgs) -> {
                 //TODO
                 //Niente
             });
-            setPresenzeStage.showAndWait();
+            personaDetails.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowReazioniAvverse()
+    {
+        try {
+            ChildcareBaseStageController showReazioniAvverse = new ChildcareBaseStageController();
+            showReazioniAvverse.setContentScene(getClass().getClassLoader().getResource(ReazioniAvverseStage.FXML_PATH), linkedPersona);
+            showReazioniAvverse.initOwner(getRoot().getScene().getWindow());
+            showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
+            showReazioniAvverse.setOnClosingCallback((returnArgs) -> {
+                //TODO
+                //Niente
+            });
+            showReazioniAvverse.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
