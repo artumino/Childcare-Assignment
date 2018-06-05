@@ -2,6 +2,7 @@ package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.TransferableEntity;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -60,6 +61,9 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
 
         if(exception != null)
             return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());
+
+        if(response[0] instanceof ListResponse)
+            DTOUtils.iterableToDTO(((ListResponse)response[0]).getPayload(), new ArrayList<>());
 
         return response[0];
     }

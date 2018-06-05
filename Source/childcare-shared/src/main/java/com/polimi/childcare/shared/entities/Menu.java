@@ -51,6 +51,11 @@ public class Menu extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public boolean isAttivo() { return Attivo; }
 
     public void setAttivo(boolean attivo) { this.Attivo = attivo; }

@@ -75,6 +75,11 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public StatoPresenza getStato() {
         return Stato;
     }

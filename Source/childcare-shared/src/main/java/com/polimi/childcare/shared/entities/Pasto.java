@@ -61,6 +61,11 @@ public class Pasto extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public String getNome() {
         return Nome;
     }

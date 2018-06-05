@@ -71,6 +71,11 @@ public class Fornitore extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public String getRagioneSociale() {
         return RagioneSociale;
     }

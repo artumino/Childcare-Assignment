@@ -58,6 +58,11 @@ public class Gita extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public LocalDate getDataInizio() {
         return DataInizio;
     }

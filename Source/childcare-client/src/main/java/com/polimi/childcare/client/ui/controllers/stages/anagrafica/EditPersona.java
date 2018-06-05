@@ -12,7 +12,10 @@ import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
-import com.polimi.childcare.shared.networking.responses.lists.ListPersoneResponse;
+import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
+import com.polimi.childcare.shared.networking.requests.setters.SetPersonaRequest;
+import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
+import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -21,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
@@ -28,6 +32,8 @@ import javafx.util.Callback;
 import javafx.util.StringConverter;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.Optional;
 
 public class EditPersona implements ISubSceneController
 {
@@ -91,12 +97,13 @@ public class EditPersona implements ISubSceneController
                 this.linkedPersona = (Persona)args[0];
 
 
-            if(pendingOperation == null && linkedPersona != null)
+            if(pendingOperation == null && linkedPersona != null && linkedPersona.getID() != 0)
             {
                 this.loadingLayout.setVisible(true);
                 this.pendingOperation = new NetworkOperation(new FilteredPersonaRequest(this.linkedPersona.getID(), true),
                         response ->
                         {
+                            this.pendingOperation = null;
                             if(!(response instanceof ListPersoneResponse) || ((ListPersoneResponse)response).getPayload().size() == 0)
                             {
                                 StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore, risposta non corretta dal server");
@@ -124,6 +131,41 @@ public class EditPersona implements ISubSceneController
             setupTablePediatra();
             setupContatti();
             setupTableGenitori();
+
+            //Bottoni
+            if(linkedPersona.getID() == 0) //Nascondo per persone nuove
+                btnElimina.setVisible(false);
+
+            btnElimina.setOnMouseClicked(click -> {
+                if(this.pendingOperation == null)
+                {
+                    Optional<ButtonType> result = StageUtils.ShowAlertWithButtons(Alert.AlertType.CONFIRMATION,
+                            "Sei sicuro di voler cancellare " + linkedPersona.getNome() + " " + linkedPersona.getCognome() + "?",
+                            ButtonType.YES, ButtonType.NO);
+
+                    if(result.isPresent() && result.get().equals(ButtonType.YES))
+                    {
+                        //Confermata la cancellazione
+                        this.pendingOperation = new NetworkOperation(new SetPersonaRequest(linkedPersona, true, linkedPersona.consistecyHashCode()),
+                                (response -> {
+                                    if(!(response instanceof BadRequestResponse))
+                                    {
+                                        stageController.close();
+                                        return;
+                                    }
+
+                                    if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
+                                        StageUtils.ShowAlert(Alert.AlertType.ERROR, ((BadRequestResponse.BadRequestResponseWithMessage)response).getMessage());
+                                    else
+                                        StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nella cancellazione della persona");
+
+                                }), true);
+                        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                    }
+                }
+            });
+
+            btnSalva.setOnMouseClicked(this::SaveClicked);
 
             //Aggiorna l'interfaccia con i presenti in linkedPersona
             updateData();
@@ -400,7 +442,6 @@ public class EditPersona implements ISubSceneController
             showReazioniAvverse.initOwner(getRoot().getScene().getWindow());
             showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
             showReazioniAvverse.setOnClosingCallback((returnArgs) -> {
-                //TODO
                 //Niente
             });
             showReazioniAvverse.show();
@@ -409,6 +450,103 @@ public class EditPersona implements ISubSceneController
         }
     }
 
+    private void SaveClicked(MouseEvent ignored)
+    {
+        if(pendingOperation != null)
+            return;
+
+        Persona newPersona = null;
+
+        if(linkedPersona instanceof Bambino)
+            newPersona = new Bambino();
+        else if(linkedPersona instanceof Genitore)
+            newPersona = new Genitore();
+        else
+            newPersona = new Addetto();
+
+        //Imposta dettagli
+        newPersona.unsafeSetID(linkedPersona.getID());
+        newPersona.setNome(txtNome.getTextFieldText());
+        newPersona.setCognome(txtCognome.getTextFieldText());
+        newPersona.setCodiceFiscale(txtCodiceFiscale.getTextFieldText());
+        newPersona.setDataNascita(dpDataNascita.getValue());
+        newPersona.setStato(txtStato.getTextFieldText());
+        newPersona.setComune(txtComune.getTextFieldText());
+        newPersona.setProvincia(txtProvincia.getTextFieldText());
+        newPersona.setCittadinanza(txtCittadinanza.getTextFieldText());
+        newPersona.setResidenza(txtResidenza.getTextFieldText());
+        newPersona.setSesso(Persona.ESesso.valueOf(cbSesso.getSelectionModel().getSelectedItem()));
+
+        //Imposta relazioni persona
+        for(Diagnosi diagnosi : tableDiagnosi.getItems())
+            newPersona.unsafeAddDiagnosi(diagnosi);
+
+        for(String telefono : listTelefoni.getItems())
+            newPersona.addTelefono(telefono);
+
+        //Relazioni Specifiche
+        if(newPersona instanceof Bambino)
+        {
+            Bambino newBambino = (Bambino)newPersona;
+
+            for(Genitore genitore : tableGenitori.getItems())
+                newBambino.addGenitore(genitore);
+
+            for(Contatto contatto : tableContatti.getItems())
+                newBambino.unsafeAddContatto(contatto);
+
+            newBambino.setGruppo(((Bambino) linkedPersona).getGruppo());
+            newBambino.setPediatra(tablePediatra.getItems().size() == 0 ? null : tablePediatra.getItems().get(0));
+        }
+
+        if(newPersona instanceof Genitore)
+        {
+            Genitore newGenitore = (Genitore)newPersona;
+
+            for(Bambino bambino : tableBambini.getItems())
+                newGenitore.unsafeAddBambino(bambino);
+        }
+
+        //Manda richiesta
+        this.pendingOperation = new NetworkOperation(new SetPersonaRequest(newPersona, false, linkedPersona.consistecyHashCode()),
+                response -> {
+            this.pendingOperation = null;
+            String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
+            if(response.getCode() != 200 && !(response instanceof ListResponse))
+            {
+
+                if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
+                    errorMessage = ((BadRequestResponse.BadRequestResponseWithMessage) response).getMessage();
+
+                StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
+                return;
+            }
+
+            if(response instanceof ListResponse)
+            {
+                if(((ListResponse) response).getPayload() == null || ((ListResponse) response).getPayload().size() == 0) {
+                    StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
+                    return;
+                }
+
+                StageUtils.ShowAlert(Alert.AlertType.INFORMATION, "La modifica non è stata effettuata perchè i dati non sono consistenti, rieffetuare le modifiche...");
+
+                if(linkedPersona instanceof Bambino)
+                    this.linkedPersona = ((ListResponse<Bambino>) response).getPayload().get(0);
+                else if(linkedPersona instanceof Genitore)
+                    this.linkedPersona = ((ListResponse<Genitore>) response).getPayload().get(0);
+                else if(linkedPersona instanceof Addetto)
+                    this.linkedPersona = ((ListResponse<Addetto>) response).getPayload().get(0);
+
+                updateData();
+                return;
+            }
+
+            stageController.requestClose();
+
+        }, true);
+        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+    }
 
     @Override
     public Region getSceneRegion() {

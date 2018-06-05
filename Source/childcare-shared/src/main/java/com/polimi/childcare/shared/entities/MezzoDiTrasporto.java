@@ -59,6 +59,11 @@ public class MezzoDiTrasporto extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public String getTarga() {
         return Targa;
     }

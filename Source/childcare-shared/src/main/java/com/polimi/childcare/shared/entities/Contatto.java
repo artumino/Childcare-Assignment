@@ -64,6 +64,11 @@ public class Contatto extends TransferableEntity implements Serializable
 
     public int getID() { return ID; }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public String getDescrizione() {
         return Descrizione;
     }

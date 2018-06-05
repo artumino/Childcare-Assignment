@@ -46,6 +46,11 @@ public class Gruppo extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public Addetto getSorvergliante() {
         return sorvergliante;
     }

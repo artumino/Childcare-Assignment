@@ -49,6 +49,11 @@ public class QuantitaPasto extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public int getQuantita() {
         return Quantita;
     }

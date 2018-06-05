@@ -50,6 +50,11 @@ public class PianoViaggi extends TransferableEntity implements Serializable
         return ID;
     }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public Gita getGita() {
         return gita;
     }

@@ -84,6 +84,11 @@ public abstract class Persona extends TransferableEntity implements Serializable
 
     public int getID() { return ID; }
 
+    @Override
+    public void unsafeSetID(int ID) {
+        this.ID = ID;
+    }
+
     public String getNome() {
         return Nome;
     }
