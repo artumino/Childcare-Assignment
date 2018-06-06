@@ -42,6 +42,9 @@ public class Pasto extends TransferableEntity implements Serializable
     )
     private Set<ReazioneAvversa> reazione = new HashSet<>();
 
+    @ManyToMany(mappedBy = "pasti", fetch = FetchType.LAZY)
+    private Set<Menu> menu = new HashSet<>();
+
     //endregion
 
     //region Metodi
@@ -87,7 +90,14 @@ public class Pasto extends TransferableEntity implements Serializable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
+    public void unsafeaddMenu(Menu m) { menu.add(m); }
+
+    public void unsaferemoveMenu(Menu m) { menu.remove(m); }
+
     public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }
+
+    public Set<Menu> getMenu() { return EntitiesHelper.unmodifiableListReturn(menu); }
+
 
     @Override
     public int hashCode() { return Objects.hash(ID, Pasto.class); }
@@ -118,14 +128,16 @@ public class Pasto extends TransferableEntity implements Serializable
         //Aggiorna figli
         fornitore = DTOUtils.objectToDTO(fornitore, processed);
         reazione = DTOUtils.iterableToDTO(reazione, processed);
+        menu = DTOUtils.iterableToDTO(menu, processed);
 
         reazione = this.getReazione();
+        menu = this.getMenu();
     }
 
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(fornitore) && DTOUtils.isDTO(reazione);
+        return DTOUtils.isDTO(fornitore) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(menu);
     }
 
     @Override
@@ -191,5 +203,36 @@ public class Pasto extends TransferableEntity implements Serializable
             }
         };
     }
+
+    public IManyToManyOwned<Menu, Pasto> asPastoMenuRelation()
+    {
+        return new IManyToManyOwned<Menu, Pasto>() {
+            @Override
+            public Pasto getItem() {
+                return Pasto.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Menu item) {
+                unsafeaddMenu(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Menu item) {
+                unsaferemoveMenu(item);
+            }
+
+            @Override
+            public Set<Menu> getUnmodifiableRelation() {
+                return getMenu();
+            }
+
+            @Override
+            public IManyToManyOwner<Pasto, Menu> getInverse(Menu item) {
+                return item.asMenuPastoRelation();
+            }
+        };
+    }
+
     //endregion
 }

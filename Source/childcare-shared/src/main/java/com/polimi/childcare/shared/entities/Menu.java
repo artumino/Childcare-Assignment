@@ -1,8 +1,11 @@
 package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
+import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
 import com.polimi.childcare.shared.entities.relations.IManyToOne;
 import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import com.sun.xml.internal.ws.api.pipe.PipelineAssembler;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -64,6 +67,14 @@ public class Menu extends TransferableEntity implements Serializable
 
     //region Relazioni
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "MenuPasti",
+            joinColumns = { @JoinColumn(name = "Menu_FK") },
+            inverseJoinColumns = { @JoinColumn(name = "Pasto_FK") }
+    )
+    private Set<Pasto> pasti = new HashSet<>();
+
     //endregion
 
     //region Metodi
@@ -104,6 +115,12 @@ public class Menu extends TransferableEntity implements Serializable
 
     public void removeRicorrenza(DayOfWeekFlag dayOfWeekFlag) { if(isRecurringDuringDayOfWeek(dayOfWeekFlag)) this.setRicorrenza(getRicorrenza() - dayOfWeekFlag.getFlag());}
 
+    public void addPasto(Pasto p) { pasti.add(p); }
+
+    public void removePasto(Pasto p) { pasti.remove(p); }
+
+    public Set<Pasto> getPasti() { return EntitiesHelper.unmodifiableListReturn(pasti); }
+
     @Override
     public int hashCode() { return Objects.hash(ID, Menu.class); }
 
@@ -127,10 +144,15 @@ public class Menu extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO(List<Object> processed) { }
+    public void toDTO(List<Object> processed)
+    {
+        pasti = DTOUtils.iterableToDTO(pasti, processed);
+
+        pasti = this.getPasti();
+    }
 
     @Override
-    public boolean isDTO() { return true; }
+    public boolean isDTO() { return DTOUtils.isDTO(pasti); }
 
     @Override
     public int consistecyHashCode() {
@@ -140,6 +162,36 @@ public class Menu extends TransferableEntity implements Serializable
     //endregion
 
     //region Relations Interfaces
+
+    public IManyToManyOwner<Pasto, Menu> asMenuPastoRelation()
+    {
+        return new IManyToManyOwner<Pasto, Menu>() {
+            @Override
+            public Menu getItem() {
+                return Menu.this;
+            }
+
+            @Override
+            public void addRelation(Pasto item) {
+                addPasto(item);
+            }
+
+            @Override
+            public void removeRelation(Pasto item) {
+                removePasto(item);
+            }
+
+            @Override
+            public Set<Pasto> getUnmodifiableRelation() {
+                return getPasti();
+            }
+
+            @Override
+            public IManyToManyOwned<Menu, Pasto> getInverse(Pasto item) {
+                return item.asPastoMenuRelation();
+            }
+        };
+    }
 
     //endregion
 }
