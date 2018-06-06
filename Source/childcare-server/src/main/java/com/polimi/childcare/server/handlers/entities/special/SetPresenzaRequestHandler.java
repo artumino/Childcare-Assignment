@@ -1,5 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.special;
 
+import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.helper.query.RegistroPresenzeQuery;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
@@ -12,6 +14,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaRequest>
 {
@@ -29,11 +32,14 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
             e.printStackTrace();
         }
 
-        EntitiesHelper.presenzeChangerRecursive(listPresenze, st, lt, request.isUscita());
+        List<RegistroPresenze> removed = new ArrayList<>();
+        EntitiesHelper.presenzeChangerRecursive(listPresenze, st, lt, request.isUscita(), removed);
 
-        //Ho capito come l'avevo pensata :D
+        for(RegistroPresenze r : removed)
+            DatabaseSession.getInstance().delete(r);
 
-        //Aggiornare stati Bambino su DB (dopo utc istant), ritornare ListPresenze con ultimo stato aggiornato, in caso di errore vuota
+        for(RegistroPresenze au : listPresenze)
+            DatabaseSession.getInstance().insertOrUpdate(au);
 
         return new BaseResponse(200);
     }

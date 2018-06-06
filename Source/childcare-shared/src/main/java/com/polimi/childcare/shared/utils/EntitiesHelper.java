@@ -120,8 +120,8 @@ public class EntitiesHelper
         return null;
     }
 
-    //                                                                        DEVE SPARIRE
-    public static void presenzeChangerRecursive(List<RegistroPresenze> list, RegistroPresenze.StatoPresenza nuovo, LocalDateTime dt, boolean isUscita)
+
+    public static void presenzeChangerRecursive(List<RegistroPresenze> list, RegistroPresenze.StatoPresenza nuovo, LocalDateTime dt, boolean isUscita, List<RegistroPresenze> removed)
     {
         RegistroPresenze.StatoPresenza st = null;
 
@@ -142,6 +142,7 @@ public class EntitiesHelper
                     {
                         if(r.getTimeStamp().isAfter(dt))
                         {
+                            removed.add(r);
                             list.remove(r);
 
                             if(r.getGita() == null)
