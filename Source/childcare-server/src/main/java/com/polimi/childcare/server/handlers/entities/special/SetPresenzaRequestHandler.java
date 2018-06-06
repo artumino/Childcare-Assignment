@@ -4,11 +4,11 @@ import com.polimi.childcare.server.helper.query.RegistroPresenzeQuery;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
+import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import java.time.Instant;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,6 +20,9 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
     public BaseResponse processRequest(SetPresenzaRequest request)
     {
         ArrayList<RegistroPresenze> listPresenze = RegistroPresenzeQuery.getStatoPresenzeAtEpochSeconds(request.getUtcInstant(), request.getBambinoId());
+        if(listPresenze.get(0) == null)
+            return new BadRequestResponse.BadRequestResponseWithMessage("Nessuna presenza trovata!");
+
         LocalDateTime lt = Instant.ofEpochMilli(request.getUtcInstant()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         RegistroPresenze.StatoPresenza st = RegistroPresenze.StatoPresenza.Disperso;
         try {
