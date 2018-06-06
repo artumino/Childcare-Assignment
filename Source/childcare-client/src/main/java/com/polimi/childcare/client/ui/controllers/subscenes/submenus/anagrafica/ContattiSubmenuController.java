@@ -11,6 +11,7 @@ import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.client.ui.utils.TableUtils;
 import com.polimi.childcare.shared.entities.Contatto;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredContattoOnlyRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredPediatraRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListContattoResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPediatraResponse;
@@ -31,9 +32,6 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
     private TextField filterField;
     private Button btnUpdate;
     protected Button btnAddContatto;
-
-    //Network
-    protected NetworkOperation pendingOperation;
 
     @Override
     protected Collection<TableColumn<Contatto, ?>> setupColumns()
@@ -105,21 +103,17 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
 
     protected void refreshData()
     {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-
-        this.pendingOperation = new NetworkOperation(
+        //Provo ad aggiornare i dati
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredContattoOnlyRequest(0, 0, false),
                 this::OnContattiResponseRecived,
-                true);
-
-        //Provo ad aggiornare i dati
-        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                true));
     }
 
     public void OnContattiResponseRecived(BaseResponse response)
     {
-        this.pendingOperation = null;
+        networkOperationVault.operationDone(FilteredContattoOnlyRequest.class);
+        networkOperationVault.operationDone(FilteredPediatraRequest.class);
 
         if(!(response instanceof ListContattoResponse) && !(response instanceof ListPediatraResponse))
         {
@@ -154,13 +148,5 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
     protected void OnNewContattoClicked(MouseEvent ignored)
     {
         ShowContattoDetails(new Contatto());
-    }
-
-    @Override
-    public void detached()
-    {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-        this.pendingOperation = null;
     }
 }

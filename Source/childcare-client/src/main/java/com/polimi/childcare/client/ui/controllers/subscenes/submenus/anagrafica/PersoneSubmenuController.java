@@ -51,9 +51,6 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
     private Button btnAddAddetto;
     private Button btnAddGenitore;
 
-    //Network
-    private NetworkOperation pendingOperation;
-
     @Override
     protected List<TableColumn<Persona, ?>> setupColumns()
     {
@@ -187,21 +184,15 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
 
     private void refreshData()
     {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-
-        this.pendingOperation = new NetworkOperation(
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredPersonaRequest(0, 0, false),
                 this::OnPersoneResponseRecived,
-                true);
-
-        //Provo ad aggiornare i dati
-        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                true));
     }
 
     private void OnPersoneResponseRecived(BaseResponse response)
     {
-        this.pendingOperation = null;
+        networkOperationVault.operationDone(FilteredPersonaRequest.class);
 
         if(!(response instanceof ListPersoneResponse))
         {
@@ -275,13 +266,5 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void detached()
-    {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-        this.pendingOperation = null;
     }
 }

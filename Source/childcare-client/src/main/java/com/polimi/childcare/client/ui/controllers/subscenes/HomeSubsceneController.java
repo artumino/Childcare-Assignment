@@ -1,7 +1,6 @@
 package com.polimi.childcare.client.ui.controllers.subscenes;
 
 import com.jfoenix.controls.JFXButton;
-import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
@@ -36,8 +35,10 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HomeSubsceneController implements ISubSceneController
+public class HomeSubsceneController extends NetworkedSubScene implements ISubSceneController
 {
+    public static final String FXML_PATH = "fxml/HomeScene.fxml";
+
     private Parent root;
 
     @FXML private AnchorPane rootPane;
@@ -152,12 +153,12 @@ public class HomeSubsceneController implements ISubSceneController
     private void RefreshData()
     {
         //Provo ad aggiornare i dati
-        ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredBambiniRequest(0, 0, false),
                 this::OnBambiniResponseRecived,
                 true));
 
-        ClientNetworkManager.getInstance().submitOperation(new NetworkOperation(
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredLastPresenzaRequest(0, 0, false),
                 this::OnPresenzeRecived,
                 true));
@@ -187,6 +188,7 @@ public class HomeSubsceneController implements ISubSceneController
 
     private void OnBambiniResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredBambiniRequest.class);
         if(!(response instanceof ListBambiniResponse))
         {
             StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));
@@ -203,6 +205,7 @@ public class HomeSubsceneController implements ISubSceneController
 
     private void OnPresenzeRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredLastPresenzaRequest.class);
         if(!(response instanceof ListRegistroPresenzeResponse))
         {
             StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nell'aggiornare i dati: " + (response != null ? "Bad Request" : "Risposta Nulla"));

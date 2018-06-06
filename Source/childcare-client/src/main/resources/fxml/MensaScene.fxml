@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="637.0" prefWidth="923.0" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.subscenes.MensaSubsceneController">
+   <children>
+      <SplitPane dividerPositions="0.6862106406080347" prefHeight="637.0" prefWidth="923.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TableView fx:id="tableMenu" prefHeight="602.0" prefWidth="883.0" stylesheets="@stylesheets/material-fx-v0_3.css" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="48.0" prefWidth="628.0" style="-fx-background-color: #999;" styleClass="toolbar-colored" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <items>
+                        <TextField fx:id="txtFiltroMenu" nodeOrientation="LEFT_TO_RIGHT" promptText="Filtra..." style="-fx-background-color: #ccc;" />
+                     </items>
+                  </ToolBar>
+                  <JFXButton fx:id="btnRefresh" layoutX="2.0" layoutY="4.0" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Aggiorna" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="4.0" />
+                  <AnchorPane layoutX="20.0" layoutY="20.0" maxHeight="48.0" prefHeight="48.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <ToolBar prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #bbb;" styleClass="toolbar-colored" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXButton fx:id="btnAddMenu" layoutX="12.0" layoutY="14.0" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Aggiungi Menu" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+               <children>
+                  <TableView fx:id="tablePasti" prefHeight="265.0" prefWidth="283.0" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <AnchorPane maxHeight="48.0" prefHeight="48.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ToolBar prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #999;" styleClass="toolbar-colored" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <items>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 12pt; -fx-font-weight: bold;" styleClass="text" text="Pasti:" />
+                           </items>
+                        </ToolBar>
+                        <TextField fx:id="txtFiltroPasti" nodeOrientation="LEFT_TO_RIGHT" promptText="Filtra..." style="-fx-background-color: #ccc;" AnchorPane.bottomAnchor="6.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="6.0" />
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane layoutX="10.0" layoutY="10.0" maxHeight="48.0" prefHeight="48.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                     <children>
+                        <ToolBar prefHeight="48.0" prefWidth="200.0" style="-fx-background-color: #bbb;" styleClass="toolbar-colored" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXButton fx:id="btnAddPasto" layoutX="22.0" layoutY="24.0" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Aggiungi Pasto" AnchorPane.bottomAnchor="4.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+                     </children>
+                  </AnchorPane>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

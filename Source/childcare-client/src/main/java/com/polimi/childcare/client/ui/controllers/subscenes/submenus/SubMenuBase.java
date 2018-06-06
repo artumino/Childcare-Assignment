@@ -1,13 +1,14 @@
 package com.polimi.childcare.client.ui.controllers.subscenes.submenus;
 
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.subscenes.NetworkedSubScene;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
-public abstract class SubMenuBase implements ISubSceneController
+public abstract class SubMenuBase extends NetworkedSubScene implements ISubSceneController
 {
     private Parent root;
 

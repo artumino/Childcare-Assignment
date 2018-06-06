@@ -18,16 +18,10 @@ public class PediatriSubmenuController extends ContattiSubmenuController
     @Override
     protected void refreshData()
     {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-
-        this.pendingOperation = new NetworkOperation(
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredPediatraRequest(0, 0, false),
                 this::OnContattiResponseRecived,
-                true);
-
-        //Provo ad aggiornare i dati
-        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                true));
     }
 
     @Override
