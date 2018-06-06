@@ -3,7 +3,9 @@ package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica
 import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
+import com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditContattoStageController;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.client.ui.utils.TableUtils;
@@ -18,7 +20,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.util.*;
 
 public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
@@ -26,6 +30,7 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
     //Generated
     private TextField filterField;
     private Button btnUpdate;
+    protected Button btnAddContatto;
 
     //Network
     protected NetworkOperation pendingOperation;
@@ -44,6 +49,11 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
         descrizione.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getDescrizione()));
         indirizzo.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getIndirizzo()));
         telefoni.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(TableUtils.iterableToString(cellData.getValue().getTelefoni())));
+
+        tableView.setOnMousePressed(click -> {
+            if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null)
+                ShowContattoDetails(tableView.getSelectionModel().getSelectedItem());
+        });
 
         return Arrays.asList(nome, cognome, descrizione, indirizzo, telefoni);
     }
@@ -66,6 +76,13 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
             btnUpdate.setMaxWidth(Double.MAX_VALUE);
             btnUpdate.setOnMousePressed(event -> refreshData());
         }
+
+        if(btnAddContatto == null)
+        {
+            btnAddContatto = new JFXButton("Aggiungi Contatto");
+            btnAddContatto.setMaxWidth(Double.MAX_VALUE);
+            btnAddContatto.setOnMousePressed(this::OnNewContattoClicked);
+        }
     }
 
     @Override
@@ -77,7 +94,7 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
     @Override
     protected Collection<Node> getShownControlElements()
     {
-        return Collections.singletonList(btnUpdate);
+        return Arrays.asList(btnUpdate, btnAddContatto);
     }
 
     @Override
@@ -117,6 +134,26 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
             recivedContatti = new ArrayList<>(((ListPediatraResponse) response).getPayload());
         filteredList.updateDataSet(recivedContatti);
         tableView.refresh();
+    }
+
+    protected void ShowContattoDetails(Contatto contatto)
+    {
+        try {
+            ChildcareBaseStageController editContattoController = new ChildcareBaseStageController();
+            editContattoController.setContentScene(getClass().getClassLoader().getResource(EditContattoStageController.FXML_PATH), contatto);
+            //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            editContattoController.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            editContattoController.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void OnNewContattoClicked(MouseEvent ignored)
+    {
+        ShowContattoDetails(new Contatto());
     }
 
     @Override

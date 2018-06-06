@@ -46,18 +46,28 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
             return new BadRequestResponse.BadRequestResponseWithMessage("Empty request");
 
         final BaseResponse[] response = new BaseResponse[1];
-        Throwable exception = DatabaseSession.getInstance().execute((session) ->
+        Throwable exception;
+
+        //In questo caso usando le lambda exception il try & catch fa il catch solo delle espressioni che vanno in errore nella lambda expression,
+        //ciò che invece scatena eccezioni sul DB scatena un altro try&catch che ritorna come risultato di execute
+        try {
+            exception = DatabaseSession.getInstance().execute((session) ->
+            {
+                IT dbEntity = session.getByID(getQueryClass(), request.getEntity().getID(), true);
+
+                //Faccio i controlli prima di eseguire la query di set
+                //Ritorno una request modificata con i dati opportuni per non avere problemi con il set di request.getEntity()
+                doPreSetChecks(session, request, dbEntity);
+
+                //Provo ad eseguire il set dopo che ho fatto i mei check
+                response[0] = requestSet(session, request.getEntity(), dbEntity, request.getOldHashCode(), request.isToDelete());
+                return !(response[0] instanceof BadRequestResponse);
+            });
+        }
+        catch (Throwable ex)
         {
-            IT dbEntity = session.getByID(getQueryClass(), request.getEntity().getID(), true);
-
-            //Faccio i controlli prima di eseguire la query di set
-            //Ritorno una request modificata con i dati opportuni per non avere problemi con il set di request.getEntity()
-            doPreSetChecks(session, request, dbEntity);
-
-            //Provo ad eseguire il set dopo che ho fatto i mei check
-            response[0] = requestSet(session, request.getEntity(), dbEntity, request.getOldHashCode(), request.isToDelete());
-            return !(response[0] instanceof BadRequestResponse);
-        });
+            exception = ex;
+        }
 
         if(exception != null)
             return new BadRequestResponse.BadRequestResponseWithMessage(exception.getMessage());

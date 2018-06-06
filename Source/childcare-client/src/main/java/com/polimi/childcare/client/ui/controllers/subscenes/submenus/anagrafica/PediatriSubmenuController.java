@@ -9,6 +9,7 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredPediatra
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.input.MouseEvent;
 
 import java.util.Collection;
 
@@ -27,5 +28,18 @@ public class PediatriSubmenuController extends ContattiSubmenuController
 
         //Provo ad aggiornare i dati
         ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+    }
+
+    @Override
+    protected void setupControlNodes() {
+        super.setupControlNodes();
+
+        if(btnAddContatto != null)
+            btnAddContatto.setText("Aggiungi Pediatra");
+    }
+
+    @Override
+    protected void OnNewContattoClicked(MouseEvent ignored) {
+        ShowContattoDetails(new Pediatra());
     }
 }

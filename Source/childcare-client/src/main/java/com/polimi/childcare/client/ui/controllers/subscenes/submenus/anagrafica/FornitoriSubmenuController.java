@@ -3,7 +3,9 @@ package com.polimi.childcare.client.ui.controllers.subscenes.submenus.anagrafica
 import com.jfoenix.controls.JFXButton;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
+import com.polimi.childcare.client.ui.controllers.stages.anagrafica.EditFornitoreStageController;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.client.ui.utils.TableUtils;
@@ -18,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,6 +30,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
     //Generated
     private TextField filterField;
     private Button btnUpdate;
+    private Button btnAddFornitore;
 
     //Network
     private NetworkOperation pendingOperation;
@@ -50,6 +54,11 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
         telefoni.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(TableUtils.iterableToString(cellData.getValue().getTelefoni())));
         fax.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(TableUtils.iterableToString(cellData.getValue().getFax())));
 
+        tableView.setOnMousePressed(click -> {
+            if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null)
+                ShowFornitoreDetails(tableView.getSelectionModel().getSelectedItem());
+        });
+
         return Arrays.asList(ragioneSociale, partitaIVA, registroImprese, sedeLegale, iban ,telefoni ,fax);
     }
 
@@ -71,6 +80,13 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
             btnUpdate.setMaxWidth(Double.MAX_VALUE);
             btnUpdate.setOnMousePressed(event -> refreshData());
         }
+
+        if(btnAddFornitore == null)
+        {
+            btnAddFornitore = new JFXButton("Aggiungi Fornitore");
+            btnAddFornitore.setMaxWidth(Double.MAX_VALUE);
+            btnAddFornitore.setOnMousePressed(click -> ShowFornitoreDetails(new Fornitore()));
+        }
     }
 
     @Override
@@ -82,7 +98,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
     @Override
     protected Collection<Node> getShownControlElements()
     {
-        return Collections.singletonList(btnUpdate);
+        return Arrays.asList(btnUpdate, btnAddFornitore);
     }
 
     @Override
@@ -118,6 +134,20 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
         ListFornitoriResponse fornitoriResponse = (ListFornitoriResponse)response;
         filteredList.updateDataSet(fornitoriResponse.getPayload());
         tableView.refresh();
+    }
+
+    protected void ShowFornitoreDetails(Fornitore fornitore)
+    {
+        try {
+            ChildcareBaseStageController editFornitoreController = new ChildcareBaseStageController();
+            editFornitoreController.setContentScene(getClass().getClassLoader().getResource(EditFornitoreStageController.FXML_PATH), fornitore);
+            editFornitoreController.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            editFornitoreController.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

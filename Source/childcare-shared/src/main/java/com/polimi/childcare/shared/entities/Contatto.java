@@ -21,7 +21,7 @@ public class Contatto extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(length = 45)   //Di default è nullable
+    @Column(length = 250)   //Di default è nullable
     private String Descrizione;
 
     @Column(nullable = false, length = 25)

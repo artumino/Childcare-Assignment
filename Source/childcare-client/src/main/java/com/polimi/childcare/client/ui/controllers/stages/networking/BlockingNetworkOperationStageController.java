@@ -6,6 +6,7 @@ import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -44,10 +45,12 @@ public class BlockingNetworkOperationStageController implements ISubSceneControl
             @Override
             public void run()
             {
-                if(txtMessage.getText().endsWith("..."))
-                    txtMessage.setText(startingText);
-                else
-                    txtMessage.setText(txtMessage.getText() + ".");
+                Platform.runLater(() -> {
+                    if(txtMessage.getText().endsWith("..."))
+                        txtMessage.setText(startingText);
+                    else
+                        txtMessage.setText(txtMessage.getText() + ".");
+                });
             }
         }, 0, 1000);
     }

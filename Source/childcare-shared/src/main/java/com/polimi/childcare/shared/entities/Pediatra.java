@@ -14,7 +14,7 @@ public class Pediatra extends Contatto
     //region Relazioni
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pediatra")
-    private Set<Bambino> bambini = new HashSet<>();
+    private Set<Bambino> bambiniCurati = new HashSet<>();
 
     //endregion
 
@@ -26,11 +26,11 @@ public class Pediatra extends Contatto
         super(descrizione, nome, cognome, indirizzo);
     }
 
-    public void unsafeAddBambino(Bambino b) { bambini.add(b); }
+    public void unsafeAddBambino(Bambino b) { bambiniCurati.add(b); }
 
-    public void unsafeRemoveBambino(Bambino b) { bambini.remove(b); }
+    public void unsafeRemoveBambino(Bambino b) { bambiniCurati.remove(b); }
 
-    public Set<Bambino> getBambiniCurati() { return EntitiesHelper.unmodifiableListReturn(bambini); }
+    public Set<Bambino> getBambiniCurati() { return EntitiesHelper.unmodifiableListReturn(bambiniCurati); }
 
     @Override
     public boolean equals(Object o) {
@@ -54,15 +54,15 @@ public class Pediatra extends Contatto
     @Override
     public void toDTO(List<Object> processed)
     {
-        bambini = DTOUtils.iterableToDTO(bambini, processed);
-        bambini = getBambini();
+        bambiniCurati = DTOUtils.iterableToDTO(bambiniCurati, processed);
+        bambiniCurati = getBambiniCurati();
 
         super.toDTO(processed);
     }
 
     @Override
     public boolean isDTO() {
-        return super.isDTO() && DTOUtils.isDTO(bambini);
+        return super.isDTO() && DTOUtils.isDTO(bambiniCurati);
     }
 
     //endregion

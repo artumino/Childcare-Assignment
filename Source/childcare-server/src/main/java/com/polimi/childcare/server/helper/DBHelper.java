@@ -27,6 +27,9 @@ public class DBHelper
 
     public static <T> void recursiveObjectInitialize(T object)
     {
+        if(object == null)
+            return;
+
         //Ottengo tutti i possibili field
         List<Field> fieldList = new ArrayList<>(Arrays.asList(object.getClass().getDeclaredFields()));
 

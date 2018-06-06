@@ -3,10 +3,12 @@ package com.polimi.childcare.client.ui.controllers.stages.anagrafica;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.constants.ToolbarButtons;
+import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controllers.stages.generic.ReazioniAvverseStage;
+import com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -15,6 +17,7 @@ import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaR
 import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetPersonaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
+import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -146,21 +149,22 @@ public class EditPersona implements ISubSceneController
                     if(result.isPresent() && result.get().equals(ButtonType.YES))
                     {
                         //Confermata la cancellazione
-                        this.pendingOperation = new NetworkOperation(new SetPersonaRequest(linkedPersona, true, linkedPersona.consistecyHashCode()),
-                                (response -> {
-                                    if(!(response instanceof BadRequestResponse))
-                                    {
-                                        stageController.close();
-                                        return;
-                                    }
+                        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetPersonaRequest(linkedPersona, true, linkedPersona.consistecyHashCode()),null, true), (resultArgs) -> {
+                           if(resultArgs != null && resultArgs.length > 0 && resultArgs[0] instanceof BaseResponse)
+                           {
+                               BaseResponse response = (BaseResponse)resultArgs[0];
+                               if(!(response instanceof BadRequestResponse))
+                               {
+                                   stageController.close();
+                                   return;
+                               }
 
-                                    if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
-                                        StageUtils.ShowAlert(Alert.AlertType.ERROR, ((BadRequestResponse.BadRequestResponseWithMessage)response).getMessage());
-                                    else
-                                        StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nella cancellazione della persona");
-
-                                }), true);
-                        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                               if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
+                                   StageUtils.ShowAlert(Alert.AlertType.ERROR, ((BadRequestResponse.BadRequestResponseWithMessage)response).getMessage());
+                               else
+                                   StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nella cancellazione della persona");
+                           }
+                        });
                     }
                 }
             });
@@ -378,8 +382,9 @@ public class EditPersona implements ISubSceneController
             layoutTabPane.getTabs().remove(tabBambini);
         }
 
-        for(Persona.ESesso sesso : Persona.ESesso.values())
-            cbSesso.getItems().add(sesso.name());
+        if(cbSesso.getItems().size() == 0)
+            for(Persona.ESesso sesso : Persona.ESesso.values())
+                cbSesso.getItems().add(sesso.name());
     }
 
     private void printPersonaDetails()
@@ -450,6 +455,20 @@ public class EditPersona implements ISubSceneController
         }
     }
 
+    private void ShowBlockingNetworkOperationStage(NetworkOperation networkOperation, BaseStageController.OnStageClosingCallback callback)
+    {
+        try {
+            ChildcareBaseStageController blockingOperationController = new ChildcareBaseStageController();
+            blockingOperationController.setContentScene(getClass().getClassLoader().getResource(BlockingNetworkOperationStageController.FXML_PATH), networkOperation);
+            blockingOperationController.initOwner(getRoot().getScene().getWindow());
+            blockingOperationController.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
+            blockingOperationController.setOnClosingCallback(callback);
+            blockingOperationController.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void SaveClicked(MouseEvent ignored)
     {
         if(pendingOperation != null)
@@ -508,44 +527,45 @@ public class EditPersona implements ISubSceneController
         }
 
         //Manda richiesta
-        this.pendingOperation = new NetworkOperation(new SetPersonaRequest(newPersona, false, linkedPersona.consistecyHashCode()),
-                response -> {
-            this.pendingOperation = null;
-            String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
-            if(response.getCode() != 200 && !(response instanceof ListResponse))
+        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetPersonaRequest(newPersona, false, linkedPersona.consistecyHashCode()), null, true), returnArgs ->
+        {
+            if(returnArgs != null && returnArgs.length > 0 && returnArgs[0] instanceof BaseResponse)
             {
+                BaseResponse response = (BaseResponse)returnArgs[0];
+                String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
+                if(response.getCode() != 200 && !(response instanceof ListResponse))
+                {
 
-                if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
-                    errorMessage = ((BadRequestResponse.BadRequestResponseWithMessage) response).getMessage();
+                    if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
+                        errorMessage = ((BadRequestResponse.BadRequestResponseWithMessage) response).getMessage();
 
-                StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
-                return;
-            }
-
-            if(response instanceof ListResponse)
-            {
-                if(((ListResponse) response).getPayload() == null || ((ListResponse) response).getPayload().size() == 0) {
                     StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
                     return;
                 }
 
-                StageUtils.ShowAlert(Alert.AlertType.INFORMATION, "La modifica non è stata effettuata perchè i dati non sono consistenti, rieffetuare le modifiche...");
+                if(response instanceof ListResponse)
+                {
+                    if(((ListResponse) response).getPayload() == null || ((ListResponse) response).getPayload().size() == 0) {
+                        StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
+                        return;
+                    }
 
-                if(linkedPersona instanceof Bambino)
-                    this.linkedPersona = ((ListResponse<Bambino>) response).getPayload().get(0);
-                else if(linkedPersona instanceof Genitore)
-                    this.linkedPersona = ((ListResponse<Genitore>) response).getPayload().get(0);
-                else if(linkedPersona instanceof Addetto)
-                    this.linkedPersona = ((ListResponse<Addetto>) response).getPayload().get(0);
+                    StageUtils.ShowAlert(Alert.AlertType.INFORMATION, "La modifica non è stata effettuata perchè i dati non sono consistenti, rieffetuare le modifiche...");
 
-                updateData();
-                return;
+                    if(linkedPersona instanceof Bambino)
+                        this.linkedPersona = ((ListResponse<Bambino>) response).getPayload().get(0);
+                    else if(linkedPersona instanceof Genitore)
+                        this.linkedPersona = ((ListResponse<Genitore>) response).getPayload().get(0);
+                    else if(linkedPersona instanceof Addetto)
+                        this.linkedPersona = ((ListResponse<Addetto>) response).getPayload().get(0);
+
+                    updateData();
+                    return;
+                }
+
+                stageController.requestClose();
             }
-
-            stageController.requestClose();
-
-        }, true);
-        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+        });
     }
 
     @Override
