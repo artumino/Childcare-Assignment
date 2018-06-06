@@ -64,20 +64,20 @@ public class EntitiesHelper
 
     /**
      * Metodo per cambiare lo stato della presenza
-     * @param lista
+     * @param statoPrecedente
      * @param dt
      * @param isUscita
      * @return
      * @throws Exception
      */
-    public static RegistroPresenze.StatoPresenza presenzeChanger(RegistroPresenze lista, LocalDateTime dt, boolean isUscita) throws Exception
+    public static RegistroPresenze.StatoPresenza presenzeChanger(RegistroPresenze statoPrecedente, LocalDateTime dt, boolean isUscita) throws Exception
     {
-        if(lista.getTimeStamp().isAfter(dt))
+        if(statoPrecedente.getTimeStamp().isAfter(dt))
             throw new Exception("Formato Errato!");
 
-        else if(lista.getDate().equals(dt.toLocalDate()))
+        else if(statoPrecedente.getDate().equals(dt.toLocalDate()))
         {
-            if(lista.getStato() == RegistroPresenze.StatoPresenza.Presente)
+            if(statoPrecedente.getStato() == RegistroPresenze.StatoPresenza.Presente)
             {
                 if (isUscita)
                 {
@@ -87,7 +87,7 @@ public class EntitiesHelper
                         return RegistroPresenze.StatoPresenza.UscitoInAnticipo;
                 }
             }
-            else if(lista.getStato() == RegistroPresenze.StatoPresenza.Uscito || lista.getStato() == RegistroPresenze.StatoPresenza.UscitoInAnticipo)
+            else if(statoPrecedente.getStato() == RegistroPresenze.StatoPresenza.Uscito || statoPrecedente.getStato() == RegistroPresenze.StatoPresenza.UscitoInAnticipo)
                 return null;
 
 
@@ -120,6 +120,7 @@ public class EntitiesHelper
         return null;
     }
 
+    //                                                                        DEVE SPARIRE
     public static void presenzeChangerRecursive(List<RegistroPresenze> list, RegistroPresenze.StatoPresenza nuovo, LocalDateTime dt, boolean isUscita)
     {
         RegistroPresenze.StatoPresenza st = null;

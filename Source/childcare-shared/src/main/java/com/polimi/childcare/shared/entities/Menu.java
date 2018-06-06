@@ -6,12 +6,45 @@ import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "Menu")
 public class Menu extends TransferableEntity implements Serializable
 {
+    /**
+     * Enum comodo per impostare la ricorrenza del menu
+     */
+    public enum DayOfWeekFlag
+    {
+        Lun(1, DayOfWeek.MONDAY),
+        Mar(2, DayOfWeek.TUESDAY),
+        Mer(4, DayOfWeek.WEDNESDAY),
+        Gio(8, DayOfWeek.THURSDAY),
+        Ven(16, DayOfWeek.FRIDAY),
+        Sab(32, DayOfWeek.SATURDAY),
+        Dom(64, DayOfWeek.SUNDAY);
+
+        private int flag;
+        private DayOfWeek dayOfWeek;
+
+        DayOfWeekFlag(int flag, java.time.DayOfWeek dayOfWeek)
+        {
+            this.flag = flag;
+            this.dayOfWeek = dayOfWeek;
+        }
+
+        public int getFlag() {
+            return flag;
+        }
+
+        public DayOfWeek getDayOfWeek() {
+            return dayOfWeek;
+        }
+    }
     //region Attributi
 
     @Id
@@ -73,6 +106,11 @@ public class Menu extends TransferableEntity implements Serializable
     public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
 
     public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
+
+    public boolean isRecurringDuringDayOfWeek(DayOfWeekFlag dayOfWeekFlag) { return (this.getRicorrenza() & dayOfWeekFlag.getFlag()) != 0; }
+
+    public void addRicorrenza(DayOfWeekFlag dayOfWeekFlag) { this.setRicorrenza(getRicorrenza() | dayOfWeekFlag.getFlag());}
+    public void removeRicorrenza(DayOfWeekFlag dayOfWeekFlag) { if(isRecurringDuringDayOfWeek(dayOfWeekFlag)) this.setRicorrenza(getRicorrenza() - dayOfWeekFlag.getFlag());}
 
     @Override
     public int hashCode() { return Objects.hash(ID, Menu.class); }

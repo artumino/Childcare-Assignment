@@ -410,7 +410,7 @@ public class EditPersona implements ISubSceneController
             if(linkedPersona.getSesso() != null)
                 cbSesso.getSelectionModel().select(linkedPersona.getSesso().name());
             else
-                cbSesso.getSelectionModel().select(2);
+                cbSesso.getSelectionModel().select(Persona.ESesso.Altro.name());
             dpDataNascita.setValue(linkedPersona.getDataNascita());
         }
     }
@@ -445,7 +445,7 @@ public class EditPersona implements ISubSceneController
             ChildcareBaseStageController showReazioniAvverse = new ChildcareBaseStageController();
             showReazioniAvverse.setContentScene(getClass().getClassLoader().getResource(ReazioniAvverseStage.FXML_PATH), linkedPersona);
             showReazioniAvverse.initOwner(getRoot().getScene().getWindow());
-            showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
+            //showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
             showReazioniAvverse.setOnClosingCallback((returnArgs) -> {
                 //Niente
             });
