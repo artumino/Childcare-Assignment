@@ -9,7 +9,6 @@
     <node x="11307.0" y="504.0">com.polimi.childcare.server.handlers.entities.getters.FilteredPianoViaggiRequestHandler</node>
     <node x="3311.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.GitaRequestHandlerSet</node>
     <node x="7014.0" y="504.0">com.polimi.childcare.server.handlers.entities.special.FilteredContattoOnlyRequestHandler</node>
-    <node x="10148.0" y="504.0">com.polimi.childcare.server.handlers.entities.getters.FilteredQuantitaPastoRequestHandler</node>
     <node x="6623.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.MenuRequestHandlerSet</node>
     <node x="3692.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.MezzoDiTrasportoRequestHandlerSet</node>
     <node x="11707.0" y="504.0">com.polimi.childcare.server.handlers.entities.getters.FilteredLastPresenzaRequestHandler</node>
@@ -29,7 +28,6 @@
     <node x="12490.0" y="504.0">com.polimi.childcare.server.handlers.entities.getters.FilteredReazioneAvversaRequestHandler</node>
     <node x="5816.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.GruppoRequestHandlerSet</node>
     <node x="2888.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.PianoViaggiRequestHandlerSet</node>
-    <node x="2453.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.QuantitaPastoRequestHandlerSet</node>
     <node x="5411.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.GenitoreRequestHandlerSet</node>
     <node x="8215.0" y="504.0">com.polimi.childcare.server.handlers.entities.getters.FilteredFornitoreRequestHandler</node>
     <node x="850.0" y="504.0">com.polimi.childcare.server.handlers.entities.setters.AddettoRequestHandlerSet</node>
@@ -226,12 +224,6 @@
       <point x="10808.552631578947" y="454.0" />
       <point x="69.05263157894751" y="25.5" />
     </edge>
-    <edge source="com.polimi.childcare.server.handlers.entities.getters.FilteredQuantitaPastoRequestHandler" target="com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler">
-      <point x="0.0" y="-25.5" />
-      <point x="10344.0" y="484.0" />
-      <point x="10722.236842105263" y="484.0" />
-      <point x="-17.26315789473665" y="25.5" />
-    </edge>
     <edge source="com.polimi.childcare.server.handlers.entities.setters.GitaRequestHandlerSet" target="com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler">
       <point x="0.0" y="-25.5" />
       <point x="0.0" y="25.5" />
@@ -253,12 +245,6 @@
       <point x="9948.0" y="474.0" />
       <point x="10704.973684210527" y="474.0" />
       <point x="-34.526315789473756" y="25.5" />
-    </edge>
-    <edge source="com.polimi.childcare.server.handlers.entities.setters.QuantitaPastoRequestHandlerSet" target="com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler">
-      <point x="0.0" y="-25.5" />
-      <point x="2660.5" y="474.0" />
-      <point x="3443.029411764706" y="474.0" />
-      <point x="-48.470588235294144" y="25.5" />
     </edge>
     <edge source="com.polimi.childcare.server.handlers.entities.setters.DiagnosiRequestHandlerSet" target="com.polimi.childcare.server.handlers.entities.setters.GenericSetEntityRequestHandler">
       <point x="0.0" y="-25.5" />

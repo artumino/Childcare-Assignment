@@ -37,7 +37,6 @@
         <mapping class="com.polimi.childcare.shared.entities.RegistroPresenze"/>
         <mapping class="com.polimi.childcare.shared.entities.PianoViaggi"/>
         <mapping class="com.polimi.childcare.shared.entities.Diagnosi"/>
-        <mapping class="com.polimi.childcare.shared.entities.QuantitaPasto"/>
 
     </session-factory>
 </hibernate-configuration>

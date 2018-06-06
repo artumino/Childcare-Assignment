@@ -64,9 +64,6 @@ public class Menu extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "menu")
-    private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
-
     //endregion
 
     //region Metodi
@@ -101,15 +98,10 @@ public class Menu extends TransferableEntity implements Serializable
 
     public void setNome(String nome) { Nome = nome; }
 
-    public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
-
-    public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
-
-    public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
-
     public boolean isRecurringDuringDayOfWeek(DayOfWeekFlag dayOfWeekFlag) { return (this.getRicorrenza() & dayOfWeekFlag.getFlag()) != 0; }
 
     public void addRicorrenza(DayOfWeekFlag dayOfWeekFlag) { this.setRicorrenza(getRicorrenza() | dayOfWeekFlag.getFlag());}
+
     public void removeRicorrenza(DayOfWeekFlag dayOfWeekFlag) { if(isRecurringDuringDayOfWeek(dayOfWeekFlag)) this.setRicorrenza(getRicorrenza() - dayOfWeekFlag.getFlag());}
 
     @Override
@@ -135,17 +127,10 @@ public class Menu extends TransferableEntity implements Serializable
      * ATTENZIONE: Questo metodo distrugge il REP della classe(che diventa solo una struttura per scambiare dati)
      */
     @Override
-    public void toDTO(List<Object> processed)
-    {
-        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto, processed);
-        quantitaPasto = this.getQuantitaPasto();
-    }
+    public void toDTO(List<Object> processed) { }
 
     @Override
-    public boolean isDTO()
-    {
-        return DTOUtils.isDTO(quantitaPasto);
-    }
+    public boolean isDTO() { return true; }
 
     @Override
     public int consistecyHashCode() {
@@ -155,36 +140,6 @@ public class Menu extends TransferableEntity implements Serializable
     //endregion
 
     //region Relations Interfaces
-
-    public IOneToMany<QuantitaPasto, Menu> asMenuQuantitaPastiRelation()
-    {
-        return new IOneToMany<QuantitaPasto, Menu>() {
-            @Override
-            public Menu getItem() {
-                return Menu.this;
-            }
-
-            @Override
-            public void unsafeAddRelation(QuantitaPasto item) {
-                unsafeAddQuantitaPasto(item);
-            }
-
-            @Override
-            public void unsafeRemoveRelation(QuantitaPasto item) {
-                unsafeRemoveQuantitaPasto(item);
-            }
-
-            @Override
-            public Set<QuantitaPasto> getUnmodifiableRelation() {
-                return getQuantitaPasto();
-            }
-
-            @Override
-            public IManyToOne<Menu, QuantitaPasto> getInverse(QuantitaPasto item) {
-                return item.asQuantitaPastiMenuRelation();
-            }
-        };
-    }
 
     //endregion
 }

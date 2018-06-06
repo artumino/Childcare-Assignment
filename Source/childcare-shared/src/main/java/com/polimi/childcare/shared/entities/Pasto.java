@@ -42,9 +42,6 @@ public class Pasto extends TransferableEntity implements Serializable
     )
     private Set<ReazioneAvversa> reazione = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "pasto")
-    private Set<QuantitaPasto> quantitaPasto = new HashSet<>();
-
     //endregion
 
     //region Metodi
@@ -90,13 +87,7 @@ public class Pasto extends TransferableEntity implements Serializable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public void unsafeAddQuantitaPasto(QuantitaPasto q) { quantitaPasto.add(q); }
-
-    public void unsafeRemoveQuantitaPasto(QuantitaPasto q) { quantitaPasto.remove(q); }
-
     public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }
-
-    public Set<QuantitaPasto> getQuantitaPasto() { return EntitiesHelper.unmodifiableListReturn(quantitaPasto); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Pasto.class); }
@@ -127,16 +118,14 @@ public class Pasto extends TransferableEntity implements Serializable
         //Aggiorna figli
         fornitore = DTOUtils.objectToDTO(fornitore, processed);
         reazione = DTOUtils.iterableToDTO(reazione, processed);
-        quantitaPasto = DTOUtils.iterableToDTO(quantitaPasto, processed);
 
         reazione = this.getReazione();
-        quantitaPasto = this.getQuantitaPasto();
     }
 
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(fornitore) && DTOUtils.isDTO(reazione) && DTOUtils.isDTO(quantitaPasto);
+        return DTOUtils.isDTO(fornitore) && DTOUtils.isDTO(reazione);
     }
 
     @Override
@@ -202,37 +191,5 @@ public class Pasto extends TransferableEntity implements Serializable
             }
         };
     }
-
-    public IOneToMany<QuantitaPasto, Pasto> asPastoQuantitaPastiRelation()
-    {
-        return new IOneToMany<QuantitaPasto, Pasto>() {
-            @Override
-            public Pasto getItem() {
-                return Pasto.this;
-            }
-
-            @Override
-            public void unsafeAddRelation(QuantitaPasto item) {
-                unsafeAddQuantitaPasto(item);
-            }
-
-            @Override
-            public void unsafeRemoveRelation(QuantitaPasto item) {
-                unsafeRemoveQuantitaPasto(item);
-            }
-
-            @Override
-            public Set<QuantitaPasto> getUnmodifiableRelation() {
-                return getQuantitaPasto();
-            }
-
-            @Override
-            public IManyToOne<Pasto, QuantitaPasto> getInverse(QuantitaPasto item) {
-                return item.asQuantitaPastiPastoRelation();
-            }
-        };
-    }
-
-
     //endregion
 }

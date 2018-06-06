@@ -5,13 +5,11 @@
   <nodes>
     <node x="14528.0" y="471.0">com.polimi.childcare.shared.networking.requests.setters.SetGruppoRequest</node>
     <node x="3646.0" y="1019.0">com.polimi.childcare.shared.networking.responses.lists.ListReazioneAvversaResponse</node>
-    <node x="13459.0" y="471.0">com.polimi.childcare.shared.networking.requests.setters.SetQuantitaPastoRequest</node>
     <node x="2892.0" y="735.0">com.polimi.childcare.shared.networking.responses.lists.ListResponse</node>
     <node x="3775.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredFornitoriRequest</node>
     <node x="1960.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest</node>
     <node x="15177.5" y="89.0">com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest</node>
     <node x="15471.0" y="471.0">com.polimi.childcare.shared.networking.requests.setters.SetGenitoreRequest</node>
-    <node x="9092.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredQuantitaPastoRequest</node>
     <node x="15148.0" y="471.0">com.polimi.childcare.shared.networking.requests.setters.SetFornitoreRequest</node>
     <node x="0.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredContattoOnlyRequest</node>
     <node x="1683.9999999999998" y="1019.0">com.polimi.childcare.shared.networking.responses.lists.SerializableListResponse</node>
@@ -20,7 +18,6 @@
     <node x="306.0" y="1019.0">com.polimi.childcare.shared.networking.responses.lists.ListMezzoDiTrasportoResponse</node>
     <node x="5757.0" y="155.5">com.polimi.childcare.shared.networking.requests.NullRequest</node>
     <node x="17696.0" y="471.0">com.polimi.childcare.shared.networking.requests.setters.SetContattoRequest</node>
-    <node x="3010.0" y="1019.0">com.polimi.childcare.shared.networking.responses.lists.ListQuantitaPastoResponse</node>
     <node x="2536.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredPediatraRequest</node>
     <node x="9806.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredGruppoRequest</node>
     <node x="10967.0" y="493.0">com.polimi.childcare.shared.networking.requests.filtered.FilteredMezzoDiTrasportoRequest</node>
@@ -95,12 +92,6 @@
       <point x="2929.7361111111113" y="889.0" />
       <point x="-66.76388888888869" y="37.0" />
     </edge>
-    <edge source="com.polimi.childcare.shared.networking.responses.lists.ListQuantitaPastoResponse" target="com.polimi.childcare.shared.networking.responses.lists.ListResponse">
-      <point x="88.0" y="-25.5" />
-      <point x="3274.0" y="989.0" />
-      <point x="3005.208333333333" y="989.0" />
-      <point x="8.708333333333485" y="37.0" />
-    </edge>
     <edge source="com.polimi.childcare.shared.networking.requests.setters.SetReazioneAvversaRequest" target="com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest">
       <point x="95.75" y="-47.5" />
       <point x="14412.25" y="401.0" />
@@ -130,12 +121,6 @@
       <point x="15554.0" y="49.0" />
       <point x="10723.398551525874" y="49.0" />
       <point x="48.85714285714312" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.networking.requests.setters.SetQuantitaPastoRequest" target="com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest">
-      <point x="-89.25" y="-47.5" />
-      <point x="13548.25" y="351.0" />
-      <point x="15224.147058823528" y="351.0" />
-      <point x="-75.35294117647072" y="81.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.networking.responses.lists.ListMenuResponse" target="com.polimi.childcare.shared.networking.responses.lists.ListResponse">
       <point x="-66.0" y="-25.5" />
@@ -334,12 +319,6 @@
       <point x="4888.5" y="889.0" />
       <point x="3063.2638888888887" y="889.0" />
       <point x="66.76388888888869" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.networking.requests.filtered.FilteredQuantitaPastoRequest" target="com.polimi.childcare.shared.networking.requests.filtered.FilteredBaseRequest">
-      <point x="-173.5" y="-25.5" />
-      <point x="9265.5" y="361.0" />
-      <point x="6269.25" y="361.0" />
-      <point x="126.75" y="81.0" />
     </edge>
     <edge source="com.polimi.childcare.shared.networking.responses.lists.ListGenitoriResponse" target="com.polimi.childcare.shared.networking.responses.lists.ListResponse">
       <point x="-72.25" y="-25.5" />

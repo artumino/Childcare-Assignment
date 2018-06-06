@@ -38,7 +38,6 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(FilteredPediatraRequest.class, new FilteredPediatraRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPersonaRequest.class, new FilteredPersonaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredPianoViaggiRequest.class, new FilteredPianoViaggiRequestHandler());
-        NetworkManager.getInstance().addRequestHandler(FilteredQuantitaPastoRequest.class, new FilteredQuantitaPastoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredReazioneAvversaRequest.class, new FilteredReazioneAvversaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredRegistroPresenzeRequest.class, new FilteredRegistroPresenzeRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredLastPresenzaRequest.class, new FilteredLastPresenzaRequestHandler());
@@ -59,7 +58,6 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(SetPediatraRequest.class, new PediatraRequestHandlerSet());
         NetworkManager.getInstance().addRequestHandler(SetPersonaRequest.class, new PersonaRequestHandlerSet());
         NetworkManager.getInstance().addRequestHandler(SetPianoViaggiRequest.class, new PianoViaggiRequestHandlerSet());
-        NetworkManager.getInstance().addRequestHandler(SetQuantitaPastoRequest.class, new QuantitaPastoRequestHandlerSet());
         NetworkManager.getInstance().addRequestHandler(SetReazioneAvversaRequest.class, new ReazioneAvversaRequestHandlerSet());
         NetworkManager.getInstance().addRequestHandler(SetRegistroPresenzeRequest.class, new RegistroPresenzeRequestHandlerSet());
         //endregion
