@@ -5,10 +5,11 @@ import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
+import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.Menu;
 import com.polimi.childcare.shared.entities.Pasto;
-import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredMenuRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
@@ -16,7 +17,6 @@ import com.polimi.childcare.shared.networking.responses.lists.ListMenuResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListPastiResponse;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,9 +24,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
-import javafx.util.Callback;
 
-import java.util.HashMap;
+import java.util.Arrays;
 
 public class MensaSubsceneController extends NetworkedSubScene implements ISubSceneController
 {
@@ -35,11 +34,12 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
     private Parent root;
 
     @FXML private AnchorPane rootPane;
-    @FXML private TableView<Menu> tableMenu;
-    @FXML private TableView<Pasto> tablePasti;
+    @FXML private DragAndDropTableView<Menu> tableMenu;
+    @FXML private DragAndDropTableView<Pasto> tablePasti;
     @FXML private Button btnRefresh;
-    @FXML private TextField txtFilterMenu;
-    @FXML private TextField txtFilterPasti;
+    @FXML private TextField txtFiltroMenu;
+    @FXML private TextField txtFiltroPasti;
+    @FXML private CheckBox chkShowAttivi;
     @FXML private Button btnAddMenu;
     @FXML private Button btnAddPasto;
 
@@ -47,13 +47,25 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
     //Generated
     private FilterComponent<Menu> filterMenu;
     private OrderedFilteredList<Menu> listMenu;
+    private FilterComponent<Pasto> filterPasti;
+    private OrderedFilteredList<Pasto> listPasti;
 
     @FXML
     protected void initialize()
     {
+        listMenu = new OrderedFilteredList<>();
+        listPasti = new OrderedFilteredList<>();
+        filterMenu = new FilterComponent<>(listMenu.predicateProperty());
+        filterPasti = new FilterComponent<>(listPasti.predicateProperty());
+
         setupMenuTable();
         setupPastiTable();
 
+        filterPasti.addFilterField(txtFiltroPasti.textProperty(), p -> Filters.filterPasto(p, txtFiltroPasti.getText()));
+        filterMenu.addFilterField(txtFiltroMenu.textProperty(), m -> Filters.filterMenu(m, txtFiltroMenu.getText()));
+        filterMenu.addFilterField(chkShowAttivi.selectedProperty(), m -> !chkShowAttivi.isSelected() || m.getRicorrenza() != 0);
+
+        btnRefresh.setOnMouseClicked(click -> redrawData());
     }
 
     @Override
@@ -106,9 +118,12 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         cRicSab.setCellValueFactory(p -> new ReadOnlyBooleanWrapper(p.getValue().isRecurringDuringDayOfWeek(Menu.DayOfWeekFlag.Sab)));
         cRicDom.setCellValueFactory(p -> new ReadOnlyBooleanWrapper(p.getValue().isRecurringDuringDayOfWeek(Menu.DayOfWeekFlag.Dom)));
 
-        tableMenu.getColumns().addAll(cMenuName, cRicLun, cRicMar, cRicMer, cRicGio, cRicVen, cRicSab, cRicDom);
-
-        tableMenu.getItems().add(new Menu("Pietanza di Mare", true, Menu.DayOfWeekFlag.Lun.getFlag() | Menu.DayOfWeekFlag.Sab.getFlag()));
+        if(tableMenu != null)
+        {
+            tableMenu.getColumns().addAll(cMenuName, cRicLun, cRicMar, cRicMer, cRicGio, cRicVen, cRicSab, cRicDom);
+            listMenu.comparatorProperty().bind(tableMenu.comparatorProperty());
+            tableMenu.setItems(listMenu.list());
+        }
     }
 
     private void setupPastiTable()
@@ -119,7 +134,12 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         cPastoName.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
         cPastoFornitore.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getFornitore() != null ? p.getValue().getFornitore().getRagioneSociale() : ""));
 
-        tablePasti.getColumns().addAll(cPastoName, cPastoFornitore);
+        if(tablePasti != null)
+        {
+            tablePasti.getColumns().addAll(cPastoName, cPastoFornitore);
+            listPasti.comparatorProperty().bind(tablePasti.comparatorProperty());
+            tablePasti.setItems(listPasti.list());
+        }
     }
 
     void OnMenuResponseRecived(BaseResponse response)
@@ -129,6 +149,12 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> response instanceof ListMenuResponse))
             return;
 
+        listMenu.updateDataSet(((ListMenuResponse)response).getPayload());
+
+        //Debug
+        listMenu.updateDataSet(Arrays.asList(
+                new Menu("Pietanza di Mare", true, Menu.DayOfWeekFlag.Lun.getFlag() | Menu.DayOfWeekFlag.Sab.getFlag()),
+                new Menu("Pietanze di Edo", false, 0)));
     }
 
     void OnPastiResponseRecived(BaseResponse response)
@@ -138,16 +164,25 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> response instanceof ListPastiResponse))
             return;
 
-        tablePasti.getItems().addAll(((ListPastiResponse)response).getPayload());
+        listPasti.updateDataSet(((ListPastiResponse)response).getPayload());
     }
 
     private void redrawData()
     {
+        refreshMenus();
+        refreshPasti();
+    }
+
+    private void refreshMenus()
+    {
         networkOperationVault.submitOperation(new NetworkOperation(new FilteredMenuRequest(0,0,false),
                 this::OnMenuResponseRecived,
                 true));
+    }
 
-        networkOperationVault.submitOperation(new NetworkOperation(new FilteredPastoRequest(0,0,true),
+    private void refreshPasti()
+    {
+        networkOperationVault.submitOperation(new NetworkOperation(new FilteredPastoRequest(0,0,false),
                 this::OnPastiResponseRecived,
                 true));
     }
