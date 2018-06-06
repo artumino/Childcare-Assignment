@@ -298,7 +298,7 @@ public class EditFornitoreStageController implements ISubSceneController
                 BaseResponse response = (BaseResponse)returnArgs[0];
                 String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
 
-                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || response instanceof ListResponse))
+                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || p instanceof ListResponse))
                     return;
 
                 if(response instanceof ListResponse)

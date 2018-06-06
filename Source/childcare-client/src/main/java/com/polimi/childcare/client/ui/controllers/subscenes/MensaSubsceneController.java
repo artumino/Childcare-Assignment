@@ -3,8 +3,10 @@ package com.polimi.childcare.client.ui.controllers.subscenes;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.mensa.EditPastoStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -25,6 +27,7 @@ import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class MensaSubsceneController extends NetworkedSubScene implements ISubSceneController
@@ -66,6 +69,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         filterMenu.addFilterField(chkShowAttivi.selectedProperty(), m -> !chkShowAttivi.isSelected() || m.getRicorrenza() != 0);
 
         btnRefresh.setOnMouseClicked(click -> redrawData());
+        btnAddPasto.setOnMouseClicked(click -> ShowPastoDetails(new Pasto()));
     }
 
     @Override
@@ -120,6 +124,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
 
         if(tableMenu != null)
         {
+
             tableMenu.getColumns().addAll(cMenuName, cRicLun, cRicMar, cRicMer, cRicGio, cRicVen, cRicSab, cRicDom);
             listMenu.comparatorProperty().bind(tableMenu.comparatorProperty());
             tableMenu.setItems(listMenu.list());
@@ -136,6 +141,11 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
 
         if(tablePasti != null)
         {
+            tablePasti.setOnMousePressed(click -> {
+                if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tablePasti.getSelectionModel().getSelectedItem() != null)
+                    ShowPastoDetails(tablePasti.getSelectionModel().getSelectedItem());
+            });
+
             tablePasti.getColumns().addAll(cPastoName, cPastoFornitore);
             listPasti.comparatorProperty().bind(tablePasti.comparatorProperty());
             tablePasti.setItems(listPasti.list());
@@ -146,7 +156,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
     {
         networkOperationVault.operationDone(FilteredMenuRequest.class);
 
-        if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> response instanceof ListMenuResponse))
+        if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> p instanceof ListMenuResponse))
             return;
 
         listMenu.updateDataSet(((ListMenuResponse)response).getPayload());
@@ -161,7 +171,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
     {
         networkOperationVault.operationDone(FilteredPastoRequest.class);
 
-        if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> response instanceof ListPastiResponse))
+        if(StageUtils.HandleResponseError(response, "Errore sconosciuto durante la ricezione dei pasti", p -> p instanceof ListPastiResponse))
             return;
 
         listPasti.updateDataSet(((ListPastiResponse)response).getPayload());
@@ -185,6 +195,21 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         networkOperationVault.submitOperation(new NetworkOperation(new FilteredPastoRequest(0,0,false),
                 this::OnPastiResponseRecived,
                 true));
+    }
+
+    private void ShowPastoDetails(Pasto pasto)
+    {
+        try {
+            ChildcareBaseStageController setPastoStage = new ChildcareBaseStageController();
+            setPastoStage.setContentScene(getClass().getClassLoader().getResource(EditPastoStageController.FXML_PATH), pasto);
+            //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            setPastoStage.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            setPastoStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

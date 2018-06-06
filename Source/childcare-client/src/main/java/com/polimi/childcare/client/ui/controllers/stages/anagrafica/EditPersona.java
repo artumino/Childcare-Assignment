@@ -7,21 +7,19 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
-import com.polimi.childcare.client.ui.controllers.stages.generic.ReazioniAvverseStage;
+import com.polimi.childcare.client.ui.controllers.stages.generic.DiagnosiReazioniAvverseStage;
 import com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPersonaRequest;
-import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetPersonaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,11 +29,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.Optional;
 
 public class EditPersona implements ISubSceneController
@@ -443,7 +438,7 @@ public class EditPersona implements ISubSceneController
     {
         try {
             ChildcareBaseStageController showReazioniAvverse = new ChildcareBaseStageController();
-            showReazioniAvverse.setContentScene(getClass().getClassLoader().getResource(ReazioniAvverseStage.FXML_PATH), linkedPersona);
+            showReazioniAvverse.setContentScene(getClass().getClassLoader().getResource(DiagnosiReazioniAvverseStage.FXML_PATH), linkedPersona);
             showReazioniAvverse.initOwner(getRoot().getScene().getWindow());
             //showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
             showReazioniAvverse.setOnClosingCallback((returnArgs) -> {
@@ -534,7 +529,7 @@ public class EditPersona implements ISubSceneController
                 BaseResponse response = (BaseResponse)returnArgs[0];
                 String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
 
-                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || response instanceof ListResponse))
+                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || p instanceof ListResponse))
                     return;
 
                 if(response instanceof ListResponse)

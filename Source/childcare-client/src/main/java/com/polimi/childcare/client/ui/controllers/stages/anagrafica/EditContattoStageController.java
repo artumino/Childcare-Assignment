@@ -7,7 +7,6 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
-import com.polimi.childcare.client.ui.controllers.stages.generic.ReazioniAvverseStage;
 import com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
@@ -17,12 +16,10 @@ import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredContattoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetContattoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetPediatraRequest;
-import com.polimi.childcare.shared.networking.requests.setters.SetPersonaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListContattoResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
-import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -341,7 +338,7 @@ public class EditContattoStageController implements ISubSceneController
                 BaseResponse response = (BaseResponse)returnArgs[0];
                 String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
 
-                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || response instanceof ListResponse))
+                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || p instanceof ListResponse))
                     return;
 
                 if(response instanceof ListResponse)
