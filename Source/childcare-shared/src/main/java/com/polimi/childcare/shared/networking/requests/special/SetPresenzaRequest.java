@@ -31,9 +31,7 @@ public class SetPresenzaRequest extends BaseRequest
         return isGita;
     }
 
-    public long getUtcInstant() {
-        return utcInstant;
-    }
+    public long getUtcInstant() { return utcInstant; }
 
     /**
      * @return true in caso di uscita, false in caso di ingresso

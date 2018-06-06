@@ -7,8 +7,10 @@ import com.polimi.childcare.shared.networking.requests.special.SetPresenzaReques
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 
 public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaRequest>
@@ -18,10 +20,19 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
     public BaseResponse processRequest(SetPresenzaRequest request)
     {
         ArrayList<RegistroPresenze> listPresenze = RegistroPresenzeQuery.getStatoPresenzeAtEpochSeconds(request.getUtcInstant(), request.getBambinoId());
-        //EntitiesHelper.presenzeChangerRecursive(listPresenze, request.getNuovoStato(), (LocalDateTime)request.getUtcInstant(), request.isUscita());
-        //Aggiornare stati Bambino su DB (dopo utc istant), ritornare ListPresenze con ultimo stato aggiornato, in caso di errore vuota
+        LocalDateTime lt = Instant.ofEpochMilli(request.getUtcInstant()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        RegistroPresenze.StatoPresenza st = RegistroPresenze.StatoPresenza.Disperso;
+        try {
+            st = EntitiesHelper.presenzeChanger(listPresenze.get(0), lt, request.isUscita());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        //TODO: secondo me mancano nella richiesta il NuovoStato e utcIstant deve essere convertito a LocalDateTime
+        EntitiesHelper.presenzeChangerRecursive(listPresenze, st, lt, request.isUscita());
+
+        //Ho capito come l'avevo pensata :D
+
+        //Aggiornare stati Bambino su DB (dopo utc istant), ritornare ListPresenze con ultimo stato aggiornato, in caso di errore vuota
 
         return new BaseResponse(200);
     }
