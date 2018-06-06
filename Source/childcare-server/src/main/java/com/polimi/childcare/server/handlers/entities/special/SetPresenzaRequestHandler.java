@@ -20,13 +20,11 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
     public BaseResponse processRequest(SetPresenzaRequest request)
     {
         ArrayList<RegistroPresenze> listPresenze = RegistroPresenzeQuery.getStatoPresenzeAtEpochSeconds(request.getUtcInstant(), request.getBambinoId());
-        if(listPresenze.get(0) == null)
-            return new BadRequestResponse.BadRequestResponseWithMessage("Nessuna presenza trovata!");
-
         LocalDateTime lt = Instant.ofEpochMilli(request.getUtcInstant()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        RegistroPresenze.StatoPresenza st = RegistroPresenze.StatoPresenza.Disperso;
+        RegistroPresenze.StatoPresenza st = RegistroPresenze.StatoPresenza.Presente;
         try {
-            st = EntitiesHelper.presenzeChanger(listPresenze.get(0), lt, request.isUscita());
+            if(listPresenze.size() != 0)
+                st = EntitiesHelper.presenzeChanger(listPresenze.get(0), lt, request.isUscita());
         } catch (Exception e) {
             e.printStackTrace();
         }
