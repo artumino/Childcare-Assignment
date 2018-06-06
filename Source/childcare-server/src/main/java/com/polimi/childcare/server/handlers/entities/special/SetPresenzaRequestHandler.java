@@ -1,12 +1,10 @@
 package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.helper.query.RegistroPresenzeQuery;
 import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
-import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
@@ -35,11 +33,13 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
         List<RegistroPresenze> removed = new ArrayList<>();
         EntitiesHelper.presenzeChangerRecursive(listPresenze, st, lt, request.isUscita(), removed);
 
-        for(RegistroPresenze r : removed)
-            DatabaseSession.getInstance().delete(r);
+        if(removed.size() != 0)
+            for(RegistroPresenze r : removed)
+                DatabaseSession.getInstance().delete(r);
 
-        for(RegistroPresenze au : listPresenze)
-            DatabaseSession.getInstance().insertOrUpdate(au);
+        if(listPresenze.size() != 0)
+            for(RegistroPresenze au : listPresenze)
+                DatabaseSession.getInstance().insertOrUpdate(au);
 
         return new BaseResponse(200);
     }
