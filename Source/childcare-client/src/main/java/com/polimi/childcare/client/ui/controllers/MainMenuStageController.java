@@ -1,5 +1,8 @@
 package com.polimi.childcare.client.ui.controllers;
 
+import com.polimi.childcare.client.ui.controllers.subscenes.AnagraficaSubsceneController;
+import com.polimi.childcare.client.ui.controllers.subscenes.HomeSubsceneController;
+import com.polimi.childcare.client.ui.controllers.subscenes.MensaSubsceneController;
 import com.polimi.childcare.client.ui.utils.EffectsUtils;
 import com.polimi.childcare.client.ui.utils.SceneUtils;
 import javafx.application.Application;
@@ -79,10 +82,10 @@ public class MainMenuStageController extends UndecoratedDraggableStageController
         //Crea Menu
         menuItemsMap = new HashMap<>(4);
         try {
-            menuItemsMap.put(btnHome, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/AnagraficaScene.fxml")));
-            menuItemsMap.put(btnGite, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
-            menuItemsMap.put(btnMensa, SceneUtils.loadSubScene(getClass().getClassLoader().getResource("fxml/HomeScene.fxml")));
+            menuItemsMap.put(btnHome, SceneUtils.loadSubScene(getClass().getClassLoader().getResource(HomeSubsceneController.FXML_PATH)));
+            menuItemsMap.put(btnAnagrafica, SceneUtils.loadSubScene(getClass().getClassLoader().getResource(AnagraficaSubsceneController.FXML_PATH)));
+            menuItemsMap.put(btnGite, SceneUtils.loadSubScene(getClass().getClassLoader().getResource(HomeSubsceneController.FXML_PATH)));
+            menuItemsMap.put(btnMensa, SceneUtils.loadSubScene(getClass().getClassLoader().getResource(MensaSubsceneController.FXML_PATH)));
         } catch (IOException e) {
             e.printStackTrace();
         }

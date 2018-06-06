@@ -340,15 +340,9 @@ public class EditContattoStageController implements ISubSceneController
             {
                 BaseResponse response = (BaseResponse)returnArgs[0];
                 String errorMessage = "Impossibile eseguire l'operazione di modifica/inserimento, si è verificato un errore sconosciuto.";
-                if(response.getCode() != 200 && !(response instanceof ListResponse))
-                {
 
-                    if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
-                        errorMessage = ((BadRequestResponse.BadRequestResponseWithMessage) response).getMessage();
-
-                    StageUtils.ShowAlert(Alert.AlertType.ERROR, errorMessage);
+                if(StageUtils.HandleResponseError(response, errorMessage, p -> p.getCode() == 200 || response instanceof ListResponse))
                     return;
-                }
 
                 if(response instanceof ListResponse)
                 {

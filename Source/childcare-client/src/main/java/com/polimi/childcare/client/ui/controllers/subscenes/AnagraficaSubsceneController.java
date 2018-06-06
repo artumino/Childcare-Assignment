@@ -21,8 +21,10 @@ import javafx.scene.layout.Region;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class AnagraficaSubsceneController implements ISubSceneController
+public class AnagraficaSubsceneController extends NetworkedSubScene implements ISubSceneController
 {
+    public static final String FXML_PATH = "fxml/AnagraficaScene.fxml";
+
     private Parent root;
 
     @FXML private AnchorPane rootPane;
@@ -113,7 +115,7 @@ public class AnagraficaSubsceneController implements ISubSceneController
     @Override
     public void detached()
     {
-        //DO NOTHING...
+        super.detached();
     }
 
     @Override

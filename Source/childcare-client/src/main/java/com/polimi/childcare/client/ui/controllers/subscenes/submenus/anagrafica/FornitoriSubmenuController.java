@@ -32,9 +32,6 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
     private Button btnUpdate;
     private Button btnAddFornitore;
 
-    //Network
-    private NetworkOperation pendingOperation;
-
     @Override
     protected Collection<TableColumn<Fornitore, ?>> setupColumns()
     {
@@ -109,21 +106,15 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
 
     private void refreshData()
     {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-
-        this.pendingOperation = new NetworkOperation(
+        networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredFornitoriRequest(0, 0, false),
                 this::OnFornitoriResponseRecived,
-                true);
-
-        //Provo ad aggiornare i dati
-        ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                true));
     }
 
     private void OnFornitoriResponseRecived(BaseResponse response)
     {
-        this.pendingOperation = null;
+        networkOperationVault.operationDone(FilteredFornitoriRequest.class);
 
         if(!(response instanceof ListFornitoriResponse))
         {
@@ -148,13 +139,5 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void detached()
-    {
-        if(this.pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-        this.pendingOperation = null;
     }
 }
