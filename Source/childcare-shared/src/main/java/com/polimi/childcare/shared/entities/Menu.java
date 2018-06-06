@@ -2,16 +2,11 @@ package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
 import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
-import com.polimi.childcare.shared.entities.relations.IManyToOne;
-import com.polimi.childcare.shared.entities.relations.IOneToMany;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
-import com.sun.xml.internal.ws.api.pipe.PipelineAssembler;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity

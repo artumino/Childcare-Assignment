@@ -90,9 +90,9 @@ public class Pasto extends TransferableEntity implements Serializable
 
     public void removeReazione(ReazioneAvversa r) { reazione.remove(r); }
 
-    public void unsafeaddMenu(Menu m) { menu.add(m); }
+    public void unsafeAddMenu(Menu m) { menu.add(m); }
 
-    public void unsaferemoveMenu(Menu m) { menu.remove(m); }
+    public void unsafeRemoveMenu(Menu m) { menu.remove(m); }
 
     public Set<ReazioneAvversa> getReazione() { return EntitiesHelper.unmodifiableListReturn(reazione); }
 
@@ -214,12 +214,12 @@ public class Pasto extends TransferableEntity implements Serializable
 
             @Override
             public void unsafeAddRelation(Menu item) {
-                unsafeaddMenu(item);
+                unsafeAddMenu(item);
             }
 
             @Override
             public void unsafeRemoveRelation(Menu item) {
-                unsaferemoveMenu(item);
+                unsafeRemoveMenu(item);
             }
 
             @Override
