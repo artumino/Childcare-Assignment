@@ -6,6 +6,7 @@ import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
 import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
+import com.polimi.childcare.shared.networking.requests.setters.SetPediatraRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
@@ -229,7 +230,14 @@ public class InsertTest
 
         bambinoReq.setPediatra(j);
 
+        //SetPediatraRequest p = new SetPediatraRequest(j);
         SetBambinoRequest s = new SetBambinoRequest(bambinoReq);
+
+        DatabaseSession.getInstance().insert(j);
+
+        //BaseResponse rsp = NetworkManager.getInstance().processRequest(p);
+
+        //BaseResponse pediatradb = NetworkManager.getInstance().processRequest(new FilteredPediatraRequest(j.getID(), true));
 
         BaseResponse response = NetworkManager.getInstance().processRequest(s);
 
