@@ -1,6 +1,7 @@
 import com.polimi.childcare.server.Main;
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.handlers.entities.setters.BambinoRequestHandlerSet;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
@@ -224,38 +225,19 @@ public class InsertTest
         List<Contatto> ct = ((ListContattoResponse) contattoResponse).getPayload();
         List<Fornitore> ft = ((ListFornitoriResponse) fornitoriResponse).getPayload();
         Genitore g = new Genitore("Babu", "Bubu", "EHEHEH", LocalDateTime.now().toLocalDate(), "Nigeria", "Casablanca", "Nonloso", "Nigeriana", "Via Inesistente, 10", Persona.ESesso.Maschio);
+        Pediatra j = new Pediatra("Pediatra Johnny", "Pifferi", "Johnny", "Via Bianchi 2, Piacenza");
 
-        if(!modder.getGenitori().isEmpty())
-            modder.removeGenitore((Genitore) modder.getGenitori().toArray()[0]);
-        if(!modder.getContatti().isEmpty()) {
-            Contatto temp = DatabaseSession.getInstance().getByID(Contatto.class, ((Contatto) modder.getContatti().toArray()[0]).getID(), true);
-            temp.removeBambino(modder);
-            DatabaseSession.getInstance().update(temp);
-            modder.unsafeRemoveContatto(temp);
-        }
+        bambinoReq.setPediatra(j);
 
-        Contatto contatto1 = new Contatto("Contatto Test", "Ciso", "Giovanni", "Via Sesto 2, Cremona");
-        contatto1.addBambino(modder);
-        DatabaseSession.getInstance().insertOrUpdate(contatto1);
-        modder.unsafeAddContatto(contatto1);
+        SetBambinoRequest s = new SetBambinoRequest(bambinoReq);
 
-        modder.setPediatra(null);
+        BaseResponse response = NetworkManager.getInstance().processRequest(s);
 
-        DatabaseSession.getInstance().insert(g);
-        modder.addGenitore(g);
-        DatabaseSession.getInstance().delete(dt);
+        Assert.assertEquals(response.getCode(), 200);
 
-        for(Contatto contatto : ct)
-            DatabaseSession.getInstance().delete(contatto);
+        BaseResponse bimbodb = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(bambinoReq.getID(), true));
 
+        Assert.assertEquals(((ListBambiniResponse) bimbodb).getPayload().get(0).getPediatra(), j);
 
-        for(Fornitore fornitore : ft)
-            DatabaseSession.getInstance().delete(fornitore);
-
-        DatabaseSession.getInstance().insertOrUpdate(modder);
-        BaseResponse response = NetworkManager.getInstance().processRequest(new SetBambinoRequest(bambinoReq, true, bambinoReq.consistecyHashCode()));
-        Bambino b = DatabaseSession.getInstance().getByID(Bambino.class, ((ListBambiniResponse) bambinoResponse).getPayload().get(0).getID(), true);
-        Assert.assertNull(b);
-        Assert.assertEquals(200, response.getCode());
     }
 }

@@ -97,7 +97,8 @@ public class DBHelper
                    e quindi l'update andrebbe a modificarne la tabella
                 Facendo il controllo, imposto U al valore che ho nel DB quindi ha ID giusto e dati giusti, così facendo l'update non sovrascrive nulla
              */
-            U pediatraGet = session.getByID(ownedClass, detachedEntityRelation.getItem().getID());
+            U pediatraGet = session.getByID(ownedClass, detachedEntityRelation.getItem().getID());  /*FIXME: Il problema sta qua, ritorns perdiatra che è null (non esiste su db)
+                                                                                                      e non lo inserisce e setta la relazione a null quindi*/
             detachedEntityRelation.setRelation(pediatraGet);
         }
     }
