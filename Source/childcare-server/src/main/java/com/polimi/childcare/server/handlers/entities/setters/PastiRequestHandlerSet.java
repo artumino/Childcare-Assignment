@@ -29,7 +29,6 @@ public class PastiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEn
             }
             else
                 DBHelper.deletedManyToManyOwned(request.getEntity().asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, session);
-                //DBHelper.deletedManyToManyOwned(request.getEntity().asPastoReazioniAvverseRelation(), dbEntity.asPastoReazioniAvverseRelation(), Pasto.class, session);
         }
     }
 }

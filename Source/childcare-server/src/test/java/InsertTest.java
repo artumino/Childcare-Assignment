@@ -8,10 +8,7 @@ import com.polimi.childcare.shared.networking.requests.filtered.*;
 import com.polimi.childcare.shared.networking.requests.setters.SetBambinoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetPediatraRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListContattoResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListFornitoriResponse;
+import com.polimi.childcare.shared.networking.responses.lists.*;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -230,18 +227,18 @@ public class InsertTest
 
         bambinoReq.setPediatra(j);
 
-        //SetPediatraRequest p = new SetPediatraRequest(j);
+        SetPediatraRequest p = new SetPediatraRequest(j);
         SetBambinoRequest s = new SetBambinoRequest(bambinoReq);
 
         DatabaseSession.getInstance().insert(j);
 
-        //BaseResponse rsp = NetworkManager.getInstance().processRequest(p);
-
-        //BaseResponse pediatradb = NetworkManager.getInstance().processRequest(new FilteredPediatraRequest(j.getID(), true));
-
+        BaseResponse rsp = NetworkManager.getInstance().processRequest(p);
+        BaseResponse pediatradb = NetworkManager.getInstance().processRequest(new FilteredPediatraRequest(j.getID(), true));
         BaseResponse response = NetworkManager.getInstance().processRequest(s);
 
         Assert.assertEquals(response.getCode(), 200);
+        Assert.assertEquals(rsp.getCode(), 200);
+        Assert.assertEquals(((ListPediatraResponse) pediatradb).getPayload().get(0), j);
 
         BaseResponse bimbodb = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(bambinoReq.getID(), true));
 
