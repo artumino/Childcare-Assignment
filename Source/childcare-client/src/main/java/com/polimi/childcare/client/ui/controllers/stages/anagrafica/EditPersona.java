@@ -154,10 +154,7 @@ public class EditPersona implements ISubSceneController
                                    return;
                                }
 
-                               if(response instanceof BadRequestResponse.BadRequestResponseWithMessage)
-                                   StageUtils.ShowAlert(Alert.AlertType.ERROR, ((BadRequestResponse.BadRequestResponseWithMessage)response).getMessage());
-                               else
-                                   StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore nella cancellazione della persona");
+                               StageUtils.HandleResponseError(response, "Errore nella cancellazione della persona", p -> !(p instanceof BadRequestResponse));
                            }
                         });
                     }

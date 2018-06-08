@@ -19,7 +19,7 @@ public class GetPersoneConDiagnosiHandler extends FilteredRequestHandler<GetPers
     public BaseResponse processRequest(GetPersoneWithDisagnosiRequest request)
     {
         List<Persona> persone = getFilteredResult(request, Persona.class, new ArrayList<>());
-        persone.stream().forEach(persona -> DBHelper.objectInitialize(persona.getDiagnosi()));
+        persone.forEach(persona -> DBHelper.objectInitialize(persona.getDiagnosi()));
         return new ListPersoneResponse(200, persone);
     }
 }

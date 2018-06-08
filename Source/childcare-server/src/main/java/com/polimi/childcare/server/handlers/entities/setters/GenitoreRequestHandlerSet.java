@@ -40,7 +40,10 @@ public class GenitoreRequestHandlerSet extends GenericSetEntityRequestHandler<Se
 
             else
             {
-                Set<Bambino> bambini = request.getEntity().getBambini();
+                //Controllo che i bambini che ha attualmente il genitore nel DB non diventino orfani
+                //N.B. non mi interessa che bambini ha il genitore che mi arriva dal client, quelli che subiranno la modificha
+                //sono comunque quelli attuali sul DB
+                Set<Bambino> bambini = dbEntity.getBambini();
 
                 for (Bambino b : bambini) {
                     if (b.getGenitori().size() == 1)

@@ -30,7 +30,6 @@ public class BlockingNetworkOperationStageController implements ISubSceneControl
     @FXML private Label txtMessage;
 
     private ChildcareBaseStageController linkedStageController;
-    private NetworkOperation networkOperation;
     private Timer uiTimer;
     private String startingText;
 
@@ -68,10 +67,10 @@ public class BlockingNetworkOperationStageController implements ISubSceneControl
 
             if(args.length > 0 && args[0] instanceof NetworkOperation)
             {
-                this.networkOperation = (NetworkOperation)args[0];
-                this.networkOperation.setCallback(this);
-                this.networkOperation.setRunOnUiThread(true);
-                ClientNetworkManager.getInstance().submitOperation(this.networkOperation);
+                NetworkOperation networkOperation = (NetworkOperation) args[0];
+                networkOperation.setCallback(this);
+                networkOperation.setRunOnUiThread(true);
+                ClientNetworkManager.getInstance().submitOperation(networkOperation);
             }
             else
                 this.linkedStageController.requestClose();
@@ -84,6 +83,8 @@ public class BlockingNetworkOperationStageController implements ISubSceneControl
     public void detached()
     {
         //DO NOTHING...
+        if(uiTimer != null)
+            uiTimer.cancel();
     }
 
     @Override
