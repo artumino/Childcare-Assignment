@@ -133,7 +133,11 @@ public class ChildcareBaseStageController extends UndecoratedDraggableStageContr
     public void close()
     {
         if(!this.locked)
+        {
+            if(this.contentScene != null)
+                this.contentScene.detached();
             super.close();
+        }
     }
 
     public void lock()
