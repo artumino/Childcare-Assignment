@@ -6,6 +6,7 @@ import com.polimi.childcare.client.ui.components.FilterComponent;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.mensa.EditMenuStageController;
 import com.polimi.childcare.client.ui.controllers.stages.mensa.EditPastoStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.filters.Filters;
@@ -70,6 +71,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
 
         btnRefresh.setOnMouseClicked(click -> redrawData());
         btnAddPasto.setOnMouseClicked(click -> ShowPastoDetails(new Pasto()));
+        btnAddMenu.setOnMouseClicked(click -> ShowMenuDetails(new Menu()));
     }
 
     @Override
@@ -125,6 +127,11 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         if(tableMenu != null)
         {
 
+            tableMenu.setOnMousePressed(click -> {
+                if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableMenu.getSelectionModel().getSelectedItem() != null)
+                    ShowMenuDetails(tableMenu.getSelectionModel().getSelectedItem());
+            });
+
             tableMenu.getColumns().addAll(cMenuName, cRicLun, cRicMar, cRicMer, cRicGio, cRicVen, cRicSab, cRicDom);
             listMenu.comparatorProperty().bind(tableMenu.comparatorProperty());
             tableMenu.setItems(listMenu.list());
@@ -160,11 +167,6 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
             return;
 
         listMenu.updateDataSet(((ListMenuResponse)response).getPayload());
-
-        //Debug
-        listMenu.updateDataSet(Arrays.asList(
-                new Menu("Pietanza di Mare", true, Menu.DayOfWeekFlag.Lun.getFlag() | Menu.DayOfWeekFlag.Sab.getFlag()),
-                new Menu("Pietanze di Edo", false, 0)));
     }
 
     void OnPastiResponseRecived(BaseResponse response)
@@ -202,11 +204,26 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
         try {
             ChildcareBaseStageController setPastoStage = new ChildcareBaseStageController();
             setPastoStage.setContentScene(getClass().getClassLoader().getResource(EditPastoStageController.FXML_PATH), pasto);
-            //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
+            setPastoStage.initOwner(getRoot().getScene().getWindow());
             setPastoStage.setOnClosingCallback((returnArgs) -> {
                 //Niente
             });
             setPastoStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowMenuDetails(Menu menu)
+    {
+        try {
+            ChildcareBaseStageController setMenuStage = new ChildcareBaseStageController();
+            setMenuStage.setContentScene(getClass().getClassLoader().getResource(EditMenuStageController.FXML_PATH), menu);
+            setMenuStage.initOwner(getRoot().getScene().getWindow());
+            setMenuStage.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            setMenuStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

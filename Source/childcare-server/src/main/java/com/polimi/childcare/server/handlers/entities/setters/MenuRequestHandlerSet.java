@@ -20,9 +20,10 @@ public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
         /*TODO: Ha le OneToMany :S e i Cascade*/
 
         if(!request.isToDelete())
-            if(request.getEntity().getNome() == null)
+        {
+            if (request.getEntity().getNome() == null)
                 throw new RuntimeException("Nome è null!");
-
+        }
         else
         {
             Set<Pasto> pastoset = dbEntity.getPasti();

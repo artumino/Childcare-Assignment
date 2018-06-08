@@ -2,6 +2,7 @@ package com.polimi.childcare.shared.entities;
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.relations.IManyToManyOwned;
 import com.polimi.childcare.shared.entities.relations.IManyToManyOwner;
+import com.polimi.childcare.shared.entities.tuples.MenuAvviso;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 
 import javax.persistence.*;
@@ -127,6 +128,43 @@ public class Menu extends TransferableEntity implements Serializable
         return getID() == menu.getID() &&
                 getRicorrenza() == menu.getRicorrenza() &&
                 isAttivo() == menu.isAttivo();
+    }
+
+    public LinkedList<MenuAvviso> getAvvisi(List<Persona> persone)
+    {
+        LinkedList<MenuAvviso> avvisi = new LinkedList<>();
+        if(persone == null)
+            return avvisi;
+
+        if(pasti == null || pasti.size() == 0)
+            avvisi.add(new MenuAvviso(null, "Non ci sono pasti!", MenuAvviso.Severity.Info));
+
+        //O(n^4) (alla peggio, in media sarà molto meno) - Si potrebbe strutturare meglio
+        for(Persona persona : persone)
+        {
+            if(persona.getDiagnosi() != null && persona.getDiagnosi().size() > 0)
+            {
+                for (Pasto pasto : pasti)
+                {
+                    Diagnosi containsDiagnosi = null;
+                    for (ReazioneAvversa reazioneAvversa : pasto.getReazione()) {
+                        for (Diagnosi diagnosi : persona.getDiagnosi())
+                            if (diagnosi.getReazioneAvversa().equals(reazioneAvversa)) {
+                                containsDiagnosi = diagnosi;
+                                break;
+                            }
+                        if (containsDiagnosi != null && containsDiagnosi.isAllergia())
+                            break;
+                    }
+                    if (containsDiagnosi != null)
+                        avvisi.add(new MenuAvviso(persona,
+                                persona.getNome() + " " + persona.getCognome() + " \u00e8 " + (containsDiagnosi.isAllergia() ? "allergico" : "intollerante") + " a " + pasto.getNome(),
+                                containsDiagnosi.isAllergia() ? MenuAvviso.Severity.Critical : MenuAvviso.Severity.Warning));
+                }
+            }
+        }
+
+        return avvisi;
     }
 
     //endregion

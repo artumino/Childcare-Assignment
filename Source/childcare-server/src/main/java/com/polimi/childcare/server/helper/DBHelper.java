@@ -166,7 +166,7 @@ public class DBHelper
 
             //Se non è stato cancellato il U inserito, allora riaggiungo la versione aggiornata e lo aggiorno sul DB con la nuova relazione
             if (updated != null) {
-                detachedEntityRelation.getInverse(updated).removeRelation(detachedEntityRelation.getItem());
+                detachedEntityRelation.getInverse(updated).addRelation(detachedEntityRelation.getItem());
                 session.update(updated);
                 detachedEntityRelation.unsafeAddRelation(updated);
             }
