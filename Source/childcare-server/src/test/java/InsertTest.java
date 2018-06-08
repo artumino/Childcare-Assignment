@@ -1,7 +1,6 @@
 import com.polimi.childcare.server.Main;
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.handlers.entities.setters.BambinoRequestHandlerSet;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
@@ -138,18 +137,13 @@ public class InsertTest
         Assert.assertEquals("Controllo che i due oggetti si equivalgano", diagnosiget.getPersona(), addetto1);
         Assert.assertEquals("Controllo che il numero di addetto sia invariato", numero, addettoget.getTelefoni().get(0));
 
-        genitoreget.unsafeRemoveBambino(bambinoget);    //Non va
-        bambino1.removeGenitore(genitore1);             //Non va
-
 
         DatabaseSession.getInstance().execute(session ->{
-            //session.update(genitore1);
-            //session.update(bambino1);
             session.deleteByID(Genitore.class, idGenitore);
             session.deleteByID(Fornitore.class, idFornitore);
             session.deleteByID(Pasto.class, idPasto);
             session.deleteByID(Pediatra.class, idPediatra);
-            session.deleteByID(ReazioneAvversa.class, idReazione); //FIXME: Controllare Cascade
+            session.deleteByID(ReazioneAvversa.class, idReazione);
             session.deleteByID(Diagnosi.class, idDiagnosi);
             session.deleteByID(Addetto.class, idAddetto);
             session.deleteByID(Bambino.class, idBambino);
@@ -230,19 +224,10 @@ public class InsertTest
         SetPediatraRequest p = new SetPediatraRequest(j);
         SetBambinoRequest s = new SetBambinoRequest(bambinoReq);
 
-        DatabaseSession.getInstance().insert(j);
-
         BaseResponse rsp = NetworkManager.getInstance().processRequest(p);
-        BaseResponse pediatradb = NetworkManager.getInstance().processRequest(new FilteredPediatraRequest(j.getID(), true));
         BaseResponse response = NetworkManager.getInstance().processRequest(s);
 
         Assert.assertEquals(response.getCode(), 200);
         Assert.assertEquals(rsp.getCode(), 200);
-        Assert.assertEquals(((ListPediatraResponse) pediatradb).getPayload().get(0), j);
-
-        BaseResponse bimbodb = NetworkManager.getInstance().processRequest(new FilteredBambiniRequest(bambinoReq.getID(), true));
-
-        Assert.assertEquals(((ListBambiniResponse) bimbodb).getPayload().get(0).getPediatra(), j);
-
     }
 }

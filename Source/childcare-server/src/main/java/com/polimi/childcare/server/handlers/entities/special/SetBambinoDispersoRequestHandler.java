@@ -5,17 +5,17 @@ import com.polimi.childcare.server.networking.IRequestHandler;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
-import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.SetBambinoDispersoRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-public class SetBambinoDispersoRequestHandler implements IRequestHandler<SetPresenzaRequest>
+public class SetBambinoDispersoRequestHandler implements IRequestHandler<SetBambinoDispersoRequest>
 {
     @Override
-    public BaseResponse processRequest(SetPresenzaRequest request)
+    public BaseResponse processRequest(SetBambinoDispersoRequest request)
     {
         LocalDateTime lt = Instant.ofEpochMilli(request.getUtcInstant()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         Bambino b = DatabaseSession.getInstance().getByID(Bambino.class, request.getBambinoId());
