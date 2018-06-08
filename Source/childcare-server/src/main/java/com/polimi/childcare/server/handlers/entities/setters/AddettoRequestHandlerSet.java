@@ -16,7 +16,8 @@ public class AddettoRequestHandlerSet extends GenericSetEntityRequestHandler<Set
     protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Addetto> request, Addetto dbEntity)
     {
         if(!request.isToDelete())
-            if(request.getEntity().getNome() == null ||
+        {
+            if (request.getEntity().getNome() == null ||
                     request.getEntity().getCognome() == null ||
                     request.getEntity().getCodiceFiscale() == null ||
                     request.getEntity().getDataNascita() == null ||
@@ -27,5 +28,6 @@ public class AddettoRequestHandlerSet extends GenericSetEntityRequestHandler<Set
                     request.getEntity().getResidenza() == null ||
                     request.getEntity().getSesso() == null)
                 throw new RuntimeException("Un campo obbligatorio è null!");
+        }
     }
 }

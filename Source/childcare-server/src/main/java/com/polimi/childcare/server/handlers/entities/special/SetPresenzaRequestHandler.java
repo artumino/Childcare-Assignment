@@ -23,10 +23,13 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
         ArrayList<RegistroPresenze> listPresenze = RegistroPresenzeQuery.getStatoPresenzeAtEpochSeconds(request.getUtcInstant(), request.getBambinoId());
         LocalDateTime lt = Instant.ofEpochMilli(request.getUtcInstant()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         RegistroPresenze.StatoPresenza st = RegistroPresenze.StatoPresenza.Presente;
-        try {
+        try
+        {
             if(listPresenze.size() != 0)
                 st = EntitiesHelper.presenzeChanger(listPresenze.get(0), lt, request.isUscita());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -34,12 +37,16 @@ public class SetPresenzaRequestHandler implements IRequestHandler<SetPresenzaReq
         EntitiesHelper.presenzeChangerRecursive(listPresenze, st, lt, request.isUscita(), removed);
 
         if(removed.size() != 0)
-            for(RegistroPresenze r : removed)
+        {
+            for (RegistroPresenze r : removed)
                 DatabaseSession.getInstance().delete(r);
+        }
 
         if(listPresenze.size() != 0)
-            for(RegistroPresenze au : listPresenze)
+        {
+            for (RegistroPresenze au : listPresenze)
                 DatabaseSession.getInstance().insertOrUpdate(au);
+        }
 
         return new BaseResponse(200);
     }

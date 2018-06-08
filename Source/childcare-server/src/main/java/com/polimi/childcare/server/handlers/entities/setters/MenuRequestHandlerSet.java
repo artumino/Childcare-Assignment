@@ -17,8 +17,6 @@ public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
     @Override
     protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Menu> request, Menu dbEntity)
     {
-        /*TODO: Ha le OneToMany :S e i Cascade*/
-
         if(!request.isToDelete())
         {
             if (request.getEntity().getNome() == null)

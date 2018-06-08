@@ -19,7 +19,6 @@ public class MezzoDiTrasportoRequestHandlerSet extends GenericSetEntityRequestHa
     @Override
     protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<MezzoDiTrasporto> request, MezzoDiTrasporto dbEntity)
     {
-        //FIXME: Fixed?
         if(!request.isToDelete())
         {
             if(request.getEntity().getFornitore() == null || request.getEntity().getTarga() == null)

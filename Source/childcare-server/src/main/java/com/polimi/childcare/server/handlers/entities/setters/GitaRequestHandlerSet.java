@@ -14,13 +14,12 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
     @Override
     protected void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gita> request, Gita dbEntity)
     {
-        /*TODO: Cascade fanno già*/
-
         if(!request.isToDelete())
-            if(request.getEntity().getDataInizio() == null ||
+        {
+            if (request.getEntity().getDataInizio() == null ||
                     request.getEntity().getDataFine() == null ||
                     request.getEntity().getLuogo() == null)
                 throw new RuntimeException("Un campo obbligatorio è null!");
-
+        }
     }
 }

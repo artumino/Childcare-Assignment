@@ -19,7 +19,8 @@ public class RegistroPresenzeRequestHandlerSet extends GenericSetEntityRequestHa
     {
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
-            if (!request.isToDelete()) {
+            if (!request.isToDelete())
+            {
                 if (request.getEntity().getDate() == null || request.getEntity().getTimeStamp() == null || request.getEntity().getStato() == null)
                     throw new RuntimeException("Campi obbligatori vuoti!");
 
