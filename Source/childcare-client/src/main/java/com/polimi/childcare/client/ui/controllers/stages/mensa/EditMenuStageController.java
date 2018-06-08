@@ -317,7 +317,6 @@ public class EditMenuStageController extends NetworkedSubScene implements ISubSc
         for(Pasto pasto : tablePasti.getItems())
             newMenu.addPasto(pasto);
 
-        newMenu.setAttivo(newMenu.getRicorrenza() != 0);
         return newMenu;
     }
 

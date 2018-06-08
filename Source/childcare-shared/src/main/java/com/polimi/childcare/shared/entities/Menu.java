@@ -54,9 +54,6 @@ public class Menu extends TransferableEntity implements Serializable
     private String Nome;
 
     @Column(nullable = false)
-    private boolean Attivo;
-
-    @Column(nullable = false)
     private int Ricorrenza;
 
     //endregion
@@ -77,10 +74,9 @@ public class Menu extends TransferableEntity implements Serializable
 
     public Menu() { }
 
-    public Menu(String nome, boolean attivo, int ricorrenza)
+    public Menu(String nome, int ricorrenza)
     {
         Nome = nome;
-        this.Attivo = attivo;
         Ricorrenza = ricorrenza;
     }
 
@@ -92,10 +88,6 @@ public class Menu extends TransferableEntity implements Serializable
     public void unsafeSetID(int ID) {
         this.ID = ID;
     }
-
-    public boolean isAttivo() { return Attivo; }
-
-    public void setAttivo(boolean attivo) { this.Attivo = attivo; }
 
     public int getRicorrenza() { return Ricorrenza; }
 
@@ -126,8 +118,7 @@ public class Menu extends TransferableEntity implements Serializable
         if (!(o instanceof Menu)) return false;
         Menu menu = (Menu) o;
         return getID() == menu.getID() &&
-                getRicorrenza() == menu.getRicorrenza() &&
-                isAttivo() == menu.isAttivo();
+                getRicorrenza() == menu.getRicorrenza();
     }
 
     public LinkedList<MenuAvviso> getAvvisi(List<Persona> persone)
