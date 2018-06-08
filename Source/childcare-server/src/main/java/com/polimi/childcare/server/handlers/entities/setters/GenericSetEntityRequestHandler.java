@@ -88,15 +88,19 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
 
         lista.add(dbEntity);
 
-        if (lista.contains(entity)) {
-            if (lista.get(0).consistecyHashCode() == oldHashCode) {
+        if (lista.contains(entity))
+        {
+            if (lista.get(0).consistecyHashCode() == oldHashCode)
+            {
                 if (toDelete)
                     session.delete(entity);
                 else
                     session.insertOrUpdate(entity);
-            } else
+            }
+            else
                 return new ListResponse<>(100, lista);
-        } else {
+        }
+        else {
             if (toDelete)
                 return new BadRequestResponse();
 

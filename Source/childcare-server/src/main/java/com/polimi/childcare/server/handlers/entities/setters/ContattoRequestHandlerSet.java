@@ -31,8 +31,6 @@ public class ContattoRequestHandlerSet extends GenericSetEntityRequestHandler<Se
             }
             else
             {
-                //TODO: ma qua va bene così?
-
                 Set<Bambino> bambiniset = dbEntity.getBambini();
 
                 for (Bambino b : bambiniset)
