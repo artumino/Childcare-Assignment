@@ -6,10 +6,7 @@ import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.entities.PianoViaggi;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
-import com.polimi.childcare.shared.networking.responses.BaseResponse;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Gruppo>, Gruppo>
@@ -40,9 +37,7 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
                     session.update(b);
                 }
 
-
                 //Rimuovo i piano viaggi legati a questo gruppo
-
                 for(PianoViaggi viaggi : request.getEntity().getPianoviaggi())
                     request.getEntity().unsafeRemovePianoViaggi(viaggi);
 
