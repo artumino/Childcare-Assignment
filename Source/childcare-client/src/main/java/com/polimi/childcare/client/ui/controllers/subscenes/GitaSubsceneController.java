@@ -15,8 +15,10 @@ import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredGitaRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredMezzoDiTrasportoRequest;
+import com.polimi.childcare.shared.networking.requests.special.GetBambiniSenzaGruppoRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListGitaResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListMezzoDiTrasportoResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
@@ -94,6 +96,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         setupTabellaAddetti();
         setupTabellaGite();
         setupTabellaMezzi();
+        setupTabellaOrfani();
         redrawGruppi();
 
         //Effects
@@ -135,7 +138,10 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void refreshOrfani()
     {
-
+        networkOperationVault.submitOperation(new NetworkOperation(
+                new GetBambiniSenzaGruppoRequest(),
+                this::OnOrfaniResponseRecived,
+                true));
     }
 
     private void redrawGruppi()
@@ -183,6 +189,31 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
         if(tableAddetti != null)
             tableAddetti.getColumns().addAll(cMatricola, cNome, cCognome, cTelefoni);
+    }
+
+    private void setupTabellaOrfani()
+    {
+        TableColumn<Bambino, String> cMatricola = new TableColumn<>("Matricola");
+        TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
+        TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
+
+        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
+        cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
+        cCodiceFiscale.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCodiceFiscale()));
+
+        cMatricola.setPrefWidth(75);
+        cMatricola.setMinWidth(75);
+        cMatricola.setMaxWidth(75);
+
+
+        if(tableOrfani != null)
+        {
+            tableOrfani.getColumns().addAll(cMatricola, cNome, cCognome, cCodiceFiscale);
+            listOrfani.comparatorProperty().bind(tableOrfani.comparatorProperty());
+            tableOrfani.setItems(listOrfani.list());
+        }
     }
 
     private void setupTabellaGite()
@@ -253,8 +284,8 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListGitaResponse))
             return;
 
-        ListGitaResponse listAddettiResponse = (ListGitaResponse)response;
-        listGite.updateDataSet(FXCollections.observableArrayList(listAddettiResponse.getPayload()));
+        ListGitaResponse listGiteResponse = (ListGitaResponse)response;
+        listGite.updateDataSet(FXCollections.observableArrayList(listGiteResponse.getPayload()));
     }
 
     private void OnMezziResponseRecived(BaseResponse response)
@@ -262,8 +293,17 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListMezzoDiTrasportoResponse))
             return;
 
-        ListMezzoDiTrasportoResponse listAddettiResponse = (ListMezzoDiTrasportoResponse)response;
-        listMezzi.updateDataSet(FXCollections.observableArrayList(listAddettiResponse.getPayload()));
+        ListMezzoDiTrasportoResponse listMezziResponse = (ListMezzoDiTrasportoResponse)response;
+        listMezzi.updateDataSet(FXCollections.observableArrayList(listMezziResponse.getPayload()));
+    }
+
+    private void OnOrfaniResponseRecived(BaseResponse response)
+    {
+        if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListBambiniResponse))
+            return;
+
+        ListBambiniResponse listOrfaniResponse = (ListBambiniResponse)response;
+        listOrfani.updateDataSet(FXCollections.observableArrayList(listOrfaniResponse.getPayload()));
     }
 
     //endregion
