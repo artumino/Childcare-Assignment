@@ -137,7 +137,6 @@ public class GitaTests
         for(int i = 0; i < groupNumber; i++)
             gitaPerfettaAutobus.put(allGruppi.get(i), allMezzi.get(i));
 
-        HashMap<Gruppo, MezzoDiTrasporto> definitiveGita = SerializationUtils.deserializeByteArray(SerializationUtils.serializeToByteArray(gitaPerfettaAutobus), HashMap.class);
         response = NetworkManager.getInstance().processRequest(new GeneratePianiViaggioRequest(gita, gitaPerfettaAutobus));
         Assert.assertEquals(200, response.getCode());
 

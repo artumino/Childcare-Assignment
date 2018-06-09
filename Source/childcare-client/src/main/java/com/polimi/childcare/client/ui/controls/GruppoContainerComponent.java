@@ -1,0 +1,159 @@
+package com.polimi.childcare.client.ui.controls;
+
+import com.polimi.childcare.client.ui.OrderedFilteredList;
+import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.filters.Filters;
+import com.polimi.childcare.shared.entities.Addetto;
+import com.polimi.childcare.shared.entities.Bambino;
+import com.polimi.childcare.shared.entities.Gruppo;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+
+import java.io.IOException;
+
+public class GruppoContainerComponent extends AnchorPane
+{
+    private Gruppo linkedGruppo;
+    private OrderedFilteredList<Bambino> listBambini;
+    private FilterComponent<Bambino> filterBambini;
+
+    @FXML private Label lblGroupName;
+    @FXML private TextField txtFilterBambini;
+    @FXML private DragAndDropTableView<Addetto> tableSorvegliante;
+    @FXML private DragAndDropTableView<Bambino> tableBambini;
+    @FXML private ImageView imgDelete;
+
+    public GruppoContainerComponent()
+    {
+        //super();
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(
+            "fxml/controls/GruppoContainerComponent.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+        fxmlLoader.setClassLoader(getClass().getClassLoader());
+
+        try {
+            fxmlLoader.load();
+        } catch (IOException exception)
+        {
+            throw new RuntimeException(exception);
+        }
+
+        listBambini = new OrderedFilteredList<>();
+        filterBambini = new FilterComponent<>(listBambini.predicateProperty());
+
+        filterBambini.addFilterField(txtFilterBambini.textProperty(), p -> Filters.filterPersona(p, txtFilterBambini.getText()));
+        setupTableSorvegliante();
+        setupTableBambini();
+        bindGruppo(null);
+    }
+
+    public GruppoContainerComponent(Gruppo gruppo)
+    {
+        this();
+        bindGruppo(gruppo);
+    }
+
+    public void bindGruppo(Gruppo gruppo)
+    {
+        this.linkedGruppo = gruppo;
+        if(this.linkedGruppo == null)
+            lblGroupName.setText("Crea Gruppo");
+        else
+            lblGroupName.setText("Gruppo " + linkedGruppo.getID());
+
+        if(linkedGruppo != null)
+        {
+            if(linkedGruppo.getSorvergliante() != null)
+                tableSorvegliante.getItems().add(linkedGruppo.getSorvergliante());
+
+            listBambini.updateDataSet(FXCollections.observableArrayList(linkedGruppo.getBambini()));
+        }
+    }
+
+    public void setDragEnabled(boolean enabled)
+    {
+        this.tableSorvegliante.dragForClass(enabled ? Addetto.class : null);
+        this.tableBambini.dragForClass(enabled ? Bambino.class : null);
+    }
+
+    private void setupTableSorvegliante()
+    {
+        TableColumn<Addetto, String> cMatricola = new TableColumn<>("ID");
+        TableColumn<Addetto, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Addetto, String> cCognome = new TableColumn<>("Cognome");
+        TableColumn<Addetto, String> cTelefoni = new TableColumn<>("Telefoni");
+
+        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
+        cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
+        cTelefoni.setCellValueFactory(p -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(p.getValue().getTelefoni())));
+
+        cMatricola.setMinWidth(50);
+        cMatricola.setMaxWidth(50);
+        cMatricola.setPrefWidth(50);
+
+        if(tableSorvegliante != null)
+            tableSorvegliante.getColumns().addAll(cMatricola, cNome, cCognome, cTelefoni);
+    }
+
+    private void setupTableBambini()
+    {
+        TableColumn<Bambino, String> cMatricola = new TableColumn<>("ID");
+        TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
+        TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
+
+        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
+        cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
+
+        cMatricola.setMinWidth(50);
+        cMatricola.setMaxWidth(50);
+        cMatricola.setPrefWidth(50);
+
+        if(tableBambini != null)
+        {
+            tableBambini.getColumns().addAll(cMatricola, cNome, cCognome);
+            listBambini.comparatorProperty().bind(tableBambini.comparatorProperty());
+            tableBambini.setItems(listBambini.list());
+        }
+    }
+
+    public StringProperty labelTextProperty() {
+        return lblGroupName.textProperty();
+    }
+
+    public String getLabelText() {
+        return labelTextProperty().get();
+    }
+
+    public void setLabelText(String text) {
+        labelTextProperty().set(text);
+    }
+
+    public <T> void addBambiniColumn(TableColumn<Bambino, T> column)
+    {
+        if(tableBambini != null)
+            tableBambini.getColumns().add(column);
+    }
+
+    public void setOnDeleteClicked(EventHandler<? super MouseEvent> onDeleteClicked)
+    {
+        if(imgDelete != null)
+        {
+            imgDelete.setVisible(onDeleteClicked != null);
+            imgDelete.setOnMouseClicked(onDeleteClicked);
+        }
+    }
+}
