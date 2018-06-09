@@ -19,12 +19,12 @@ public class Main extends Application
     }
 
     @Override
-    public void stop() throws Exception
+    public void stop()
     {
         //Ferma network manager
         ClientNetworkManager.getInstance().Dispose();
 
-        super.stop();
+        System.exit(0);
     }
 
     public static void main(String[] args)
