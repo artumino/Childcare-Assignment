@@ -69,6 +69,7 @@ public class Main
         NetworkManager.getInstance().addRequestHandler(GetCurrentGitaRequest.class, new GetCurrentGitaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(GeneratePianiViaggioRequest.class, new GeneratePianiViaggoRequestHandler());
         NetworkManager.getInstance().addRequestHandler(SetBambinoDispersoRequest.class, new SetBambinoDispersoRequestHandler());
+        NetworkManager.getInstance().addRequestHandler(GetBambiniSenzaGruppoRequest.class, new GetBambiniSenzaGruppoRequestHandler());
         //endregion
     }
 
