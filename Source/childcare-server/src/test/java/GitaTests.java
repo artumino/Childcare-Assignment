@@ -11,12 +11,14 @@ import com.polimi.childcare.shared.networking.requests.setters.SetMezzoDiTraspor
 import com.polimi.childcare.shared.networking.requests.special.GeneratePianiViaggioRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.*;
+import com.polimi.childcare.shared.serialization.SerializationUtils;
 import org.hibernate.Session;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import rules.DatabaseSessionRule;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -116,17 +118,7 @@ public class GitaTests
 
         //Genero 3 scenari di gite comuni
 
-        //Normale in autobus
-        HashMap<Gruppo, MezzoDiTrasporto> gitaPerfettaAutobus = new HashMap<>();
-        for(int i = 0; i < groupNumber; i++)
-            gitaPerfettaAutobus.put(allGruppi.get(i), allMezzi.get(i));
-
-        clearPianoViaggiGita(gita);
-        response = NetworkManager.getInstance().processRequest(new GeneratePianiViaggioRequest(gita, gitaPerfettaAutobus));
-        Assert.assertEquals(200, response.getCode());
-
         //Sovrappopolata
-        gita = DatabaseSession.getInstance().getByID(Gita.class, gita.getID(), true);
         clearPianoViaggiGita(gita);
         HashMap<Gruppo, MezzoDiTrasporto> gitaErrataAutobus = new HashMap<>();
         for(int i = 0; i < groupNumber; i++)
@@ -142,6 +134,64 @@ public class GitaTests
             gitaAPiedi.put(allGruppi.get(i), null);
         response = NetworkManager.getInstance().processRequest(new GeneratePianiViaggioRequest(gita, gitaAPiedi));
         Assert.assertEquals(200, response.getCode());
+
+        //Normale in autobus
+        gita = DatabaseSession.getInstance().getByID(Gita.class, gita.getID(), true);
+        clearPianoViaggiGita(gita);
+        HashMap<Gruppo, MezzoDiTrasporto> gitaPerfettaAutobus = new HashMap<>();
+        for(int i = 0; i < groupNumber; i++)
+            gitaPerfettaAutobus.put(allGruppi.get(i), allMezzi.get(i));
+
+        HashMap<Gruppo, MezzoDiTrasporto> definitiveGita = SerializationUtils.deserializeByteArray(SerializationUtils.serializeToByteArray(gitaPerfettaAutobus), HashMap.class);
+        response = NetworkManager.getInstance().processRequest(new GeneratePianiViaggioRequest(gita, gitaPerfettaAutobus));
+        Assert.assertEquals(200, response.getCode());
+
+        //Altero i gruppi già creati
+        Bambino g1b = (Bambino)allGruppi.get(0).getBambini().toArray()[0];
+        Bambino g2b = (Bambino)allGruppi.get(1).getBambini().toArray()[0];
+        allGruppi.get(0).unsafeRemoveBambino(g1b);
+        allGruppi.get(1).unsafeRemoveBambino(g2b);
+        allGruppi.get(0).unsafeAddBambino(g2b);
+        allGruppi.get(1).unsafeAddBambino(g1b);
+
+        response = NetworkManager.getInstance().processRequest(new SetGruppoRequest(allGruppi.get(0), false, allGruppi.get(0).consistecyHashCode()));
+        Assert.assertEquals(200, response.getCode());
+
+        response = NetworkManager.getInstance().processRequest(new SetGruppoRequest(allGruppi.get(1), false, allGruppi.get(1).consistecyHashCode()));
+        Assert.assertEquals(200, response.getCode());
+
+        Gruppo g1get = DatabaseSession.getInstance().getByID(Gruppo.class, allGruppi.get(0).getID(), true);
+        Gruppo g2get = DatabaseSession.getInstance().getByID(Gruppo.class, allGruppi.get(1).getID(), true);
+
+        Assert.assertTrue(g1get.getBambini().contains(g2b));
+        Assert.assertTrue(!g1get.getBambini().contains(g1b));
+        Assert.assertTrue(g2get.getBambini().contains(g1b));
+        Assert.assertTrue(!g2get.getBambini().contains(g2b));
+
+        int IDGita = gita.getID();
+
+
+        session = DatabaseSession.getInstance().openSession();
+        long countMezzi = DatabaseSession.getInstance().stream(MezzoDiTrasporto.class, session).count();
+        session.close();
+
+        //Rimuovo i gruppi e mi assicuro che i cascade abbiano funzionato
+        for(Gruppo gruppo : allGruppi)
+        {
+            int ID = gruppo.getID();
+            response = NetworkManager.getInstance().processRequest(new SetGruppoRequest(gruppo, true, gruppo.consistecyHashCode()));
+            Assert.assertEquals(200, response.getCode());
+            Assert.assertNull(DatabaseSession.getInstance().getByID(Gruppo.class, ID));
+        }
+
+        Assert.assertNotNull(DatabaseSession.getInstance().getByID(Gita.class, IDGita));
+
+        session = DatabaseSession.getInstance().openSession();
+        Assert.assertEquals(0, DatabaseSession.getInstance().stream(PianoViaggi.class, session).count());
+        Assert.assertEquals(allBambini.size(), DatabaseSession.getInstance().stream(Bambino.class, session).count());
+        Assert.assertEquals(allAddetti.size(), DatabaseSession.getInstance().stream(Addetto.class, session).count());
+        Assert.assertEquals(countMezzi, DatabaseSession.getInstance().stream(MezzoDiTrasporto.class, session).count());
+        session.close();
     }
 
     private static void clearPianoViaggiGita(Gita gita)

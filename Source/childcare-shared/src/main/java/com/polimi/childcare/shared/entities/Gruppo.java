@@ -29,7 +29,7 @@ public class Gruppo extends TransferableEntity implements Serializable
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppo")
     private Set<Bambino> bambini  = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gruppo")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "gruppo")
     private Set<PianoViaggi> pianoviaggi = new HashSet<>();
 
     //endregion

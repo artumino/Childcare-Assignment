@@ -22,15 +22,15 @@ public class PianoViaggi extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "Gita_FK")
     private Gita gita;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Mezzo_FK")
     private MezzoDiTrasporto mezzo;
 
