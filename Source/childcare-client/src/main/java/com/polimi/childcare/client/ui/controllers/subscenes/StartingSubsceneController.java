@@ -37,6 +37,8 @@ import java.util.ArrayList;
 
 public class StartingSubsceneController implements ISubSceneController
 {
+    public static final String FXML_PATH = "fxml/StartingBox.fxml";
+
     @FXML private StackPane paneRoot;
     @FXML private Button btnConnect;
     @FXML private ComboBox<IClientNetworkInterface> cmbConnectionType;
