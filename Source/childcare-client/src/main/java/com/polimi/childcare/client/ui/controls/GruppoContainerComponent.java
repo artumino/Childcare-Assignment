@@ -2,6 +2,7 @@ package com.polimi.childcare.client.ui.controls;
 
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.controls.events.IElementDragDropEvent;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.entities.Bambino;
@@ -32,6 +33,10 @@ public class GruppoContainerComponent extends AnchorPane
     private MezzoDiTrasporto linkedMezzo;
     private OrderedFilteredList<Bambino> listBambini;
     private FilterComponent<Bambino> filterBambini;
+
+    //Events
+    private IElementDragDropEvent<Bambino> onBambinoAggiunto;
+    private IElementDragDropEvent<Bambino> onBambinoRimosso;
 
     @FXML private Label lblGroupName;
     @FXML private TextField txtFilterBambini;
@@ -171,6 +176,22 @@ public class GruppoContainerComponent extends AnchorPane
             tableBambini.getColumns().addAll(cMatricola, cNome, cCognome);
             listBambini.comparatorProperty().bind(tableBambini.comparatorProperty());
             tableBambini.setItems(listBambini.list());
+
+
+            tableBambini.setOnElementDropped((element, source, target) -> {
+                if(!listBambini.unfilteredContains(element))
+                {
+                    listBambini.add(element);
+                    if(onBambinoAggiunto != null)
+                        onBambinoAggiunto.execute(element, source, target);
+                }
+            });
+
+            tableBambini.setOnElementDeleted(((element, source, target) -> {
+                listBambini.remove(element);
+                if(onBambinoRimosso != null)
+                    onBambinoRimosso.execute(element, source, target);
+            }));
         }
     }
 
@@ -198,6 +219,15 @@ public class GruppoContainerComponent extends AnchorPane
     }
 
     /**
+     * Rimuove un bambino dall'attuale rappresentazione del gruppo (non solleva alcun callback)
+     * @param bambino Bambino da rimuovere
+     */
+    public void removeBambino(Bambino bambino)
+    {
+        this.listBambini.remove(bambino);
+    }
+
+    /**
      * Abilita la possibilità di avere un bottone di cancellazione in testa al controllo
      * @param onDeleteClicked Callback chiamato alla pressione del bottone
      */
@@ -208,5 +238,23 @@ public class GruppoContainerComponent extends AnchorPane
             imgDelete.setVisible(onDeleteClicked != null);
             imgDelete.setOnMouseClicked(onDeleteClicked);
         }
+    }
+
+    /**
+     * Imposta un callback in ascolto sull'aggiunta di un bambino al gruppo
+     * @param bambinoAggiunto Bambino aggiunto al gruppo
+     */
+    public void setOnBambinoAggiunto(IElementDragDropEvent<Bambino> bambinoAggiunto)
+    {
+        this.onBambinoAggiunto = bambinoAggiunto;
+    }
+
+    /**
+     * Imposta un callback in ascolto sulla rimozione di un bambino dal gruppo
+     * @param bambinoRimosso Bambino rimosso dal gruppo
+     */
+    public void setOnBambinoRimosso(IElementDragDropEvent<Bambino> bambinoRimosso)
+    {
+        this.onBambinoRimosso = bambinoRimosso;
     }
 }

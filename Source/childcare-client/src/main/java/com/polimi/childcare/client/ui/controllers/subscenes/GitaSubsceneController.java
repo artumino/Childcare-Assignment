@@ -71,10 +71,14 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
     //Gruppi
     @FXML private HBox hboxGruppi;
     @FXML private ImageView imgAddGroup;
+    private List<GruppoContainerComponent> gruppoContainerComponents;
 
     @FXML
     protected void initialize()
     {
+        //Generated
+        gruppoContainerComponents = new ArrayList<>();
+
         //RefreshDelleListe
         btnRefresh.setOnMouseClicked(event -> RefreshData());
 
@@ -146,6 +150,8 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void redrawGruppi()
     {
+        gruppoContainerComponents.clear();
+
         List<Gruppo> gruppoList = new ArrayList<>(5);
         for(int i = 0; i < 5; i++)
         {
@@ -159,9 +165,28 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             hboxGruppi.getChildren().clear();
             for (Gruppo gruppo : gruppoList) {
                 GruppoContainerComponent containerComponent = new GruppoContainerComponent(gruppo);
-                containerComponent.setOnDeleteClicked(ignored -> {});
                 containerComponent.setDragEnabled(true);
                 hboxGruppi.getChildren().add(containerComponent);
+                gruppoContainerComponents.add(containerComponent);
+
+                containerComponent.setOnBambinoAggiunto(((element, source, target) ->
+                {
+                    listOrfani.remove(element);
+                    for(GruppoContainerComponent component : gruppoContainerComponents)
+                        if(component != containerComponent)
+                            component.removeBambino(element);
+                }));
+
+                containerComponent.setOnBambinoRimosso(((element, source, target) -> {
+                    listOrfani.add(element);
+                }));
+
+                containerComponent.setOnDeleteClicked(ignored -> {
+                    for(Bambino bambino : containerComponent.getCurrentGruppoRappresentation().getBambini())
+                        listOrfani.add(bambino);
+                    gruppoContainerComponents.remove(containerComponent);
+                    hboxGruppi.getChildren().remove(containerComponent);
+                });
             }
 
             if(imgAddGroup != null)

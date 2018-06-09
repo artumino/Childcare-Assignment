@@ -1,25 +1,16 @@
 package com.polimi.childcare.client.ui.controls;
 
+import com.polimi.childcare.client.ui.controls.events.IElementDragDropEvent;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 import javafx.beans.DefaultProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.input.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -35,6 +26,8 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
     private Class<? extends T> acceptedClasses;
     private boolean deleteOnExit;
     private IntegerProperty maximumRows = new SimpleIntegerProperty();
+    private IElementDragDropEvent<T> onElementDropped;
+    private IElementDragDropEvent<T> onElementDeleted;
 
     public DragAndDropTableView()
     {
@@ -73,15 +66,22 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
 
         //Rimuove elementi trascinati fuori
         setOnDragExited((event -> {
-            if(acceptedClasses != null && deleteOnExit && event.getGestureSource() == this)
+            if(acceptedClasses != null && event.getGestureSource() == this)
             {
                 Dragboard db = event.getDragboard();
                 if (db.hasString()) {
                     String dataString = db.getString();
                     byte[] data = Base64.getDecoder().decode(dataString);
                     T element = SerializationUtils.deserializeByteArray(data, acceptedClasses);
-                    if (element != null && element.equals(getSelectionModel().getSelectedItem()))
-                        getItems().remove(getSelectionModel().getSelectedItem());
+
+
+                    if (deleteOnExit && element != null && element.equals(getSelectionModel().getSelectedItem()))
+                    {
+                        if(onElementDeleted != null)
+                            onElementDeleted.execute(element, event.getGestureSource(), event.getGestureTarget());
+                        else
+                            getItems().remove(getSelectionModel().getSelectedItem());
+                    }
                 }
             }
         }));
@@ -109,9 +109,16 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
                     String dataString = db.getString();
                     byte[] data = Base64.getDecoder().decode(dataString);
                     T element = SerializationUtils.deserializeByteArray(data, acceptedClasses);
-                    if (element != null) {
-                        if (!this.getItems().contains(element))
-                            this.getItems().add(element);
+                    if (element != null)
+                    {
+
+                        if(onElementDropped != null)
+                            onElementDropped.execute(element, event.getGestureSource(), event.getGestureTarget());
+                        else
+                        {
+                            if (!this.getItems().contains(element))
+                                this.getItems().add(element);
+                        }
                         this.refresh();
                         event.setDropCompleted(true);
                     }
@@ -124,6 +131,16 @@ public class DragAndDropTableView<T extends Serializable> extends TableView<T>
     public void setDeleteOnExit(boolean deleteOnExit)
     {
         this.deleteOnExit = deleteOnExit;
+    }
+
+    public void setOnElementDropped(IElementDragDropEvent<T> elementDropEvent)
+    {
+        this.onElementDropped = elementDropEvent;
+    }
+
+    public void setOnElementDeleted(IElementDragDropEvent<T> elementExited)
+    {
+        this.onElementDeleted = elementExited;
     }
 
     public void dragForClass(Class<? extends T> tClass)

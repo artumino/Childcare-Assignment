@@ -54,4 +54,20 @@ public class OrderedFilteredList<T>
         if(newDataSet != null)
             this.observableList.addAll(newDataSet);
     }
+
+    public boolean unfilteredContains(T obj)
+    {
+        return observableList.contains(obj);
+    }
+
+    public void add(T obj)
+    {
+        if(!observableList.contains(obj))
+            observableList.add(obj);
+    }
+
+    public void remove(T obj)
+    {
+        observableList.remove(obj);
+    }
 }
