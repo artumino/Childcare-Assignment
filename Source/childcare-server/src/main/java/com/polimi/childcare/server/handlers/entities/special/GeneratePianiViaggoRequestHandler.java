@@ -26,6 +26,7 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
             return new BadRequestResponse();
 
         HashMap<Gruppo, MezzoDiTrasporto> mappaGruppoToMezzoDiTrasporto = request.getMappaGruppoToMezzoDiTrasporto();
+        HashMap<MezzoDiTrasporto, Integer> mappaCapienzaResidua = new HashMap<>(mappaGruppoToMezzoDiTrasporto.size());
         List<Gruppo> g = new ArrayList<>();
         List<PianoViaggi> list = new ArrayList<>();
 
@@ -35,29 +36,34 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
         Iterator it = mappaGruppoToMezzoDiTrasporto.entrySet().iterator();
         while (it.hasNext())
         {
-            Map.Entry pair = (Map.Entry)it.next();
+            Map.Entry<Gruppo,MezzoDiTrasporto> pair = (Map.Entry<Gruppo,MezzoDiTrasporto>)it.next();
 
-            gbuff = (Gruppo) pair.getKey();
-            mbuff = (MezzoDiTrasporto) pair.getValue();
+            gbuff = pair.getKey();
+            mbuff = pair.getValue();
+
+            //Se è la prima volta trovo questo autobus, tengo conto di quanta capienza ho
+            if(mbuff != null && !mappaCapienzaResidua.containsKey(mbuff))
+                mappaCapienzaResidua.put(mbuff, mbuff.getCapienza());
 
             //Controllo che sia valido il gruppo
             if(gbuff.getSorvergliante() == null)
-                return new BadRequestResponse();
+                return new BadRequestResponse.BadRequestResponseWithMessage("Un gruppo è senza sorvegliante");
 
 
-            if(gbuff != null || mbuff !=  null)
+            if(mbuff != null)
             {
-                if(gbuff.getBambini().size() > mbuff.getCapienza())
-                    return new BadRequestResponse();
-
-                else {
+                mappaCapienzaResidua.put(mbuff, mappaCapienzaResidua.get(mbuff) - (gbuff.getBambini().size() + 1));
+                if( mappaCapienzaResidua.get(mbuff) < 0)
+                    return new BadRequestResponse.BadRequestResponseWithMessage("Non ci sono abbastanza posti sull'autobus " + mbuff.getTarga() + " per accomodare tutti i bambini ed istruttori!");
+                else
+                {
                     g.add(gbuff);
                     list.add(new PianoViaggi(request.getGita(), gbuff, mbuff));
                 }
             }
-
             else
-                return new BadRequestResponse();
+                list.add(new PianoViaggi(request.getGita(), gbuff, null));
+
 
             it.remove();
         }
@@ -65,6 +71,6 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
         DatabaseSession.getInstance().insertAll(g);
         DatabaseSession.getInstance().insertAll(list);
 
-        return new BaseResponse(300);
+        return new BaseResponse(200);
     }
 }

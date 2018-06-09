@@ -102,6 +102,46 @@ public class DBHelper
         }
     }
 
+    public static <T extends TransferableEntity, U extends TransferableEntity>
+    void updateOneToMany(IOneToMany<U,T> detachedEntityRelation, IOneToMany<U,T> attachedEntity,
+                               Class<U> ownerClass, DatabaseSession.DatabaseSessionInstance session)
+    {
+        //Se non sono owner non mi preoccupo tanto dei dati ma delle relazioni. Non avendo potere sulle relazioni devo fare l'update di ogni
+        //U nuovo e rimosso (quelli che non sono stati toccati possono rimanere nella lista anche con dati sbgliati dato che non verranno modificati da hibernate)
+        Set<U> toUpdate = detachedEntityRelation.getUnmodifiableRelation();
+        Set<U> attachedItems = attachedEntity.getUnmodifiableRelation();
+
+        for (U unupdated : toUpdate) //Sottraggo gli U che sono dell'istanza sul DB e quella detached (che sono gli U le cui relazioni non sono state modificate)
+            if(ContainsHelper.containsHashCode(attachedItems, unupdated)) //Se il U è in toUpdate allora non è stato rimosso e devo solo aggiornarlo
+                attachedEntity.unsafeRemoveRelation(unupdated);
+
+        //Dopo questa operazione in attachedEntity.getUnmodifiableRelation() ho quelli che ho rimosso dalla relazione
+        Set<U> removed = attachedEntity.getUnmodifiableRelation();
+
+        //Per tutti gli U aggiunti, aggiorno la relazione
+        for(U unupdated : toUpdate)
+        {
+            //Gli U inseriti non li ho ancora presi dal DB quindi è buona norma aspettarsi che potrebbero essere cambiati, quindi oltre ad impostare la relazione
+            //sistemo anche l'integrità dei dati
+            U updated = session.getByID(ownerClass, unupdated.getID());
+            detachedEntityRelation.unsafeRemoveRelation(unupdated);
+
+            //Se non è stato cancellato il U inserito, allora riaggiungo la versione aggiornata e lo aggiorno sul DB con la nuova relazione
+            if (updated != null) {
+                detachedEntityRelation.getInverse(updated).setRelation(detachedEntityRelation.getItem());
+                session.update(updated);
+                detachedEntityRelation.unsafeAddRelation(updated);
+            }
+        }
+
+        //Per tutti gli U rimossi(che sono presi da attachedEntity, quindi sono già consistenti sul DB mi limito a rimuovere la relazione ed aggiornarli)
+        for (U rem : removed)
+        {
+            attachedEntity.getInverse(rem).setRelation(null);
+            session.update(rem);
+        }
+    }
+
     /**
      * Metodo generico che aggiorna la relazione MoltiAMolti di un oggetto owner
      * @param detachedEntityRelation Relazione tra T Detached(Modificato) e U (Detached)

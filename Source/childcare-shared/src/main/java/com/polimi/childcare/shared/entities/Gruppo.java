@@ -23,7 +23,7 @@ public class Gruppo extends TransferableEntity implements Serializable
     //endregion
 
     //region Relazioni
-    @OneToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppo")

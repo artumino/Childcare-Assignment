@@ -39,6 +39,11 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
      */
     protected abstract void doPreSetChecks(DatabaseSession.DatabaseSessionInstance session, T request, IT dbEntity);
 
+    protected void doPostInsertOperations(DatabaseSession.DatabaseSessionInstance session, T request, IT dbEntity)
+    {
+
+    }
+
     @Override
     public BaseResponse processRequest(T request)
     {
@@ -59,8 +64,18 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
                 //Ritorno una request modificata con i dati opportuni per non avere problemi con il set di request.getEntity()
                 doPreSetChecks(session, request, dbEntity);
 
+                boolean isInsert = request.getEntity().getID() == 0;
+
                 //Provo ad eseguire il set dopo che ho fatto i mei check
                 response[0] = requestSet(session, request.getEntity(), dbEntity, request.getOldHashCode(), request.isToDelete());
+
+                //Se era un insert, avvio i controlli post insert (ora getEntity ha un ID valido)
+                if(isInsert && response[0].getCode() == 200)
+                {
+                    dbEntity = session.getByID(getQueryClass(), request.getEntity().getID(), true);
+                    doPostInsertOperations(session, request, dbEntity);
+                }
+
                 return !(response[0] instanceof BadRequestResponse);
             });
         }
@@ -94,8 +109,10 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
             {
                 if (toDelete)
                     session.delete(entity);
-                else
+                else if(entity.getID() != 0)
                     session.insertOrUpdate(entity);
+                else
+                    session.insert(entity);
             }
             else
                 return new ListResponse<>(100, lista);
@@ -103,9 +120,10 @@ public abstract class GenericSetEntityRequestHandler<T extends SetEntityRequest<
         else {
             if (toDelete)
                 return new BadRequestResponse();
-
-            else
+            else if(entity.getID() != 0)
                 session.insertOrUpdate(entity);
+            else
+                session.insert(entity);
         }
 
         return new BaseResponse(200);

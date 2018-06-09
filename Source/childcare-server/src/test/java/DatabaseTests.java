@@ -14,7 +14,7 @@ import rules.DatabaseSessionRule;
 
 import java.time.LocalDateTime;
 
-public class InsertTest
+public class DatabaseTests
 {
     @Rule
     public DatabaseSessionRule dbSessioneRule = new DatabaseSessionRule(); //Si occupa di fare il setup del DB prima di eseguire i test

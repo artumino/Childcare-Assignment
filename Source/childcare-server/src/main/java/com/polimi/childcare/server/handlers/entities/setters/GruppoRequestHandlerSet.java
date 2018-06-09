@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
@@ -19,9 +20,13 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
     {
         if (dbEntity != null && request.getOldHashCode() == dbEntity.consistecyHashCode())
         {
-            if(request.getEntity().getSorvergliante() == null && !request.isToDelete())
-                throw new RuntimeException("Sorvegliante Nullo!");
+            if(!request.isToDelete())
+            {
+                if (request.getEntity().getSorvergliante() == null)
+                    throw new RuntimeException("Sorvegliante Nullo!");
 
+                DBHelper.updateOneToMany(request.getEntity().asGruppoBambiniRelation(), dbEntity.asGruppoBambiniRelation(), Bambino.class, session);
+            }
             if (request.isToDelete())
             {
                 Set<Bambino> bambini = dbEntity.getBambini();
@@ -36,5 +41,12 @@ public class GruppoRequestHandlerSet extends GenericSetEntityRequestHandler<SetE
                 }
             }
         }
+    }
+
+    @Override
+    protected void doPostInsertOperations(DatabaseSession.DatabaseSessionInstance session, SetEntityRequest<Gruppo> request, Gruppo dbEntity) {
+        super.doPostInsertOperations(session, request, dbEntity);
+
+        DBHelper.updateOneToMany(request.getEntity().asGruppoBambiniRelation(), dbEntity.asGruppoBambiniRelation(), Bambino.class, session);
     }
 }
