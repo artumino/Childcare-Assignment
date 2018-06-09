@@ -14,14 +14,14 @@ import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredAddettoRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredGitaRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredGruppoRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredMezzoDiTrasportoRequest;
 import com.polimi.childcare.shared.networking.requests.special.GetBambiniSenzaGruppoRequest;
+import com.polimi.childcare.shared.networking.requests.special.UpdateGruppiRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListAddettiResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListGitaResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListMezzoDiTrasportoResponse;
+import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -32,7 +32,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
     @FXML private TextField txtFilterMezzi;
     private OrderedFilteredList<MezzoDiTrasporto> listMezzi;
     private FilterComponent<MezzoDiTrasporto> filterMezzi;
-    @FXML private Button btnAddMezz0;
+    @FXML private Button btnAddMezzo;
 
     //Addetti
     @FXML private DragAndDropTableView<Addetto> tableAddetti;
@@ -71,7 +73,10 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
     //Gruppi
     @FXML private HBox hboxGruppi;
     @FXML private ImageView imgAddGroup;
+    private List<Gruppo> receivedGroups;
     private List<GruppoContainerComponent> gruppoContainerComponents;
+    @FXML private Button btnAutoAdd;
+    @FXML private Button btnSaveGroups;
 
     @FXML
     protected void initialize()
@@ -101,7 +106,10 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         setupTabellaGite();
         setupTabellaMezzi();
         setupTabellaOrfani();
-        redrawGruppi();
+
+
+        setupGruppi();
+        refreshGruppi(new ArrayList<>());
 
         //Effects
         if(imgAddGroup != null)
@@ -136,6 +144,10 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
                 new FilteredGitaRequest(0, 0, false),
                 this::OnGiteResponseRecived,
                 true));
+        networkOperationVault.submitOperation(new NetworkOperation(
+                new FilteredGruppoRequest(0, 0, true),
+                this::OnGruppiResponseRecived,
+                true));
 
         refreshOrfani();
     }
@@ -150,60 +162,44 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void redrawGruppi()
     {
-        gruppoContainerComponents.clear();
-
-        List<Gruppo> gruppoList = new ArrayList<>(5);
-        for(int i = 0; i < 5; i++)
-        {
-            Gruppo gruppo = new Gruppo();
-            gruppo.unsafeSetID(i);
-            gruppoList.add(gruppo);
-        }
-
         if(hboxGruppi != null)
         {
             hboxGruppi.getChildren().clear();
-            for (Gruppo gruppo : gruppoList) {
-                GruppoContainerComponent containerComponent = new GruppoContainerComponent(gruppo);
-                containerComponent.setDragEnabled(true);
+            for (GruppoContainerComponent containerComponent : gruppoContainerComponents)
                 hboxGruppi.getChildren().add(containerComponent);
-                gruppoContainerComponents.add(containerComponent);
-
-                containerComponent.setOnBambinoAggiunto(((element, source, target) ->
-                {
-                    listOrfani.remove(element);
-                    for(GruppoContainerComponent component : gruppoContainerComponents)
-                        if(component != containerComponent)
-                            component.removeBambino(element);
-                }));
-
-                containerComponent.setOnBambinoRimosso(((element, source, target) -> {
-                    listOrfani.add(element);
-                }));
-
-                containerComponent.setOnDeleteClicked(ignored -> {
-                    for(Bambino bambino : containerComponent.getCurrentGruppoRappresentation().getBambini())
-                        listOrfani.add(bambino);
-                    gruppoContainerComponents.remove(containerComponent);
-                    hboxGruppi.getChildren().remove(containerComponent);
-                });
-            }
 
             if(imgAddGroup != null)
                 hboxGruppi.getChildren().add(imgAddGroup);
         }
     }
 
+    private void refreshGruppi(List<Gruppo> gruppi)
+    {
+        btnSaveGroups.setVisible(true);
+        receivedGroups = gruppi;
+        gruppoContainerComponents.clear();
+        for (Gruppo gruppo : gruppi)
+            addGruppoComponentForGruppo(gruppo);
+        redrawGruppi();
+    }
+
+    private void updateIDGruppi()
+    {
+        int count = 1;
+        for(GruppoContainerComponent containerComponent : gruppoContainerComponents)
+            containerComponent.updateID(count++);
+    }
+
     //region Setup
 
     private void setupTabellaAddetti()
     {
-        TableColumn<Addetto, String> cMatricola = new TableColumn<>("Matricola");
+        TableColumn<Addetto, Integer> cMatricola = new TableColumn<>("Matricola");
         TableColumn<Addetto, String> cNome = new TableColumn<>("Nome");
         TableColumn<Addetto, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Addetto, String> cTelefoni = new TableColumn<>("Telefoni");
 
-        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cMatricola.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
         cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
         cTelefoni.setCellValueFactory(p -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(p.getValue().getTelefoni())));
@@ -218,12 +214,12 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void setupTabellaOrfani()
     {
-        TableColumn<Bambino, String> cMatricola = new TableColumn<>("Matricola");
+        TableColumn<Bambino, Integer> cMatricola = new TableColumn<>("Matricola");
         TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
         TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
 
-        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cMatricola.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
         cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
         cCodiceFiscale.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCodiceFiscale()));
@@ -243,15 +239,15 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void setupTabellaGite()
     {
-        TableColumn<Gita, String> cID = new TableColumn<>("ID");
+        TableColumn<Gita, Integer> cID = new TableColumn<>("ID");
         TableColumn<Gita, String> cLuogo = new TableColumn<>("Luogo");
-        TableColumn<Gita, String> cInizio = new TableColumn<>("Inizio");
-        TableColumn<Gita, String> cFine = new TableColumn<>("Fine");
+        TableColumn<Gita, LocalDate> cInizio = new TableColumn<>("Inizio");
+        TableColumn<Gita, LocalDate> cFine = new TableColumn<>("Fine");
 
-        cID.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cID.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cLuogo.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getLuogo()));
-        cInizio.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getDataInizio().toString()));
-        cFine.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getDataFine().toString()));
+        cInizio.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getDataInizio()));
+        cFine.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getDataFine()));
 
         cID.setPrefWidth(75);
         cID.setMinWidth(75);
@@ -267,17 +263,17 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void setupTabellaMezzi()
     {
-        TableColumn<MezzoDiTrasporto, String> cID = new TableColumn<>("ID");
+        TableColumn<MezzoDiTrasporto, Integer> cID = new TableColumn<>("ID");
         TableColumn<MezzoDiTrasporto, String> cTarga = new TableColumn<>("Targa");
         TableColumn<MezzoDiTrasporto, String> cFornitore = new TableColumn<>("Fornitore");
-        TableColumn<MezzoDiTrasporto, String> cCapienza = new TableColumn<>("Capienza");
-        TableColumn<MezzoDiTrasporto, String> cCosto = new TableColumn<>("Costo/h");
+        TableColumn<MezzoDiTrasporto, Integer> cCapienza = new TableColumn<>("Capienza");
+        TableColumn<MezzoDiTrasporto, Integer> cCosto = new TableColumn<>("Costo/h");
 
-        cID.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cID.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cTarga.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getTarga()));
         cFornitore.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getFornitore() != null ? p.getValue().getFornitore().getRagioneSociale() : ""));
-        cCapienza.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getCapienza())));
-        cCosto.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getCostoOrario())));
+        cCapienza.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getCapienza()));
+        cCosto.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getCostoOrario()));
 
         cID.setPrefWidth(75);
         cID.setMinWidth(75);
@@ -289,6 +285,111 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             listMezzi.comparatorProperty().bind(tableMezzi.comparatorProperty());
             tableMezzi.setItems(listMezzi.list());
         }
+    }
+
+    private void setupGruppi()
+    {
+        imgAddGroup.setOnMouseClicked((ignored) -> {
+            //Aggiunge un nuovo gruppo infondo alla lista dei gruppi
+            Gruppo gruppo = new Gruppo();
+            gruppo.unsafeSetID(gruppoContainerComponents.size() + 1);
+            addGruppoComponentForGruppo(gruppo);
+            redrawGruppi();
+        });
+
+        btnAutoAdd.setOnMouseClicked((event -> {
+            if(gruppoContainerComponents.size() > 0 && listOrfani.total() > 0) {
+                int orphansPerGroup = (int) Math.floor(listOrfani.total() / gruppoContainerComponents.size());
+
+                int remainingGroups = gruppoContainerComponents.size();
+                for (GruppoContainerComponent containerComponent : gruppoContainerComponents) {
+                    for (int i = 0; i < orphansPerGroup; i++) {
+                        Bambino bambino = listOrfani.get(i * (remainingGroups - 1));
+                        containerComponent.addBambino(bambino);
+                        listOrfani.remove(bambino);
+                    }
+                    remainingGroups--;
+                }
+
+                //Qualche residuo
+                if (listOrfani.total() > 0) {
+                    for (int i = 0; i < listOrfani.total(); i++) {
+                        Bambino bambino = listOrfani.get(i);
+                        gruppoContainerComponents.get(i % gruppoContainerComponents.size()).addBambino(bambino);
+                        listOrfani.remove(bambino);
+                    }
+                }
+            }
+        }));
+
+        btnSaveGroups.setOnMouseClicked(click ->
+        {
+            List<Gruppo> newGruppi = new ArrayList<>();
+            for (GruppoContainerComponent gruppoContainerComponent : gruppoContainerComponents)
+                newGruppi.add(gruppoContainerComponent.getCurrentGruppoRappresentation());
+
+            boolean modified = newGruppi.size() != receivedGroups.size();
+            if(!modified)
+            {
+                //Controllo eventuali aggiornamenti
+                for(Gruppo gruppo : newGruppi)
+                {
+                    int index = receivedGroups.indexOf(gruppo);
+                    if(index < 0)
+                    {
+                        modified = true;
+                        break;
+                    }
+
+                    Gruppo previousGruppo = receivedGroups.get(index);
+                    modified = previousGruppo.hashCode() != gruppo.hashCode() ||
+                                !previousGruppo.equals(gruppo) ||
+                                previousGruppo.getBambini().size() != gruppo.getBambini().size() ||
+                                previousGruppo.getSorvergliante() != gruppo.getSorvergliante() ||
+                            !CollectionUtils.isEqualCollection(previousGruppo.getBambini(), gruppo.getBambini());
+                    if(modified)
+                        break;
+                }
+            }
+
+            if(modified)
+            {
+                networkOperationVault.submitOperation(new NetworkOperation(new UpdateGruppiRequest(newGruppi), response ->
+                {
+                    if(StageUtils.HandleResponseError(response, "Errore nell'impostazione dei gruppi", p -> p.getCode() == 200))
+                        return;
+                    RefreshData();
+                }, true));
+            }
+        });
+    }
+
+    private void addGruppoComponentForGruppo(Gruppo gruppo)
+    {
+        GruppoContainerComponent containerComponent = new GruppoContainerComponent(gruppo);
+        containerComponent.setDragEnabled(true);
+        hboxGruppi.getChildren().add(containerComponent);
+        gruppoContainerComponents.add(containerComponent);
+
+        containerComponent.setOnBambinoAggiunto(((element, source, target) ->
+        {
+            listOrfani.remove(element);
+            for(GruppoContainerComponent component : gruppoContainerComponents)
+                if(component != containerComponent)
+                    component.removeBambino(element);
+        }));
+
+        containerComponent.setOnBambinoRimosso(((element, source, target) -> {
+            listOrfani.add(element);
+        }));
+
+        containerComponent.setOnDeleteClicked(ignored -> {
+            for(Bambino bambino : containerComponent.getCurrentGruppoRappresentation().getBambini())
+                listOrfani.add(bambino);
+            gruppoContainerComponents.remove(containerComponent);
+            hboxGruppi.getChildren().remove(containerComponent);
+            updateIDGruppi();
+        });
     }
 
     //endregion
@@ -329,6 +430,16 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
         ListBambiniResponse listOrfaniResponse = (ListBambiniResponse)response;
         listOrfani.updateDataSet(FXCollections.observableArrayList(listOrfaniResponse.getPayload()));
+    }
+
+    private void OnGruppiResponseRecived(BaseResponse response)
+    {
+        if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListGruppoResponse))
+            return;
+
+        ListGruppoResponse listOrfaniResponse = (ListGruppoResponse)response;
+
+        refreshGruppi(listOrfaniResponse.getPayload());
     }
 
     //endregion

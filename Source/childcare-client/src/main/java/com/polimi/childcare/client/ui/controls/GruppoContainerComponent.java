@@ -9,8 +9,11 @@ import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.entities.MezzoDiTrasporto;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -30,6 +33,7 @@ import java.io.IOException;
 public class GruppoContainerComponent extends AnchorPane
 {
     private Gruppo linkedGruppo;
+    private int currentID;
     private MezzoDiTrasporto linkedMezzo;
     private OrderedFilteredList<Bambino> listBambini;
     private FilterComponent<Bambino> filterBambini;
@@ -43,6 +47,7 @@ public class GruppoContainerComponent extends AnchorPane
     @FXML private DragAndDropTableView<Addetto> tableSorvegliante;
     @FXML private DragAndDropTableView<Bambino> tableBambini;
     @FXML private ImageView imgDelete;
+    @FXML private Label lblBambiniSize;
 
     public GruppoContainerComponent()
     {
@@ -64,6 +69,10 @@ public class GruppoContainerComponent extends AnchorPane
         filterBambini = new FilterComponent<>(listBambini.predicateProperty());
 
         filterBambini.addFilterField(txtFilterBambini.textProperty(), p -> Filters.filterPersona(p, txtFilterBambini.getText()));
+
+
+        listBambini.totalItemsProperty().addListener((observable, oldValue, newValue) -> lblBambiniSize.setText(newValue.toString()));
+
         setupTableSorvegliante();
         setupTableBambini();
         bind(null, null);
@@ -92,10 +101,8 @@ public class GruppoContainerComponent extends AnchorPane
         this.linkedGruppo = gruppo;
         this.linkedMezzo = mezzoDiTrasporto;
 
-        if(this.linkedGruppo == null)
-            lblGroupName.setText("Crea Gruppo");
-        else
-            lblGroupName.setText("Gruppo " + linkedGruppo.getID());
+        if(this.linkedGruppo != null)
+            currentID = linkedGruppo.getID();
 
         if(linkedGruppo != null)
         {
@@ -105,8 +112,19 @@ public class GruppoContainerComponent extends AnchorPane
             listBambini.updateDataSet(FXCollections.observableArrayList(linkedGruppo.getBambini()));
         }
 
-        if(linkedMezzo != null)
-            lblGroupName.setText(lblGroupName.getText() + " - Autobus " + linkedMezzo.getTarga());
+        updateID(currentID);
+    }
+
+    public void updateID(int ID)
+    {
+        this.currentID = ID;
+        if(lblGroupName != null)
+        {
+            lblGroupName.setText("Gruppo " + currentID);
+
+            if (linkedMezzo != null)
+                lblGroupName.setText(lblGroupName.getText() + " - Autobus " + linkedMezzo.getTarga());
+        }
     }
 
     /**
@@ -116,7 +134,7 @@ public class GruppoContainerComponent extends AnchorPane
     {
         Gruppo gruppo = new Gruppo();
         if(linkedGruppo != null)
-            gruppo.unsafeSetID(linkedGruppo.getID());
+            gruppo.unsafeSetID(currentID);
 
         if(tableSorvegliante.getItems().size() > 0)
             gruppo.setSorvergliante(tableSorvegliante.getItems().get(0));
@@ -139,12 +157,12 @@ public class GruppoContainerComponent extends AnchorPane
 
     private void setupTableSorvegliante()
     {
-        TableColumn<Addetto, String> cMatricola = new TableColumn<>("ID");
+        TableColumn<Addetto, Integer> cMatricola = new TableColumn<>("ID");
         TableColumn<Addetto, String> cNome = new TableColumn<>("Nome");
         TableColumn<Addetto, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Addetto, String> cTelefoni = new TableColumn<>("Telefoni");
 
-        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cMatricola.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
         cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
         cTelefoni.setCellValueFactory(p -> new ReadOnlyStringWrapper(EntitiesHelper.getTelefoniStringFromIterable(p.getValue().getTelefoni())));
@@ -159,11 +177,11 @@ public class GruppoContainerComponent extends AnchorPane
 
     private void setupTableBambini()
     {
-        TableColumn<Bambino, String> cMatricola = new TableColumn<>("ID");
+        TableColumn<Bambino, Integer> cMatricola = new TableColumn<>("ID");
         TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
         TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
 
-        cMatricola.setCellValueFactory(p -> new ReadOnlyStringWrapper(String.valueOf(p.getValue().getID())));
+        cMatricola.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getID()));
         cNome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getNome()));
         cCognome.setCellValueFactory(p -> new ReadOnlyStringWrapper(p.getValue().getCognome()));
 
@@ -216,6 +234,16 @@ public class GruppoContainerComponent extends AnchorPane
     {
         if(tableBambini != null)
             tableBambini.getColumns().add(column);
+    }
+
+    /**
+     * Aggiunge un bambino all'attuale rappresentazione del gruppo (non solleva alcun callback)
+     * @param bambino Bambino da aggiungere
+     */
+    public void addBambino(Bambino bambino)
+    {
+        if(!this.listBambini.unfilteredContains(bambino))
+            this.listBambini.add(bambino);
     }
 
     /**

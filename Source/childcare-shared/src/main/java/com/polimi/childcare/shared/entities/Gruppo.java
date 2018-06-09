@@ -16,13 +16,13 @@ public class Gruppo extends TransferableEntity implements Serializable
     //region Attributi
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    //@GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
     //endregion
 
     //region Relazioni
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @OneToOne(optional = false, fetch = FetchType.EAGER)
     private Addetto sorvergliante;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "gruppo")

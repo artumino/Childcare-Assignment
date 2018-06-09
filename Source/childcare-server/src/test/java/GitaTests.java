@@ -88,9 +88,16 @@ public class GitaTests
 
         //Genero i gruppi
         List<Gruppo> dummyGruppoList = new ArrayList<>();
+        List<Addetto> assignedAddetti = new ArrayList<>();
         for(int i = 0; i < groupNumber; i++)
         {
-            Gruppo gruppo = new Gruppo(allAddetti.get(rnd.nextInt(allAddetti.size())));
+            Addetto addetto;
+            do {
+                addetto = allAddetti.get(rnd.nextInt(allAddetti.size()));
+            } while (assignedAddetti.contains(addetto));
+            assignedAddetti.add(addetto);
+            Gruppo gruppo = new Gruppo(addetto);
+            gruppo.unsafeSetID(i + 1);
             for(int j = i * (allBambini.size() / groupNumber); j < (i+1) * (allBambini.size() / groupNumber); j++)
                 gruppo.unsafeAddBambino(allBambini.get(j));
             dummyGruppoList.add(gruppo);

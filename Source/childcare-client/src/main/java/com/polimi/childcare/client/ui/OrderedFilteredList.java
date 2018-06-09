@@ -1,7 +1,10 @@
 package com.polimi.childcare.client.ui;
 
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
@@ -20,12 +23,21 @@ public class OrderedFilteredList<T>
     private FilteredList<T> filteredList;
     private SortedList<T> sortedList;
 
+    private SimpleIntegerProperty totalSize;
+
 
     public OrderedFilteredList(List<T> dataSet)
     {
         this.observableList = dataSet != null ? FXCollections.observableArrayList(dataSet) : FXCollections.observableArrayList();
         this.filteredList = new FilteredList<>(this.observableList, p -> true);
         this.sortedList = new SortedList<>(filteredList);
+
+        totalSize = new SimpleIntegerProperty(0);
+
+        this.observableList.addListener((ListChangeListener<T>) c -> {
+            while (c.next())
+                totalSize.set(totalSize.get() - c.getRemovedSize() + c.getAddedSize());
+        });
     }
 
     public OrderedFilteredList()
@@ -66,8 +78,19 @@ public class OrderedFilteredList<T>
             observableList.add(obj);
     }
 
+    public T get(int index)
+    {
+        return observableList.get(index);
+    }
+
     public void remove(T obj)
     {
         observableList.remove(obj);
     }
+
+    public int total() {
+        return observableList.size();
+    }
+
+    public ObservableIntegerValue totalItemsProperty() { return totalSize; }
 }

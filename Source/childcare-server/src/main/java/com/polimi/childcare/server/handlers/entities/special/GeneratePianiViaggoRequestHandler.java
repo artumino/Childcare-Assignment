@@ -39,7 +39,12 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
             Map.Entry<Gruppo,MezzoDiTrasporto> pair = (Map.Entry<Gruppo,MezzoDiTrasporto>)it.next();
 
             gbuff = pair.getKey();
+            gbuff = DatabaseSession.getInstance().getByID(Gruppo.class, gbuff.getID(), true);
             mbuff = pair.getValue();
+
+            if(gbuff == null)
+                return new BadRequestResponse.BadRequestResponseWithMessage("Un gruppo è stato cancellato durante le modifiche, aggiornare l'interfaccia e rieffettuare le modifiche");
+
 
             //Se è la prima volta trovo questo autobus, tengo conto di quanta capienza ho
             if(mbuff != null && !mappaCapienzaResidua.containsKey(mbuff))
@@ -68,7 +73,9 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
             it.remove();
         }
 
-        DatabaseSession.getInstance().insertAll(g);
+        //DatabaseSession.getInstance().insertAll(g);
+
+
         DatabaseSession.getInstance().insertAll(list);
 
         return new BaseResponse(200);

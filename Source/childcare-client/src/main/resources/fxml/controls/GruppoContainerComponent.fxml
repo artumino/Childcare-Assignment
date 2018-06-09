@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.polimi.childcare.client.ui.controls.DragAndDropTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -42,6 +43,14 @@
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
+            </Label>
+            <Label fx:id="lblBambiniSize" layoutX="81.0" layoutY="150.0" text="0" textAlignment="CENTER" AnchorPane.leftAnchor="81.0" AnchorPane.topAnchor="150.0">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+               <padding>
+                  <Insets left="5.0" />
+               </padding>
             </Label>
             <TextField fx:id="txtFilterBambini" layoutX="191.0" layoutY="145.0" promptText="Filtra..." AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="145.0" />
             <ImageView fx:id="imgDelete" fitHeight="32.0" fitWidth="32.0" layoutX="300.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" rotate="45.0" visible="false" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">

@@ -20,6 +20,7 @@ import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListContattoResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -208,11 +209,11 @@ public class EditContattoStageController implements ISubSceneController
         TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
         TableColumn<Bambino, String> cCognome = new TableColumn<>("Congome");
         TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
-        TableColumn<Bambino, String> cMatricola = new TableColumn<>("Matricola");
+        TableColumn<Bambino, Integer> cMatricola = new TableColumn<>("Matricola");
         cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
         cCognome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCognome()));
         cCodiceFiscale.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getCodiceFiscale()));
-        cMatricola.setCellValueFactory(c -> new ReadOnlyStringWrapper(String.valueOf(c.getValue().getID())));
+        cMatricola.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(c.getValue().getID()));
 
         tableBambini.getColumns().addAll(cNome, cCognome, cCodiceFiscale, cMatricola);
 
