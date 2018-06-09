@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.polimi.childcare.client.ui.controls.DragAndDropTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
@@ -33,19 +34,35 @@
                                           <ToolBar prefHeight="48.0" prefWidth="628.0" style="-fx-background-color: #999;" styleClass="toolbar-colored" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 12pt; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Addetti" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="10.0" />
                                           <JFXButton fx:id="btnRefresh" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Aggiorna" AnchorPane.leftAnchor="4.0" AnchorPane.topAnchor="4.0" />
-                                          <DragAndDropTableView fx:id="tableAddetti" layoutX="14.0" layoutY="-36.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0" />
+                                          <DragAndDropTableView fx:id="tableAddetti" layoutX="14.0" layoutY="-36.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </DragAndDropTableView>
                                        </children>
                                     </AnchorPane>
                                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                        <children>
                                           <ToolBar prefHeight="48.0" prefWidth="628.0" style="-fx-background-color: #999;" styleClass="toolbar-colored" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                          <HBox alignment="CENTER" prefHeight="48.0" prefWidth="200.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <HBox alignment="CENTER_LEFT" prefHeight="48.0" prefWidth="200.0" spacing="15.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                 <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-font-size: 12pt; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Bambini Orfani" textAlignment="CENTER" />
-                                                <TextField fx:id="txtFilterOrfani" prefWidth="150.0" promptText="Filtra.." style="-fx-background-color: #ccc;" />
+                                                 <Label contentDisplay="CENTER" style="-fx-font-size: 12pt; -fx-font-weight: bold; -fx-text-fill: #fff;" text="Bambini Orfani">
+                                                   <HBox.margin>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </HBox.margin>
+                                                </Label>
+                                                <TextField fx:id="txtFilterOrfani" prefWidth="150.0" promptText="Filtra.." style="-fx-background-color: #ccc;" HBox.hgrow="ALWAYS">
+                                                   <HBox.margin>
+                                                      <Insets right="5.0" />
+                                                   </HBox.margin>
+                                                </TextField>
                                              </children>
                                           </HBox>
-                                          <DragAndDropTableView fx:id="tableOrfani" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0" />
+                                          <DragAndDropTableView fx:id="tableOrfani" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                                             <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                             </columnResizePolicy>
+                                          </DragAndDropTableView>
                                        </children>
                                     </AnchorPane>
                                 </items>
@@ -88,16 +105,16 @@
                                        </items>
                                     </ToolBar>
                                     <TextField fx:id="txtFilterGite" prefHeight="36.0" prefWidth="150.0" promptText="Filtra..." style="-fx-background-color: #ccc;" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
-                                    <VBox fx:id="vboxMenuDelGiorno" prefHeight="226.0" prefWidth="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
+                                    <VBox prefHeight="226.0" prefWidth="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                        <children>
-                                          <TableView fx:id="tableGite" prefHeight="265.0" prefWidth="283.0" VBox.vgrow="ALWAYS">
+                                          <DragAndDropTableView fx:id="tableGite" prefHeight="265.0" prefWidth="283.0" VBox.vgrow="ALWAYS">
                                              <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
-                                          </TableView>
+                                          </DragAndDropTableView>
                                           <HBox prefHeight="50.0" prefWidth="285.0">
                                              <children>
-                                                <JFXButton fx:id="btnAggiungiGita" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Aggiungi Gita" HBox.hgrow="ALWAYS" />
+                                                <JFXButton fx:id="btnAddGita" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Aggiungi Gita" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>
                                        </children>
@@ -114,11 +131,11 @@
                                     <TextField fx:id="txtFilterMezzi" prefHeight="36.0" prefWidth="150.0" promptText="Filtra..." style="-fx-background-color: #ccc;" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
                                     <VBox prefHeight="226.0" prefWidth="159.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                        <children>
-                                          <TableView fx:id="tableMezzi" prefHeight="265.0" prefWidth="283.0" VBox.vgrow="ALWAYS">
+                                          <DragAndDropTableView fx:id="tableMezzi" prefHeight="265.0" prefWidth="283.0" VBox.vgrow="ALWAYS">
                                              <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
-                                          </TableView>
+                                          </DragAndDropTableView>
                                           <HBox prefHeight="50.0" prefWidth="285.0">
                                              <children>
                                                 <JFXButton fx:id="btnAddMezzo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Aggiungi Mezzo" HBox.hgrow="ALWAYS" />

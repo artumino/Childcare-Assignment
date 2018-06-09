@@ -6,6 +6,7 @@ import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.shared.entities.Addetto;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
+import com.polimi.childcare.shared.entities.MezzoDiTrasporto;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.property.StringProperty;
@@ -22,9 +23,13 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * Controllo grafico per la visualizzazione e modifca dei gruppi
+ */
 public class GruppoContainerComponent extends AnchorPane
 {
     private Gruppo linkedGruppo;
+    private MezzoDiTrasporto linkedMezzo;
     private OrderedFilteredList<Bambino> listBambini;
     private FilterComponent<Bambino> filterBambini;
 
@@ -56,18 +61,32 @@ public class GruppoContainerComponent extends AnchorPane
         filterBambini.addFilterField(txtFilterBambini.textProperty(), p -> Filters.filterPersona(p, txtFilterBambini.getText()));
         setupTableSorvegliante();
         setupTableBambini();
-        bindGruppo(null);
+        bind(null, null);
     }
 
     public GruppoContainerComponent(Gruppo gruppo)
     {
         this();
-        bindGruppo(gruppo);
+        bind(gruppo, null);
     }
 
-    public void bindGruppo(Gruppo gruppo)
+    public GruppoContainerComponent(Gruppo gruppo, MezzoDiTrasporto mezzoDiTrasporto)
+    {
+        this();
+        bind(gruppo, mezzoDiTrasporto);
+    }
+
+    /**
+     * Associa all'attuale componente grafico un gruppo e un mezzo di trasporto (entrambi nullable)
+     * ed aggiorna l'interfaccia grafica
+     * @param gruppo Gruppo da associare al controllo
+     * @param mezzoDiTrasporto MezzoDiTrasporto da associare al controllo
+     */
+    public void bind(Gruppo gruppo, MezzoDiTrasporto mezzoDiTrasporto)
     {
         this.linkedGruppo = gruppo;
+        this.linkedMezzo = mezzoDiTrasporto;
+
         if(this.linkedGruppo == null)
             lblGroupName.setText("Crea Gruppo");
         else
@@ -80,8 +99,33 @@ public class GruppoContainerComponent extends AnchorPane
 
             listBambini.updateDataSet(FXCollections.observableArrayList(linkedGruppo.getBambini()));
         }
+
+        if(linkedMezzo != null)
+            lblGroupName.setText(lblGroupName.getText() + " - Autobus " + linkedMezzo.getTarga());
     }
 
+    /**
+     * @return Gruppo che rappresenta lo stato attuale dell'interfaccia grafica del controllo
+     */
+    public Gruppo getCurrentGruppoRappresentation()
+    {
+        Gruppo gruppo = new Gruppo();
+        if(linkedGruppo != null)
+            gruppo.unsafeSetID(linkedGruppo.getID());
+
+        if(tableSorvegliante.getItems().size() > 0)
+            gruppo.setSorvergliante(tableSorvegliante.getItems().get(0));
+
+        for(Bambino bambino : tableBambini.getItems())
+            gruppo.unsafeAddBambino(bambino);
+
+        return gruppo;
+    }
+
+    /**
+     * Abilita/Disabilita la modifica dei parametri del gruppo tramite Drag&Drop
+     * @param enabled Indica se la modifica è consentita
+     */
     public void setDragEnabled(boolean enabled)
     {
         this.tableSorvegliante.dragForClass(enabled ? Addetto.class : null);
@@ -142,12 +186,21 @@ public class GruppoContainerComponent extends AnchorPane
         labelTextProperty().set(text);
     }
 
+    /**
+     * Permette di aggiungere nuove colonne alla tabella rappresentate i bambini
+     * @param column Colonna da aggiungere
+     * @param <T> Tipo di parametro della colonna inserita
+     */
     public <T> void addBambiniColumn(TableColumn<Bambino, T> column)
     {
         if(tableBambini != null)
             tableBambini.getColumns().add(column);
     }
 
+    /**
+     * Abilita la possibilità di avere un bottone di cancellazione in testa al controllo
+     * @param onDeleteClicked Callback chiamato alla pressione del bottone
+     */
     public void setOnDeleteClicked(EventHandler<? super MouseEvent> onDeleteClicked)
     {
         if(imgDelete != null)

@@ -89,4 +89,42 @@ public class Filters
 
         return menu.getNome().toLowerCase().trim().contains(lowerCaseFilter);
     }
+
+    public static boolean filterGita(Gita gita, String query)
+    {
+        String lowerCaseFilter = query.toLowerCase().trim();
+
+        try
+        {
+            //Se è una matricola
+            Integer.parseInt(lowerCaseFilter);
+            return String.valueOf(gita.getID()).contains(lowerCaseFilter);
+        }
+        catch (Exception ex)
+        {
+            return gita.getLuogo().toLowerCase().trim().contains(lowerCaseFilter) ||
+                    gita.getDataInizio().toString().contains(lowerCaseFilter) ||
+                    gita.getDataFine().toString().contains(lowerCaseFilter);
+        }
+    }
+
+    public static boolean filterMezzo(MezzoDiTrasporto mezzoDiTrasporto, String query)
+    {
+        String lowerCaseFilter = query.toLowerCase().trim();
+
+
+        try
+        {
+            //Se è una matricola
+            Integer.parseInt(lowerCaseFilter);
+            return String.valueOf(mezzoDiTrasporto.getID()).contains(lowerCaseFilter)
+                    || String.valueOf(mezzoDiTrasporto.getNumeroIdentificativo()).contains(lowerCaseFilter);
+        }
+        catch (Exception ex)
+        {
+            return mezzoDiTrasporto.getTarga().toLowerCase().trim().contains(lowerCaseFilter) ||
+                    (mezzoDiTrasporto.getFornitore() != null &&
+                            mezzoDiTrasporto.getFornitore().getRagioneSociale().contains(lowerCaseFilter));
+        }
+    }
 }
