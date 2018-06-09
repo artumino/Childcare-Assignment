@@ -1,13 +1,10 @@
 import com.polimi.childcare.server.Main;
 import com.polimi.childcare.server.database.DatabaseDemo;
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.server.networking.NetworkManager;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.*;
-import com.polimi.childcare.shared.networking.requests.setters.SetGitaRequest;
-import com.polimi.childcare.shared.networking.requests.setters.SetGruppoRequest;
-import com.polimi.childcare.shared.networking.requests.setters.SetMezzoDiTrasportoRequest;
+import com.polimi.childcare.shared.networking.requests.setters.*;
 import com.polimi.childcare.shared.networking.requests.special.GeneratePianiViaggioRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.*;
@@ -62,7 +59,7 @@ public class GitaTests
         Optional<Gita> getGita = DatabaseSession.getInstance().stream(Gita.class, session).findFirst();
         Assert.assertTrue(getGita.isPresent());
         gita = getGita.get();
-        DBHelper.recursiveObjectInitialize(gita);
+        //DBHelper.recursiveObjectInitialize(gita); Gita è eager
         session.close();
 
         Random rnd = new Random();

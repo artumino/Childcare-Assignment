@@ -18,7 +18,6 @@ public class Gruppo extends TransferableEntity implements Serializable
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
-    //Qua completeremo con ID Tutore e ID Bambino esterni
 
     //endregion
 
