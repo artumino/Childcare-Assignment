@@ -18,9 +18,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import rules.DatabaseSessionRule;
 
-import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 

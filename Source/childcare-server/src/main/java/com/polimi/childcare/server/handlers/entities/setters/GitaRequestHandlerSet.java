@@ -26,16 +26,16 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
                 throw new RuntimeException("Un campo obbligatorio è null!");
 
             //Se ho rimosso dei piano viaggi, allora li cancello
-            if(dbEntity != null)
+            /*if(dbEntity != null)
             {
                 for(PianoViaggi pianoViaggi : dbEntity.getPianiViaggi())
                 {
                     if(!request.getEntity().getPianiViaggi().contains(pianoViaggi))
                         session.delete(pianoViaggi);
                 }
-            }
+            }*/
         }
-        else
+        /*else
         {
             //Rimuovo i piano viaggi legati a questo gruppo
             for(PianoViaggi viaggi : request.getEntity().getPianiViaggi())
@@ -48,6 +48,6 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
                 piano.setGruppo(null);
                 session.delete(piano);
             }
-        }
+        }*/
     }
 }

@@ -5,7 +5,10 @@ import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Fornitore;
 import com.polimi.childcare.shared.entities.Menu;
 import com.polimi.childcare.shared.entities.Pasto;
+import com.polimi.childcare.shared.entities.ReazioneAvversa;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
+
+import java.util.Set;
 
 public class PastiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEntityRequest<Pasto>, Pasto>
 {
@@ -26,9 +29,17 @@ public class PastiRequestHandlerSet extends GenericSetEntityRequestHandler<SetEn
                     throw new RuntimeException("Fornitore e/o Nome Nullo!");
 
                 DBHelper.updateManyToOne(request.getEntity().asPastoFornitoreRelation(), Fornitore.class, session);
+                DBHelper.updateManyToManyOwned(request.getEntity().asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, session);
+                DBHelper.updateManyToManyOwner(request.getEntity().asPastoReazioniAvverseRelation(), ReazioneAvversa.class, session);
             }
-            else
+            else {
                 DBHelper.deletedManyToManyOwned(request.getEntity().asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, session);
+
+                Set<ReazioneAvversa> reazioni = dbEntity.getReazione();
+
+                for (ReazioneAvversa r : reazioni)
+                    dbEntity.removeReazione(r);
+            }
         }
     }
 }

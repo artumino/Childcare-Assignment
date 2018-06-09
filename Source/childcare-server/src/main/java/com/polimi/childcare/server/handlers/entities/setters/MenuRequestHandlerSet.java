@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Menu;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
@@ -21,6 +22,9 @@ public class MenuRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
         {
             if (request.getEntity().getNome() == null)
                 throw new RuntimeException("Nome è null!");
+
+
+            DBHelper.updateManyToManyOwner(request.getEntity().asMenuPastoRelation(), Pasto.class, session);
         }
         else
         {
