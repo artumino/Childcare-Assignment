@@ -1,8 +1,10 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.PianoViaggi;
+import com.polimi.childcare.shared.entities.Tappa;
 import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -26,6 +28,8 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
                     request.getEntity().getDataFine() == null ||
                     request.getEntity().getLuogo() == null)
                 throw new RuntimeException("Un campo obbligatorio è null!");
+
+            DBHelper.updateOneToMany(request.getEntity().asGitaTappeRelation(), request.getEntity().asGitaTappeRelation(), Tappa.class, session);
 
             List<Gita> gite = new ArrayList<>();
             Gita nuova = request.getEntity();
@@ -53,6 +57,7 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
                     if(!request.getEntity().getPianiViaggi().contains(pianoViaggi))
                         session.delete(pianoViaggi);
                 }
+                DBHelper.updateOneToMany(request.getEntity().asGitaTappeRelation(), dbEntity.asGitaTappeRelation(), Tappa.class, session);
             }
         }
         else
