@@ -1,7 +1,9 @@
-package com.polimi.childcare.server.handlers.entities.getters;
+package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler;
 import com.polimi.childcare.shared.dto.DTOUtils;
+import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
@@ -10,11 +12,10 @@ import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresen
 import org.apache.commons.collections4.CollectionUtils;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class FilteredLastPresenzaRequestHandler extends FilteredRequestHandler<FilteredLastPresenzaRequest, RegistroPresenze>
@@ -28,31 +29,44 @@ public class FilteredLastPresenzaRequestHandler extends FilteredRequestHandler<F
 
         List<RegistroPresenze> list = new ArrayList<>();
 
+        /*
+        Query eseguita:
+
+        SELECT *
+        FROM RegistroPresenze
+        WHERE (Bambino_FK, TimeStamp) IN (
+          SELECT Bambino_FK, MAX(TimeStamp) as `TimeStamp`
+          FROM RegistroPresenze
+          WHERE TimeStamp > DateTime.Date.Now
+          GROUP BY Bambino_FK
+        )
+         */
         DatabaseSession.getInstance().execute(session -> {
             CriteriaBuilder queryBuilder = session.getSession().getCriteriaBuilder();
-            CriteriaQuery<Object[]> criteriaQuery = queryBuilder.createQuery(Object[].class);
-            Root<RegistroPresenze> registroPresenzeRoot = criteriaQuery.from(RegistroPresenze.class);
-            criteriaQuery.multiselect(
-                    registroPresenzeRoot.get("ID"),
+
+            CriteriaQuery<Object[]> subQuery = queryBuilder.createQuery(Object[].class);
+            Root<RegistroPresenze> registroPresenzeRoot = subQuery.from(RegistroPresenze.class);
+            subQuery.multiselect(
+                    registroPresenzeRoot.get("bambino"),
                     queryBuilder.max(registroPresenzeRoot.get("TimeStamp"))
             );
-            criteriaQuery.groupBy(registroPresenzeRoot.get("bambino"));
-            Query query = session.getSession().createQuery(criteriaQuery);
-            List<Object[]> resultQuery = query.getResultList();
+            subQuery.where(queryBuilder.greaterThanOrEqualTo(registroPresenzeRoot.get("TimeStamp"), LocalDateTime.now().toLocalDate().atStartOfDay()));
+            subQuery.groupBy(registroPresenzeRoot.get("bambino"));
+            Iterator<Object[]> objects = session.getSession().createQuery(subQuery).getResultStream().iterator();
 
-            if(resultQuery != null && resultQuery.size() > 0)
+            while(objects.hasNext())
             {
-                List<Integer> lastPresenzeIDs = new ArrayList<>(resultQuery.size());
-                for(Object[] row : resultQuery)
-                    lastPresenzeIDs.add((Integer)row[0]);
+                Object[] tuple = objects.next();
 
                 CriteriaQuery<RegistroPresenze> criteriaSelectIn = queryBuilder.createQuery(RegistroPresenze.class);
                 Root<RegistroPresenze> criteriaSelectFrom = criteriaSelectIn.from(RegistroPresenze.class);
-                Path<Integer> ID = criteriaSelectFrom.get("ID");
-                criteriaSelectIn.select(criteriaSelectFrom);
-                criteriaSelectIn.where(ID.in(lastPresenzeIDs));
+                Path<Bambino> bambino = criteriaSelectFrom.get("bambino");
+                Path<LocalDateTime> timestamp = criteriaSelectFrom.get("TimeStamp");
+                criteriaSelectIn.where(queryBuilder.equal(bambino, tuple[0]), queryBuilder.equal(timestamp, tuple[1]));
                 CollectionUtils.addAll(list, session.getSession().createQuery(criteriaSelectIn).getResultStream().iterator());
             }
+
+
             return true;
         });
 
