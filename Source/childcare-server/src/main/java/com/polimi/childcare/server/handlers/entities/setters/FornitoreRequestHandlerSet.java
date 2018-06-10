@@ -28,26 +28,6 @@ public class FornitoreRequestHandlerSet extends GenericSetEntityRequestHandler<S
                     request.getEntity().getSedeLegale() == null ||
                     request.getEntity().getNumeroRegistroImprese() == null)
                 throw new RuntimeException("Un campo obbligatorio è null!");
-
-
-            //DBHelper.updateOneToMany(request.getEntity().asFornitorePastiRelation(), dbEntity.asFornitorePastiRelation(), Pasto.class, session);
-            //DBHelper.updateOneToMany(request.getEntity().asFornitoreMezziDiTrasportoRelation(), dbEntity.asFornitoreMezziDiTrasportoRelation(), MezzoDiTrasporto.class, session);
         }
-
-        /*if (request.isToDelete())
-        {
-            for(Pasto pasto : request.getEntity().getPasti())
-                request.getEntity().unsafeRemovePasto(pasto);
-
-            Set<Pasto> pianoViaggi = dbEntity.getPasti();
-            for (Pasto pasto : pianoViaggi)
-            {
-                dbEntity.unsafeRemovePasto(pasto);
-                pasto.setFornitore(null);
-                session.delete(pasto);
-            }
-        }*/
-
-
     }
 }

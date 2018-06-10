@@ -1,8 +1,8 @@
 package com.polimi.childcare.server.database.dao;
 
 import com.polimi.childcare.server.database.DatabaseSession;
-import com.polimi.childcare.server.database.dao.implementations.GruppoDaoImpl;
-import com.polimi.childcare.shared.entities.Gruppo;
+import com.polimi.childcare.server.database.dao.implementations.*;
+import com.polimi.childcare.shared.entities.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -24,6 +24,12 @@ public class DaoFactory
     {
         daoMap = new HashMap<>();
 
+        daoMap.put(Addetto.class, AddettoDaoImpl.class);
+        daoMap.put(Bambino.class, BambinoDaoImpl.class);
+        daoMap.put(Contatto.class, ContattoDaoImpl.class);
+        daoMap.put(Diagnosi.class, DiagnosiDaoImpl.class);
+        daoMap.put(Fornitore.class, FornitoreDaoImpl.class);
+        daoMap.put(Genitore.class, GenitoreDaoImpl.class);
         daoMap.put(Gruppo.class, GruppoDaoImpl.class);
     }
 
