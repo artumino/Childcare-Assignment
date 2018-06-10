@@ -28,6 +28,7 @@ public class PianoViaggiComponent extends HBox
     @FXML private Label txtTransport;
     @FXML private ImageView imgTransport;
     @FXML private HBox hboxMezzo;
+    @FXML private ImageView imgDeleteTransport;
 
 
     public PianoViaggiComponent()
@@ -72,6 +73,10 @@ public class PianoViaggiComponent extends HBox
             }
             event.consume();
         });
+
+        imgDeleteTransport.setOnMouseClicked(click -> bindMezzo(null));
+
+        getChildren().remove(imgDeleteTransport);
     }
 
     public void bindGruppo(Gruppo gruppo)
@@ -103,6 +108,8 @@ public class PianoViaggiComponent extends HBox
 
         if(linkedMezzo == null)
         {
+            getChildren().remove(imgDeleteTransport);
+
             txtTransport.setText("Piedi");
             try {
                 imgTransport.setImage(new Image(getClass().getClassLoader().getResource("fxml/images/baseline_directions_walk_black_18dp.png").openStream()));
@@ -112,6 +119,9 @@ public class PianoViaggiComponent extends HBox
         }
         else
         {
+            if(!getChildren().contains(imgDeleteTransport))
+                getChildren().add(imgDeleteTransport);
+
             txtTransport.setText("Mezzo " + linkedMezzo.getTarga() + "\nID: " + linkedMezzo.getNumeroIdentificativo());
 
             try {
