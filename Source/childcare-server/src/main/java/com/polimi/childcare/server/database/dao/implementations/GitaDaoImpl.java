@@ -6,6 +6,7 @@ import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.PianoViaggi;
 import com.polimi.childcare.shared.entities.Tappa;
+import com.polimi.childcare.shared.utils.ContainsHelper;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -25,6 +26,9 @@ public class GitaDaoImpl extends HibernateDao<Gita>
         for(PianoViaggi viaggi : item.getPianiViaggi())
             item.unsafeRemovePianoViaggi(viaggi);
 
+        for(Tappa tappa : item.getTappe())
+            item.unsafeRemoveTappa(tappa);
+
         Set<PianoViaggi> pianoViaggi = dbEntity.getPianiViaggi();
         for (PianoViaggi piano : pianoViaggi)
         {
@@ -32,6 +36,15 @@ public class GitaDaoImpl extends HibernateDao<Gita>
             piano.setGruppo(null);
             sessionInstance.delete(piano);
         }
+
+        Set<Tappa> tappe = dbEntity.getTappe();
+        for (Tappa tappa : tappe)
+        {
+            dbEntity.unsafeRemoveTappa(tappa);
+            tappa.setGita(null);
+            sessionInstance.delete(tappa);
+        }
+
         sessionInstance.delete(item);
     }
 
@@ -40,7 +53,14 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     {
         checkConstraints(item);
         int ID = sessionInstance.insert(item);
-        DBHelper.updateOneToMany(item.asGitaTappeRelation(), item.asGitaTappeRelation(), Tappa.class, sessionInstance);
+
+        //Sistemo le tappe
+        //for(Tappa tappa : item.getTappe())
+        //{
+        //    tappa.setGita(item);
+        //    sessionInstance.update(tappa);
+        //}
+
         return ID;
     }
 
@@ -57,6 +77,14 @@ public class GitaDaoImpl extends HibernateDao<Gita>
                 if(!item.getPianiViaggi().contains(pianoViaggi))
                     sessionInstance.delete(pianoViaggi);
             }
+
+            for(Tappa tappa : dbEntity.getTappe())
+                if(!ContainsHelper.containsHashCode(item.getTappe() ,tappa))
+                    sessionInstance.delete(tappa);
+
+            for (Tappa tappa : item.getTappe())
+                tappa.setGita(item);
+
             sessionInstance.insertOrUpdate(item);
         }
         else

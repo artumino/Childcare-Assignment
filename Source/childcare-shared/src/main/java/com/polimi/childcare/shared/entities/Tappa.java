@@ -26,6 +26,7 @@ public class Tappa extends TransferableEntity
     //region Relazioni
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Gita_FK")
     private Gita gita;
 
     //endregion

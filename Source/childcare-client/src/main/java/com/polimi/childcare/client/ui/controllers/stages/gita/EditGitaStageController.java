@@ -31,6 +31,7 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -140,7 +141,11 @@ public class EditGitaStageController extends NetworkedSubScene implements ISubSc
     {
         //Tappe
         if(this.linkedGita != null && listTappe != null && linkedGita.getTappe() != null)
+        {
+            listTappe.getItems().clear();
             listTappe.getItems().addAll(linkedGita.getTappe());
+            listTappe.getItems().sort(Comparator.comparingInt(Tappa::getID));
+        }
 
         printGitaDetails();
     }
@@ -156,12 +161,18 @@ public class EditGitaStageController extends NetworkedSubScene implements ISubSc
                 }
 
                 @Override
-                public Tappa fromString(String string) {
-                    return new Tappa(string, linkedGita);
+                public Tappa fromString(String string)
+                {
+                    Tappa tappa = new Tappa(string.isEmpty() ? "Tappa" : string, linkedGita);
+                    tappa.unsafeSetID(listTappe.getItems().get(listTappe.getEditingIndex()).getID());
+                    return tappa;
                 }
             }));
 
-            btnAddTappa.setOnMouseClicked(click -> listTappe.getItems().add(new Tappa("", linkedGita)));
+            btnAddTappa.setOnMouseClicked(click -> {
+                listTappe.getItems().add(new Tappa("", linkedGita));
+                listTappe.edit(listTappe.getItems().size() - 1);
+            });
 
             btnRemoveTappa.setOnMouseClicked(click -> {
                 if (listTappe.getSelectionModel().getSelectedItem() != null)
