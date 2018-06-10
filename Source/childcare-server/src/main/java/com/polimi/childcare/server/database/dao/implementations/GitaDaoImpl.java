@@ -63,7 +63,8 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     {
         if (gruppo.getDataInizio() == null ||
                 gruppo.getDataFine() == null ||
-                gruppo.getLuogo() == null)
+                gruppo.getLuogo() == null ||
+                gruppo.getDataFine().isBefore(gruppo.getDataInizio()))
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }
