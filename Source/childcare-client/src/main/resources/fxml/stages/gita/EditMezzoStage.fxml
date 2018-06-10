@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.polimi.childcare.client.ui.controls.DragAndDropTableView?>
+<?import com.polimi.childcare.client.ui.controls.LabelTextViewComponent?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.gita.EditMezzoStageController">
+   <children>
+      <TabPane fx:id="layoutTabPane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab fx:id="tabDettagli" text="Dettagli">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="140.0" layoutY="47.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <LabelTextViewComponent fx:id="txtTarga" labelPercentWidth="32.0" labelText="Targa" />
+                              <LabelTextViewComponent fx:id="txtNumeroIdentificativo" labelPercentWidth="32.0" labelText="Numero Identificativo" />
+                              <HBox prefHeight="47.0" prefWidth="429.0">
+                                 <children>
+                                    <LabelTextViewComponent fx:id="txtCostoOrario" labelPercentWidth="34.0" labelText="Costo Orario" prefWidth="460.0" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="25.0" text="€/h" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                              <LabelTextViewComponent fx:id="txtCapienza" labelPercentWidth="32.0" labelText="Capienza" />
+                              <Label prefHeight="14.0" prefWidth="57.0" text="Fornitore" />
+                              <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0">
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy></DragAndDropTableView>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabGite" text="Gite">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <DragAndDropTableView fx:id="tableGite" prefHeight="423.0" prefWidth="459.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </DragAndDropTableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <JFXButton fx:id="btnSalva" layoutX="393.0" layoutY="468.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #76d275; -fx-text-fill: #fff;" text="Salva" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+      <JFXButton fx:id="btnElimina" layoutX="314.0" layoutY="466.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #f05545; -fx-text-fill: #fff;" text="Elimina" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <AnchorPane fx:id="loadingLayout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXSpinner layoutX="189.0" layoutY="222.0" prefHeight="80.0" prefWidth="82.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

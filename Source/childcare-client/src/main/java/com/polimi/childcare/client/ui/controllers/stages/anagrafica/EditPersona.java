@@ -9,6 +9,7 @@ import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controllers.stages.generic.DiagnosiReazioniAvverseStage;
 import com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController;
+import com.polimi.childcare.client.ui.controllers.subscenes.NetworkedSubScene;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -34,7 +35,7 @@ import javafx.stage.Modality;
 import java.io.IOException;
 import java.util.Optional;
 
-public class EditPersona implements ISubSceneController
+public class EditPersona extends NetworkedSubScene
 {
     public static final String FXML_PATH = "fxml/stages/anagrafica/EditPersona.fxml";
 
@@ -443,20 +444,6 @@ public class EditPersona implements ISubSceneController
                 //Niente
             });
             showReazioniAvverse.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void ShowBlockingNetworkOperationStage(NetworkOperation networkOperation, BaseStageController.OnStageClosingCallback callback)
-    {
-        try {
-            ChildcareBaseStageController blockingOperationController = new ChildcareBaseStageController();
-            blockingOperationController.setContentScene(getClass().getClassLoader().getResource(BlockingNetworkOperationStageController.FXML_PATH), networkOperation);
-            blockingOperationController.initOwner(getRoot().getScene().getWindow());
-            blockingOperationController.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
-            blockingOperationController.setOnClosingCallback(callback);
-            blockingOperationController.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

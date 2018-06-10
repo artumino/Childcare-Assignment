@@ -1,4 +1,4 @@
-package com.polimi.childcare.client.ui.controllers.stages.mensa;
+package com.polimi.childcare.client.ui.controllers.stages.gita;
 
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.constants.ToolbarButtons;
@@ -13,13 +13,16 @@ import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.shared.entities.*;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredMezzoDiTrasportoRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredPastoRequest;
+import com.polimi.childcare.shared.networking.requests.setters.SetMezzoDiTrasportoRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetPastiRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListPastiResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListMezzoDiTrasportoResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -31,13 +34,16 @@ import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-public class EditPastoStageController extends NetworkedSubScene implements ISubSceneController
+public class EditMezzoStageController extends NetworkedSubScene implements ISubSceneController
 {
-    public static final String FXML_PATH = "fxml/stages/mensa/EditPastoStage.fxml";
+    public static final String FXML_PATH = "fxml/stages/gita/EditMezzoStage.fxml";
 
-    private Pasto linkedPasto;
+    private MezzoDiTrasporto linkedMezzo;
     private ChildcareBaseStageController stageController;
     private Parent root;
 
@@ -46,12 +52,13 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
 
     @FXML private TabPane layoutTabPane;
 
-    @FXML private LabelTextViewComponent txtNome;
-    @FXML private TextArea txtDescrizione;
+    @FXML private LabelTextViewComponent txtTarga;
+    @FXML private LabelTextViewComponent txtNumeroIdentificativo;
+    @FXML private LabelTextViewComponent txtCostoOrario;
+    @FXML private LabelTextViewComponent txtCapienza;
     @FXML private DragAndDropTableView<Fornitore> tableFornitore;
 
-    @FXML private DragAndDropTableView<ReazioneAvversa> tableReazioneAvverse;
-    @FXML private Button btnShowReazioniAvverse;
+    @FXML private DragAndDropTableView<Gita> tableGite;
 
     @FXML private Button btnSalva;
     @FXML private Button btnElimina;
@@ -67,24 +74,24 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
         {
             this.stageController.setToolbarButtonsVisibilityMask((byte)(ToolbarButtons.Close | ToolbarButtons.Minimize));
 
-            if(args != null && args.length > 0 && args[0] instanceof Pasto)
-                this.linkedPasto = (Pasto)args[0];
+            if(args != null && args.length > 0 && args[0] instanceof MezzoDiTrasporto)
+                this.linkedMezzo = (MezzoDiTrasporto) args[0];
 
 
-            if(linkedPasto != null && linkedPasto.getID() != 0)
+            if(linkedMezzo != null && linkedMezzo.getID() != 0)
             {
                 this.loadingLayout.setVisible(true);
-                networkOperationVault.submitOperation(new NetworkOperation(new FilteredPastoRequest(this.linkedPasto.getID(), true),
+                networkOperationVault.submitOperation(new NetworkOperation(new FilteredMezzoDiTrasportoRequest(this.linkedMezzo.getID(), true),
                         response ->
                         {
                             networkOperationVault.operationDone(FilteredPastoRequest.class);
 
                             if(StageUtils.HandleResponseError(response, "Errore, risposta non corretta dal server",
-                                    p -> p instanceof ListPastiResponse && ((ListPastiResponse)p).getPayload().size() != 0))
+                                    p -> p instanceof ListMezzoDiTrasportoResponse && ((ListMezzoDiTrasportoResponse)p).getPayload().size() != 0))
                                 stageController.requestClose();
                             else
                             {
-                                this.linkedPasto = ((ListPastiResponse)response).getPayload().get(0);
+                                this.linkedMezzo = ((ListMezzoDiTrasportoResponse)response).getPayload().get(0);
                                 updateData();
                                 this.loadingLayout.setVisible(false);
                             }
@@ -93,23 +100,23 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
             }
 
             //Tabelle Generali
-            printPastoDetails();
-            setupReazioniAvverse();
+            printMezzoDetails();
+            setupGite();
             setupTableFornitori();
 
             //Bottoni
-            if(linkedPasto.getID() == 0) //Nascondo per persone nuove
+            if(linkedMezzo.getID() == 0) //Nascondo per persone nuove
                 btnElimina.setVisible(false);
 
             btnElimina.setOnMouseClicked(click -> {
                     Optional<ButtonType> result = StageUtils.ShowAlertWithButtons(Alert.AlertType.CONFIRMATION,
-                            "Sei sicuro di voler cancellare " + linkedPasto.getNome() + "?",
+                            "Sei sicuro di voler cancellare " + linkedMezzo.getTarga() + "?",
                             ButtonType.YES, ButtonType.NO);
 
                     if(result.isPresent() && result.get().equals(ButtonType.YES))
                     {
                         //Confermata la cancellazione
-                        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetPastiRequest(linkedPasto, true, linkedPasto.consistecyHashCode()),null, true), (resultArgs) -> {
+                        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetMezzoDiTrasportoRequest(linkedMezzo, true, linkedMezzo.consistecyHashCode()),null, true), (resultArgs) -> {
                            if(resultArgs != null && resultArgs.length > 0 && resultArgs[0] instanceof BaseResponse)
                            {
                                BaseResponse response = (BaseResponse)resultArgs[0];
@@ -120,7 +127,7 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
                                    return;
                                }
 
-                               StageUtils.HandleResponseError(response, "Errore nella cancellazione del pasto", p -> true);
+                               StageUtils.HandleResponseError(response, "Errore nella cancellazione del mezzo", p -> true);
                            }
                         });
                     }
@@ -136,34 +143,40 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
     private void updateData()
     {
         //Fornitore
-        if(linkedPasto != null && tableFornitore != null && linkedPasto.getFornitore() != null)
+        if(linkedMezzo != null && tableFornitore != null && linkedMezzo.getFornitore() != null)
         {
             tableFornitore.getItems().clear();
-            tableFornitore.getItems().add(linkedPasto.getFornitore());
+            tableFornitore.getItems().add(linkedMezzo.getFornitore());
         }
 
         //Reazioni Avverse
-        if(this.linkedPasto != null && tableReazioneAvverse != null && linkedPasto.getReazione() != null)
+        if(this.linkedMezzo != null && tableGite != null && linkedMezzo.getPianoViaggi() != null)
         {
-            tableReazioneAvverse.getItems().clear();
-            tableReazioneAvverse.getItems().addAll(linkedPasto.getReazione());
+            tableGite.getItems().clear();
+            List<Gita> gite = new ArrayList<>();
+            for(PianoViaggi pianoViaggi : linkedMezzo.getPianoViaggi())
+                gite.add(pianoViaggi.getGita());
+            tableGite.getItems().addAll(gite);
         }
 
-        printPastoDetails();
+        printMezzoDetails();
     }
 
-    private void setupReazioniAvverse()
+    private void setupGite()
     {
-        TableColumn<ReazioneAvversa, String> cNome = new TableColumn<>("Nome");
-        cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
+        TableColumn<Gita, Integer> cID = new TableColumn<>("ID");
+        TableColumn<Gita, String> cLuogo = new TableColumn<>("Luogo");
+        TableColumn<Gita, LocalDate> cInizio = new TableColumn<>("Data Inizio");
+        TableColumn<Gita, LocalDate> cFine = new TableColumn<>("Data Fine");
+
+        cID.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(c.getValue().getID()));
+        cLuogo.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getLuogo()));
+        cInizio.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(c.getValue().getDataInizio()));
+        cInizio.setCellValueFactory(c -> new ReadOnlyObjectWrapper<>(c.getValue().getDataFine()));
 
 
-        if(tableReazioneAvverse != null)
-        {
-            tableReazioneAvverse.getColumns().addAll(cNome);
-            btnShowReazioniAvverse.setOnMouseClicked(click -> ShowReazioniAvverse());
-            tableReazioneAvverse.dragForClass(ReazioneAvversa.class);
-        }
+        if(tableGite != null)
+            tableGite.getColumns().addAll(cID, cLuogo, cInizio, cFine);
     }
 
     private void setupTableFornitori()
@@ -179,62 +192,57 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
         if(tableFornitore != null)
         {
             tableFornitore.getColumns().addAll(cRagioneSociale, cSedeLegale, cTelefoni);
-            btnShowReazioniAvverse.setOnMouseClicked(click -> ShowReazioniAvverse());
             tableFornitore.dragForClass(Fornitore.class);
         }
     }
 
-    private void printPastoDetails()
+    private void printMezzoDetails()
     {
 
-        if(this.linkedPasto != null)
+        if(this.linkedMezzo != null)
         {
             //Setup title
-            if(this.linkedPasto.getNome() != null)
-                this.stageController.requestSetTitle(linkedPasto.getNome());
+            if(this.linkedMezzo.getTarga() != null)
+                this.stageController.requestSetTitle(linkedMezzo.getTarga());
             else
-                this.stageController.requestSetTitle("Crea " + linkedPasto.getClass().getSimpleName());
+                this.stageController.requestSetTitle("Crea " + linkedMezzo.getClass().getSimpleName());
 
             //Setup fields
-            txtNome.setTextFieldText(linkedPasto.getNome());
-            txtDescrizione.setText(linkedPasto.getDescrizione());
-        }
-    }
-
-    private void ShowReazioniAvverse()
-    {
-        try {
-            ChildcareBaseStageController showReazioniAvverse = new ChildcareBaseStageController();
-            showReazioniAvverse.setContentScene(getClass().getClassLoader().getResource(ReazioniAvverseStage.FXML_PATH));
-            showReazioniAvverse.initOwner(getRoot().getScene().getWindow());
-            //showReazioniAvverse.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
-            showReazioniAvverse.setOnClosingCallback((returnArgs) -> {
-                //Niente
-            });
-            showReazioniAvverse.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            txtTarga.setTextFieldText(linkedMezzo.getTarga());
+            txtNumeroIdentificativo.setTextFieldText(String.valueOf(linkedMezzo.getNumeroIdentificativo()));
+            txtCostoOrario.setTextFieldText(String.valueOf(linkedMezzo.getCostoOrario()));
+            txtCapienza.setTextFieldText(String.valueOf(linkedMezzo.getCapienza()));
         }
     }
 
     private void SaveClicked(MouseEvent ignored)
     {
-        Pasto newPasto = new Pasto();
+        MezzoDiTrasporto newMezzo = new MezzoDiTrasporto();
 
         //Imposta dettagli
-        newPasto.unsafeSetID(linkedPasto.getID());
-        newPasto.setNome(txtNome.getTextFieldText());
-        newPasto.setDescrizione(txtDescrizione.getText());
+        newMezzo.unsafeSetID(linkedMezzo.getID());
+        newMezzo.setTarga(txtTarga.getTextFieldText());
+
+        try
+        {
+            newMezzo.setNumeroIdentificativo(Integer.parseInt(txtNumeroIdentificativo.getTextFieldText()));
+            newMezzo.setCostoOrario(Integer.parseInt(txtCostoOrario.getTextFieldText()));
+            newMezzo.setCapienza(Integer.parseInt(txtCapienza.getTextFieldText()));
+        }
+        catch (Exception ex)
+        {
+            StageUtils.ShowAlert(Alert.AlertType.ERROR, "Alcuni parametri numerici hanno valori non numerici!");
+            return;
+        }
 
         if(tableFornitore.getItems().size() > 0)
-            newPasto.setFornitore(tableFornitore.getItems().get(0));
+            newMezzo.setFornitore(tableFornitore.getItems().get(0));
 
-        //Imposta relazioni persona
-        for(ReazioneAvversa reazioneAvversa : tableReazioneAvverse.getItems())
-            newPasto.addReazione(reazioneAvversa);
+        for (PianoViaggi pianoViaggi : linkedMezzo.getPianoViaggi())
+            newMezzo.unsafeAddPianoViaggi(pianoViaggi);
 
         //Manda richiesta
-        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetPastiRequest(newPasto, false, linkedPasto.consistecyHashCode()), null, true), returnArgs ->
+        ShowBlockingNetworkOperationStage(new NetworkOperation(new SetMezzoDiTrasportoRequest(newMezzo, false, linkedMezzo.consistecyHashCode()), null, true), returnArgs ->
         {
             if(returnArgs != null && returnArgs.length > 0 && returnArgs[0] instanceof BaseResponse)
             {
@@ -253,7 +261,7 @@ public class EditPastoStageController extends NetworkedSubScene implements ISubS
 
                     StageUtils.ShowAlert(Alert.AlertType.INFORMATION, "La modifica non è stata effettuata perchè i dati non sono consistenti, rieffetuare le modifiche...");
 
-                    linkedPasto = ((ListResponse<Pasto>) response).getPayload().get(0);
+                    linkedMezzo = ((ListResponse<MezzoDiTrasporto>) response).getPayload().get(0);
 
                     updateData();
                     return;

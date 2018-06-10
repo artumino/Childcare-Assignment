@@ -4,8 +4,10 @@ import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
 import com.polimi.childcare.client.ui.controllers.BaseStageController;
+import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.gita.EditMezzoStageController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.GruppoContainerComponent;
 import com.polimi.childcare.client.ui.filters.Filters;
@@ -34,9 +36,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GitaSubsceneController extends NetworkedSubScene implements ISubSceneController
 {
@@ -107,6 +112,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         setupTabellaMezzi();
         setupTabellaOrfani();
 
+        btnAddMezzo.setOnMouseClicked(click -> ShowMezzoDiTrasporto(new MezzoDiTrasporto()));
 
         setupGruppi();
         refreshGruppi(new ArrayList<>());
@@ -258,6 +264,22 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             tableGite.getColumns().addAll(cID, cLuogo, cInizio, cFine);
             listGite.comparatorProperty().bind(tableGite.comparatorProperty());
             tableGite.setItems(listGite.list());
+
+            tableGite.setRowFactory(tv -> new TableRow<Gita>() {
+                @Override
+                public void updateItem(Gita item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (item == null) {
+                        setStyle("");
+                    } else if (item.getDataInizio().atStartOfDay().isAfter(LocalDateTime.now()) &&
+                            item.getDataFine().plusDays(1).atStartOfDay().isBefore(LocalDateTime.now())) {
+                        //Gita attiva
+                        setStyle("-fx-background-color: DarkSeaGreen;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            });
         }
     }
 
@@ -284,6 +306,11 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             tableMezzi.getColumns().addAll(cID, cTarga, cFornitore, cCapienza, cCosto);
             listMezzi.comparatorProperty().bind(tableMezzi.comparatorProperty());
             tableMezzi.setItems(listMezzi.list());
+
+            tableMezzi.setOnMousePressed((event -> {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2 && tableMezzi.getSelectionModel().getSelectedItem() != null)
+                    ShowMezzoDiTrasporto(tableMezzi.getSelectionModel().getSelectedItem());
+            }));
         }
     }
 
@@ -329,6 +356,18 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
                 newGruppi.add(gruppoContainerComponent.getCurrentGruppoRappresentation());
 
             boolean modified = newGruppi.size() != receivedGroups.size();
+
+            //Se ci sono delle gite attive, notifico dell'effetto delle modifiche
+            if(listGite.total() > 0 && modified)
+            {
+                Optional<ButtonType> response = StageUtils.ShowAlertWithButtons(Alert.AlertType.INFORMATION,
+                        "Attenzione: la modifica dei gruppi con delle gite presenti renderà necessaria la modifica dei piani viaggo legati a quest'ultime.",
+                        ButtonType.CANCEL, ButtonType.OK);
+                if(!response.isPresent() || response.get() == ButtonType.CANCEL)
+                    return;
+            }
+
+
             if(!modified)
             {
                 //Controllo eventuali aggiornamenti
@@ -444,11 +483,23 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     //endregion
 
-    @Override
-    public void detached()
+    //region Stages
+
+    private void ShowMezzoDiTrasporto(MezzoDiTrasporto mezzoDiTrasporto)
     {
-        //DO NOTHING...
+        try {
+            ChildcareBaseStageController showEditMezzo = new ChildcareBaseStageController();
+            showEditMezzo.setContentScene(getClass().getClassLoader().getResource(EditMezzoStageController.FXML_PATH), mezzoDiTrasporto);
+            showEditMezzo.initOwner(getRoot().getScene().getWindow());
+            showEditMezzo.setOnClosingCallback((returnArgs) -> {
+                //Niente
+            });
+            showEditMezzo.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+    //endregion
 
     @Override
     public Region getSceneRegion() {

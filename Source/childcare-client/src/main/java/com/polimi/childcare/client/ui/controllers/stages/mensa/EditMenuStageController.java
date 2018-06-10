@@ -290,20 +290,6 @@ public class EditMenuStageController extends NetworkedSubScene implements ISubSc
         }
     }
 
-    private void ShowBlockingNetworkOperationStage(NetworkOperation networkOperation, BaseStageController.OnStageClosingCallback callback)
-    {
-        try {
-            ChildcareBaseStageController blockingOperationController = new ChildcareBaseStageController();
-            blockingOperationController.setContentScene(getClass().getClassLoader().getResource(BlockingNetworkOperationStageController.FXML_PATH), networkOperation);
-            blockingOperationController.initOwner(getRoot().getScene().getWindow());
-            blockingOperationController.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
-            blockingOperationController.setOnClosingCallback(callback);
-            blockingOperationController.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private Menu getCurrentMenu()
     {
         Menu newMenu = new Menu();

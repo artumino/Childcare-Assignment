@@ -8,6 +8,7 @@ import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController;
+import com.polimi.childcare.client.ui.controllers.subscenes.NetworkedSubScene;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.LabelTextViewComponent;
 import com.polimi.childcare.client.ui.utils.StageUtils;
@@ -37,11 +38,9 @@ import javafx.stage.Modality;
 import java.io.IOException;
 import java.util.Optional;
 
-public class EditFornitoreStageController implements ISubSceneController
+public class EditFornitoreStageController extends NetworkedSubScene implements ISubSceneController
 {
     public static final String FXML_PATH = "fxml/stages/anagrafica/EditFornitoreStage.fxml";
-
-    private NetworkOperation pendingOperation;
 
     private Fornitore linkedFornitore;
     private ChildcareBaseStageController stageController;
@@ -86,13 +85,13 @@ public class EditFornitoreStageController implements ISubSceneController
                 this.linkedFornitore = (Fornitore) args[0];
 
 
-            if(pendingOperation == null && linkedFornitore != null && linkedFornitore.getID() != 0)
+            if(linkedFornitore != null && linkedFornitore.getID() != 0)
             {
                 this.loadingLayout.setVisible(true);
-                this.pendingOperation = new NetworkOperation(new FilteredFornitoriRequest(this.linkedFornitore.getID(), true),
+                networkOperationVault.submitOperation(new NetworkOperation(new FilteredFornitoriRequest(this.linkedFornitore.getID(), true),
                         response ->
                         {
-                            this.pendingOperation = null;
+                            networkOperationVault.operationDone(FilteredFornitoriRequest.class);
                             if(!(response instanceof ListFornitoriResponse) || ((ListFornitoriResponse)response).getPayload().size() == 0)
                             {
                                 StageUtils.ShowAlert(Alert.AlertType.ERROR, "Errore, risposta non corretta dal server");
@@ -105,8 +104,7 @@ public class EditFornitoreStageController implements ISubSceneController
                                 this.loadingLayout.setVisible(false);
                             }
                         },
-                        true);
-                ClientNetworkManager.getInstance().submitOperation(this.pendingOperation);
+                        true));
             }
 
             //Tabelle Generali
@@ -118,7 +116,7 @@ public class EditFornitoreStageController implements ISubSceneController
                 btnElimina.setVisible(false);
 
             btnElimina.setOnMouseClicked(click -> {
-                if(this.pendingOperation == null)
+                if(!networkOperationVault.anyRunningOperation())
                 {
                     Optional<ButtonType> result = StageUtils.ShowAlertWithButtons(Alert.AlertType.CONFIRMATION,
                             "Sei sicuro di voler cancellare " + linkedFornitore.getRagioneSociale() + "?",
@@ -238,30 +236,9 @@ public class EditFornitoreStageController implements ISubSceneController
         }
     }
 
-    @Override
-    public void detached()
-    {
-        if(pendingOperation != null)
-            ClientNetworkManager.getInstance().abortOperation(this.pendingOperation);
-    }
-
-    private void ShowBlockingNetworkOperationStage(NetworkOperation networkOperation, BaseStageController.OnStageClosingCallback callback)
-    {
-        try {
-            ChildcareBaseStageController blockingOperationController = new ChildcareBaseStageController();
-            blockingOperationController.setContentScene(getClass().getClassLoader().getResource(BlockingNetworkOperationStageController.FXML_PATH), networkOperation);
-            blockingOperationController.initOwner(getRoot().getScene().getWindow());
-            blockingOperationController.initModality(Modality.APPLICATION_MODAL); //Blocco tutto
-            blockingOperationController.setOnClosingCallback(callback);
-            blockingOperationController.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void SaveClicked(MouseEvent ignored)
     {
-        if(pendingOperation != null)
+        if(networkOperationVault.anyRunningOperation())
             return;
 
         Fornitore newFornitore = new Fornitore();

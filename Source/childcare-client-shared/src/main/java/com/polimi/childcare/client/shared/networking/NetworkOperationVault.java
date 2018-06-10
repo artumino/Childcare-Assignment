@@ -33,6 +33,9 @@ public class NetworkOperationVault
         runningNetworkOperationMap.remove(request);
     }
 
+    public synchronized boolean anyRunningOperation() { return runningNetworkOperationMap.keySet().size() > 0; }
+    public synchronized boolean operationRunning(Class<? extends BaseRequest> request) { return runningNetworkOperationMap.containsKey(request); }
+
     public synchronized void abortOperation(Class<? extends BaseRequest> request)
     {
         if(runningNetworkOperationMap.containsKey(request))
