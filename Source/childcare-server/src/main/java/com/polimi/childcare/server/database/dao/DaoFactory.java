@@ -30,7 +30,16 @@ public class DaoFactory
         daoMap.put(Diagnosi.class, DiagnosiDaoImpl.class);
         daoMap.put(Fornitore.class, FornitoreDaoImpl.class);
         daoMap.put(Genitore.class, GenitoreDaoImpl.class);
+        daoMap.put(Gita.class, GitaDaoImpl.class);
         daoMap.put(Gruppo.class, GruppoDaoImpl.class);
+        daoMap.put(Menu.class, MenuDaoImpl.class);
+        daoMap.put(MezzoDiTrasporto.class, MezzoDiTrasportoDaoImpl.class);
+        daoMap.put(Pasto.class, PastoDaoImpl.class);
+        daoMap.put(Pediatra.class, PediatraDaoImpl.class);
+        daoMap.put(PianoViaggi.class, PianoViaggiDaoImpl.class);
+        daoMap.put(ReazioneAvversa.class, ReazioneAvversaDaoImpl.class);
+        daoMap.put(RegistroPresenze.class, RegistroPresenzeDaoImpl.class);
+
     }
 
     public <T> ICommonDao<T> getDao(Class<T> tClass, DatabaseSession.DatabaseSessionInstance sessionInstance)
