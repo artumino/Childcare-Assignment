@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import com.polimi.childcare.client.ui.controls.LabelTextViewComponent?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.gita.EditGitaStageController">
+   <children>
+      <TabPane fx:id="layoutTabPane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <tabs>
+            <Tab fx:id="tabDettagli" text="Dettagli">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox layoutX="140.0" layoutY="47.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <LabelTextViewComponent fx:id="txtLuogo" labelPercentWidth="32.0" labelText="Luogo" />
+                              <HBox prefHeight="47.0" prefWidth="429.0">
+                                 <children>
+                                    <LabelTextViewComponent fx:id="txtCosto" labelPercentWidth="34.0" labelText="Costo" prefWidth="460.0" />
+                                    <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="25.0" text="€/b" textAlignment="CENTER" />
+                                 </children>
+                              </HBox>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="136.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="293.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <JFXDatePicker fx:id="dpDataInizio" maxWidth="1.7976931348623157E308" overLay="true" prefWidth="290.0" GridPane.columnIndex="1" />
+                                    <Label text="Data Inizio" />
+                                 </children>
+                              </GridPane>
+                              <GridPane>
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="135.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="306.0" minWidth="10.0" prefWidth="294.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <JFXDatePicker fx:id="dpDataFine" maxWidth="1.7976931348623157E308" overLay="true" GridPane.columnIndex="1" />
+                                    <Label text="Data Fine" />
+                                 </children>
+                              </GridPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="tabGite" text="Tappe">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXButton fx:id="btnAddTappa" buttonType="RAISED" layoutX="307.0" layoutY="363.0" prefHeight="47.0" prefWidth="138.0" ripplerFill="#5fb96b" text="Aggiungi Tappa" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="15.0" />
+                        <ListView fx:id="listTappe" editable="true" prefHeight="362.0" prefWidth="459.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <JFXButton fx:id="btnRemoveTappa" buttonType="RAISED" layoutX="14.0" layoutY="367.0" prefHeight="47.0" prefWidth="138.0" ripplerFill="#b52222" text="Rimuovi Tappa" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="15.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </TabPane>
+      <JFXButton fx:id="btnSalva" layoutX="393.0" layoutY="468.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #76d275; -fx-text-fill: #fff;" text="Salva" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+      <JFXButton fx:id="btnElimina" layoutX="314.0" layoutY="466.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #f05545; -fx-text-fill: #fff;" text="Elimina" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <AnchorPane fx:id="loadingLayout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXSpinner layoutX="189.0" layoutY="222.0" prefHeight="80.0" prefWidth="82.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

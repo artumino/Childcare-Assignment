@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXSpinner?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="443.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.gita.EditPianoViaggiController">
+   <children>
+      <JFXButton fx:id="btnSalva" layoutX="393.0" layoutY="468.0" prefHeight="47.0" prefWidth="138.0" style="-fx-background-color: #76d275; -fx-text-fill: #fff;" text="Salva" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+      <AnchorPane fx:id="loadingLayout" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(0,0,0,0.5);" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <JFXSpinner layoutX="189.0" layoutY="222.0" prefHeight="80.0" prefWidth="82.0" />
+         </children>
+      </AnchorPane>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutY="-40.0" pickOnBounds="false" prefHeight="444.0" prefWidth="443.0" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <content>
+            <VBox fx:id="vboxPianiViaggio" prefWidth="100.0" />
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

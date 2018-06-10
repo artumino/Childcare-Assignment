@@ -7,7 +7,9 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.gita.EditGitaStageController;
 import com.polimi.childcare.client.ui.controllers.stages.gita.EditMezzoStageController;
+import com.polimi.childcare.client.ui.controllers.stages.gita.EditPianoViaggiController;
 import com.polimi.childcare.client.ui.controls.DragAndDropTableView;
 import com.polimi.childcare.client.ui.controls.GruppoContainerComponent;
 import com.polimi.childcare.client.ui.filters.Filters;
@@ -25,6 +27,8 @@ import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -64,6 +68,8 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
     private OrderedFilteredList<Gita> listGite;
     private FilterComponent<Gita> filterGite;
     @FXML private Button btnAddGita;
+    @FXML private Button btnEditPianoViaggi;
+    @FXML private HBox hboxBottoniGita;
 
     //Mezzi
     @FXML private DragAndDropTableView<MezzoDiTrasporto> tableMezzi;
@@ -107,12 +113,27 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         filterGite.addFilterField(txtFilterGite.textProperty(), (g -> Filters.filterGita(g, txtFilterGite.getText())));
         filterMezzi.addFilterField(txtFilterMezzi.textProperty(), (m -> Filters.filterMezzo(m, txtFilterMezzi.getText())));
 
+        if(btnEditPianoViaggi != null && hboxBottoniGita != null)
+            hboxBottoniGita.getChildren().remove(btnEditPianoViaggi);
+
         setupTabellaAddetti();
         setupTabellaGite();
         setupTabellaMezzi();
         setupTabellaOrfani();
 
         btnAddMezzo.setOnMouseClicked(click -> ShowMezzoDiTrasporto(new MezzoDiTrasporto()));
+        btnAddGita.setOnMouseClicked(click -> ShowGita(new Gita()));
+
+        btnEditPianoViaggi.setOnMouseClicked(click -> {
+            if(gruppoContainerComponents.size() == 0)
+            {
+                StageUtils.ShowAlert(Alert.AlertType.ERROR, "Non sono attualmente presenti dei gruppi, crea dei gruppi prima di impostare il piano viaggi!");
+                return;
+            }
+
+            //Show piano viaggi per gita
+            ShowPianoViaggi(tableGite.getSelectionModel().getSelectedItem());
+        });
 
         setupGruppi();
         refreshGruppi(new ArrayList<>());
@@ -265,21 +286,41 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             listGite.comparatorProperty().bind(tableGite.comparatorProperty());
             tableGite.setItems(listGite.list());
 
+            tableGite.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+                updateGitaButtons(newValue);
+            });
+
             tableGite.setRowFactory(tv -> new TableRow<Gita>() {
                 @Override
                 public void updateItem(Gita item, boolean empty) {
                     super.updateItem(item, empty) ;
                     if (item == null) {
                         setStyle("");
-                    } else if (item.getDataInizio().atStartOfDay().isAfter(LocalDateTime.now()) &&
-                            item.getDataFine().plusDays(1).atStartOfDay().isBefore(LocalDateTime.now())) {
+                    } else if (item.getDataInizio().atStartOfDay().isBefore(LocalDateTime.now()) &&
+                            item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now())) {
                         //Gita attiva
                         setStyle("-fx-background-color: DarkSeaGreen;");
                     } else {
                         setStyle("");
                     }
+
+                    tableGite.setOnMousePressed((event -> {
+                        if(event.isPrimaryButtonDown() && event.getClickCount() == 2 && tableGite.getSelectionModel().getSelectedItem() != null)
+                            ShowGita(tableGite.getSelectionModel().getSelectedItem());
+                    }));
                 }
             });
+        }
+    }
+
+    private void updateGitaButtons(Gita selectedGita)
+    {
+        if(btnEditPianoViaggi != null && hboxBottoniGita != null)
+        {
+            if (selectedGita == null || gruppoContainerComponents.size() == 0)
+                hboxBottoniGita.getChildren().remove(btnEditPianoViaggi);
+            else if(!hboxBottoniGita.getChildren().contains(btnEditPianoViaggi))
+                hboxBottoniGita.getChildren().add(btnEditPianoViaggi);
         }
     }
 
@@ -437,6 +478,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void OnAddettiResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredAddettoRequest.class);
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListAddettiResponse))
             return;
 
@@ -446,6 +488,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void OnGiteResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredGitaRequest.class);
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListGitaResponse))
             return;
 
@@ -455,6 +498,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void OnMezziResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredMezzoDiTrasportoRequest.class);
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListMezzoDiTrasportoResponse))
             return;
 
@@ -464,6 +508,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void OnOrfaniResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(GetBambiniSenzaGruppoRequest.class);
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListBambiniResponse))
             return;
 
@@ -473,6 +518,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
 
     private void OnGruppiResponseRecived(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredGruppoRequest.class);
         if(StageUtils.HandleResponseError(response, "Errore durante la connessione al server", r -> r instanceof ListGruppoResponse))
             return;
 
@@ -491,10 +537,33 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             ChildcareBaseStageController showEditMezzo = new ChildcareBaseStageController();
             showEditMezzo.setContentScene(getClass().getClassLoader().getResource(EditMezzoStageController.FXML_PATH), mezzoDiTrasporto);
             showEditMezzo.initOwner(getRoot().getScene().getWindow());
-            showEditMezzo.setOnClosingCallback((returnArgs) -> {
-                //Niente
-            });
+            showEditMezzo.setOnClosingCallback((returnArgs) -> RefreshData());
             showEditMezzo.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowGita(Gita gita)
+    {
+        try {
+            ChildcareBaseStageController showEditMezzo = new ChildcareBaseStageController();
+            showEditMezzo.setContentScene(getClass().getClassLoader().getResource(EditGitaStageController.FXML_PATH), gita);
+            showEditMezzo.initOwner(getRoot().getScene().getWindow());
+            showEditMezzo.setOnClosingCallback((returnArgs) -> RefreshData());
+            showEditMezzo.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void ShowPianoViaggi(Gita gita)
+    {
+        try {
+            ChildcareBaseStageController showPianoViaggi = new ChildcareBaseStageController();
+            showPianoViaggi.setContentScene(getClass().getClassLoader().getResource(EditPianoViaggiController.FXML_PATH), gita);
+            showPianoViaggi.initOwner(getRoot().getScene().getWindow());
+            showPianoViaggi.show();
         } catch (IOException e) {
             e.printStackTrace();
         }

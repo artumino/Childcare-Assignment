@@ -141,7 +141,7 @@ public class RegistroPresenze extends TransferableEntity implements Serializable
 
     public enum StatoPresenza
     {
-        Presente(), Assente(), EntratoInRitardo(), UscitoInAnticipo(), Uscito(), Disperso();
+        Presente(), Assente(), EntratoInRitardo(), UscitoInAnticipo(), PresenteMezzoErrato(), Disperso()
     }
 
     //endregion

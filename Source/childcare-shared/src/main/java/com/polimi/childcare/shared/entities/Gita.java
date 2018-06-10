@@ -41,6 +41,9 @@ public class Gita extends TransferableEntity implements Serializable
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
     private Set<RegistroPresenze> registriPresenze = new HashSet<>();
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "gita")
+    private Set<Tappa> tappe = new HashSet<>();
+
     //endregion
 
     //region Metodi
@@ -91,6 +94,10 @@ public class Gita extends TransferableEntity implements Serializable
         return Costo;
     }
 
+    public void setCosto(int costo) {
+        this.Costo = costo;
+    }
+
     public void unsafeAddPianoViaggi(PianoViaggi p) { pianiViaggi.add(p); }
 
     public void unsafeRemovePianoViaggi(PianoViaggi p) { pianiViaggi.remove(p); }
@@ -99,9 +106,15 @@ public class Gita extends TransferableEntity implements Serializable
 
     public void unsafeRemoveRegistroPresenza(RegistroPresenze rp) { registriPresenze.remove(rp); }
 
+    public void unsafeAddTappa(Tappa t) { tappe.add(t); }
+
+    public void unsafeRemoveTappa(Tappa t) { tappe.remove(t); }
+
     public Set<PianoViaggi> getPianiViaggi() { return EntitiesHelper.unmodifiableListReturn(pianiViaggi); }
 
     public Set<RegistroPresenze> getRegistriPresenze() { return EntitiesHelper.unmodifiableListReturn(registriPresenze); }
+
+    public Set<Tappa> getTappe() { return EntitiesHelper.unmodifiableListReturn(tappe); }
 
     @Override
     public int hashCode() { return Objects.hash(ID, Gita.class); }
@@ -132,15 +145,17 @@ public class Gita extends TransferableEntity implements Serializable
     {
         pianiViaggi = DTOUtils.iterableToDTO(pianiViaggi, processed);
         registriPresenze = DTOUtils.iterableToDTO(registriPresenze, processed);
+        tappe = DTOUtils.iterableToDTO(tappe, processed);
 
         pianiViaggi = getPianiViaggi();
         registriPresenze = getRegistriPresenze();
+        tappe = getTappe();
     }
 
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze);
+        return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze) && DTOUtils.isDTO(tappe);
     }
 
     @Override
@@ -206,6 +221,36 @@ public class Gita extends TransferableEntity implements Serializable
             @Override
             public IManyToOne<Gita, RegistroPresenze> getInverse(RegistroPresenze item) {
                 return item.asRegistroPresenzeGitaRelation();
+            }
+        };
+    }
+
+    public IOneToMany<Tappa, Gita> asGitaTappeRelation()
+    {
+        return new IOneToMany<Tappa, Gita>() {
+            @Override
+            public Gita getItem() {
+                return Gita.this;
+            }
+
+            @Override
+            public void unsafeAddRelation(Tappa item) {
+                unsafeAddTappa(item);
+            }
+
+            @Override
+            public void unsafeRemoveRelation(Tappa item) {
+                unsafeRemoveTappa(item);
+            }
+
+            @Override
+            public Set<Tappa> getUnmodifiableRelation() {
+                return getTappe();
+            }
+
+            @Override
+            public IManyToOne<Gita, Tappa> getInverse(Tappa item) {
+                return item.asTappaGitaRelation();
             }
         };
     }
