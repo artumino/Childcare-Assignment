@@ -3,6 +3,7 @@ package com.polimi.childcare.client.ui.controllers.subscenes;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.ui.OrderedFilteredList;
 import com.polimi.childcare.client.ui.components.FilterComponent;
+import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
@@ -77,6 +78,10 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
     @Override
     public void attached(ISceneController sceneController, Object... args)
     {
+        //Se sono stato collegato ad uno stage, imposto un titolo opportuno
+        if(sceneController instanceof BaseStageController)
+            ((BaseStageController)sceneController).requestSetTitle("Mensa");
+
         redrawData();
     }
 
