@@ -27,6 +27,7 @@
         <mapping class="com.polimi.childcare.shared.entities.Fornitore"/>
         <mapping class="com.polimi.childcare.shared.entities.Genitore"/>
         <mapping class="com.polimi.childcare.shared.entities.Gita"/>
+        <mapping class="com.polimi.childcare.shared.entities.Tappa"/>
         <mapping class="com.polimi.childcare.shared.entities.Gruppo"/>
         <mapping class="com.polimi.childcare.shared.entities.Menu"/>
         <mapping class="com.polimi.childcare.shared.entities.MezzoDiTrasporto"/>
