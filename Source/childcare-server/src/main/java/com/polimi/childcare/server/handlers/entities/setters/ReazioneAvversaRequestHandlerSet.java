@@ -5,7 +5,6 @@ import com.polimi.childcare.shared.networking.requests.setters.SetEntityRequest;
 
 public class ReazioneAvversaRequestHandlerSet extends GenericDaoSetEntityRequestHandler<SetEntityRequest<ReazioneAvversa>, ReazioneAvversa>
 {
-
     @Override
     protected Class<ReazioneAvversa> getQueryClass() {
         return ReazioneAvversa.class;

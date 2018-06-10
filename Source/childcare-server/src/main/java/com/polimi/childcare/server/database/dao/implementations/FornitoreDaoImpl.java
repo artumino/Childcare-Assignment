@@ -35,8 +35,8 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
 
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asFornitorePastiRelation(), dbEntity.asFornitorePastiRelation(), Pasto.class, sessionInstance);
-            DBHelper.updateOneToMany(gruppo.asFornitoreMezziDiTrasportoRelation(), dbEntity.asFornitoreMezziDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
+            DBHelper.updateOneToMany(gruppo.asFornitorePastiRelation(), dbEntity.asFornitorePastiRelation(), Pasto.class, sessionInstance);     //FIXME: Crash
+            DBHelper.updateOneToMany(gruppo.asFornitoreMezziDiTrasportoRelation(), dbEntity.asFornitoreMezziDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);    //Idem
             sessionInstance.insertOrUpdate(gruppo);
         }
         else
