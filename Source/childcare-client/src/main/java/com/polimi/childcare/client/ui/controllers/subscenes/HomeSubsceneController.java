@@ -31,6 +31,7 @@ import javafx.stage.Modality;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
@@ -168,18 +169,15 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
     {
         try {
             ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
-            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"), bambino);
+            setPresenzeStage.setContentScene(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"),
+                    new RegistroPresenze(RegistroPresenze.StatoPresenza.Presente,
+                            LocalDateTime.now().toLocalDate(),
+                            LocalDateTime.now(),
+                            (short)LocalDateTime.now().getHour(),
+                            bambino));
             setPresenzeStage.initModality(Modality.WINDOW_MODAL);
             setPresenzeStage.initOwner(getRoot().getScene().getWindow());
-            setPresenzeStage.setOnClosingCallback((returnArgs) -> {
-                if(returnArgs.length > 0 && returnArgs[0] instanceof RegistroPresenze)
-                {
-                    RegistroPresenze nuovoStatoPresenza = (RegistroPresenze)returnArgs[0];
-                    statoPresenze.put(nuovoStatoPresenza.getBambino(), nuovoStatoPresenza);
-                }
-
-                tablePresenze.refresh();
-            });
+            setPresenzeStage.setOnClosingCallback((returnArgs) -> RefreshData());
             setPresenzeStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

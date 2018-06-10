@@ -44,7 +44,7 @@
                                  </VBox.margin>
                               </GridPane>
                               <Label prefHeight="14.0" prefWidth="57.0" text="Fornitore" />
-                              <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0" />
+                              <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0" tableMenuButtonVisible="true" />
                            </children>
                            <padding>
                               <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />

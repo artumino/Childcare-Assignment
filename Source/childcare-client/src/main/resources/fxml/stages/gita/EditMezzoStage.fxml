@@ -33,7 +33,7 @@
                               </HBox>
                               <LabelTextViewComponent fx:id="txtCapienza" labelPercentWidth="32.0" labelText="Capienza" />
                               <Label prefHeight="14.0" prefWidth="57.0" text="Fornitore" />
-                              <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0">
+                              <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0" tableMenuButtonVisible="true">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy></DragAndDropTableView>

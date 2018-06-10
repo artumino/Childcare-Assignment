@@ -120,7 +120,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         //Effects
         if(imgAddGroup != null)
         {
-            imgAddGroup.setOnMouseEntered(event -> EffectsUtils.AddShadow(imgAddGroup, 2));
+            imgAddGroup.setOnMouseEntered(event -> EffectsUtils.AddShadow(imgAddGroup, 10));
             imgAddGroup.setOnMouseExited(event -> EffectsUtils.RemoveShadow(imgAddGroup));
         }
     }
