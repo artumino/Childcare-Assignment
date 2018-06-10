@@ -21,7 +21,7 @@ public class RegistroPresenzeQuery
      * Ritorna una lista di eventi delle presenze utilizzabile per calcolare nuovi stati per un evento avvenuto ad un istante utcEpochSeconds
      * @param utcEpochSeconds Istante in cui l'evento è avvenuto
      * @param bambinoId ID del bambino
-     * @return Lista con list[0] evento prima dell'istante (può non esserci) ed il resto degli elementi con timestamp > utcEpochSeconds ordinati
+     * @return Lista con list[0] evento prima dell'istante (può non esserci) ed il resto degli elementi con <i>timestamp</i>timestamp &gt; <i>utcEpochSeconds</i> ordinati
      */
     public static ArrayList<RegistroPresenze> getStatoPresenzeAtEpochSeconds(long utcEpochSeconds, int bambinoId)
     {

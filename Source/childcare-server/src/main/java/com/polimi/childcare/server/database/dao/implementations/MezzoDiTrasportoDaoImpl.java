@@ -14,9 +14,9 @@ public class MezzoDiTrasportoDaoImpl extends HibernateDao<MezzoDiTrasporto>
     public MezzoDiTrasportoDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(MezzoDiTrasporto gruppo)
+    public void delete(MezzoDiTrasporto item)
     {
-        MezzoDiTrasporto dbEntity = sessionInstance.getByID(MezzoDiTrasporto.class, gruppo.getID());
+        MezzoDiTrasporto dbEntity = sessionInstance.getByID(MezzoDiTrasporto.class, item.getID());
         Set<PianoViaggi> pv = dbEntity.getPianoViaggi();
 
         for (PianoViaggi p : pv)
@@ -25,31 +25,31 @@ public class MezzoDiTrasportoDaoImpl extends HibernateDao<MezzoDiTrasporto>
             sessionInstance.update(p);
         }
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(MezzoDiTrasporto gruppo)
+    public int insert(MezzoDiTrasporto item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(MezzoDiTrasporto gruppo)
+    public void update(MezzoDiTrasporto item)
     {
-        checkConstraints(gruppo);
-        MezzoDiTrasporto dbEntity = sessionInstance.getByID(MezzoDiTrasporto.class, gruppo.getID());
+        checkConstraints(item);
+        MezzoDiTrasporto dbEntity = sessionInstance.getByID(MezzoDiTrasporto.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(MezzoDiTrasporto gruppo)

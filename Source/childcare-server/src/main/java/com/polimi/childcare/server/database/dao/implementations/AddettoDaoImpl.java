@@ -11,31 +11,31 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
     }
 
     @Override
-    public void delete(Addetto gruppo)
+    public void delete(Addetto item)
     {
-        Addetto dbEntity = sessionInstance.getByID(Addetto.class, gruppo.getID());
-        sessionInstance.delete(gruppo);
+        Addetto dbEntity = sessionInstance.getByID(Addetto.class, item.getID());
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Addetto gruppo)
+    public int insert(Addetto item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
         return ID;
     }
 
     @Override
-    public void update(Addetto gruppo)
+    public void update(Addetto item)
     {
-        checkConstraints(gruppo);
-        Addetto dbEntity = sessionInstance.getByID(Addetto.class, gruppo.getID());
+        checkConstraints(item);
+        Addetto dbEntity = sessionInstance.getByID(Addetto.class, item.getID());
 
         if(dbEntity != null)
-            sessionInstance.insertOrUpdate(gruppo);
+            sessionInstance.insertOrUpdate(item);
 
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

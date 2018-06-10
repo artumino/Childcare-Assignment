@@ -17,9 +17,9 @@ public interface IServerNetworkInterface
      *
      * @param address Indirizzo su cui l'interfaccia deve ascoltare per connessioni in arrivo (per le interfacce che lo permettono)
      * @param port Porta su cui ascoltare per connessioni in arrivo
-     * @param defaultHandler Interfaccia di tipo {@link IRequestHandler<BaseRequest>} che fornisca un modo per gestire le richieste dai client
+     * @param defaultHandler Interfaccia di tipo {@code IRequestHandler<BaseRequest>} che fornisca un modo per gestire le richieste dai client
      * @throws IOException In caso di errori nel binding dell'interfaccia
-     * @throws DefaultRequestHandlerNotBoundException Quando non è stato impostato il parametro {@param defaultHandler}
+     * @throws DefaultRequestHandlerNotBoundException Quando non è stato impostato il parametro {@code defaultHandler}
      */
     void listen(String address, int port, IRequestHandler<BaseRequest> defaultHandler) throws IOException;
 

@@ -12,35 +12,35 @@ public class DiagnosiDaoImpl extends HibernateDao<Diagnosi>
     public DiagnosiDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Diagnosi gruppo)
+    public void delete(Diagnosi item)
     {
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Diagnosi gruppo)
+    public int insert(Diagnosi item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asDiagnosiPersonaRelation(), Persona.class, sessionInstance);
-        DBHelper.updateManyToOne(gruppo.asDiagnosiReazioneAvversaRelation(), ReazioneAvversa.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asDiagnosiPersonaRelation(), Persona.class, sessionInstance);
+        DBHelper.updateManyToOne(item.asDiagnosiReazioneAvversaRelation(), ReazioneAvversa.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Diagnosi gruppo)
+    public void update(Diagnosi item)
     {
-        checkConstraints(gruppo);
-        Diagnosi dbEntity = sessionInstance.getByID(Diagnosi.class, gruppo.getID());
+        checkConstraints(item);
+        Diagnosi dbEntity = sessionInstance.getByID(Diagnosi.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asDiagnosiPersonaRelation(), Persona.class, sessionInstance);
-            DBHelper.updateManyToOne(gruppo.asDiagnosiReazioneAvversaRelation(), ReazioneAvversa.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asDiagnosiPersonaRelation(), Persona.class, sessionInstance);
+            DBHelper.updateManyToOne(item.asDiagnosiReazioneAvversaRelation(), ReazioneAvversa.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

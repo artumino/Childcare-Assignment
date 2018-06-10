@@ -15,45 +15,45 @@ public class PastoDaoImpl extends HibernateDao<Pasto>
     public PastoDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Pasto gruppo)
+    public void delete(Pasto item)
     {
-        Pasto dbEntity = sessionInstance.getByID(Pasto.class, gruppo.getID());
-        DBHelper.deletedManyToManyOwned(gruppo.asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, sessionInstance);
+        Pasto dbEntity = sessionInstance.getByID(Pasto.class, item.getID());
+        DBHelper.deletedManyToManyOwned(item.asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, sessionInstance);
 
         Set<ReazioneAvversa> reazioni = dbEntity.getReazione();
 
         for (ReazioneAvversa r : reazioni)
             dbEntity.removeReazione(r);
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Pasto gruppo)
+    public int insert(Pasto item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asPastoFornitoreRelation(), Fornitore.class, sessionInstance);
-        DBHelper.updateManyToManyOwned(gruppo.asPastoMenuRelation(), gruppo.asPastoMenuRelation(), Menu.class, sessionInstance);
-        DBHelper.updateManyToManyOwner(gruppo.asPastoReazioniAvverseRelation(), ReazioneAvversa.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asPastoFornitoreRelation(), Fornitore.class, sessionInstance);
+        DBHelper.updateManyToManyOwned(item.asPastoMenuRelation(), item.asPastoMenuRelation(), Menu.class, sessionInstance);
+        DBHelper.updateManyToManyOwner(item.asPastoReazioniAvverseRelation(), ReazioneAvversa.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Pasto gruppo)
+    public void update(Pasto item)
     {
-        checkConstraints(gruppo);
-        Pasto dbEntity = sessionInstance.getByID(Pasto.class, gruppo.getID());
+        checkConstraints(item);
+        Pasto dbEntity = sessionInstance.getByID(Pasto.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asPastoFornitoreRelation(), Fornitore.class, sessionInstance);
-            DBHelper.updateManyToManyOwned(gruppo.asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, sessionInstance);
-            DBHelper.updateManyToManyOwner(gruppo.asPastoReazioniAvverseRelation(), ReazioneAvversa.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asPastoFornitoreRelation(), Fornitore.class, sessionInstance);
+            DBHelper.updateManyToManyOwned(item.asPastoMenuRelation(), dbEntity.asPastoMenuRelation(), Menu.class, sessionInstance);
+            DBHelper.updateManyToManyOwner(item.asPastoReazioniAvverseRelation(), ReazioneAvversa.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

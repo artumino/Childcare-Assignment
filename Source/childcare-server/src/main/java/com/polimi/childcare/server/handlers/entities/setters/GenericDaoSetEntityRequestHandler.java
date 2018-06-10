@@ -69,6 +69,10 @@ public abstract class GenericDaoSetEntityRequestHandler<T extends SetEntityReque
 
     /**
      * Gestore dei setter generico
+     * @param session Sessione attuale sul DB
+     * @param entity Entità da inserire/modificare/cancellare
+     * @param oldHashCode Hashcode dell'entità di partenza su cui sono state effettuate le modifiche
+     * @param toDelete booleano che indica se l'operazione è di cancellazione o modifica/inserimento
      * @return Risposta opportuna da mandare al client
      */
     private BaseResponse requestSet( DatabaseSession.DatabaseSessionInstance session, IT entity, int oldHashCode, boolean toDelete)

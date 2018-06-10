@@ -18,12 +18,12 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     public GitaDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Gita gita)
+    public void delete(Gita item)
     {
-        Gita dbEntity = sessionInstance.getByID(Gita.class, gita.getID());
+        Gita dbEntity = sessionInstance.getByID(Gita.class, item.getID());
         //Rimuovo i piano viaggi legati a questo gruppo
-        for(PianoViaggi viaggi : gita.getPianiViaggi())
-            gita.unsafeRemovePianoViaggi(viaggi);
+        for(PianoViaggi viaggi : item.getPianiViaggi())
+            item.unsafeRemovePianoViaggi(viaggi);
 
         Set<PianoViaggi> pianoViaggi = dbEntity.getPianiViaggi();
         for (PianoViaggi piano : pianoViaggi)
@@ -32,35 +32,35 @@ public class GitaDaoImpl extends HibernateDao<Gita>
             piano.setGruppo(null);
             sessionInstance.delete(piano);
         }
-        sessionInstance.delete(gita);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Gita gita)
+    public int insert(Gita item)
     {
-        checkConstraints(gita);
-        int ID = sessionInstance.insert(gita);
-        DBHelper.updateOneToMany(gita.asGitaTappeRelation(), gita.asGitaTappeRelation(), Tappa.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateOneToMany(item.asGitaTappeRelation(), item.asGitaTappeRelation(), Tappa.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Gita gita)
+    public void update(Gita item)
     {
-        checkConstraints(gita);
-        Gita dbEntity = sessionInstance.getByID(Gita.class, gita.getID());
+        checkConstraints(item);
+        Gita dbEntity = sessionInstance.getByID(Gita.class, item.getID());
 
         if(dbEntity != null)
         {
             for(PianoViaggi pianoViaggi : dbEntity.getPianiViaggi())
             {
-                if(!gita.getPianiViaggi().contains(pianoViaggi))
+                if(!item.getPianiViaggi().contains(pianoViaggi))
                     sessionInstance.delete(pianoViaggi);
             }
-            sessionInstance.insertOrUpdate(gita);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gita);
+            insert(item);
     }
 
     private void checkConstraints(Gita gita)

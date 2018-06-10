@@ -146,7 +146,7 @@ public class GruppoContainerComponent extends AnchorPane
     }
 
     /**
-     * Abilita/Disabilita la modifica dei parametri del gruppo tramite Drag&Drop
+     * Abilita/Disabilita la modifica dei parametri del gruppo tramite Drag&amp;Drop
      * @param enabled Indica se la modifica è consentita
      */
     public void setDragEnabled(boolean enabled)

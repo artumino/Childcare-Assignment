@@ -12,35 +12,35 @@ public class RegistroPresenzeDaoImpl extends HibernateDao<RegistroPresenze>
     public RegistroPresenzeDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(RegistroPresenze gruppo)
+    public void delete(RegistroPresenze item)
     {
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(RegistroPresenze gruppo)
+    public int insert(RegistroPresenze item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asRegistroPresenzeBambinoRelation(), Bambino.class, sessionInstance);
-        DBHelper.updateManyToOne(gruppo.asRegistroPresenzeGitaRelation(), Gita.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asRegistroPresenzeBambinoRelation(), Bambino.class, sessionInstance);
+        DBHelper.updateManyToOne(item.asRegistroPresenzeGitaRelation(), Gita.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(RegistroPresenze gruppo)
+    public void update(RegistroPresenze item)
     {
-        checkConstraints(gruppo);
-        RegistroPresenze dbEntity = sessionInstance.getByID(RegistroPresenze.class, gruppo.getID());
+        checkConstraints(item);
+        RegistroPresenze dbEntity = sessionInstance.getByID(RegistroPresenze.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asRegistroPresenzeBambinoRelation(), Bambino.class, sessionInstance);
-            DBHelper.updateManyToOne(gruppo.asRegistroPresenzeGitaRelation(), Gita.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asRegistroPresenzeBambinoRelation(), Bambino.class, sessionInstance);
+            DBHelper.updateManyToOne(item.asRegistroPresenzeGitaRelation(), Gita.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(RegistroPresenze gruppo)

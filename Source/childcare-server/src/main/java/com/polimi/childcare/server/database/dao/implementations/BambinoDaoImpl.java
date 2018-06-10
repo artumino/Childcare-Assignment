@@ -10,41 +10,41 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
     public BambinoDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Bambino gruppo)
+    public void delete(Bambino item)
     {
-        Bambino dbEntity = sessionInstance.getByID(Bambino.class, gruppo.getID());
-        DBHelper.deletedManyToManyOwned(gruppo.asBambiniContattiRelation(), dbEntity.asBambiniContattiRelation(), Contatto.class, sessionInstance);
-        sessionInstance.delete(gruppo);
+        Bambino dbEntity = sessionInstance.getByID(Bambino.class, item.getID());
+        DBHelper.deletedManyToManyOwned(item.asBambiniContattiRelation(), dbEntity.asBambiniContattiRelation(), Contatto.class, sessionInstance);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Bambino gruppo)
+    public int insert(Bambino item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asBambiniPediatraRelation(), Pediatra.class, sessionInstance);
-        DBHelper.updateManyToOne(gruppo.asBambiniGruppoRelation(), Gruppo.class, sessionInstance);
-        DBHelper.updateManyToManyOwner(gruppo.asBambiniGenitoriRelation(), Genitore.class, sessionInstance);
-        DBHelper.updateManyToManyOwned(gruppo.asBambiniContattiRelation(), gruppo.asBambiniContattiRelation(), Contatto.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asBambiniPediatraRelation(), Pediatra.class, sessionInstance);
+        DBHelper.updateManyToOne(item.asBambiniGruppoRelation(), Gruppo.class, sessionInstance);
+        DBHelper.updateManyToManyOwner(item.asBambiniGenitoriRelation(), Genitore.class, sessionInstance);
+        DBHelper.updateManyToManyOwned(item.asBambiniContattiRelation(), item.asBambiniContattiRelation(), Contatto.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Bambino gruppo)
+    public void update(Bambino item)
     {
-        checkConstraints(gruppo);
-        Bambino dbEntity = sessionInstance.getByID(Bambino.class, gruppo.getID());
+        checkConstraints(item);
+        Bambino dbEntity = sessionInstance.getByID(Bambino.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asBambiniPediatraRelation(), Pediatra.class, sessionInstance);
-            DBHelper.updateManyToOne(gruppo.asBambiniGruppoRelation(), Gruppo.class, sessionInstance);
-            DBHelper.updateManyToManyOwner(gruppo.asBambiniGenitoriRelation(), Genitore.class, sessionInstance);
-            DBHelper.updateManyToManyOwned(gruppo.asBambiniContattiRelation(), dbEntity.asBambiniContattiRelation(), Contatto.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asBambiniPediatraRelation(), Pediatra.class, sessionInstance);
+            DBHelper.updateManyToOne(item.asBambiniGruppoRelation(), Gruppo.class, sessionInstance);
+            DBHelper.updateManyToManyOwner(item.asBambiniGenitoriRelation(), Genitore.class, sessionInstance);
+            DBHelper.updateManyToManyOwned(item.asBambiniContattiRelation(), dbEntity.asBambiniContattiRelation(), Contatto.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

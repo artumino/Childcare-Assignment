@@ -54,7 +54,7 @@ public class DatabaseSession
 
     /**
      * Crea una sessione per l'esecuzione diretta di stream sul DB
-     * @implNote Ricordarsi di chiamare opportunamente close() al termine delle operazioni per evitare leak di connesioni al DB
+     * Ricordarsi di chiamare opportunamente close() al termine delle operazioni per evitare leak di connesioni al DB
      * @return Una nuova sessione verso il DB per l'esecuzione diretta di stream (senza i metodi helper di questa classe)
      */
     //@ensures (\result == true) <==> (sessionFactory != null)
@@ -196,6 +196,10 @@ public class DatabaseSession
 
     /**
      * @see DatabaseSession#getByID(Class, Integer, boolean) chiamato con parametro eager=false
+     * @param tClass Classe dell'entità che ci si aspetta
+     * @param ID ID dell'elemento da selezionare nel DB
+     * @param <T> Tipo elemento da selezionare
+     * @return null in caso di errori, oggetto di tipo T corrispondende all'ID fornito in caso contrario
      */
     public <T> T getByID(Class<T> tClass, Integer ID)
     {

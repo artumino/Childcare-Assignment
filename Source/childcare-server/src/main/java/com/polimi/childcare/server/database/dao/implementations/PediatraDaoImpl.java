@@ -13,39 +13,39 @@ public class PediatraDaoImpl extends HibernateDao<Pediatra>
     public PediatraDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Pediatra gruppo)
+    public void delete(Pediatra item)
     {
-        Pediatra dbEntity = sessionInstance.getByID(Pediatra.class, gruppo.getID());
+        Pediatra dbEntity = sessionInstance.getByID(Pediatra.class, item.getID());
         Set<Bambino> bambiniset = dbEntity.getBambini();
 
         for (Bambino b : bambiniset)
             dbEntity.removeBambino(b);
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Pediatra gruppo)
+    public int insert(Pediatra item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToManyOwner(gruppo.asContattiBambiniRelation(), Bambino.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToManyOwner(item.asContattiBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Pediatra gruppo)
+    public void update(Pediatra item)
     {
-        checkConstraints(gruppo);
-        Pediatra dbEntity = sessionInstance.getByID(Pediatra.class, gruppo.getID());
+        checkConstraints(item);
+        Pediatra dbEntity = sessionInstance.getByID(Pediatra.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToManyOwner(gruppo.asContattiBambiniRelation(), Bambino.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToManyOwner(item.asContattiBambiniRelation(), Bambino.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(Pediatra gruppo)

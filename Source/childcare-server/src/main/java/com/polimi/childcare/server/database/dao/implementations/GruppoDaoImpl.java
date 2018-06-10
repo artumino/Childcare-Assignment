@@ -16,9 +16,9 @@ public class GruppoDaoImpl extends HibernateDao<Gruppo>
     }
 
     @Override
-    public void delete(Gruppo gruppo)
+    public void delete(Gruppo item)
     {
-        Gruppo dbEntity = sessionInstance.getByID(Gruppo.class, gruppo.getID());
+        Gruppo dbEntity = sessionInstance.getByID(Gruppo.class, item.getID());
         Set<Bambino> bambini = dbEntity.getBambini();
         for (Bambino b : bambini)
         {
@@ -34,32 +34,32 @@ public class GruppoDaoImpl extends HibernateDao<Gruppo>
             sessionInstance.delete(piano);
         }
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Gruppo gruppo)
+    public int insert(Gruppo item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asGruppoBambiniRelation(), gruppo.asGruppoBambiniRelation(), Bambino.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateOneToMany(item.asGruppoBambiniRelation(), item.asGruppoBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Gruppo gruppo)
+    public void update(Gruppo item)
     {
-        checkConstraints(gruppo);
-        Gruppo dbEntity = sessionInstance.getByID(Gruppo.class, gruppo.getID());
+        checkConstraints(item);
+        Gruppo dbEntity = sessionInstance.getByID(Gruppo.class, item.getID());
 
         //Dato che gruppo usa un ID generato ID è sempre diverso da 0, quindi nelle insert l'unico modo è controllare se esiste sul DB
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asGruppoBambiniRelation(), dbEntity.asGruppoBambiniRelation(), Bambino.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateOneToMany(item.asGruppoBambiniRelation(), dbEntity.asGruppoBambiniRelation(), Bambino.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(Gruppo gruppo)

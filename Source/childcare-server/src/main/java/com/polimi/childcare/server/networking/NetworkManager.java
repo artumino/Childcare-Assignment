@@ -89,9 +89,9 @@ public class NetworkManager implements IRequestHandler,Serializable
     }
 
     /**
-     * Gestisce tutti i messaggi in arrivo dalle interfacce per cui questo {@link IRequestHandler<BaseRequest>} è stato registrato come handler di default delle richieste
+     * Gestisce tutti i messaggi in arrivo dalle interfacce per cui questo {@code IRequestHandler<BaseRequest>} è stato registrato come handler di default delle richieste
      * Accede alla mappa degli handler per ogni classe di richiesta
-     * @param request Richiesta di tipo T che estende {@link BaseRequest}
+     * @param request Richiesta di tipo T che estende {@code BaseRequest}
      * @return Risposta che verrà inoltrata al client (passando per i driver di rete opportuni)
      */
     @Override

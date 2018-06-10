@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 
 /**
- * Classe utile per la creazione di TableView dinamiche che funzionano tramite Drag&Drop
+ * Classe utile per la creazione di TableView dinamiche che funzionano tramite Drag&amp;Drop
  * @param <T> Tipo di elementi che gestisce la tabella
  */
 @DefaultProperty("items")

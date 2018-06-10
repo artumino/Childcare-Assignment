@@ -7,6 +7,9 @@ import com.polimi.childcare.shared.entities.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+/**
+ * Singleton per la creazione di Dao data la classe di appartenenza
+ */
 public class DaoFactory
 {
     //region Singleton
@@ -42,6 +45,13 @@ public class DaoFactory
 
     }
 
+    /**
+     * Ottiene un'implementazione opportuna di un Dao per la classe specificata
+     * @param tClass Classe dell'entità di cui si vuole ottenere il DAO
+     * @param sessionInstance Sessione attuale sul Database
+     * @param <T> Tipo dell'entità del Dao
+     * @return {@code ICommonDao<T>} con una opportuna implementazione del DAO
+     */
     public <T> ICommonDao<T> getDao(Class<T> tClass, DatabaseSession.DatabaseSessionInstance sessionInstance)
     {
         try {

@@ -12,34 +12,34 @@ public class ReazioneAvversaDaoImpl extends HibernateDao<ReazioneAvversa>
     public ReazioneAvversaDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(ReazioneAvversa gruppo)
+    public void delete(ReazioneAvversa item)
     {
-        DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
-        sessionInstance.delete(gruppo);
+        DBHelper.updateManyToManyOwned(item.asReazioniAvversePastiRelation(), item.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(ReazioneAvversa gruppo)
+    public int insert(ReazioneAvversa item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToManyOwned(item.asReazioniAvversePastiRelation(), item.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(ReazioneAvversa gruppo)
+    public void update(ReazioneAvversa item)
     {
-        checkConstraints(gruppo);
-        ReazioneAvversa dbEntity = sessionInstance.getByID(ReazioneAvversa.class, gruppo.getID());
+        checkConstraints(item);
+        ReazioneAvversa dbEntity = sessionInstance.getByID(ReazioneAvversa.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToManyOwned(item.asReazioniAvversePastiRelation(), item.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

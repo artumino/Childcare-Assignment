@@ -13,39 +13,39 @@ public class MenuDaoImpl extends HibernateDao<Menu>
     public MenuDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Menu gruppo)
+    public void delete(Menu item)
     {
-        Menu dbEntity = sessionInstance.getByID(Menu.class, gruppo.getID());
+        Menu dbEntity = sessionInstance.getByID(Menu.class, item.getID());
         Set<Pasto> pastoset = dbEntity.getPasti();
 
         for (Pasto p : pastoset)
             dbEntity.removePasto(p);
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Menu gruppo)
+    public int insert(Menu item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToManyOwner(gruppo.asMenuPastoRelation(), Pasto.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToManyOwner(item.asMenuPastoRelation(), Pasto.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Menu gruppo)
+    public void update(Menu item)
     {
-        checkConstraints(gruppo);
-        Menu dbEntity = sessionInstance.getByID(Menu.class, gruppo.getID());
+        checkConstraints(item);
+        Menu dbEntity = sessionInstance.getByID(Menu.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToManyOwner(gruppo.asMenuPastoRelation(), Pasto.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToManyOwner(item.asMenuPastoRelation(), Pasto.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            sessionInstance.insert(gruppo);
+            sessionInstance.insert(item);
     }
 
     private void checkConstraints(Menu gruppo)

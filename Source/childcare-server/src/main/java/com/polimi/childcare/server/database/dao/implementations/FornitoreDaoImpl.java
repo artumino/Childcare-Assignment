@@ -9,29 +9,29 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
     public FornitoreDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Fornitore gruppo)
+    public void delete(Fornitore item)
     {
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Fornitore gruppo)
+    public int insert(Fornitore item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
         return ID;
     }
 
     @Override
-    public void update(Fornitore gruppo)
+    public void update(Fornitore item)
     {
-        checkConstraints(gruppo);
-        Fornitore dbEntity = sessionInstance.getByID(Fornitore.class, gruppo.getID());
+        checkConstraints(item);
+        Fornitore dbEntity = sessionInstance.getByID(Fornitore.class, item.getID());
 
         if(dbEntity != null)
-            sessionInstance.insertOrUpdate(gruppo);
+            sessionInstance.insertOrUpdate(item);
         else
-            insert(gruppo);
+            insert(item);
 
     }
 

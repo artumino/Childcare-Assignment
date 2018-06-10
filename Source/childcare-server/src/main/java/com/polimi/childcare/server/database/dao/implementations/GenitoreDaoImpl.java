@@ -13,9 +13,9 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
     public GenitoreDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Genitore gruppo)
+    public void delete(Genitore item)
     {
-        Genitore dbEntity = sessionInstance.getByID(Genitore.class, gruppo.getID());
+        Genitore dbEntity = sessionInstance.getByID(Genitore.class, item.getID());
         Set<Bambino> bambini = dbEntity.getBambini();
 
         for (Bambino b : bambini) {
@@ -25,31 +25,31 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
             sessionInstance.update(b);
         }
 
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(Genitore gruppo)
+    public int insert(Genitore item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToManyOwned(gruppo.asGenitoriBambiniRelation(), gruppo.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToManyOwned(item.asGenitoriBambiniRelation(), item.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Genitore gruppo)
+    public void update(Genitore item)
     {
-        checkConstraints(gruppo);
-        Genitore dbEntity = sessionInstance.getByID(Genitore.class, gruppo.getID());
+        checkConstraints(item);
+        Genitore dbEntity = sessionInstance.getByID(Genitore.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToManyOwned(gruppo.asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToManyOwned(item.asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(Genitore gruppo)

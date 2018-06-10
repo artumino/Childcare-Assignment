@@ -19,37 +19,37 @@ public class PianoViaggiDaoImpl extends HibernateDao<PianoViaggi>
     public PianoViaggiDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(PianoViaggi gruppo)
+    public void delete(PianoViaggi item)
     {
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(item);
     }
 
     @Override
-    public int insert(PianoViaggi gruppo)
+    public int insert(PianoViaggi item)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateManyToOne(gruppo.asPianiViaggioGitaRelation(), Gita.class, sessionInstance);
-        DBHelper.updateManyToOne(gruppo.asPianiViaggioGruppoRelation(), Gruppo.class, sessionInstance);
-        DBHelper.updateManyToOne(gruppo.asPianiViaggioMezzoDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
+        checkConstraints(item);
+        int ID = sessionInstance.insert(item);
+        DBHelper.updateManyToOne(item.asPianiViaggioGitaRelation(), Gita.class, sessionInstance);
+        DBHelper.updateManyToOne(item.asPianiViaggioGruppoRelation(), Gruppo.class, sessionInstance);
+        DBHelper.updateManyToOne(item.asPianiViaggioMezzoDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(PianoViaggi gruppo)
+    public void update(PianoViaggi item)
     {
-        checkConstraints(gruppo);
-        PianoViaggi dbEntity = sessionInstance.getByID(PianoViaggi.class, gruppo.getID());
+        checkConstraints(item);
+        PianoViaggi dbEntity = sessionInstance.getByID(PianoViaggi.class, item.getID());
 
         if(dbEntity != null)
         {
-            DBHelper.updateManyToOne(gruppo.asPianiViaggioGitaRelation(), Gita.class, sessionInstance);
-            DBHelper.updateManyToOne(gruppo.asPianiViaggioGruppoRelation(), Gruppo.class, sessionInstance);
-            DBHelper.updateManyToOne(gruppo.asPianiViaggioMezzoDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
-            sessionInstance.insertOrUpdate(gruppo);
+            DBHelper.updateManyToOne(item.asPianiViaggioGitaRelation(), Gita.class, sessionInstance);
+            DBHelper.updateManyToOne(item.asPianiViaggioGruppoRelation(), Gruppo.class, sessionInstance);
+            DBHelper.updateManyToOne(item.asPianiViaggioMezzoDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
+            sessionInstance.insertOrUpdate(item);
         }
         else
-            insert(gruppo);
+            insert(item);
     }
 
     private void checkConstraints(PianoViaggi gruppo)

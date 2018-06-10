@@ -29,6 +29,7 @@ public class ImageStore
      * Salva un immagine per un ID
      * @param uuid ID con cui salvare l'immagine
      * @param image Immagine da salvare
+     * @param context Contesto Android dell'applicazione
      */
     public void SaveImage(Context context, UUID uuid, Bitmap image)
     {
@@ -52,6 +53,7 @@ public class ImageStore
     /**
      * Carica l'immagine legata ad un ID
      * @param uuid ID associato all'immagine
+     * @param context Contesto Android dell'applicazione
      * @return Bitmap se immagine presente, null in caso contrario
      */
     public Bitmap GetImage(Context context, UUID uuid)

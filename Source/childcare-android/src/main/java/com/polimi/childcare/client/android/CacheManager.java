@@ -20,7 +20,7 @@ public class CacheManager implements Serializable
 
     /**
      * Ottiene il singleton dalla memoria, dal disco rigido o ne crea una nuova istanza
-     * @param context
+     * @param context Contesto Android dell'applicazione
      * @return Istanza del singleton
      */
     public static CacheManager getInstance(Context context)
@@ -64,7 +64,7 @@ public class CacheManager implements Serializable
 
     /**
      * Salvo lo stato della classe su disco
-     * @param context
+     * @param context Contesto Android dell'applicazione
      */
     private void updateState(Context context)
     {
