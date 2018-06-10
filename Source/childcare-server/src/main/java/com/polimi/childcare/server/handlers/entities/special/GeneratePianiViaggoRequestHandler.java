@@ -1,7 +1,9 @@
 package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.database.dao.implementations.PianoViaggiDaoImpl;
 import com.polimi.childcare.server.networking.IRequestHandler;
+import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.entities.MezzoDiTrasporto;
 import com.polimi.childcare.shared.entities.PianoViaggi;
@@ -76,7 +78,16 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
         //DatabaseSession.getInstance().insertAll(g);
 
 
-        DatabaseSession.getInstance().insertAll(list);
+        DatabaseSession.getInstance().execute(execution -> {
+            Gita dbGita = execution.getByID(Gita.class, request.getGita().getID());
+            PianoViaggiDaoImpl dao = new PianoViaggiDaoImpl(execution);
+            dao.getPianiViaggioByGita(dbGita);
+
+            for(PianoViaggi pianoViaggi : list)
+                dao.insert(pianoViaggi);
+
+            return true;
+        });
 
         return new BaseResponse(200);
     }

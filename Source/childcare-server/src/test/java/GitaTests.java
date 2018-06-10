@@ -121,7 +121,6 @@ public class GitaTests
         //Genero 3 scenari di gite comuni
 
         //Sovrappopolata
-        clearPianoViaggiGita(gita);
         HashMap<Gruppo, MezzoDiTrasporto> gitaErrataAutobus = new HashMap<>();
         for(int i = 0; i < groupNumber; i++)
             gitaErrataAutobus.put(allGruppi.get(i), allMezzi.get(i/2));
@@ -130,7 +129,6 @@ public class GitaTests
 
         //A piedi
         gita = DatabaseSession.getInstance().getByID(Gita.class, gita.getID(), true);
-        clearPianoViaggiGita(gita);
         HashMap<Gruppo, MezzoDiTrasporto> gitaAPiedi = new HashMap<>();
         for(int i = 0; i < groupNumber; i++)
             gitaAPiedi.put(allGruppi.get(i), null);
@@ -139,7 +137,6 @@ public class GitaTests
 
         //Normale in autobus
         gita = DatabaseSession.getInstance().getByID(Gita.class, gita.getID(), true);
-        clearPianoViaggiGita(gita);
         HashMap<Gruppo, MezzoDiTrasporto> gitaPerfettaAutobus = new HashMap<>();
         for(int i = 0; i < groupNumber; i++)
             gitaPerfettaAutobus.put(allGruppi.get(i), allMezzi.get(i));
@@ -193,13 +190,5 @@ public class GitaTests
         Assert.assertEquals(allAddetti.size(), DatabaseSession.getInstance().stream(Addetto.class, session).count());
         Assert.assertEquals(countMezzi, DatabaseSession.getInstance().stream(MezzoDiTrasporto.class, session).count());
         session.close();
-    }
-
-    private static void clearPianoViaggiGita(Gita gita)
-    {
-        for(PianoViaggi viaggi : gita.getPianiViaggi())
-            gita.unsafeRemovePianoViaggi(viaggi);
-        BaseResponse response = NetworkManager.getInstance().processRequest(new SetGitaRequest(gita, false, gita.consistecyHashCode()));
-        Assert.assertEquals(response.getCode(), 200);
     }
 }

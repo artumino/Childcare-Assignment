@@ -31,7 +31,7 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     private Gruppo gruppo;
 
     @Column(name = "Gruppo_FK", insertable = false, updatable = false)
-    private int gruppo_fk;
+    private Integer gruppo_fk;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Mezzo_FK")
@@ -81,7 +81,7 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
 
     public int getGruppoForeignKey() {
-        return gruppo_fk;
+        return gruppo_fk != null ? gruppo_fk : 0;
     }
 
     @Override

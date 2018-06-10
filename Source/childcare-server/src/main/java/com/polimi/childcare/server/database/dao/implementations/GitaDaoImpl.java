@@ -2,9 +2,14 @@ package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.PianoViaggi;
+import com.polimi.childcare.shared.entities.Tappa;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class GitaDaoImpl extends HibernateDao<Gita>
@@ -13,9 +18,13 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     public GitaDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
 
     @Override
-    public void delete(Gita gruppo)
+    public void delete(Gita gita)
     {
-        Gita dbEntity = sessionInstance.getByID(Gita.class, gruppo.getID());
+        Gita dbEntity = sessionInstance.getByID(Gita.class, gita.getID());
+        //Rimuovo i piano viaggi legati a questo gruppo
+        for(PianoViaggi viaggi : gita.getPianiViaggi())
+            gita.unsafeRemovePianoViaggi(viaggi);
+
         Set<PianoViaggi> pianoViaggi = dbEntity.getPianiViaggi();
         for (PianoViaggi piano : pianoViaggi)
         {
@@ -23,42 +32,65 @@ public class GitaDaoImpl extends HibernateDao<Gita>
             piano.setGruppo(null);
             sessionInstance.delete(piano);
         }
-        sessionInstance.delete(gruppo);
+        sessionInstance.delete(gita);
     }
 
     @Override
-    public int insert(Gita gruppo)
+    public int insert(Gita gita)
     {
-        checkConstraints(gruppo);
-        int ID = sessionInstance.insert(gruppo);
+        checkConstraints(gita);
+        int ID = sessionInstance.insert(gita);
+        DBHelper.updateOneToMany(gita.asGitaTappeRelation(), gita.asGitaTappeRelation(), Tappa.class, sessionInstance);
         return ID;
     }
 
     @Override
-    public void update(Gita gruppo)
+    public void update(Gita gita)
     {
-        checkConstraints(gruppo);
-        Gita dbEntity = sessionInstance.getByID(Gita.class, gruppo.getID());
+        checkConstraints(gita);
+        Gita dbEntity = sessionInstance.getByID(Gita.class, gita.getID());
 
         if(dbEntity != null)
         {
             for(PianoViaggi pianoViaggi : dbEntity.getPianiViaggi())
             {
-                if(!gruppo.getPianiViaggi().contains(pianoViaggi))
+                if(!gita.getPianiViaggi().contains(pianoViaggi))
                     sessionInstance.delete(pianoViaggi);
             }
-            sessionInstance.insertOrUpdate(gruppo);
+            sessionInstance.insertOrUpdate(gita);
         }
         else
-            insert(gruppo);
+            insert(gita);
     }
 
-    private void checkConstraints(Gita gruppo)
+    private void checkConstraints(Gita gita)
     {
-        if (gruppo.getDataInizio() == null ||
-                gruppo.getDataFine() == null ||
-                gruppo.getLuogo() == null ||
-                gruppo.getDataFine().isBefore(gruppo.getDataInizio()))
+        if (gita.getDataInizio() == null ||
+                gita.getDataFine() == null ||
+                gita.getLuogo() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
+
+        if(gita.getDataFine().isBefore(gita.getDataInizio()))
+            throw new RuntimeException("Il campo data inizio deve essere minore o uguale a data fine!");
+
+        List<Gita> gite = new ArrayList<>();
+        CollectionUtils.addAll(gite, sessionInstance.stream(Gita.class).iterator());
+
+        for (Gita g : gite)
+        {
+            if(g.getID() == gita.getID())
+                continue;
+
+            if(gita.getDataInizio().isBefore(g.getDataInizio()) || gita.getDataInizio().isEqual(g.getDataInizio()))
+            {
+                if(gita.getDataFine().isAfter(g.getDataInizio()) || gita.getDataFine().isEqual(g.getDataInizio()))
+                    throw new RuntimeException("Overlapping di Gite!");
+            }
+            else
+            {
+                if(gita.getDataInizio().isBefore(g.getDataFine()) && gita.getDataInizio().isAfter(g.getDataInizio()))
+                    throw new RuntimeException("Overlapping di Gite!");
+            }
+        }
     }
 }

@@ -8,6 +8,12 @@ import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.entities.MezzoDiTrasporto;
 import com.polimi.childcare.shared.entities.PianoViaggi;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.List;
+
 public class PianoViaggiDaoImpl extends HibernateDao<PianoViaggi>
 {
     public PianoViaggiDaoImpl(DatabaseSession.DatabaseSessionInstance sessionInstance) { super(sessionInstance); }
@@ -50,5 +56,23 @@ public class PianoViaggiDaoImpl extends HibernateDao<PianoViaggi>
     {
         if(gruppo.getGruppo() == null || gruppo.getGita() == null)
             throw new RuntimeException("Gita e/o Gruppo nulli!");
+    }
+
+    public List<PianoViaggi> getPianiViaggioByGita(Gita gita)
+    {
+        CriteriaBuilder builder = sessionInstance.getSession().getCriteriaBuilder();
+        CriteriaQuery<PianoViaggi> pianoViaggiCriteriaQuery = builder.createQuery(PianoViaggi.class);
+        Root<PianoViaggi> root = pianoViaggiCriteriaQuery.from(PianoViaggi.class);
+        pianoViaggiCriteriaQuery.where(builder.equal(root.get("gita"), gita));
+        return sessionInstance.getSession().createQuery(pianoViaggiCriteriaQuery).getResultList();
+    }
+
+    public int deletePianiViaggioByGita(Gita gita)
+    {
+        CriteriaBuilder builder = sessionInstance.getSession().getCriteriaBuilder();
+        CriteriaDelete<PianoViaggi> pianoViaggiCriteriaQuery = builder.createCriteriaDelete(PianoViaggi.class);
+        Root<PianoViaggi> root = pianoViaggiCriteriaQuery.from(PianoViaggi.class);
+        pianoViaggiCriteriaQuery.where(builder.equal(root.get("gita"), gita));
+        return sessionInstance.getSession().createQuery(pianoViaggiCriteriaQuery).executeUpdate();
     }
 }
