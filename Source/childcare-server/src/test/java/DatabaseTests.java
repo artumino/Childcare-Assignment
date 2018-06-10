@@ -157,14 +157,14 @@ public class DatabaseTests
         {
             bambinoreq = new SetBambinoRequest(b, true, 0);
             risposta = NetworkManager.getInstance().processRequest(bambinoreq);
-            Assert.assertEquals("Errore nell'eliminazione di un Bambino!" ,risposta.getCode(), 200);
+            Assert.assertEquals("Errore nell'eliminazione di un Bambino!", risposta.getCode(), 200);
         }
 
         for(Addetto ad : ((ListAddettiResponse) addettoResponse).getPayload())
         {
             addettoreq = new SetAddettoRequest(ad, true, 0);
             risposta = NetworkManager.getInstance().processRequest(addettoreq);
-            Assert.assertEquals("Errore nell'eliminazione di un Addetto!" ,risposta.getCode(), 200);
+            Assert.assertEquals("Errore nell'eliminazione di un Addetto!", risposta.getCode(), 200);
         }
 
 
@@ -172,7 +172,7 @@ public class DatabaseTests
         {
             fornitoreq = new SetFornitoreRequest(f, true, 0);
             risposta = NetworkManager.getInstance().processRequest(fornitoreq);
-            Assert.assertEquals("Errore nell'eliminazione di un Fornitore!" ,risposta.getCode(), 200);
+            Assert.assertEquals("Errore nell'eliminazione di un Fornitore!", risposta.getCode(), 200);
         }
 
 

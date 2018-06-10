@@ -1,5 +1,6 @@
 package com.polimi.childcare.server.handlers.entities.setters;
 
+import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Gita;
