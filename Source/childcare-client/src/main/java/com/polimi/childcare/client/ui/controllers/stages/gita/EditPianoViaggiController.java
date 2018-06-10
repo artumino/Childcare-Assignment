@@ -32,6 +32,7 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -134,6 +135,7 @@ public class EditPianoViaggiController extends NetworkedSubScene implements ISub
         if(vboxPianiViaggio != null)
         {
             vboxPianiViaggio.getChildren().clear();
+            pianoViaggiComponents.sort(Comparator.comparingInt(o -> o.getLinkedGruppo().getID()));
             for (PianoViaggiComponent containerComponent : pianoViaggiComponents)
                 vboxPianiViaggio.getChildren().add(containerComponent);
         }
