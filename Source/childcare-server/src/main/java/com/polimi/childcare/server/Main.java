@@ -63,7 +63,6 @@ public class Main
         //endregion
 
         //region Special
-        NetworkManager.getInstance().addRequestHandler(SetPresenzaRequest.class, new SetPresenzaRequestHandler());
         NetworkManager.getInstance().addRequestHandler(FilteredContattoOnlyRequest.class, new FilteredContattoOnlyRequestHandler());
         NetworkManager.getInstance().addRequestHandler(GetPersoneWithDisagnosiRequest.class, new GetPersoneConDiagnosiHandler());
         NetworkManager.getInstance().addRequestHandler(GetCurrentGitaRequest.class, new GetCurrentGitaRequestHandler());

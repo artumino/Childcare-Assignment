@@ -13,6 +13,7 @@ import com.polimi.childcare.shared.networking.requests.setters.SetRegistroPresen
 import com.polimi.childcare.shared.networking.requests.special.SetPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
+import com.polimi.childcare.shared.utils.StatoPresenzaUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -64,7 +65,10 @@ public class SetPresenzaStage extends NetworkedSubScene implements ISubSceneCont
             for(RegistroPresenze.StatoPresenza presenza : RegistroPresenze.StatoPresenza.values())
                 this.cbStatoPresenza.getItems().add(presenza.toString());
 
-            this.cbStatoPresenza.getSelectionModel().select(this.linkedRegistroPresenza.getStato().toString());
+            if(this.linkedRegistroPresenza.getStato() != RegistroPresenze.StatoPresenza.Disperso)
+                this.cbStatoPresenza.getSelectionModel().select(this.linkedRegistroPresenza.getStato().toString());
+            else
+                this.cbStatoPresenza.getSelectionModel().select(StatoPresenzaUtils.getSuggestedStatoPresenzaFromCurrentStato(this.linkedRegistroPresenza.getStato()).toString());
 
             this.btnEnter.setOnMouseClicked(event -> SendPresenzaEvent());
             this.btnExit.setOnMouseClicked(event -> this.stageController.requestClose());

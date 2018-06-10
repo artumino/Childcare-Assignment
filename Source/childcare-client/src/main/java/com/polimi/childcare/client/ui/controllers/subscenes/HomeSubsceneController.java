@@ -10,6 +10,7 @@ import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
+import com.polimi.childcare.client.ui.utils.TableUtils;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
@@ -19,6 +20,7 @@ import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import com.polimi.childcare.shared.utils.StatoPresenzaUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
@@ -88,43 +90,7 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         fiscalCode.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getCodiceFiscale()));
 
         //Crea Bottoni per Presenza
-        editPresenza.setCellFactory((cellData) -> new TableCell<Bambino, RegistroPresenze.StatoPresenza>()
-        {
-            @Override
-            protected void updateItem(RegistroPresenze.StatoPresenza item, boolean empty)
-            {
-                if(!empty)
-                {
-                    Bambino bambino = (Bambino) getTableRow().getItem();
-                    RegistroPresenze statoPresenza = statoPresenze.get(bambino);
-                    RegistroPresenze.StatoPresenza statoCorrente = ((statoPresenza != null) ?
-                            (statoPresenza.getTimeStamp().toInstant(ZoneOffset.UTC).toEpochMilli() >= LocalDate.now().atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()) ?
-                                    statoPresenza.getStato() :
-                                    RegistroPresenze.StatoPresenza.Assente
-                            : RegistroPresenze.StatoPresenza.Assente);
-
-                    Button graphicButton = new JFXButton(statoCorrente.name());
-                    graphicButton.setOnMouseClicked((event -> OnEditPresenzaBambino(bambino)));
-
-                    graphicButton.setStyle("-fx-background-color: #f00;");
-                    switch (statoCorrente) {
-                        case Presente:
-                            graphicButton.setStyle("-fx-background-color: #0f0;");
-                            break;
-                        case EntratoInRitardo:
-                            graphicButton.setStyle("-fx-background-color: #ff0;");
-                            break;
-                        case UscitoInAnticipo:
-                            graphicButton.setStyle("-fx-background-color: #00f;");
-                            break;
-                    }
-                    graphicButton.setStyle(graphicButton.getStyle() + "-fx-text-fill: #fff;");
-                    setGraphic(graphicButton);
-                }
-                else
-                    setGraphic(null);
-            }
-        });
+        editPresenza.setCellFactory((cellData) -> TableUtils.createPresenzaTableCell(new ReadOnlyObjectWrapper<>(statoPresenze), this::OnEditPresenzaBambino));
         editPresenza.setMinWidth(100);
         editPresenza.setPrefWidth(100);
         editPresenza.setMaxWidth(100);
@@ -170,7 +136,9 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         try {
             ChildcareBaseStageController setPresenzeStage = new ChildcareBaseStageController();
             setPresenzeStage.setContentScene(getClass().getClassLoader().getResource("fxml/stages/presenze/SetPresenzaStage.fxml"),
-                    new RegistroPresenze(RegistroPresenze.StatoPresenza.Presente,
+                    new RegistroPresenze(StatoPresenzaUtils.getSuggestedStatoPresenzaFromCurrentStato(
+                            statoPresenze.get(bambino) != null ?
+                                    statoPresenze.get(bambino).getStato() : RegistroPresenze.StatoPresenza.Assente),
                             LocalDateTime.now().toLocalDate(),
                             LocalDateTime.now(),
                             (short)LocalDateTime.now().getHour(),

@@ -16,6 +16,6 @@
             <JFXSpinner layoutX="202.0" layoutY="74.0" prefHeight="80.0" prefWidth="82.0" />
          </children>
       </AnchorPane>
-      <JFXComboBox fx:id="cbStatoPresenza" layoutX="15.0" layoutY="133.0" prefHeight="63.0" prefWidth="456.0" promptText="Stato Presenza" style="-fx-font-size: 15pt; -fx-font-weight: bold; -fx-text-fill: #000;" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <JFXComboBox fx:id="cbStatoPresenza" layoutX="15.0" layoutY="133.0" prefHeight="63.0" prefWidth="456.0" promptText="Stato Presenza" style="-fx-font-weight: bold; -fx-text-fill: #000;" AnchorPane.bottomAnchor="91.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
    </children>
 </AnchorPane>
