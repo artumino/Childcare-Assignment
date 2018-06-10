@@ -3,156 +3,50 @@
   <ID>JAVA</ID>
   <OriginalElement />
   <nodes>
-    <node x="901.585119047619" y="194.0">com.polimi.childcare.client.shared.networking.NetworkOperation</node>
-    <node x="476.11644345238085" y="556.0">com.polimi.childcare.client.shared.networking.ClientNetworkManager</node>
-    <node x="1366.585119047619" y="283.0">com.polimi.childcare.shared.networking.rmi.IRMIServer</node>
-    <node x="579.210119047619" y="0.0">com.polimi.childcare.shared.networking.responses.BaseResponse</node>
-    <node x="1077.1164434523807" y="677.5">com.polimi.childcare.client.networking.rmi.RMIInterfaceClient</node>
-    <node x="1700.585119047619" y="305.5">com.polimi.childcare.shared.networking.requests.NullRequest</node>
-    <node x="1215.4184523809522" y="22.5">com.polimi.childcare.shared.networking.requests.BaseRequest</node>
-    <node x="30.835119047618946" y="633.5">com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient</node>
-    <node x="362.585119047619" y="261.0">com.polimi.childcare.client.shared.networking.IClientNetworkInterface</node>
-    <node x="673.585119047619" y="305.5">com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException</node>
-    <node x="59.135119047619014" y="283.5">com.polimi.childcare.shared.serialization.SerializationUtils</node>
+    <node x="585.0" y="1273.0">com.polimi.childcare.shared.networking.requests.NullRequest</node>
+    <node x="324.0" y="1358.0">com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException</node>
+    <node x="0.0" y="1194.0">com.polimi.childcare.client.ui.controllers.subscenes.NetworkedSubScene</node>
+    <node x="51.5" y="403.0">com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController</node>
+    <node x="801.0" y="168.0">com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient</node>
+    <node x="490.0" y="212.0">com.polimi.childcare.client.networking.rmi.RMIInterfaceClient</node>
+    <node x="1101.0" y="1194.0">com.polimi.childcare.shared.networking.responses.BaseResponse</node>
+    <node x="584.0" y="1194.0">com.polimi.childcare.shared.networking.requests.BaseRequest</node>
+    <node x="743.0" y="1194.0">com.polimi.childcare.shared.networking.rmi.IRMIServer</node>
+    <node x="0.0" y="743.0">com.polimi.childcare.client.shared.networking.ClientNetworkManager</node>
+    <node x="477.0" y="743.0">com.polimi.childcare.client.shared.networking.NetworkOperationVault</node>
+    <node x="645.5" y="0.0">com.polimi.childcare.client.shared.networking.IClientNetworkInterface</node>
+    <node x="0.0" y="1358.0">com.polimi.childcare.shared.serialization.SerializationUtils</node>
+    <node x="0.0" y="0.0">com.polimi.childcare.client.shared.networking.NetworkOperation</node>
+    <node x="110.0" y="302.0">com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException">
-      <point x="-72.75" y="-81.5" />
-      <point x="1149.8664434523807" y="476.0" />
-      <point x="846.085119047619" y="476.0" />
-      <point x="69.0" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.client.shared.networking.IClientNetworkInterface">
-      <point x="-36.0" y="-203.0" />
-      <point x="656.1164434523808" y="496.0" />
-      <point x="544.460119047619" y="496.0" />
-      <point x="36.375" y="59.0" />
-    </edge>
     <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.client.shared.networking.IClientNetworkInterface">
-      <point x="58.200000000000045" y="-125.5" />
-      <point x="234.535119047619" y="526.0" />
-      <point x="398.960119047619" y="526.0" />
-      <point x="-109.125" y="59.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.networking.rmi.IRMIServer" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-78.25" y="-37.0" />
-      <point x="1444.835119047619" y="124.0" />
-      <point x="733.210119047619" y="124.0" />
-      <point x="70.0" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException">
-      <point x="36.0" y="-203.0" />
-      <point x="728.1164434523808" y="536.0" />
-      <point x="777.085119047619" y="536.0" />
-      <point x="0.0" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.IClientNetworkInterface" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-72.75" y="-59.0" />
-      <point x="435.335119047619" y="144.0" />
-      <point x="649.210119047619" y="144.0" />
-      <point x="-14.0" y="37.0" />
+      <point x="0.0" y="-125.5" />
+      <point x="946.5" y="143.0" />
+      <point x="863.75" y="143.0" />
+      <point x="72.75" y="59.0" />
     </edge>
     <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.client.shared.networking.IClientNetworkInterface">
-      <point x="-121.25" y="-81.5" />
-      <point x="1101.3664434523807" y="486.0" />
-      <point x="617.210119047619" y="486.0" />
-      <point x="109.125" y="59.0" />
+      <point x="0.0" y="-81.5" />
+      <point x="635.5" y="143.0" />
+      <point x="718.25" y="143.0" />
+      <point x="-72.75" y="59.0" />
     </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.client.shared.networking.exceptions.NetworkSerializationException">
-      <point x="116.39999999999998" y="-125.5" />
-      <point x="292.7351190476189" y="536.0" />
-      <point x="708.085119047619" y="536.0" />
-      <point x="-69.0" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
-      <point x="-58.19999999999993" y="-125.5" />
-      <point x="118.13511904761901" y="526.0" />
-      <point x="48.635119047619014" y="526.0" />
-      <point x="48.635119047619014" y="154.0" />
-      <point x="1223.5613095238093" y="154.0" />
-      <point x="-48.85714285714289" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.shared.serialization.SerializationUtils">
-      <point x="0.0" y="-125.5" />
-      <point x="176.33511904761895" y="536.0" />
-      <point x="198.635119047619" y="536.0" />
-      <point x="0.0" y="36.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
-      <point x="148.33333333333326" y="-126.0" />
-      <point x="0.0" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
-      <point x="180.0" y="-203.0" />
-      <point x="872.1164434523808" y="536.0" />
-      <point x="1235.335119047619" y="536.0" />
-      <point x="111.25" y="126.0" />
-    </edge>
-    <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-24.25" y="-81.5" />
-      <point x="1198.3664434523807" y="466.0" />
-      <point x="891.085119047619" y="466.0" />
-      <point x="891.085119047619" y="144.0" />
-      <point x="677.210119047619" y="144.0" />
-      <point x="14.0" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.ClientNetworkManager" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-180.0" y="-203.0" />
-      <point x="512.1164434523808" y="516.0" />
-      <point x="352.085119047619" y="516.0" />
-      <point x="352.085119047619" y="134.0" />
-      <point x="621.210119047619" y="134.0" />
-      <point x="-42.0" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.shared.networking.rmi.IRMIServer" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
-      <point x="78.25" y="-37.0" />
-      <point x="1601.335119047619" y="114.0" />
-      <point x="1288.7041666666664" y="114.0" />
-      <point x="16.28571428571422" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.IClientNetworkInterface" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
-      <point x="72.75" y="-59.0" />
-      <point x="580.835119047619" y="164.0" />
-      <point x="1239.8470238095235" y="164.0" />
-      <point x="-32.57142857142867" y="14.5" />
-    </edge>
-    <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.shared.networking.rmi.IRMIServer">
-      <point x="72.75" y="-81.5" />
-      <point x="1295.3664434523807" y="526.0" />
-      <point x="1601.335119047619" y="526.0" />
-      <point x="78.25" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.sockets.SocketInterfaceClient" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-116.39999999999998" y="-125.5" />
-      <point x="59.93511904761897" y="536.0" />
-      <point x="0.0" y="536.0" />
-      <point x="0.0" y="124.0" />
-      <point x="593.210119047619" y="124.0" />
-      <point x="-70.0" y="37.0" />
-    </edge>
-    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation" target="com.polimi.childcare.shared.networking.responses.BaseResponse">
-      <point x="-148.33333333333337" y="-126.0" />
-      <point x="975.7517857142857" y="134.0" />
-      <point x="705.210119047619" y="134.0" />
-      <point x="42.0" y="37.0" />
+    <edge source="com.polimi.childcare.client.ui.controllers.stages.networking.BlockingNetworkOperationStageController" target="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback">
+      <point x="0.0" y="-147.5" />
+      <point x="0.0" y="25.5" />
     </edge>
     <edge source="com.polimi.childcare.shared.networking.requests.NullRequest" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
       <point x="0.0" y="-14.5" />
-      <point x="1756.585119047619" y="94.0" />
-      <point x="1321.275595238095" y="94.0" />
-      <point x="48.85714285714289" y="14.5" />
+      <point x="0.0" y="14.5" />
     </edge>
-    <edge source="com.polimi.childcare.client.networking.rmi.RMIInterfaceClient" target="com.polimi.childcare.shared.networking.requests.BaseRequest">
-      <point x="121.25" y="-81.5" />
-      <point x="1343.8664434523807" y="536.0" />
-      <point x="1690.085119047619" y="536.0" />
-      <point x="1690.085119047619" y="104.0" />
-      <point x="1304.9898809523809" y="104.0" />
-      <point x="32.57142857142867" y="14.5" />
+    <edge source="com.polimi.childcare.client.shared.networking.NetworkOperation.INetworkOperationCallback" target="com.polimi.childcare.client.shared.networking.NetworkOperation">
+      <point x="0.0" y="-25.5" />
+      <point x="0.0" y="126.0" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="0.7947134112409571" x="818.6671101463484" y="539.3211259715707" />
+  <settings layout="Hierarchic Group" zoom="0.7662229617304493" x="1650.532030401737" y="574.4744842562432" />
   <SelectedNodes />
   <Categories>
     <Category>Fields</Category>

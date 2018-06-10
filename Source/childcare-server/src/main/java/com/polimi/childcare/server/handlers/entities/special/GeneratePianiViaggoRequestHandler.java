@@ -81,7 +81,7 @@ public class GeneratePianiViaggoRequestHandler implements IRequestHandler<Genera
         DatabaseSession.getInstance().execute(execution -> {
             Gita dbGita = execution.getByID(Gita.class, request.getGita().getID());
             PianoViaggiDaoImpl dao = new PianoViaggiDaoImpl(execution);
-            dao.getPianiViaggioByGita(dbGita);
+            dao.deletePianiViaggioByGita(dbGita);
 
             for(PianoViaggi pianoViaggi : list)
                 dao.insert(pianoViaggi);
