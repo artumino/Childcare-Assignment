@@ -94,6 +94,10 @@ public class Gita extends TransferableEntity implements Serializable
         return Costo;
     }
 
+    public void setCosto(int costo) {
+        this.Costo = costo;
+    }
+
     public void unsafeAddPianoViaggi(PianoViaggi p) { pianiViaggi.add(p); }
 
     public void unsafeRemovePianoViaggi(PianoViaggi p) { pianiViaggi.remove(p); }
@@ -141,15 +145,17 @@ public class Gita extends TransferableEntity implements Serializable
     {
         pianiViaggi = DTOUtils.iterableToDTO(pianiViaggi, processed);
         registriPresenze = DTOUtils.iterableToDTO(registriPresenze, processed);
+        tappe = DTOUtils.iterableToDTO(tappe, processed);
 
         pianiViaggi = getPianiViaggi();
         registriPresenze = getRegistriPresenze();
+        tappe = getTappe();
     }
 
     @Override
     public boolean isDTO()
     {
-        return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze);
+        return DTOUtils.isDTO(pianiViaggi) && DTOUtils.isDTO(registriPresenze) && DTOUtils.isDTO(tappe);
     }
 
     @Override

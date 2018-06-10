@@ -114,8 +114,9 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
                                           </DragAndDropTableView>
-                                          <HBox prefHeight="50.0" prefWidth="285.0">
+                                          <HBox fx:id="hboxBottoniGita" prefHeight="50.0" prefWidth="285.0">
                                              <children>
+                                                <JFXButton fx:id="btnEditPianoViaggi" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Piano Viaggi" />
                                                 <JFXButton fx:id="btnAddGita" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Aggiungi Gita" HBox.hgrow="ALWAYS" />
                                              </children>
                                           </HBox>

@@ -30,7 +30,10 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(name = "Gruppo_FK", insertable = false, updatable = false)
+    private int gruppo_fk;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Mezzo_FK")
     private MezzoDiTrasporto mezzo;
 
@@ -76,6 +79,10 @@ public class PianoViaggi extends TransferableEntity implements Serializable
     }
 
     public void setMezzo(MezzoDiTrasporto mezzo) { this.mezzo = mezzo; }
+
+    public int getGruppoForeignKey() {
+        return gruppo_fk;
+    }
 
     @Override
     public int hashCode() { return Objects.hash(ID, PianoViaggi.class); }
