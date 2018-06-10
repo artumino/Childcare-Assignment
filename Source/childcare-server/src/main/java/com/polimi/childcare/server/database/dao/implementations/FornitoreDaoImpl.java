@@ -14,7 +14,7 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
     @Override
     public void delete(Fornitore gruppo)
     {
-        delete(gruppo);
+        delete(gruppo); //FIXME
     }
 
     @Override
@@ -22,8 +22,6 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asFornitorePastiRelation(), gruppo.asFornitorePastiRelation(), Pasto.class, sessionInstance);
-        DBHelper.updateOneToMany(gruppo.asFornitoreMezziDiTrasportoRelation(), gruppo.asFornitoreMezziDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);
         return ID;
     }
 
@@ -34,11 +32,7 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
         Fornitore dbEntity = sessionInstance.getByID(Fornitore.class, gruppo.getID());
 
         if(dbEntity != null)
-        {
-            DBHelper.updateOneToMany(gruppo.asFornitorePastiRelation(), dbEntity.asFornitorePastiRelation(), Pasto.class, sessionInstance);     //FIXME: Crash
-            DBHelper.updateOneToMany(gruppo.asFornitoreMezziDiTrasportoRelation(), dbEntity.asFornitoreMezziDiTrasportoRelation(), MezzoDiTrasporto.class, sessionInstance);    //Idem
             sessionInstance.insertOrUpdate(gruppo);
-        }
         else
             insert(gruppo);
 

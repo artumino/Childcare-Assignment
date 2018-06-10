@@ -34,7 +34,6 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asPersonaDiagnosiRelation(), gruppo.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         DBHelper.updateManyToManyOwned(gruppo.asGenitoriBambiniRelation(), gruppo.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
@@ -47,7 +46,6 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
 
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asPersonaDiagnosiRelation(), dbEntity.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
             DBHelper.updateManyToManyOwned(gruppo.asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
             sessionInstance.insertOrUpdate(gruppo);
         }

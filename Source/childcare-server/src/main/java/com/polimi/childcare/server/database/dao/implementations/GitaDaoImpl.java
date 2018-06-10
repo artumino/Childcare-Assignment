@@ -33,8 +33,6 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asGitaRegistroPresenzeRelation(), gruppo.asGitaRegistroPresenzeRelation(), RegistroPresenze.class, sessionInstance);
-        DBHelper.updateOneToMany(gruppo.asGitaPianiViaggioRelation(), gruppo.asGitaPianiViaggioRelation(), PianoViaggi.class, sessionInstance);
         return ID;
     }
 
@@ -46,13 +44,11 @@ public class GitaDaoImpl extends HibernateDao<Gita>
 
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asGitaRegistroPresenzeRelation(), dbEntity.asGitaRegistroPresenzeRelation(), RegistroPresenze.class, sessionInstance);
             for(PianoViaggi pianoViaggi : dbEntity.getPianiViaggi())
             {
                 if(!gruppo.getPianiViaggi().contains(pianoViaggi))
                     sessionInstance.delete(pianoViaggi);
             }
-            DBHelper.updateOneToMany(gruppo.asGitaPianiViaggioRelation(), dbEntity.asGitaPianiViaggioRelation(), PianoViaggi.class, sessionInstance);
             sessionInstance.insertOrUpdate(gruppo);
         }
         else

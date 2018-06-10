@@ -33,7 +33,6 @@ public class MezzoDiTrasportoDaoImpl extends HibernateDao<MezzoDiTrasporto>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asMezzoDiTrasportoPianiViaggo(), gruppo.asMezzoDiTrasportoPianiViaggo(), PianoViaggi.class, sessionInstance);
         DBHelper.updateManyToOne(gruppo.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
         return ID;
     }
@@ -46,7 +45,6 @@ public class MezzoDiTrasportoDaoImpl extends HibernateDao<MezzoDiTrasporto>
 
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asMezzoDiTrasportoPianiViaggo(), dbEntity.asMezzoDiTrasportoPianiViaggo(), PianoViaggi.class, sessionInstance);
             DBHelper.updateManyToOne(gruppo.asMezziDiTrasportoFornitoreRelation(), Fornitore.class, sessionInstance);
             sessionInstance.insertOrUpdate(gruppo);
         }

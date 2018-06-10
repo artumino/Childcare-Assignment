@@ -24,7 +24,6 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asPersonaDiagnosiRelation(), gruppo.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         return ID;
     }
 
@@ -35,10 +34,8 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
         Addetto dbEntity = sessionInstance.getByID(Addetto.class, gruppo.getID());
 
         if(dbEntity != null)
-        {
-            DBHelper.updateOneToMany(gruppo.asPersonaDiagnosiRelation(), gruppo.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
             sessionInstance.insertOrUpdate(gruppo);
-        }
+
         else
             insert(gruppo);
 

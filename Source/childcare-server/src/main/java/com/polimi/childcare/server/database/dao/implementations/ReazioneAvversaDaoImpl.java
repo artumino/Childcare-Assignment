@@ -24,7 +24,6 @@ public class ReazioneAvversaDaoImpl extends HibernateDao<ReazioneAvversa>
     {
         checkConstraints(gruppo);
         int ID = sessionInstance.insert(gruppo);
-        DBHelper.updateOneToMany(gruppo.asReazioniAvverseDiagnosiRelation(), gruppo.asReazioniAvverseDiagnosiRelation(), Diagnosi.class, sessionInstance);
         DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
         return ID;
     }
@@ -37,7 +36,6 @@ public class ReazioneAvversaDaoImpl extends HibernateDao<ReazioneAvversa>
 
         if(dbEntity != null)
         {
-            DBHelper.updateOneToMany(gruppo.asReazioniAvverseDiagnosiRelation(), gruppo.asReazioniAvverseDiagnosiRelation(), Diagnosi.class, sessionInstance);
             DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
             sessionInstance.insertOrUpdate(gruppo);
         }
