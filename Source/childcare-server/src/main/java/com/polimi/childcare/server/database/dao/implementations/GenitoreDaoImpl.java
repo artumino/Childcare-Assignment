@@ -4,7 +4,6 @@ import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
 import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
-import com.polimi.childcare.shared.entities.Diagnosi;
 import com.polimi.childcare.shared.entities.Genitore;
 
 import java.util.Set;

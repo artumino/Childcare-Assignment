@@ -3,7 +3,6 @@ package com.polimi.childcare.server.database.dao.implementations;
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
 import com.polimi.childcare.server.helper.DBHelper;
-import com.polimi.childcare.shared.entities.Diagnosi;
 import com.polimi.childcare.shared.entities.Pasto;
 import com.polimi.childcare.shared.entities.ReazioneAvversa;
 
@@ -16,7 +15,7 @@ public class ReazioneAvversaDaoImpl extends HibernateDao<ReazioneAvversa>
     public void delete(ReazioneAvversa gruppo)
     {
         DBHelper.updateManyToManyOwned(gruppo.asReazioniAvversePastiRelation(), gruppo.asReazioniAvversePastiRelation(), Pasto.class, sessionInstance);
-        sessionInstance.insertOrUpdate(gruppo);
+        sessionInstance.delete(gruppo);
     }
 
     @Override

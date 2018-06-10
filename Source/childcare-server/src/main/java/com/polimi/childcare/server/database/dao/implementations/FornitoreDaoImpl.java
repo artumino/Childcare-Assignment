@@ -2,10 +2,7 @@ package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Fornitore;
-import com.polimi.childcare.shared.entities.MezzoDiTrasporto;
-import com.polimi.childcare.shared.entities.Pasto;
 
 public class FornitoreDaoImpl extends HibernateDao<Fornitore>
 {
@@ -14,7 +11,7 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
     @Override
     public void delete(Fornitore gruppo)
     {
-        delete(gruppo); //FIXME
+        sessionInstance.delete(gruppo);
     }
 
     @Override

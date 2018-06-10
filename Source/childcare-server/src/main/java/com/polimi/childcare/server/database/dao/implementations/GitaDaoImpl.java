@@ -2,10 +2,8 @@ package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Gita;
 import com.polimi.childcare.shared.entities.PianoViaggi;
-import com.polimi.childcare.shared.entities.RegistroPresenze;
 
 import java.util.Set;
 

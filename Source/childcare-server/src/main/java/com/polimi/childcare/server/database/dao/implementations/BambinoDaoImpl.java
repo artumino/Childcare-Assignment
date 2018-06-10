@@ -14,6 +14,7 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
     {
         Bambino dbEntity = sessionInstance.getByID(Bambino.class, gruppo.getID());
         DBHelper.deletedManyToManyOwned(gruppo.asBambiniContattiRelation(), dbEntity.asBambiniContattiRelation(), Contatto.class, sessionInstance);
+        sessionInstance.delete(gruppo);
     }
 
     @Override

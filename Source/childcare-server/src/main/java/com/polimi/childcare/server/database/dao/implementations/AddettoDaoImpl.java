@@ -2,9 +2,7 @@ package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
-import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Addetto;
-import com.polimi.childcare.shared.entities.Diagnosi;
 
 public class AddettoDaoImpl extends HibernateDao<Addetto>
 {
