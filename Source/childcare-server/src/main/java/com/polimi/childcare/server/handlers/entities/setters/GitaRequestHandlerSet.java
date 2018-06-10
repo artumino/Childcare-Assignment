@@ -26,7 +26,8 @@ public class GitaRequestHandlerSet extends GenericSetEntityRequestHandler<SetEnt
         {
             if (request.getEntity().getDataInizio() == null ||
                     request.getEntity().getDataFine() == null ||
-                    request.getEntity().getLuogo() == null)
+                    request.getEntity().getLuogo() == null ||
+                    request.getEntity().getDataFine().isBefore(request.getEntity().getDataInizio()))
                 throw new RuntimeException("Un campo obbligatorio è null!");
 
             DBHelper.updateOneToMany(request.getEntity().asGitaTappeRelation(), request.getEntity().asGitaTappeRelation(), Tappa.class, session);
