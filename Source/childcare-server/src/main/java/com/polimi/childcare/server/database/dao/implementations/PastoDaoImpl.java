@@ -57,9 +57,9 @@ public class PastoDaoImpl extends HibernateDao<Pasto>
 
     }
 
-    private void checkConstraints(Pasto gruppo)
+    private void checkConstraints(Pasto pasto)
     {
-        if(gruppo.getFornitore() == null || gruppo.getNome() == null)
+        if(pasto.getFornitore() == null || pasto.getNome() == null)
             throw new RuntimeException("Fornitore e/o Nome Nullo!");
     }
 }

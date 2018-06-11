@@ -48,9 +48,9 @@ public class MenuDaoImpl extends HibernateDao<Menu>
             sessionInstance.insert(item);
     }
 
-    private void checkConstraints(Menu gruppo)
+    private void checkConstraints(Menu menu)
     {
-        if (gruppo.getNome() == null)
+        if (menu.getNome() == null)
             throw new RuntimeException("Nome è null!");
     }
 }

@@ -44,9 +44,9 @@ public class DiagnosiDaoImpl extends HibernateDao<Diagnosi>
 
     }
 
-    private void checkConstraints(Diagnosi gruppo)
+    private void checkConstraints(Diagnosi diagnosi)
     {
-        if(gruppo.getPersona() == null || gruppo.getReazioneAvversa() == null)
+        if(diagnosi.getPersona() == null || diagnosi.getReazioneAvversa() == null)
             throw new RuntimeException("Persona e/o Reazione nulli!");
     }
 }

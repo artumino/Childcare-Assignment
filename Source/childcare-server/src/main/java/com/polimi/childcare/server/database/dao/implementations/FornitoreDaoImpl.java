@@ -35,12 +35,12 @@ public class FornitoreDaoImpl extends HibernateDao<Fornitore>
 
     }
 
-    private void checkConstraints(Fornitore gruppo)
+    private void checkConstraints(Fornitore fornitore)
     {
-        if (gruppo.getRagioneSociale() == null ||
-                gruppo.getPartitaIVA() == null ||
-                gruppo.getSedeLegale() == null ||
-                gruppo.getNumeroRegistroImprese() == null)
+        if (fornitore.getRagioneSociale() == null ||
+                fornitore.getPartitaIVA() == null ||
+                fornitore.getSedeLegale() == null ||
+                fornitore.getNumeroRegistroImprese() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }

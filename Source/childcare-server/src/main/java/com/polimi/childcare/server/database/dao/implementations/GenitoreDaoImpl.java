@@ -8,6 +8,8 @@ import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Diagnosi;
 import com.polimi.childcare.shared.entities.Genitore;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class GenitoreDaoImpl extends HibernateDao<Genitore>
@@ -68,18 +70,28 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
             insert(item);
     }
 
-    private void checkConstraints(Genitore gruppo)
+    private void checkConstraints(Genitore genitore)
     {
-        if (gruppo.getNome() == null ||
-                gruppo.getCognome() == null ||
-                gruppo.getCodiceFiscale() == null ||
-                gruppo.getDataNascita() == null ||
-                gruppo.getStato() == null ||
-                gruppo.getComune() == null ||
-                gruppo.getProvincia() == null ||
-                gruppo.getCittadinanza() == null ||
-                gruppo.getResidenza() == null ||
-                gruppo.getSesso() == null)
+        if (genitore.getNome() == null ||
+                genitore.getCognome() == null ||
+                genitore.getCodiceFiscale() == null ||
+                genitore.getDataNascita() == null ||
+                genitore.getStato() == null ||
+                genitore.getComune() == null ||
+                genitore.getProvincia() == null ||
+                genitore.getCittadinanza() == null ||
+                genitore.getResidenza() == null ||
+                genitore.getSesso() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
+
+        /*Set<Bambino> bambini = genitore.getBambini();     //TODO: funziona se vuoi usarlo
+        Bambino db;
+
+        for (Bambino b : bambini)
+        {
+            db = sessionInstance.getByID(Bambino.class, b.getID());
+            if (db.getGenitori().size() == 1 && db.getGenitori().contains(genitore))
+                throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+        }*/
     }
 }

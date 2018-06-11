@@ -53,9 +53,9 @@ public class RegistroPresenzeDaoImpl extends HibernateDao<RegistroPresenze>
             insert(item);
     }
 
-    private void checkConstraints(RegistroPresenze gruppo)
+    private void checkConstraints(RegistroPresenze registroPresenze)
     {
-        if (gruppo.getDate() == null || gruppo.getTimeStamp() == null || gruppo.getStato() == null)
+        if (registroPresenze.getDate() == null || registroPresenze.getTimeStamp() == null || registroPresenze.getStato() == null)
             throw new RuntimeException("Campi obbligatori vuoti!");
     }
 
