@@ -30,7 +30,7 @@ public class SocketInterfaceClient implements IClientNetworkInterface
     public void connect(String address, int port) throws IOException
     {
         this.clientSocket = new Socket();
-        this.clientSocket.connect(new InetSocketAddress(address, port));
+        this.clientSocket.connect(new InetSocketAddress(address, port), 3000);
 
         this.inputStream = new BufferedInputStream(this.clientSocket.getInputStream());
         this.outputStream = new BufferedOutputStream(this.clientSocket.getOutputStream());

@@ -35,29 +35,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.google.zxing.Result;
 import com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter;
+import com.polimi.childcare.client.android.menu.SelectMezzoActionProvider;
 import com.polimi.childcare.client.android.tuples.BambinoGruppoTuple;
 import com.polimi.childcare.client.android.viewholders.PresenzaViewHolder;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.shared.networking.NetworkOperationVault;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
-import com.polimi.childcare.shared.entities.Bambino;
-import com.polimi.childcare.shared.entities.Persona;
-import com.polimi.childcare.shared.entities.RegistroPresenze;
+import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
 import com.polimi.childcare.shared.networking.requests.setters.SetRegistroPresenzeRequest;
 import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
+import com.polimi.childcare.shared.networking.requests.special.GetCurrentGitaRequest;
+import com.polimi.childcare.shared.networking.requests.special.StartPresenzaCheckRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListGitaResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import com.polimi.childcare.shared.utils.StatoPresenzaUtils;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -91,6 +91,12 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
     //Refresh Layout
     private SwipeRefreshLayout refreshLayout;
+
+    //Toolbar
+    private MenuItem selectMezzoItem;
+    private MenuItem startPresenzeCheck;
+    private SelectMezzoActionProvider selectMezzoActionProvider;
+    private MezzoDiTrasporto selectedMezzoDiTrasporto;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -180,6 +186,14 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
             networkOperationVault.submitOperation(new NetworkOperation(new FilteredLastPresenzaRequest(0, 0, false),
                     this::OnLastPresenzeUpdate, false));
         }
+
+        if(!networkOperationVault.operationRunning(GetCurrentGitaRequest.class))
+        {
+            networkOperationVault.submitOperation(new NetworkOperation(new GetCurrentGitaRequest(LocalDateTime.now().toEpochSecond(ZoneOffset.systemDefault().getRules().getOffset(Instant.now()))),
+                    this::OnCurrentGitaUpdate, false));
+        }
+
+        checkForGita();
     }
 
     @Override
@@ -187,10 +201,48 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
+        selectMezzoItem = menu.findItem(R.id.action_select_autobus);
+        startPresenzeCheck = menu.findItem(R.id.action_start_check_presenze);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
+        if(selectMezzoItem != null)
+        {
+            selectMezzoItem.setVisible(CacheManager.getInstance(this).getCurrentGita() != null);
+            MenuItemCompat.setActionProvider(selectMezzoItem, (selectMezzoActionProvider = new SelectMezzoActionProvider(this)));
+        }
+
+        if(startPresenzeCheck != null)
+            startPresenzeCheck.setVisible(CacheManager.getInstance(this).getCurrentGita() != null);
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        if(selectMezzoActionProvider != null)
+        {
+            MezzoDiTrasporto mezzoDiTrasporto = selectMezzoActionProvider.getMezzoFromItem(item);
+            if(mezzoDiTrasporto != null)
+            {
+                this.selectedMezzoDiTrasporto = mezzoDiTrasporto;
+                if(this.selectedMezzoDiTrasporto.getID() == 0 && this.selectedMezzoDiTrasporto.getTarga() == null)
+                {
+                    this.selectedMezzoDiTrasporto = null;
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(getString(R.string.app_name));
+                }
+                else
+                    if(getSupportActionBar() != null)
+                        getSupportActionBar().setTitle(getString(R.string.app_name) + " - " + selectedMezzoDiTrasporto.getTarga());
+            }
+        }
+
+        if(item == startPresenzeCheck)
+            checkPresenze();
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -293,6 +345,68 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         layoutQrCode.animate().alpha(0.0f).setDuration(300).withEndAction(() -> layoutQrCode.setVisibility(View.GONE)).start();
     }
 
+    private void checkForGita()
+    {
+        if(CacheManager.getInstance(this).getCurrentGita() != null &&
+                (CacheManager.getInstance(this).getCurrentGita().getDataInizio().isEqual(LocalDate.now()) || CacheManager.getInstance(this).getCurrentGita().getDataInizio().isBefore(LocalDate.now())) &&
+                (CacheManager.getInstance(this).getCurrentGita().getDataFine().isEqual(LocalDate.now()) || CacheManager.getInstance(this).getCurrentGita().getDataFine().isAfter(LocalDate.now())))
+        {
+            if(selectMezzoItem != null)
+                selectMezzoItem.setVisible(true);
+            if(startPresenzeCheck != null)
+                startPresenzeCheck.setVisible(true);
+        }
+        else
+        {
+            CacheManager.getInstance(this).replaceCurrentGita(null);
+
+            if(selectMezzoItem != null)
+                selectMezzoItem.setVisible(false);
+            if(startPresenzeCheck != null)
+                startPresenzeCheck.setVisible(false);
+
+            this.selectedMezzoDiTrasporto = null;
+            if(getSupportActionBar() != null)
+                getSupportActionBar().setTitle(getString(R.string.app_name));
+        }
+    }
+
+    private void checkPresenze()
+    {
+        Gita currentGita = CacheManager.getInstance(this).getCurrentGita();
+        if(currentGita != null &&
+                (currentGita.getDataInizio().isEqual(LocalDate.now()) || currentGita.getDataInizio().isBefore(LocalDate.now())) &&
+                (currentGita.getDataFine().isEqual(LocalDate.now()) || currentGita.getDataFine().isAfter(LocalDate.now())))
+        {
+            //Aggiorna le presenze in locale
+            List<BambinoGruppoTuple> presenze = CacheManager.getInstance(this).getPresenze();
+            HashMap<Bambino,RegistroPresenze> registroPresenzeHashMap = CacheManager.getInstance(this).getStatoPresenzaHashMap();
+            for(BambinoGruppoTuple presenza : presenze)
+            {
+                if(presenza.getLinkedPresenza().getStato() != RegistroPresenze.StatoPresenza.Assente &&
+                        presenza.getLinkedPresenza().getStato() != RegistroPresenze.StatoPresenza.Uscito &&
+                        presenza.getLinkedPresenza().getStato() != RegistroPresenze.StatoPresenza.UscitoInAnticipo)
+                {
+                    RegistroPresenze newPresenza = new RegistroPresenze(RegistroPresenze.StatoPresenza.Disperso,
+                            LocalDate.now(),
+                            LocalDateTime.now(),
+                            (short)LocalTime.now().getHour(),
+                            presenza.getLinkedBambino(),
+                            currentGita);
+                    presenza.setLinkedPresenza(newPresenza);
+                    registroPresenzeHashMap.put(presenza.getLinkedBambino(), newPresenza);
+                }
+            }
+            CacheManager.getInstance(this).replaceStatoPresenzeMap(registroPresenzeHashMap);
+            presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
+
+            //Invia la richiesta di reset al server
+            networkOperationVault.submitOperation(new NetworkOperation(new StartPresenzaCheckRequest(currentGita), response -> {
+                RefreshData();
+            }, false));
+        }
+    }
+
     @Override
     protected void onPause() {
         closeQrScanner();
@@ -320,15 +434,30 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
     {
         networkOperationVault.operationDone(FilteredLastPresenzaRequest.class);
 
-        if(response instanceof BadRequestResponse)
+        if(!(response instanceof ListRegistroPresenzeResponse))
             runOnUiThread(() -> Toast.makeText(this, "Errore durante la connessione al server per aggiornare le presenze", Toast.LENGTH_LONG).show());
-
-        if(response instanceof ListRegistroPresenzeResponse)
+        else
         {
             CacheManager.getInstance(this).replaceStatoPresenzeMap(EntitiesHelper.presenzeToSearchMap(((ListRegistroPresenzeResponse) response).getPayload()));
             runOnUiThread(() -> {
                 this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
             });
+        }
+    }
+
+    private void OnCurrentGitaUpdate(BaseResponse response)
+    {
+        networkOperationVault.operationDone(FilteredLastPresenzaRequest.class);
+
+        if(!(response instanceof ListGitaResponse))
+            runOnUiThread(() -> Toast.makeText(this, "Errore durante la connessione al server per aggiornare le presenze", Toast.LENGTH_LONG).show());
+        else
+        {
+            if(((ListGitaResponse) response).getPayload().size() > 0)
+            {
+                CacheManager.getInstance(this).replaceCurrentGita(((ListGitaResponse) response).getPayload().get(0));
+                runOnUiThread(this::checkForGita);
+            }
         }
     }
 
@@ -427,10 +556,24 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         if(refTuple == null)
             return;
 
+        Gita currentGita = CacheManager.getInstance(this).getCurrentGita();
         RegistroPresenze.StatoPresenza newStatoPresenza = StatoPresenzaUtils.getSuggestedStatoPresenzaFromPresenza(refTuple.getLinkedPresenza(), isUscita);
 
-        if(newStatoPresenza == null)
+        if(newStatoPresenza == null) {
+            presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
             return;
+        }
+
+        if(currentGita != null && refTuple.getLinkedPresenza().getStato() == RegistroPresenze.StatoPresenza.Disperso)
+        {
+            HashMap<Integer, MezzoDiTrasporto> gruppiToMezzi = CacheManager.getInstance(this).getGruppiToMezzoDiTraspostoMap();
+
+            if(!isUscita)
+                newStatoPresenza = selectedMezzoDiTrasporto == null ? RegistroPresenze.StatoPresenza.Presente :
+                                gruppiToMezzi.get(refTuple.getLinkedBambino().getGruppoForeignKey()) == selectedMezzoDiTrasporto ? RegistroPresenze.StatoPresenza.Presente : RegistroPresenze.StatoPresenza.PresenteMezzoErrato;
+            else
+                newStatoPresenza = RegistroPresenze.StatoPresenza.UscitoInAnticipo;
+        }
 
         RegistroPresenze toSend = null;
         HashMap<Bambino, RegistroPresenze> registroPresenzeHashMap = CacheManager.getInstance(this).getStatoPresenzaHashMap();
@@ -438,10 +581,9 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         {
             refTuple.getLinkedPresenza().setStato(newStatoPresenza);
             toSend = refTuple.getLinkedPresenza();
-
         }
         else
-            toSend = new RegistroPresenze(newStatoPresenza, LocalDate.now(), LocalDateTime.now(), (short)LocalTime.now().getHour(), refTuple.getLinkedBambino());
+            toSend = new RegistroPresenze(newStatoPresenza, LocalDate.now(), LocalDateTime.now(), (short)LocalTime.now().getHour(), refTuple.getLinkedBambino(), currentGita);
 
         //Aggiorno con i dati che ho modificato
         registroPresenzeHashMap.put(refTuple.getLinkedBambino(), toSend);
@@ -452,6 +594,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         }, false));
 
         this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
+        this.presenzeAdapter.updateAll();
     }
 
     @Override

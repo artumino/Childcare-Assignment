@@ -102,10 +102,12 @@ public class CacheManager implements Serializable
         return presenzeList;
     }
 
+    /*
     public List<Gruppo> geGruppi()
     {
         return new ArrayList<>(gruppi);
     }
+    */
 
     public Gita getCurrentGita() {
         return this.currentGita;
@@ -129,14 +131,6 @@ public class CacheManager implements Serializable
         updateState();
     }
 
-    public void replaceGruppi(List<Gruppo> gruppi)
-    {
-        this.gruppi = new ArrayList<>(gruppi);
-        utcGuppiUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
-        utcLastUpdate = utcGuppiUpdateInstant;
-        updateState();
-    }
-
     public void replaceCurrentGita(Gita gita)
     {
         this.currentGita = gita;
@@ -148,9 +142,9 @@ public class CacheManager implements Serializable
     public HashMap<Integer, MezzoDiTrasporto> getGruppiToMezzoDiTraspostoMap()
     {
         HashMap<Integer, MezzoDiTrasporto> integerMezzoDiTrasportoHashMap = new HashMap<>();
-        if(this.currentGita != null && this.currentGita.getPianiViaggi() != null)
+        if(this.getCurrentGita() != null && this.getCurrentGita().getPianiViaggi() != null)
         {
-            for(PianoViaggi pianoViaggi : this.currentGita.getPianiViaggi())
+            for(PianoViaggi pianoViaggi : this.getCurrentGita().getPianiViaggi())
                 integerMezzoDiTrasportoHashMap.put(pianoViaggi.getGruppoForeignKey(), pianoViaggi.getMezzo());
         }
         return integerMezzoDiTrasportoHashMap;
@@ -242,6 +236,7 @@ public class CacheManager implements Serializable
         if(storedCacheManager != null)
         {
             storedCacheManager.context = context;
+            storedCacheManager.callbackHashMap = new HashMap<>();
             storedCacheManager.registerAllPersistedNetworkOperations();
         }
 

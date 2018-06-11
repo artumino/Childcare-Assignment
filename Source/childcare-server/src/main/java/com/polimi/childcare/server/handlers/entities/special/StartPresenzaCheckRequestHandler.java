@@ -29,7 +29,10 @@ public class StartPresenzaCheckRequestHandler implements IRequestHandler<StartPr
                     statoPresenzaHashMap.put(presenze.getBambino(), presenze.getStato());
 
             //Ottiene tutti i bambini presenti alla gita
-            List<Bambino> bambinoList = execution.stream(Bambino.class).filter(b -> statoPresenzaHashMap.containsKey(b) && statoPresenzaHashMap.get(b) != RegistroPresenze.StatoPresenza.Assente).collect(Collectors.toList());
+            List<Bambino> bambinoList = execution.stream(Bambino.class).filter(b -> statoPresenzaHashMap.containsKey(b)
+                    && statoPresenzaHashMap.get(b) != RegistroPresenze.StatoPresenza.Assente
+                    && statoPresenzaHashMap.get(b) != RegistroPresenze.StatoPresenza.UscitoInAnticipo
+                    && statoPresenzaHashMap.get(b) != RegistroPresenze.StatoPresenza.Uscito).collect(Collectors.toList());
 
             for(Bambino bambino : bambinoList)
                 presenzeDao.insert(new RegistroPresenze(RegistroPresenze.StatoPresenza.Disperso, lt.toLocalDate(), lt, (short)lt.getHour(), bambino, request.getGita()));

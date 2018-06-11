@@ -13,7 +13,6 @@ public class NetworkOperation implements Serializable
         void OnResult(BaseResponse response);
     }
 
-    private final Object callbackMutex = new Object();
     private transient INetworkOperationCallback callback;
     private BaseRequest request;
     private boolean runOnUiThread;
@@ -54,17 +53,14 @@ public class NetworkOperation implements Serializable
      * Chiama il callback come impostato alla creazione dell'oggetto (se questo è presente)
      * @param response Risposta ricevuta dal server
      */
-    public void executeCallback(final BaseResponse response)
+    public synchronized void executeCallback(final BaseResponse response)
     {
-        synchronized (callbackMutex)
+        if(callback != null)
         {
-            if(callback != null)
-            {
-                if(runOnUiThread)
-                    Platform.runLater(() -> callback.OnResult(response));
-                else
-                    callback.OnResult(response);
-            }
+            if(runOnUiThread)
+                Platform.runLater(() -> callback.OnResult(response));
+            else
+                callback.OnResult(response);
         }
     }
 
@@ -72,12 +68,9 @@ public class NetworkOperation implements Serializable
      * Imposta un nuovo callback da chiamare una volta ricevuta la risposta alla richiesta(immutabile)
      * @param callback null per disabilitare il callback, INetworkOperationCallback per un nuovo callback
      */
-    public void setCallback(INetworkOperationCallback callback)
+    public synchronized void setCallback(INetworkOperationCallback callback)
     {
-        synchronized (callbackMutex)
-        {
-            this.callback = callback;
-        }
+        this.callback = callback;
     }
 
     /**
