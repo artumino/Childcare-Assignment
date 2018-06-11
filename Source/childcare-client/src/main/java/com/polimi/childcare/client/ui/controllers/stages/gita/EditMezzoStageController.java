@@ -62,6 +62,7 @@ public class EditMezzoStageController extends NetworkedSubScene implements ISubS
 
     @FXML private Button btnSalva;
     @FXML private Button btnElimina;
+    @FXML private Tab tabGite;
 
     @Override
     public void attached(ISceneController sceneController, Object... args)
@@ -69,6 +70,7 @@ public class EditMezzoStageController extends NetworkedSubScene implements ISubS
         if(sceneController instanceof ChildcareBaseStageController)
             this.stageController = (ChildcareBaseStageController)sceneController;
 
+        layoutTabPane.getTabs().remove(tabGite);
 
         if(this.stageController != null)
         {
@@ -149,15 +151,15 @@ public class EditMezzoStageController extends NetworkedSubScene implements ISubS
             tableFornitore.getItems().add(linkedMezzo.getFornitore());
         }
 
-        //Reazioni Avverse
-        if(this.linkedMezzo != null && tableGite != null && linkedMezzo.getPianoViaggi() != null)
+        //Gite
+        /*if(this.linkedMezzo != null && tableGite != null && linkedMezzo.getPianoViaggi() != null)
         {
             tableGite.getItems().clear();
             List<Gita> gite = new ArrayList<>();
             for(PianoViaggi pianoViaggi : linkedMezzo.getPianoViaggi())
                 gite.add(pianoViaggi.getGita());
             tableGite.getItems().addAll(gite);
-        }
+        }*/
 
         printMezzoDetails();
     }
