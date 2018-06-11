@@ -7,21 +7,22 @@ import com.polimi.childcare.client.ui.controllers.BaseStageController;
 import com.polimi.childcare.client.ui.controllers.ChildcareBaseStageController;
 import com.polimi.childcare.client.ui.controllers.ISceneController;
 import com.polimi.childcare.client.ui.controllers.ISubSceneController;
+import com.polimi.childcare.client.ui.controllers.stages.mensa.EditMenuStageController;
 import com.polimi.childcare.client.ui.controls.GruppoContainerComponent;
 import com.polimi.childcare.client.ui.filters.Filters;
 import com.polimi.childcare.client.ui.utils.StageUtils;
 import com.polimi.childcare.client.ui.utils.TableUtils;
 import com.polimi.childcare.shared.entities.*;
+import com.polimi.childcare.shared.entities.Menu;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredGitaRequest;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredGruppoRequest;
+import com.polimi.childcare.shared.networking.requests.filtered.FilteredMenuRequest;
 import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.requests.special.GetCurrentGitaRequest;
 import com.polimi.childcare.shared.networking.requests.special.StartPresenzaCheckRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListGitaResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListGruppoResponse;
-import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
+import com.polimi.childcare.shared.networking.responses.lists.*;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
 import com.polimi.childcare.shared.utils.StatoPresenzaUtils;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -60,7 +61,7 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
     //Gite
     private Gita currentGita;
     @FXML private Text txtNomeCurrentGita;
-    @FXML private TableView<Pasto> tableGite;
+    @FXML private TableView<Gita> tableGite;
     @FXML private SplitPane paneGita;
     @FXML private Button btnRefreshGita;
     @FXML private Button btnCheckPresenze;
@@ -107,6 +108,8 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         });
 
         setupTablePresenze();
+        setupTableGite();
+        setupTablePasti();
 
         filterBambini.addFilterField(txtFiltro.textProperty(), (persona -> Filters.filterPersona(persona, txtFiltro.getText())));
 
@@ -152,6 +155,50 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
             tablePresenze.setItems(listaBambini.list());
             //tableList.setColumnResizePolicy(p -> true);
         }
+    }
+
+    private void setupTableGite()
+    {
+        TableColumn<Gita, Integer> cID = new TableColumn<>("ID");
+        TableColumn<Gita, String> cLuogo = new TableColumn<>("Luogo");
+        TableColumn<Gita, LocalDate> cDataInizio = new TableColumn<>("Data Inizio");
+        TableColumn<Gita, LocalDate> cDataFine = new TableColumn<>("Data Fine");
+
+
+        cLuogo.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getLuogo()));
+        cID.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getID()));
+        cDataInizio.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDataInizio()));
+        cDataFine.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDataFine()));
+
+        tableGite.setRowFactory(tv -> new TableRow<Gita>() {
+            @Override
+            public void updateItem(Gita item, boolean empty) {
+                super.updateItem(item, empty) ;
+                if (item == null) {
+                    setStyle("");
+                } else if (item.getDataInizio().atStartOfDay().isBefore(LocalDateTime.now().plusDays(1)) &&
+                        item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now().plusDays(1))) {
+                    //Gita attiva
+                    setStyle("-fx-background-color: Gold;");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
+
+        if(tableGite != null)
+            tableGite.getColumns().addAll(cID, cLuogo, cDataInizio, cDataFine);
+    }
+
+    private void setupTablePasti()
+    {
+        TableColumn<Pasto, String> cNomePasto = new TableColumn<>("Pasto");
+
+
+        cNomePasto.setCellValueFactory((cellData) -> new ReadOnlyStringWrapper(cellData.getValue().getNome()));
+
+        if(tableMenuDelGiorno != null)
+            tableMenuDelGiorno.getColumns().addAll(cNomePasto);
     }
 
     private void setupTableTappe()
@@ -229,6 +276,16 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         networkOperationVault.submitOperation(new NetworkOperation(
                 new FilteredBambiniRequest(0, 0, false),
                 this::OnBambiniResponseRecived,
+                true));
+
+        networkOperationVault.submitOperation(new NetworkOperation(
+                new FilteredGitaRequest(0, 0, false),
+                this::OnGiteResponseRecived,
+                true));
+
+        networkOperationVault.submitOperation(new NetworkOperation(
+                new FilteredMenuRequest(0, 0, true),
+                this::OnMenuDelGiornoResponse,
                 true));
     }
 
@@ -321,6 +378,64 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         tablePresenze.refresh();
     }
 
+    private void OnGiteResponseRecived(BaseResponse response)
+    {
+        networkOperationVault.operationDone(FilteredGitaRequest.class);
+        if(StageUtils.HandleResponseError(response, "Errore nell'aggiornare i dati", p -> p instanceof ListGitaResponse))
+            return;
+
+        ListGitaResponse currentGitaRespose = (ListGitaResponse)response;
+
+        List<Gita> giteToShow = new ArrayList<>();
+        for(Gita gita : currentGitaRespose.getPayload())
+        {
+            if(gita.getDataInizio().isAfter(LocalDate.now()))
+                giteToShow.add(gita);
+        }
+
+        if(tableGite != null)
+        {
+            tableGite.getItems().clear();
+            tableGite.getItems().addAll(giteToShow);
+        }
+    }
+
+    private void OnMenuDelGiornoResponse(BaseResponse response)
+    {
+        networkOperationVault.operationDone(FilteredMenuRequest.class);
+        if(StageUtils.HandleResponseError(response, "Errore nell'aggiornare i dati", p -> p instanceof ListMenuResponse))
+            return;
+
+        ListMenuResponse currentMenus = (ListMenuResponse)response;
+
+        Menu currentMenu = null;
+        for(Menu menu : currentMenus.getPayload())
+            if(menu.isRecurringDuringDayOfWeek(Menu.DayOfWeekFlag.fromDayOfWeek(DayOfWeek.from(LocalDate.now())))) {
+                currentMenu = menu;
+                break;
+            }
+
+        if(tableMenuDelGiorno != null)
+        {
+            tableMenuDelGiorno.getItems().clear();
+
+            if(currentMenu != null)
+            {
+                final Menu finalMenu = currentMenu;
+                if (currentMenu.getPasti() != null)
+                    tableMenuDelGiorno.getItems().addAll(currentMenu.getPasti());
+
+                txtNomeMenuDelGiorno.setText(currentMenu.getNome());
+                btnShowMenuDettagli.setOnMouseClicked(click -> ShowMenuDetails(finalMenu));
+            }
+            else
+            {
+                txtNomeMenuDelGiorno.setText("Nessun Menu");
+                btnShowMenuDettagli.setOnMouseClicked(null);
+            }
+        }
+    }
+
     private void OnCurrentGitaResponseRecived(BaseResponse response)
     {
         networkOperationVault.operationDone(GetCurrentGitaRequest.class);
@@ -359,6 +474,23 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
 
         //Aggiorno i valori
         refreshGruppi(gruppoResponse.getPayload());
+    }
+
+
+
+    private void ShowMenuDetails(Menu menu)
+    {
+        try {
+            ChildcareBaseStageController setMenuStage = new ChildcareBaseStageController();
+            setMenuStage.setContentScene(getClass().getClassLoader().getResource(EditMenuStageController.FXML_PATH), menu);
+            setMenuStage.initOwner(getRoot().getScene().getWindow());
+            setMenuStage.setOnClosingCallback((returnArgs) -> {
+                RefreshData();
+            });
+            setMenuStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

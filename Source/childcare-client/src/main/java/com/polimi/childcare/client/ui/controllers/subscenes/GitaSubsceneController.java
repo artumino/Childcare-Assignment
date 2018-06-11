@@ -305,13 +305,13 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
                     } else {
                         setStyle("");
                     }
-
-                    tableGite.setOnMousePressed((event -> {
-                        if(event.isPrimaryButtonDown() && event.getClickCount() == 2 && tableGite.getSelectionModel().getSelectedItem() != null)
-                            ShowGita(tableGite.getSelectionModel().getSelectedItem());
-                    }));
                 }
             });
+
+            tableGite.setOnMousePressed((event -> {
+                if(event.isPrimaryButtonDown() && event.getClickCount() == 2 && tableGite.getSelectionModel().getSelectedItem() != null)
+                    ShowGita(tableGite.getSelectionModel().getSelectedItem());
+            }));
         }
     }
 

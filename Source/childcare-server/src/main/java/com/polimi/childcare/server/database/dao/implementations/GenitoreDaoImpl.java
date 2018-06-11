@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.database.dao.DaoFactory;
 import com.polimi.childcare.server.database.dao.HibernateDao;
 import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
@@ -33,7 +34,19 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
     public int insert(Genitore item)
     {
         checkConstraints(item);
+
+        //Tolgo le diagnosi perchè dipendono da Bambino, le inserisco dopo
+        Set<Diagnosi> diagnosiDaInserire = item.getDiagnosi();
+        for(Diagnosi diagnosi : diagnosiDaInserire)
+            item.unsafeRemoveDiagnosi(diagnosi);
+
         int ID = sessionInstance.insert(item);
+
+        for(Diagnosi diagnosi : diagnosiDaInserire)
+        {
+            diagnosi.setPersona(item);
+            DaoFactory.getInstance().getDao(Diagnosi.class, sessionInstance).insert(diagnosi);
+        }
         //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), item.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         DBHelper.updateManyToManyOwned(item.asGenitoriBambiniRelation(), item.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
         return ID;

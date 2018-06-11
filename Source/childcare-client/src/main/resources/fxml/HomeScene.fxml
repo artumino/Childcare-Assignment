@@ -56,11 +56,16 @@
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TableView fx:id="tableGite" prefHeight="313.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TableView fx:id="tableGite" prefHeight="313.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="48.0">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
+                              <ToolBar prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #999;" styleClass="toolbar-colored" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <items>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" styleClass="text" text="Prossime Gite" />
+                                 </items>
+                              </ToolBar>
                            </children>
                         </AnchorPane>
                     </items>

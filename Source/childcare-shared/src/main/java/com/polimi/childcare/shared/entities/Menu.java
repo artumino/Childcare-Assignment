@@ -43,6 +43,14 @@ public class Menu extends TransferableEntity implements Serializable
         public DayOfWeek getDayOfWeek() {
             return dayOfWeek;
         }
+
+        public static DayOfWeekFlag fromDayOfWeek(DayOfWeek dayOfWeek)
+        {
+            for(DayOfWeekFlag flag : DayOfWeekFlag.values())
+                if(flag.dayOfWeek == dayOfWeek)
+                    return flag;
+            return DayOfWeekFlag.Lun;
+        }
     }
     //region Attributi
 
