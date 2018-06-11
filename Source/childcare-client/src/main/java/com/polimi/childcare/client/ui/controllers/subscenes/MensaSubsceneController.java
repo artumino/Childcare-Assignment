@@ -211,7 +211,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
             setPastoStage.setContentScene(getClass().getClassLoader().getResource(EditPastoStageController.FXML_PATH), pasto);
             setPastoStage.initOwner(getRoot().getScene().getWindow());
             setPastoStage.setOnClosingCallback((returnArgs) -> {
-                //Niente
+                refreshPasti();
             });
             setPastoStage.show();
         } catch (IOException e) {
@@ -226,7 +226,7 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
             setMenuStage.setContentScene(getClass().getClassLoader().getResource(EditMenuStageController.FXML_PATH), menu);
             setMenuStage.initOwner(getRoot().getScene().getWindow());
             setMenuStage.setOnClosingCallback((returnArgs) -> {
-                //Niente
+                refreshMenus();
             });
             setMenuStage.show();
         } catch (IOException e) {

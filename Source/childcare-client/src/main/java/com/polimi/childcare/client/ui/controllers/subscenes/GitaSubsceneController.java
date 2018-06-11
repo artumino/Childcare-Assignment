@@ -38,6 +38,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.io.IOException;
@@ -88,6 +89,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
     private List<GruppoContainerComponent> gruppoContainerComponents;
     @FXML private Button btnAutoAdd;
     @FXML private Button btnSaveGroups;
+    @FXML private VBox vboxGroupButtons;
 
     @FXML
     protected void initialize()
@@ -196,7 +198,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
                 hboxGruppi.getChildren().add(containerComponent);
 
             if(imgAddGroup != null)
-                hboxGruppi.getChildren().add(imgAddGroup);
+                hboxGruppi.getChildren().add(vboxGroupButtons);
         }
     }
 

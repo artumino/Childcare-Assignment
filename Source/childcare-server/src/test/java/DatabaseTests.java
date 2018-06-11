@@ -92,7 +92,9 @@ public class DatabaseTests
         pediatra1.setIndirizzo("Cambiato");
         reazioneavversa1.setNome("Grano");
         diagnosi1.setPersona(addetto1);
+        diagnosi1.unsafeSetID(0);
         addetto1.setCodiceFiscale("CF-------");
+        addetto1.unsafeAddDiagnosi(diagnosi1);
         contatto1.setIndirizzo("Inventato ORA");
         bambino1 = bambinoget.getPayload().get(0);
 

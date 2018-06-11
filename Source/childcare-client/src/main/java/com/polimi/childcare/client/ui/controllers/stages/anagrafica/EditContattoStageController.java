@@ -135,7 +135,7 @@ public class EditContattoStageController extends NetworkedSubScene implements IS
                                BaseResponse response = (BaseResponse)resultArgs[0];
                                if(!(response instanceof BadRequestResponse))
                                {
-                                   stageController.close();
+                                   stageController.requestClose();
                                    return;
                                }
 
@@ -205,7 +205,7 @@ public class EditContattoStageController extends NetworkedSubScene implements IS
     private void setupTableBambini()
     {
         TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
-        TableColumn<Bambino, String> cCognome = new TableColumn<>("Congome");
+        TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
         TableColumn<Bambino, Integer> cMatricola = new TableColumn<>("Matricola");
         cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));

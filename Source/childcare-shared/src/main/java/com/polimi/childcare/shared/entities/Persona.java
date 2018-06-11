@@ -57,7 +57,7 @@ public abstract class Persona extends TransferableEntity implements Serializable
 
     //region Relazioni
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "persona")
     private Set<Diagnosi> diagnosi = new HashSet<>();
 
 

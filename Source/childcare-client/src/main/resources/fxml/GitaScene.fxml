@@ -75,19 +75,23 @@
                                  <content>
                                     <HBox fx:id="hboxGruppi" alignment="CENTER" prefHeight="100.0" spacing="20.0">
                                        <children>
-                                          <ImageView fx:id="imgAddGroup" fitHeight="108.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@images/baseline_add_circle_white_18.png" />
-                                             </image>
-                                             <effect>
-                                                <ColorAdjust brightness="-0.36" />
-                                             </effect>
-                                          </ImageView>
+                                          <VBox fx:id="vboxGroupButtons" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                                             <children>
+                                                <ImageView fx:id="imgAddGroup" fitHeight="108.0" fitWidth="108.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@images/baseline_add_circle_white_18.png" />
+                                                   </image>
+                                                   <effect>
+                                                      <ColorAdjust brightness="-0.36" />
+                                                   </effect>
+                                                </ImageView>
+                                                <JFXButton fx:id="btnSaveGroups" prefHeight="40.0" prefWidth="75.0" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Salva" visible="false" />
+                                             </children>
+                                          </VBox>
                                        </children>
                                     </HBox>
                                  </content>
                               </ScrollPane>
-                              <JFXButton fx:id="btnSaveGroups" prefHeight="40.0" prefWidth="75.0" style="-fx-text-fill: #fff; -fx-background-color: #aaa;" text="Salva" visible="false" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                            </children></AnchorPane>
                     </items>
                   </SplitPane>

@@ -40,8 +40,11 @@ import com.polimi.childcare.client.android.viewholders.PresenzaViewHolder;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.client.shared.networking.NetworkOperationVault;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
+import com.polimi.childcare.shared.entities.Bambino;
+import com.polimi.childcare.shared.entities.Persona;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
+import com.polimi.childcare.shared.networking.requests.setters.SetRegistroPresenzeRequest;
 import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
@@ -49,9 +52,12 @@ import com.polimi.childcare.shared.networking.responses.lists.ListBambiniRespons
 import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 import com.polimi.childcare.shared.utils.EntitiesHelper;
+import com.polimi.childcare.shared.utils.StatoPresenzaUtils;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -143,7 +149,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
             layoutQrCode.setAlpha(0f);
             layoutQrCode.setVisibility(View.VISIBLE);
             layoutQrCode.animate().alpha(1f).setDuration(300).start();
-            clearQrScanner();
+            clearQrScanner(false);
         });
 
         this.listPresenze.setLayoutManager((presenzeLayoutManager = new LinearLayoutManager(this)));
@@ -207,7 +213,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
                     @Override
                     public void run() {
                         runOnUiThread(() -> {
-                            clearQrScanner();
+                            clearQrScanner(false);
                         });
                     }
                 }, 10000);
@@ -216,7 +222,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
                 return;
             }
         }
-        clearQrScanner();
+        clearQrScanner(false);
 
         //layoutQrCode.setVisibility(View.GONE);
     }
@@ -237,13 +243,23 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         }
 
         this.fabExit.setImageDrawable(getDrawable(R.drawable.ic_arrow_downward_black_24dp));
-        this.fabExit.setOnClickListener(null); //TODO: Exit
-        this.fabEnter.setOnClickListener(null); //TODO: Enter
+
+        fabEnter.setOnClickListener(v -> {
+            SetBambinoPresenza(resultBambino, false);
+            closeQrScanner();
+        });
+
+        fabExit.setOnClickListener(v -> {
+            SetBambinoPresenza(resultBambino, true);
+            closeQrScanner();
+        });
+
         this.fabEnter.animate().scaleX(1).scaleY(1).setDuration(350).start();
     }
 
-    private void clearQrScanner()
+    private void clearQrScanner(boolean closing)
     {
+        mScannerView.setVisibility(View.VISIBLE);
         this.imgScannedBambinoPreview.animate().alpha(0f).setDuration(350).withEndAction(() -> this.imgScannedBambinoPreview.setVisibility(View.GONE)).start();
         this.fabExit.setOnClickListener((view -> closeQrScanner()));
         txtName.setText("");
@@ -256,20 +272,23 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
         txtDate.setText(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm").format(LocalDateTime.now()));
 
-        this.layoutQrDetails.animate().translationY(-this.layoutQrDetails.getHeight()).alpha(0f).setDuration(350).withEndAction(() -> {
-            mScannerView.startCamera();
-            mScannerView.setResultHandler(PresenzeActivity.this);
-        }).start();
+        if(!closing)
+            this.layoutQrDetails.animate().translationY(-this.layoutQrDetails.getHeight()).alpha(0f).setDuration(350).withEndAction(() -> {
+                mScannerView.startCamera();
+                mScannerView.setResultHandler(PresenzeActivity.this);
+            }).start();
     }
 
     private void closeQrScanner()
     {
-        clearQrScanner();
+        clearQrScanner(true);
         if(qrTimer != null)
         {
             qrTimer.cancel();
             qrTimer.purge();
         }
+        mScannerView.setVisibility(View.GONE);
+        mScannerView.setResultHandler(null);
         mScannerView.stopCamera();
         layoutQrCode.animate().alpha(0.0f).setDuration(300).withEndAction(() -> layoutQrCode.setVisibility(View.GONE)).start();
     }
@@ -290,7 +309,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
         if(response instanceof ListBambiniResponse)
         {
-            CacheManager.getInstance(this).replaceBambini(this, ((ListBambiniResponse) response).getPayload());
+            CacheManager.getInstance(this).replaceBambini(((ListBambiniResponse) response).getPayload());
             runOnUiThread(() -> {
                 this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
             });
@@ -306,7 +325,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
         if(response instanceof ListRegistroPresenzeResponse)
         {
-            CacheManager.getInstance(this).replaceStatoPresenzeMap(this, EntitiesHelper.presenzeToSearchMap(((ListRegistroPresenzeResponse) response).getPayload()));
+            CacheManager.getInstance(this).replaceStatoPresenzeMap(EntitiesHelper.presenzeToSearchMap(((ListRegistroPresenzeResponse) response).getPayload()));
             runOnUiThread(() -> {
                 this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
             });
@@ -372,12 +391,77 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         public void onReceive(Context context, Intent intent)
         {
             int hashCode = intent.getIntExtra(PresenzaViewHolder.EXTRA_TUPLE_HASHCODE, 0);
+
+            BambinoGruppoTuple refTuple = null;
+            for (BambinoGruppoTuple tuple : CacheManager.getInstance(context).getPresenze())
+                if(tuple.hashCode() == hashCode)
+                {
+                    refTuple = tuple;
+                    break;
+                }
+
+            if(refTuple == null)
+                return;
+
+            final BambinoGruppoTuple bambinoGruppoTuple = refTuple;
             layoutQrCode.setAlpha(0f);
             layoutQrCode.setVisibility(View.VISIBLE);
-            layoutQrCode.animate().alpha(1f).setDuration(300).start();
+            layoutQrCode.animate().alpha(1f).setDuration(300).withEndAction(() -> showQrScannerPartialResult(new BambinoQRUnit(bambinoGruppoTuple.getLinkedBambino()))).start();
 
+            txtDate.setText(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm").format(LocalDateTime.now()));
         }
     };
+
+    private void SetBambinoPresenza(BambinoQRUnit bambinoQRUnit, boolean isUscita)
+    {
+        int hashCode = Objects.hash(bambinoQRUnit.getID(), Persona.class);
+
+        BambinoGruppoTuple refTuple = null;
+        for (BambinoGruppoTuple tuple : CacheManager.getInstance(this).getPresenze())
+            if(tuple.hashCode() == hashCode)
+            {
+                refTuple = tuple;
+                break;
+            }
+
+        if(refTuple == null)
+            return;
+
+        RegistroPresenze.StatoPresenza newStatoPresenza = StatoPresenzaUtils.getSuggestedStatoPresenzaFromPresenza(refTuple.getLinkedPresenza(), isUscita);
+
+        if(newStatoPresenza == null)
+            return;
+
+        RegistroPresenze toSend = null;
+        HashMap<Bambino, RegistroPresenze> registroPresenzeHashMap = CacheManager.getInstance(this).getStatoPresenzaHashMap();
+        if(refTuple.getLinkedPresenza().getStato() == RegistroPresenze.StatoPresenza.Disperso)
+        {
+            refTuple.getLinkedPresenza().setStato(newStatoPresenza);
+            toSend = refTuple.getLinkedPresenza();
+
+        }
+        else
+            toSend = new RegistroPresenze(newStatoPresenza, LocalDate.now(), LocalDateTime.now(), (short)LocalTime.now().getHour(), refTuple.getLinkedBambino());
+
+        //Aggiorno con i dati che ho modificato
+        registroPresenzeHashMap.put(refTuple.getLinkedBambino(), toSend);
+        CacheManager.getInstance(this).replaceStatoPresenzeMap(registroPresenzeHashMap);
+
+        CacheManager.getInstance(this).submitPersistentNetworkOperation(new NetworkOperation(new SetRegistroPresenzeRequest(toSend, false, toSend.consistecyHashCode()), response -> {
+            RefreshData();
+        }, false));
+
+        this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(layoutQrCode.getVisibility() == View.VISIBLE)
+            closeQrScanner();
+        else
+            super.onBackPressed();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

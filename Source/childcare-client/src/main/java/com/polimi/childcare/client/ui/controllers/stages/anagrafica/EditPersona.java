@@ -281,7 +281,7 @@ public class EditPersona extends NetworkedSubScene
     private void setupTableBambini()
     {
         TableColumn<Bambino, String> cNome = new TableColumn<>("Nome");
-        TableColumn<Bambino, String> cCognome = new TableColumn<>("Congome");
+        TableColumn<Bambino, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Bambino, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
         TableColumn<Bambino, Integer> cMatricola = new TableColumn<>("Matricola");
         cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
@@ -302,7 +302,7 @@ public class EditPersona extends NetworkedSubScene
     private void setupTableGenitori()
     {
         TableColumn<Genitore, String> cNome = new TableColumn<>("Nome");
-        TableColumn<Genitore, String> cCognome = new TableColumn<>("Congome");
+        TableColumn<Genitore, String> cCognome = new TableColumn<>("Cognome");
         TableColumn<Genitore, String> cCodiceFiscale = new TableColumn<>("Codice Fiscale");
         TableColumn<Genitore, String> cTelefoni = new TableColumn<>("Telefoni");
         cNome.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
@@ -324,7 +324,7 @@ public class EditPersona extends NetworkedSubScene
     private void setupTablePediatra()
     {
         TableColumn<Pediatra, String> cNomeContatto = new TableColumn<>("Nome");
-        TableColumn<Pediatra, String> cCognomeContatto = new TableColumn<>("Congome");
+        TableColumn<Pediatra, String> cCognomeContatto = new TableColumn<>("Cognome");
         TableColumn<Pediatra, String> cDescrizioneContatto = new TableColumn<>("Descrizione");
         TableColumn<Pediatra, String> cTelefoniContatto = new TableColumn<>("Telefoni");
         cNomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
@@ -349,7 +349,7 @@ public class EditPersona extends NetworkedSubScene
     private void setupContatti()
     {
         TableColumn<Contatto, String> cNomeContatto = new TableColumn<>("Nome");
-        TableColumn<Contatto, String> cCognomeContatto = new TableColumn<>("Congome");
+        TableColumn<Contatto, String> cCognomeContatto = new TableColumn<>("Cognome");
         TableColumn<Contatto, String> cDescrizioneContatto = new TableColumn<>("Descrizione");
         TableColumn<Contatto, String> cTelefoniContatto = new TableColumn<>("Telefoni");
         cNomeContatto.setCellValueFactory(c -> new ReadOnlyStringWrapper(c.getValue().getNome()));
@@ -375,6 +375,9 @@ public class EditPersona extends NetworkedSubScene
         {
             layoutTabPane.getTabs().remove(tabBambini);
         }
+
+        if(this.linkedPersona instanceof Genitore && linkedPersona.getID() == 0)
+            layoutTabPane.getTabs().remove(tabBambini);
 
         if(cbSesso.getItems().size() == 0)
             for(Persona.ESesso sesso : Persona.ESesso.values())

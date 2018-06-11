@@ -260,7 +260,7 @@ public class PersoneSubmenuController extends AnagraficaSubmenuBase<Persona>
             setPresenzeStage.setContentScene(getClass().getClassLoader().getResource(EditPersona.FXML_PATH), persona);
             //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
             setPresenzeStage.setOnClosingCallback((returnArgs) -> {
-                //Niente
+                refreshData();
             });
             setPresenzeStage.show();
         } catch (IOException e) {

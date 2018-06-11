@@ -18,7 +18,7 @@ public class Diagnosi extends TransferableEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int ID;
 
-    @Column(nullable = false)
+    @Column()
     private boolean Allergia; //boolean non può essere null
 
     //endregion

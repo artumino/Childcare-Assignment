@@ -30,6 +30,7 @@ public class PediatraDaoImpl extends HibernateDao<Pediatra>
         checkConstraints(item);
         int ID = sessionInstance.insert(item);
         DBHelper.updateManyToManyOwner(item.asContattiBambiniRelation(), Bambino.class, sessionInstance);
+        DBHelper.updateOneToMany(item.asPediatraBambiniRelation(), item.asPediatraBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
 
@@ -42,6 +43,7 @@ public class PediatraDaoImpl extends HibernateDao<Pediatra>
         if(dbEntity != null)
         {
             DBHelper.updateManyToManyOwner(item.asContattiBambiniRelation(), Bambino.class, sessionInstance);
+            DBHelper.updateOneToMany(item.asPediatraBambiniRelation(), dbEntity.asPediatraBambiniRelation(), Bambino.class, sessionInstance);
             sessionInstance.insertOrUpdate(item);
         }
         else
