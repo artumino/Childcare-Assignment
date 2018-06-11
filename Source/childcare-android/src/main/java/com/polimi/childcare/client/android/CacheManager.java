@@ -1,6 +1,7 @@
 package com.polimi.childcare.client.android;
 
 import android.content.Context;
+import com.polimi.childcare.client.android.tuples.BambinoGruppoTuple;
 import com.polimi.childcare.shared.entities.*;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 
@@ -63,19 +64,18 @@ public class CacheManager implements Serializable
         return new ArrayList<>(bambini);
     }
 
-    public List<RegistroPresenze> getPresenze()
+    public List<BambinoGruppoTuple> getPresenze()
     {
-        List<RegistroPresenze> presenzeList = new ArrayList<>(bambini.size());
+        List<BambinoGruppoTuple> presenzeList = new ArrayList<>(bambini.size());
 
         for(Bambino bambino : bambini)
         {
-            RegistroPresenze presenza = null;
+            BambinoGruppoTuple presenza = null;
             if (statoPresenzaHashMap != null && statoPresenzaHashMap.containsKey(bambino))
-                presenza = statoPresenzaHashMap.get(bambino);
+                presenza = new BambinoGruppoTuple(bambino, statoPresenzaHashMap.get(bambino));
             else
-                presenza = new RegistroPresenze(RegistroPresenze.StatoPresenza.Assente, LocalDate.now(), LocalDate.now().atStartOfDay(), (short)0, bambino, currentGita);
+                presenza = new BambinoGruppoTuple(bambino);
 
-            presenza.setBambino(bambino);
             presenzeList.add(presenza);
         }
 

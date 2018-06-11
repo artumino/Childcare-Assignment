@@ -343,6 +343,7 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         }
         else
         {
+            currentGita = null;
             rootPane.getChildren().remove(paneGita);
             RefreshWithoutGita();
         }

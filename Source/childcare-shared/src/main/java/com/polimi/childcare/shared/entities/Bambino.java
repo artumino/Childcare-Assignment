@@ -32,6 +32,9 @@ public class Bambino extends Persona
     @ManyToMany(mappedBy = "bambini", fetch = FetchType.LAZY)
     private Set<Contatto> contatti = new HashSet<>();
 
+    @Column(name = "Gruppo_FK", insertable = false, updatable = false)
+    private Integer gruppo_fk;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "Gruppo_FK")
     private Gruppo gruppo;
@@ -70,6 +73,10 @@ public class Bambino extends Persona
     public Set<Contatto> getContatti()
     {
         return EntitiesHelper.unmodifiableListReturn(contatti);
+    }
+
+    public Integer getGruppoForeignKey() {
+        return gruppo_fk;
     }
 
     @Override

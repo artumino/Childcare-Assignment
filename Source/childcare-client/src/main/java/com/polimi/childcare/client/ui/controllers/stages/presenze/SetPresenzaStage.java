@@ -107,8 +107,11 @@ public class SetPresenzaStage extends NetworkedSubScene implements ISubSceneCont
     {
         networkOperationVault.operationDone(SetPresenzaRequest.class);
 
-        if(StageUtils.HandleResponseError(response, "Errore nell'aggiornare i dati", p -> p.getCode() == 200))
+        if(StageUtils.HandleResponseError(response, "Errore nell'aggiornare i dati", p -> p.getCode() == 200)) {
+            this.loadingLayout.setVisible(false);
+            this.stageController.unlock();
             return;
+        }
 
         this.stageController.unlock();
         this.stageController.requestClose();

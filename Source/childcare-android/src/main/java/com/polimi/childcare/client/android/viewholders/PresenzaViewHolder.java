@@ -2,26 +2,27 @@ package com.polimi.childcare.client.android.viewholders;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.widget.TextView;
 import com.polimi.childcare.client.android.ImageStore;
 import com.polimi.childcare.client.android.R;
+import com.polimi.childcare.client.android.tuples.BambinoGruppoTuple;
 import com.polimi.childcare.client.android.viewholders.annotations.LayoutAnnotation;
-import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 
 import java.util.UUID;
 
 @LayoutAnnotation(LayoutID = R.layout.item_presenza)
-public class BambinoViewHolder extends GenericViewHolder<RegistroPresenze>
+public class PresenzaViewHolder extends GenericViewHolder<BambinoGruppoTuple>
 {
-    public static final String ACTION_TAKE_PICTURE = "BambinoViewHolder.TakePicture";
+    public static final String ACTION_TAKE_PICTURE = "PresenzaViewHolder.TakePicture";
+    public static final String ACTION_CHANGE_PRESENZA = "PresenzaViewHolder.ChangePresenza";
     public static final String EXTRA_UUID = "uuid";
+    public static final String EXTRA_TUPLE_HASHCODE = "tuple_hashcode";
 
-    private RegistroPresenze linkedPresenza;
+    private BambinoGruppoTuple linkedTuple;
 
     private AppCompatImageView imgPreviewBambino;
     private TextView txtNomeCompleto;
@@ -30,14 +31,14 @@ public class BambinoViewHolder extends GenericViewHolder<RegistroPresenze>
     private TextView txtMatricola;
 
 
-    public BambinoViewHolder(View itemView) {
+    public PresenzaViewHolder(View itemView) {
         super(itemView);
     }
 
     @Override
-    public void bindView(RegistroPresenze element)
+    public void bindView(BambinoGruppoTuple element)
     {
-        this.linkedPresenza = element;
+        this.linkedTuple = element;
 
         this.imgPreviewBambino = itemView.findViewById(R.id.imgBambino);
         this.txtNomeCompleto = itemView.findViewById(R.id.txtNomeCognome);
@@ -47,8 +48,14 @@ public class BambinoViewHolder extends GenericViewHolder<RegistroPresenze>
 
         this.imgPreviewBambino.setOnClickListener((view) -> {
             Intent takePictureIntent = new Intent(ACTION_TAKE_PICTURE);
-            takePictureIntent.putExtra(EXTRA_UUID, UUID.nameUUIDFromBytes(String.valueOf(linkedPresenza.getBambino().getID()).getBytes()).toString());
+            takePictureIntent.putExtra(EXTRA_UUID, UUID.nameUUIDFromBytes(String.valueOf(linkedTuple.getLinkedBambino().getID()).getBytes()).toString());
             LocalBroadcastManager.getInstance(itemView.getContext()).sendBroadcast(takePictureIntent);
+        });
+
+        this.txtStato.setOnClickListener((view) -> {
+            Intent changePresenzaIntent = new Intent(ACTION_CHANGE_PRESENZA);
+            changePresenzaIntent.putExtra(EXTRA_TUPLE_HASHCODE, this.linkedTuple.hashCode());
+            LocalBroadcastManager.getInstance(itemView.getContext()).sendBroadcast(changePresenzaIntent);
         });
 
         updateView();
@@ -57,23 +64,23 @@ public class BambinoViewHolder extends GenericViewHolder<RegistroPresenze>
     @Override
     public void updateView()
     {
-        if(this.linkedPresenza != null)
+        if(this.linkedTuple != null)
         {
             this.txtNomeCompleto.setText(String.format("%s %s",
-                    linkedPresenza.getBambino().getNome(),
-                    linkedPresenza.getBambino().getCognome()));
-            this.txtCodiceFiscane.setText(linkedPresenza.getBambino().getCodiceFiscale());
-            this.txtMatricola.setText(String.valueOf(linkedPresenza.getBambino().getID()));
+                    linkedTuple.getLinkedBambino().getNome(),
+                    linkedTuple.getLinkedBambino().getCognome()));
+            this.txtCodiceFiscane.setText(linkedTuple.getLinkedBambino().getCodiceFiscale());
+            this.txtMatricola.setText(String.valueOf(linkedTuple.getLinkedBambino().getID()));
 
-            Bitmap loadedImage = ImageStore.getInstance().GetImage(itemView.getContext(), UUID.nameUUIDFromBytes(String.valueOf(linkedPresenza.getBambino().getID()).getBytes()));
+            Bitmap loadedImage = ImageStore.getInstance().GetImage(itemView.getContext(), UUID.nameUUIDFromBytes(String.valueOf(linkedTuple.getLinkedBambino().getID()).getBytes()));
             if(loadedImage != null)
                 this.imgPreviewBambino.setImageBitmap(loadedImage);
             else
                 this.imgPreviewBambino.setImageDrawable(itemView.getContext().getDrawable(R.drawable.ic_supervisor_account_black_24dp));
 
-            this.txtStato.setText(linkedPresenza.getStato().toString());
+            this.txtStato.setText(linkedTuple.getLinkedPresenza().getStato().toString());
             this.txtStato.setTextColor(0xFFFFFFFF);
-            switch (linkedPresenza.getStato())
+            switch (linkedTuple.getLinkedPresenza().getStato())
             {
                 case Presente:
                     txtStato.setBackgroundColor(0xFF00FF00);
@@ -86,6 +93,9 @@ public class BambinoViewHolder extends GenericViewHolder<RegistroPresenze>
                     break;
                 case UscitoInAnticipo:
                     txtStato.setBackgroundColor(0xFF0000FF);
+                    break;
+                case Uscito:
+                    txtStato.setBackgroundColor(0xFFFF3333);
                     break;
                 default:
                     txtStato.setBackgroundColor(0xFFFF0000);
