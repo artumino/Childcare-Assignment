@@ -34,7 +34,7 @@ public abstract class BaseStageController extends Stage implements ISceneControl
 
     public void requestClose(Object... returnArgs)
     {
-        this.close(returnArgs);
+        this.closeWithArgs(returnArgs);
     }
 
     public void setOnClosingCallback(OnStageClosingCallback onClosingCallback)
@@ -42,7 +42,7 @@ public abstract class BaseStageController extends Stage implements ISceneControl
         this.onClosingCallback = onClosingCallback;
     }
 
-    public final void close(Object... data)
+    public final void closeWithArgs(Object... data)
     {
         if(this.onClosingCallback != null)
             this.onClosingCallback.onResult(data);

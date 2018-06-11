@@ -302,7 +302,13 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
                             item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now())) {
                         //Gita attiva
                         setStyle("-fx-background-color: DarkSeaGreen;");
-                    } else {
+                    }
+                    else if (item.getDataInizio().atStartOfDay().isBefore(LocalDateTime.now().plusDays(1)) &&
+                            item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now().plusDays(1))) {
+                        //Gita attiva
+                        setStyle("-fx-background-color: Gold;");
+                    }
+                    else {
                         setStyle("");
                     }
                 }
