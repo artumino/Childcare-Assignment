@@ -31,6 +31,9 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
         for(Diagnosi diagnosi : diagnosiDaInserire)
             item.unsafeRemoveDiagnosi(diagnosi);
 
+        //Aggiorno i contatti
+        Set<Contatto> contattiDaAggiornare = item.getContatti();
+
         int ID = sessionInstance.insert(item);
 
         for(Diagnosi diagnosi : diagnosiDaInserire)
@@ -39,10 +42,20 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
             DaoFactory.getInstance().getDao(Diagnosi.class, sessionInstance).insert(diagnosi);
         }
 
+        for(Contatto contatto : contattiDaAggiornare)
+        {
+            Contatto dbContatto = sessionInstance.getByID(Contatto.class, contatto.getID());
+            if(dbContatto != null)
+            {
+                dbContatto.addBambino(item);
+                sessionInstance.update(dbContatto);
+            }
+        }
+
         DBHelper.updateManyToOne(item.asBambiniPediatraRelation(), Pediatra.class, sessionInstance);
         DBHelper.updateManyToOne(item.asBambiniGruppoRelation(), Gruppo.class, sessionInstance);
         DBHelper.updateManyToManyOwner(item.asBambiniGenitoriRelation(), Genitore.class, sessionInstance);
-        DBHelper.updateManyToManyOwned(item.asBambiniContattiRelation(), item.asBambiniContattiRelation(), Contatto.class, sessionInstance);
+        //DBHelper.updateManyToManyOwned(item.asBambiniContattiRelation(), item.asBambiniContattiRelation(), Contatto.class, sessionInstance);
         //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), item.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         return ID;
     }

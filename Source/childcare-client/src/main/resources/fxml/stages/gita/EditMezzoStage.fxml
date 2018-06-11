@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.gita.EditMezzoStageController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="524.0" prefWidth="459.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.polimi.childcare.client.ui.controllers.stages.gita.EditMezzoStageController">
    <children>
       <TabPane fx:id="layoutTabPane" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="458.0" prefWidth="441.0" stylesheets="@../../stylesheets/material-fx-v0_3.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <tabs>
@@ -24,7 +24,7 @@
                         <VBox layoutX="140.0" layoutY="47.0" prefHeight="200.0" prefWidth="100.0" spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <LabelTextViewComponent fx:id="txtTarga" labelPercentWidth="32.0" labelText="Targa" />
-                              <LabelTextViewComponent fx:id="txtNumeroIdentificativo" labelPercentWidth="32.0" labelText="Numero Identificativo" />
+                              <LabelTextViewComponent fx:id="txtNumeroIdentificativo" labelPercentWidth="32.0" labelText="N° Identificativo" />
                               <HBox prefHeight="47.0" prefWidth="429.0">
                                  <children>
                                     <LabelTextViewComponent fx:id="txtCostoOrario" labelPercentWidth="34.0" labelText="Costo Orario" prefWidth="460.0" />
@@ -32,7 +32,7 @@
                                  </children>
                               </HBox>
                               <LabelTextViewComponent fx:id="txtCapienza" labelPercentWidth="32.0" labelText="Capienza" />
-                              <Label prefHeight="14.0" prefWidth="57.0" text="Fornitore" />
+                              <Label prefHeight="14.0" text="Fornitore" />
                               <DragAndDropTableView fx:id="tableFornitore" maximumRows="1" prefHeight="130.0" prefWidth="429.0" tableMenuButtonVisible="true">
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
