@@ -4,6 +4,7 @@ import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
 import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Bambino;
+import com.polimi.childcare.shared.entities.Diagnosi;
 import com.polimi.childcare.shared.entities.Genitore;
 
 import java.util.Set;
@@ -33,6 +34,7 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
     {
         checkConstraints(item);
         int ID = sessionInstance.insert(item);
+        //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), item.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         DBHelper.updateManyToManyOwned(item.asGenitoriBambiniRelation(), item.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
         return ID;
     }
@@ -46,6 +48,7 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
         if(dbEntity != null)
         {
             DBHelper.updateManyToManyOwned(item.asGenitoriBambiniRelation(), dbEntity.asGenitoriBambiniRelation(), Bambino.class, sessionInstance);
+            //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), dbEntity.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
             sessionInstance.insertOrUpdate(item);
         }
         else

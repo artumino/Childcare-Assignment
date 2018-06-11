@@ -137,7 +137,7 @@ public class ContattiSubmenuController extends AnagraficaSubmenuBase<Contatto>
             editContattoController.setContentScene(getClass().getClassLoader().getResource(EditContattoStageController.FXML_PATH), contatto);
             //setPresenzeStage.initOwner(getRoot().getScene().getWindow());
             editContattoController.setOnClosingCallback((returnArgs) -> {
-                //Niente
+                refreshData();
             });
             editContattoController.show();
         } catch (IOException e) {

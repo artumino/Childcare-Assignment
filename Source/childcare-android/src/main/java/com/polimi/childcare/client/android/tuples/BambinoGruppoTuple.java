@@ -4,9 +4,10 @@ import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Gruppo;
 import com.polimi.childcare.shared.entities.RegistroPresenze;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class BambinoGruppoTuple
+public class BambinoGruppoTuple implements Serializable
 {
     private Bambino linkedBambino;
     private RegistroPresenze linkedPresenza;

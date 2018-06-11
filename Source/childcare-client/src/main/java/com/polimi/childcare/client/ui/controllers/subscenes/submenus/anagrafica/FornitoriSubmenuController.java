@@ -133,7 +133,7 @@ public class FornitoriSubmenuController extends AnagraficaSubmenuBase<Fornitore>
             ChildcareBaseStageController editFornitoreController = new ChildcareBaseStageController();
             editFornitoreController.setContentScene(getClass().getClassLoader().getResource(EditFornitoreStageController.FXML_PATH), fornitore);
             editFornitoreController.setOnClosingCallback((returnArgs) -> {
-                //Niente
+                refreshData();
             });
             editFornitoreController.show();
         } catch (IOException e) {

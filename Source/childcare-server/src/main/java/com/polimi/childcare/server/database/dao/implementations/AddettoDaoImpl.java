@@ -2,7 +2,9 @@ package com.polimi.childcare.server.database.dao.implementations;
 
 import com.polimi.childcare.server.database.DatabaseSession;
 import com.polimi.childcare.server.database.dao.HibernateDao;
+import com.polimi.childcare.server.helper.DBHelper;
 import com.polimi.childcare.shared.entities.Addetto;
+import com.polimi.childcare.shared.entities.Diagnosi;
 
 public class AddettoDaoImpl extends HibernateDao<Addetto>
 {
@@ -22,6 +24,7 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
     {
         checkConstraints(item);
         int ID = sessionInstance.insert(item);
+        //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), item.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
         return ID;
     }
 
@@ -32,8 +35,10 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
         Addetto dbEntity = sessionInstance.getByID(Addetto.class, item.getID());
 
         if(dbEntity != null)
+        {
+            //DBHelper.updateOneToMany(item.asPersonaDiagnosiRelation(), dbEntity.asPersonaDiagnosiRelation(), Diagnosi.class, sessionInstance);
             sessionInstance.insertOrUpdate(item);
-
+        }
         else
             insert(item);
 

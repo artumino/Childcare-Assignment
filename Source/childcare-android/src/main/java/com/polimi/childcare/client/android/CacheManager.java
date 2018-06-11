@@ -2,7 +2,10 @@ package com.polimi.childcare.client.android;
 
 import android.content.Context;
 import com.polimi.childcare.client.android.tuples.BambinoGruppoTuple;
+import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
+import com.polimi.childcare.client.shared.networking.NetworkOperation;
 import com.polimi.childcare.shared.entities.*;
+import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
 
 import java.io.*;
@@ -30,13 +33,11 @@ public class CacheManager implements Serializable
     {
         return (_instance != null) ? _instance :
                 ((_instance = loadFromDisk(context)) != null ?
-                                _instance : (_instance = new CacheManager()));
+                                _instance : (_instance = new CacheManager(context)));
     }
 
-    CacheManager()
-    {
-
-    }
+    //Persistent Networking
+    private ArrayList<NetworkOperation> persistentOperations = new ArrayList<>();
 
     private ArrayList<Bambino> bambini = new ArrayList<>();
     private HashMap<Bambino, RegistroPresenze> statoPresenzaHashMap = new HashMap<>();
@@ -48,6 +49,19 @@ public class CacheManager implements Serializable
     private long utcGuppiUpdateInstant = 0;
     private long utcCurrentGitaUpdateInstant = 0;
     private long utcLastUpdate = 0;
+
+    private transient List<BambinoGruppoTuple> tupleGenerate;
+    private transient long lastPresenzaConstructionInstant = 0;
+
+    private transient HashMap<NetworkOperation, NetworkOperation.INetworkOperationCallback> callbackHashMap = new HashMap<>();
+
+    private transient Context context;
+
+    CacheManager(Context context)
+    {
+        this.tupleGenerate = new ArrayList<>();
+        this.context = context;
+    }
 
     public LocalDateTime getLastUpdate()
     {
@@ -66,6 +80,9 @@ public class CacheManager implements Serializable
 
     public List<BambinoGruppoTuple> getPresenze()
     {
+        if(lastPresenzaConstructionInstant > utcLastUpdate)
+            return new ArrayList<>(tupleGenerate);
+
         List<BambinoGruppoTuple> presenzeList = new ArrayList<>(bambini.size());
 
         for(Bambino bambino : bambini)
@@ -78,6 +95,9 @@ public class CacheManager implements Serializable
 
             presenzeList.add(presenza);
         }
+
+        tupleGenerate = new ArrayList<>(presenzeList);
+        lastPresenzaConstructionInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
 
         return presenzeList;
     }
@@ -93,36 +113,36 @@ public class CacheManager implements Serializable
 
     public HashMap<Bambino,RegistroPresenze> getStatoPresenzaHashMap() { return new HashMap<>(statoPresenzaHashMap); }
 
-    public void replaceBambini(Context context, List<Bambino> bambini)
+    public void replaceBambini(List<Bambino> bambini)
     {
         this.bambini = new ArrayList<>(bambini);
         utcBambiniUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
         utcLastUpdate = utcBambiniUpdateInstant;
-        updateState(context);
+        updateState();
     }
 
-    public void replaceStatoPresenzeMap(Context context, HashMap<Bambino, RegistroPresenze> statoPresenzaHashMap)
+    public void replaceStatoPresenzeMap(HashMap<Bambino, RegistroPresenze> statoPresenzaHashMap)
     {
         this.statoPresenzaHashMap = new HashMap<>(statoPresenzaHashMap);
         utcPresenzaHashmapUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
         utcLastUpdate = utcPresenzaHashmapUpdateInstant;
-        updateState(context);
+        updateState();
     }
 
-    public void replaceGruppi(Context context, List<Gruppo> gruppi)
+    public void replaceGruppi(List<Gruppo> gruppi)
     {
         this.gruppi = new ArrayList<>(gruppi);
         utcGuppiUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
         utcLastUpdate = utcGuppiUpdateInstant;
-        updateState(context);
+        updateState();
     }
 
-    public void replaceCurrentGita(Context context, Gita gita)
+    public void replaceCurrentGita(Gita gita)
     {
         this.currentGita = gita;
         utcCurrentGitaUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
         utcLastUpdate = utcCurrentGitaUpdateInstant;
-        updateState(context);
+        updateState();
     }
 
     public HashMap<Integer, MezzoDiTrasporto> getGruppiToMezzoDiTraspostoMap()
@@ -136,11 +156,18 @@ public class CacheManager implements Serializable
         return integerMezzoDiTrasportoHashMap;
     }
 
+    public void submitPersistentNetworkOperation(NetworkOperation operation)
+    {
+        persistentOperations.add(operation);
+        operation.setCallback(response -> PersistedNetworkOperationCompleted(operation, response));
+        ClientNetworkManager.getInstance().submitOperation(operation);
+        updateState();
+    }
+
     /**
      * Salvo lo stato della classe su disco
-     * @param context Contesto Android dell'applicazione
      */
-    private void updateState(Context context)
+    private void updateState()
     {
         FileOutputStream fileOutputStream = null;
         try {
@@ -162,6 +189,24 @@ public class CacheManager implements Serializable
                 e.printStackTrace();
             }
         }
+    }
+
+    private void registerAllPersistedNetworkOperations()
+    {
+        for(NetworkOperation operation : persistentOperations)
+        {
+            operation.setCallback(response -> PersistedNetworkOperationCompleted(operation, response));
+            ClientNetworkManager.getInstance().submitOperation(operation);
+        }
+    }
+
+    private void PersistedNetworkOperationCompleted(NetworkOperation operation, BaseResponse response)
+    {
+        persistentOperations.remove(operation);
+        if(callbackHashMap.containsKey(operation))
+            callbackHashMap.get(operation).OnResult(response);
+        callbackHashMap.remove(operation);
+        updateState();
     }
 
     private static CacheManager loadFromDisk(Context context)
@@ -192,6 +237,12 @@ public class CacheManager implements Serializable
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+
+        if(storedCacheManager != null)
+        {
+            storedCacheManager.context = context;
+            storedCacheManager.registerAllPersistedNetworkOperations();
         }
 
         return storedCacheManager;

@@ -4,7 +4,9 @@ import com.polimi.childcare.shared.networking.requests.BaseRequest;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import javafx.application.Platform;
 
-public class NetworkOperation
+import java.io.Serializable;
+
+public class NetworkOperation implements Serializable
 {
     public interface INetworkOperationCallback
     {
@@ -12,7 +14,7 @@ public class NetworkOperation
     }
 
     private final Object callbackMutex = new Object();
-    private INetworkOperationCallback callback;
+    private transient INetworkOperationCallback callback;
     private BaseRequest request;
     private boolean runOnUiThread;
 
