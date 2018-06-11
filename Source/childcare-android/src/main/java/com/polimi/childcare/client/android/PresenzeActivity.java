@@ -19,6 +19,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,14 +38,19 @@ import com.polimi.childcare.client.android.adapters.GenericViewHolderAdapter;
 import com.polimi.childcare.client.android.viewholders.BambinoViewHolder;
 import com.polimi.childcare.client.shared.networking.ClientNetworkManager;
 import com.polimi.childcare.client.shared.networking.NetworkOperation;
+import com.polimi.childcare.client.shared.networking.NetworkOperationVault;
 import com.polimi.childcare.client.shared.qrcode.BambinoQRUnit;
 import com.polimi.childcare.shared.entities.Bambino;
 import com.polimi.childcare.shared.entities.Persona;
+import com.polimi.childcare.shared.entities.RegistroPresenze;
 import com.polimi.childcare.shared.networking.requests.filtered.FilteredBambiniRequest;
+import com.polimi.childcare.shared.networking.requests.special.FilteredLastPresenzaRequest;
 import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import com.polimi.childcare.shared.networking.responses.lists.ListBambiniResponse;
+import com.polimi.childcare.shared.networking.responses.lists.ListRegistroPresenzeResponse;
 import com.polimi.childcare.shared.serialization.SerializationUtils;
+import com.polimi.childcare.shared.utils.EntitiesHelper;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 import java.time.LocalDateTime;
@@ -73,18 +79,23 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
     private Handler animationHandler;
 
     //Gestione Presenze
-    private GenericViewHolderAdapter<Bambino,BambinoViewHolder> presenzeAdapter;
+    private GenericViewHolderAdapter<RegistroPresenze,BambinoViewHolder> presenzeAdapter;
     private LinearLayoutManager presenzeLayoutManager;
-    private NetworkOperation requestPresenzeUpdate;
+    private NetworkOperationVault networkOperationVault;
 
     //Take Picture
     private UUID currentTakePictureID;
+
+    //Refresh Layout
+    private SwipeRefreshLayout refreshLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.presenze_screen);
+
+        networkOperationVault = new NetworkOperationVault();
 
         this.fabScanQRCode = findViewById(R.id.fabScanQr);
         this.listPresenze = findViewById(R.id.listPresenze);
@@ -99,6 +110,8 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         this.txtSurname = findViewById(R.id.txtSurname);
         this.txtFiscalCode = findViewById(R.id.txtFiscalCode);
         this.txtDate = findViewById(R.id.txtDate);
+
+        this.refreshLayout = findViewById(R.id.swiperefresh);
 
         //Animazioni
         this.layoutQrDetails.setAlpha(0f);
@@ -138,18 +151,35 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         });
 
         this.listPresenze.setLayoutManager((presenzeLayoutManager = new LinearLayoutManager(this)));
-        this.listPresenze.setAdapter((presenzeAdapter = new GenericViewHolderAdapter<>(BambinoViewHolder.class, Bambino.class, CacheManager.getInstance(this).getBambini(),
-                Comparator.comparingInt((ToIntFunction<Bambino>) Persona::getID))));
+        this.listPresenze.setAdapter((presenzeAdapter = new GenericViewHolderAdapter<>(BambinoViewHolder.class, RegistroPresenze.class, CacheManager.getInstance(this).getPresenze(),
+                (o1, o2) -> Integer.compare(o1.getBambino().getID(), o2.getBambino().getID()))));
 
+        RefreshData();
+
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                RefreshData();
+                refreshLayout.setRefreshing(false);
+            }
+        });
+        LocalBroadcastManager.getInstance(this).registerReceiver(takePictureReciver, new IntentFilter(BambinoViewHolder.ACTION_TAKE_PICTURE));
+    }
+
+    private void RefreshData()
+    {
         //Se non sto cercando di aggiornare la lista presenze
-        if(requestPresenzeUpdate == null)
+        if(!networkOperationVault.operationRunning(FilteredBambiniRequest.class))
         {
-            requestPresenzeUpdate = new NetworkOperation(new FilteredBambiniRequest(0, 0, false),
-                                                        this::OnPresenzeUpdate, false);
-            ClientNetworkManager.getInstance().submitOperation(requestPresenzeUpdate);
+            networkOperationVault.submitOperation(new NetworkOperation(new FilteredBambiniRequest(0, 0, false),
+                    this::OnPresenzeUpdate, false));
         }
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(takePictureReciver, new IntentFilter(BambinoViewHolder.ACTION_TAKE_PICTURE));
+        if(!networkOperationVault.operationRunning(FilteredLastPresenzaRequest.class))
+        {
+            networkOperationVault.submitOperation(new NetworkOperation(new FilteredLastPresenzaRequest(0, 0, false),
+                    this::OnLastPresenzeUpdate, false));
+        }
     }
 
     @Override
@@ -258,6 +288,8 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
     private void OnPresenzeUpdate(BaseResponse response)
     {
+        networkOperationVault.operationDone(FilteredBambiniRequest.class);
+
         if(response instanceof BadRequestResponse)
             Toast.makeText(this, "Errore durante la connessione al server per aggiornare le presenze", Toast.LENGTH_LONG).show();
 
@@ -265,11 +297,25 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         {
             CacheManager.getInstance(this).replaceBambini(this, ((ListBambiniResponse) response).getPayload());
             runOnUiThread(() -> {
-                this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getBambini());
+                this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
             });
         }
+    }
 
-        this.requestPresenzeUpdate = null;
+    private void OnLastPresenzeUpdate(BaseResponse response)
+    {
+        networkOperationVault.operationDone(FilteredLastPresenzaRequest.class);
+
+        if(response instanceof BadRequestResponse)
+            Toast.makeText(this, "Errore durante la connessione al server per aggiornare le presenze", Toast.LENGTH_LONG).show();
+
+        if(response instanceof ListRegistroPresenzeResponse)
+        {
+            CacheManager.getInstance(this).replaceStatoPresenzeMap(this, EntitiesHelper.presenzeToSearchMap(((ListRegistroPresenzeResponse) response).getPayload()));
+            runOnUiThread(() -> {
+                this.presenzeAdapter.replaceAll(CacheManager.getInstance(this).getPresenze());
+            });
+        }
     }
 
     @Override
@@ -341,37 +387,37 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private List<Bambino> filter(List<Bambino> bambini, String query)
+    private List<RegistroPresenze> filter(List<RegistroPresenze> presenze, String query)
     {
         if(query == null || query.isEmpty())
-            return bambini;
+            return presenze;
 
         final String lowerCaseQuery = query.trim().toLowerCase();
         final boolean spaced = lowerCaseQuery.trim().contains(" ");
-        final List<Bambino> filteredModelList = new ArrayList<>();
-        for (Bambino bambino : bambini)
+        final List<RegistroPresenze> filteredModelList = new ArrayList<>();
+        for (RegistroPresenze presenza : presenze)
         {
             try
             {
                 //Se è un numero filtro per matricola
                 Integer.parseInt(query);
-                if(String.valueOf(bambino.getID()).contains(query))
-                    filteredModelList.add(bambino);
+                if(String.valueOf(presenza.getBambino().getID()).contains(query))
+                    filteredModelList.add(presenza);
             }
             catch(NumberFormatException ex)
             {
                 //Se non è un numero filtro per Nome, Cognome e Codice Fiscale
 
-                if (bambino.getNome().toLowerCase().contains(lowerCaseQuery)
-                        || bambino.getCognome().toLowerCase().contains(lowerCaseQuery)
-                        || bambino.getCodiceFiscale().toLowerCase().contains(lowerCaseQuery))
-                    filteredModelList.add(bambino);
+                if (presenza.getBambino().getNome().toLowerCase().contains(lowerCaseQuery)
+                        || presenza.getBambino().getCognome().toLowerCase().contains(lowerCaseQuery)
+                        || presenza.getBambino().getCodiceFiscale().toLowerCase().contains(lowerCaseQuery))
+                    filteredModelList.add(presenza);
 
-                if(!filteredModelList.contains(bambino) &&
+                if(!filteredModelList.contains(presenza) &&
                         spaced  &&
-                        ((bambino.getNome().toLowerCase() + " " + bambino.getCognome().toLowerCase()).contains(lowerCaseQuery)
-                           || (bambino.getCognome().toLowerCase() + " " + bambino.getNome().toLowerCase()).contains(lowerCaseQuery)))
-                    filteredModelList.add(bambino);
+                        ((presenza.getBambino().getNome().toLowerCase() + " " + presenza.getBambino().getCognome().toLowerCase()).contains(lowerCaseQuery)
+                           || (presenza.getBambino().getCognome().toLowerCase() + " " + presenza.getBambino().getNome().toLowerCase()).contains(lowerCaseQuery)))
+                    filteredModelList.add(presenza);
             }
 
         }
@@ -381,7 +427,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
     @Override
     public boolean onQueryTextChange(String query)
     {
-        final List<Bambino> filteredModelList = filter(CacheManager.getInstance(this).getBambini(), query);
+        final List<RegistroPresenze> filteredModelList = filter(CacheManager.getInstance(this).getPresenze(), query);
         presenzeAdapter.replaceAll(filteredModelList);
         listPresenze.scrollToPosition(0);
         return true;
@@ -391,5 +437,11 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
     public boolean onQueryTextSubmit(String query)
     {
         return false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        networkOperationVault.abortAllOperations();
     }
 }
