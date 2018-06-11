@@ -48,11 +48,11 @@ public class PediatraDaoImpl extends HibernateDao<Pediatra>
             insert(item);
     }
 
-    private void checkConstraints(Pediatra gruppo)
+    private void checkConstraints(Pediatra pediatra)
     {
-        if(gruppo.getNome() == null ||
-                gruppo.getCognome() == null ||
-                gruppo.getIndirizzo() == null)
+        if(pediatra.getNome() == null ||
+                pediatra.getCognome() == null ||
+                pediatra.getIndirizzo() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }

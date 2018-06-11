@@ -48,18 +48,19 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
 
     }
 
-    private void checkConstraints(Bambino gruppo)
+    private void checkConstraints(Bambino bambino)
     {
-        if (gruppo.getNome() == null ||
-                gruppo.getCognome() == null ||
-                gruppo.getCodiceFiscale() == null ||
-                gruppo.getDataNascita() == null ||
-                gruppo.getStato() == null ||
-                gruppo.getComune() == null ||
-                gruppo.getProvincia() == null ||
-                gruppo.getCittadinanza() == null ||
-                gruppo.getResidenza() == null ||
-                gruppo.getSesso() == null)
+        if (bambino.getNome() == null ||
+                bambino.getCognome() == null ||
+                bambino.getCodiceFiscale() == null ||
+                bambino.getDataNascita() == null ||
+                bambino.getStato() == null ||
+                bambino.getComune() == null ||
+                bambino.getProvincia() == null ||
+                bambino.getCittadinanza() == null ||
+                bambino.getResidenza() == null ||
+                bambino.getSesso() == null ||
+                bambino.getGenitori().size() == 0)
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }

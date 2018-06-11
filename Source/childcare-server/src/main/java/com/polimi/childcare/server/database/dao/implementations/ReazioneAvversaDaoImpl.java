@@ -43,9 +43,9 @@ public class ReazioneAvversaDaoImpl extends HibernateDao<ReazioneAvversa>
 
     }
 
-    private void checkConstraints(ReazioneAvversa gruppo)
+    private void checkConstraints(ReazioneAvversa reazioneAvversa)
     {
-        if(gruppo.getNome() == null)
+        if(reazioneAvversa.getNome() == null)
             throw new RuntimeException("Nome Null!");
     }
 }

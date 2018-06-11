@@ -49,11 +49,11 @@ public class ContattoDaoImpl extends HibernateDao<Contatto>
 
     }
 
-    private void checkConstraints(Contatto gruppo)
+    private void checkConstraints(Contatto contatto)
     {
-        if(gruppo.getNome() == null ||
-                gruppo.getCognome() == null ||
-                gruppo.getIndirizzo() == null)
+        if(contatto.getNome() == null ||
+                contatto.getCognome() == null ||
+                contatto.getIndirizzo() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }

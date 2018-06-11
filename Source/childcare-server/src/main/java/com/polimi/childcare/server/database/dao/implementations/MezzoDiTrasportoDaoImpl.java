@@ -52,9 +52,9 @@ public class MezzoDiTrasportoDaoImpl extends HibernateDao<MezzoDiTrasporto>
             insert(item);
     }
 
-    private void checkConstraints(MezzoDiTrasporto gruppo)
+    private void checkConstraints(MezzoDiTrasporto mezzoDiTrasporto)
     {
-        if(gruppo.getFornitore() == null || gruppo.getTarga() == null)
+        if(mezzoDiTrasporto.getFornitore() == null || mezzoDiTrasporto.getTarga() == null)
             throw new RuntimeException("Fornitore e/o Targa Nullo!");
     }
 }

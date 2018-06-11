@@ -52,9 +52,9 @@ public class PianoViaggiDaoImpl extends HibernateDao<PianoViaggi>
             insert(item);
     }
 
-    private void checkConstraints(PianoViaggi gruppo)
+    private void checkConstraints(PianoViaggi pianoViaggi)
     {
-        if(gruppo.getGruppo() == null || gruppo.getGita() == null)
+        if(pianoViaggi.getGruppo() == null || pianoViaggi.getGita() == null)
             throw new RuntimeException("Gita e/o Gruppo nulli!");
     }
 

@@ -39,18 +39,18 @@ public class AddettoDaoImpl extends HibernateDao<Addetto>
 
     }
 
-    private void checkConstraints(Addetto gruppo)
+    private void checkConstraints(Addetto addetto)
     {
-        if (gruppo.getNome() == null ||
-                gruppo.getCognome() == null ||
-                gruppo.getCodiceFiscale() == null ||
-                gruppo.getDataNascita() == null ||
-                gruppo.getStato() == null ||
-                gruppo.getComune() == null ||
-                gruppo.getProvincia() == null ||
-                gruppo.getCittadinanza() == null ||
-                gruppo.getResidenza() == null ||
-                gruppo.getSesso() == null)
+        if (addetto.getNome() == null ||
+                addetto.getCognome() == null ||
+                addetto.getCodiceFiscale() == null ||
+                addetto.getDataNascita() == null ||
+                addetto.getStato() == null ||
+                addetto.getComune() == null ||
+                addetto.getProvincia() == null ||
+                addetto.getCittadinanza() == null ||
+                addetto.getResidenza() == null ||
+                addetto.getSesso() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
     }
 }
