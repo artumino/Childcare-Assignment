@@ -43,6 +43,8 @@ public class CacheManager implements Serializable
     private HashMap<Bambino, RegistroPresenze> statoPresenzaHashMap = new HashMap<>();
     private ArrayList<Gruppo> gruppi = new ArrayList<>();
     private Gita currentGita;
+    private String lastConnectionAddress;
+
 
     private long utcBambiniUpdateInstant = 0;
     private long utcPresenzaHashmapUpdateInstant = 0;
@@ -109,6 +111,10 @@ public class CacheManager implements Serializable
     }
     */
 
+    public String getLastConnectionAddress() {
+        return lastConnectionAddress;
+    }
+
     public Gita getCurrentGita() {
         return this.currentGita;
     }
@@ -136,6 +142,12 @@ public class CacheManager implements Serializable
         this.currentGita = gita;
         utcCurrentGitaUpdateInstant = LocalDateTime.now().toInstant(ZoneOffset.UTC).getEpochSecond();
         utcLastUpdate = utcCurrentGitaUpdateInstant;
+        updateState();
+    }
+
+    public void replaceLastConnectionAddress(String address)
+    {
+        this.lastConnectionAddress = address;
         updateState();
     }
 

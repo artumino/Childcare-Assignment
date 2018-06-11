@@ -402,6 +402,7 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
             //Invia la richiesta di reset al server
             networkOperationVault.submitOperation(new NetworkOperation(new StartPresenzaCheckRequest(currentGita), response -> {
+                networkOperationVault.operationDone(StartPresenzaCheckRequest.class);
                 RefreshData();
             }, false));
         }
@@ -447,17 +448,17 @@ public class PresenzeActivity extends AppCompatActivity implements ZXingScannerV
 
     private void OnCurrentGitaUpdate(BaseResponse response)
     {
-        networkOperationVault.operationDone(FilteredLastPresenzaRequest.class);
+        networkOperationVault.operationDone(GetCurrentGitaRequest.class);
 
         if(!(response instanceof ListGitaResponse))
             runOnUiThread(() -> Toast.makeText(this, "Errore durante la connessione al server per aggiornare le presenze", Toast.LENGTH_LONG).show());
         else
         {
             if(((ListGitaResponse) response).getPayload().size() > 0)
-            {
                 CacheManager.getInstance(this).replaceCurrentGita(((ListGitaResponse) response).getPayload().get(0));
-                runOnUiThread(this::checkForGita);
-            }
+            else
+                CacheManager.getInstance(this).replaceCurrentGita(null);
+            runOnUiThread(this::checkForGita);
         }
     }
 

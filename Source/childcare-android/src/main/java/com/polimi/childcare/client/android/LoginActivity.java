@@ -64,6 +64,9 @@ public class LoginActivity extends AppCompatActivity {
             layoutConnection.animate().translationY(0).setStartDelay(1500).setDuration(500).start();
         }
 
+        if(txtServerAddress != null && CacheManager.getInstance(this).getLastConnectionAddress() != null)
+            txtServerAddress.setText(CacheManager.getInstance(this).getLastConnectionAddress());
+
         if(canRunOffline())
             btnConnect.setText("Avvia (Offline)");
 
@@ -94,7 +97,10 @@ public class LoginActivity extends AppCompatActivity {
             AsyncTask.execute(() ->
             {
                 if (ClientNetworkManager.getInstance().tryConnect(txtServerAddress.getText().toString(), 55403))
+                {
+                    CacheManager.getInstance(this).replaceLastConnectionAddress(txtServerAddress.getText().toString());
                     unlockApplication();
+                }
                 else
                 {
                     if(canRunOffline())
