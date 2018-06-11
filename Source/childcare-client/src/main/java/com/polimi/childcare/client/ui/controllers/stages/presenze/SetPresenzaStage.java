@@ -60,6 +60,10 @@ public class SetPresenzaStage extends NetworkedSubScene implements ISubSceneCont
             }
 
             this.linkedRegistroPresenza = (RegistroPresenze)args[0];
+
+            if(linkedRegistroPresenza.getID() != 0)
+                this.pickerEventHour.setDisable(true);
+
             this.stageController.requestSetTitle("Aggiorna - " + linkedRegistroPresenza.getBambino().getNome() + " " + linkedRegistroPresenza.getBambino().getCognome());
 
             for(RegistroPresenze.StatoPresenza presenza : RegistroPresenze.StatoPresenza.values())
@@ -84,6 +88,7 @@ public class SetPresenzaStage extends NetworkedSubScene implements ISubSceneCont
             this.loadingLayout.setVisible(true);
 
             RegistroPresenze newPresenza = new RegistroPresenze();
+            newPresenza.unsafeSetID(linkedRegistroPresenza.getID());
             newPresenza.setBambino(linkedRegistroPresenza.getBambino());
             newPresenza.setGita(linkedRegistroPresenza.getGita());
             newPresenza.setDate(linkedRegistroPresenza.getDate());
@@ -108,12 +113,6 @@ public class SetPresenzaStage extends NetworkedSubScene implements ISubSceneCont
         this.stageController.unlock();
         this.stageController.requestClose();
         this.loadingLayout.setVisible(false);
-    }
-
-    @Override
-    public void detached()
-    {
-
     }
 
     @Override

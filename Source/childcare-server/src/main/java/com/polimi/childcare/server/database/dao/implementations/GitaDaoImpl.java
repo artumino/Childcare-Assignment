@@ -52,16 +52,14 @@ public class GitaDaoImpl extends HibernateDao<Gita>
     public int insert(Gita item)
     {
         checkConstraints(item);
-        int ID = sessionInstance.insert(item);
 
-        //Sistemo le tappe
-        //for(Tappa tappa : item.getTappe())
-        //{
-        //    tappa.setGita(item);
-        //    sessionInstance.update(tappa);
-        //}
+        //Non posso avere tappe nell'inserimento
+        Set<Tappa> tappe = item.getTappe();
+        if(tappe != null)
+            for (Tappa tappa : tappe)
+                item.unsafeRemoveTappa(tappa);
 
-        return ID;
+        return sessionInstance.insert(item);
     }
 
     @Override

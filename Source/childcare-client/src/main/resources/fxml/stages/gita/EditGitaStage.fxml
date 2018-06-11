@@ -68,7 +68,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="tabGite" text="Tappe">
+            <Tab fx:id="tabTappe" text="Tappe">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

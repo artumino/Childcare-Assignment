@@ -1,6 +1,7 @@
 package com.polimi.childcare.server.handlers.entities.special;
 
 import com.polimi.childcare.server.database.DatabaseSession;
+import com.polimi.childcare.server.database.dao.implementations.RegistroPresenzeDaoImpl;
 import com.polimi.childcare.server.handlers.entities.getters.FilteredRequestHandler;
 import com.polimi.childcare.shared.dto.DTOUtils;
 import com.polimi.childcare.shared.entities.Bambino;
@@ -29,44 +30,8 @@ public class FilteredLastPresenzaRequestHandler extends FilteredRequestHandler<F
 
         List<RegistroPresenze> list = new ArrayList<>();
 
-        /*
-        Query eseguita:
-
-        SELECT *
-        FROM RegistroPresenze
-        WHERE (Bambino_FK, TimeStamp) IN (
-          SELECT Bambino_FK, MAX(TimeStamp) as `TimeStamp`
-          FROM RegistroPresenze
-          WHERE TimeStamp > DateTime.Date.Now
-          GROUP BY Bambino_FK
-        )
-         */
         DatabaseSession.getInstance().execute(session -> {
-            CriteriaBuilder queryBuilder = session.getSession().getCriteriaBuilder();
-
-            CriteriaQuery<Object[]> subQuery = queryBuilder.createQuery(Object[].class);
-            Root<RegistroPresenze> registroPresenzeRoot = subQuery.from(RegistroPresenze.class);
-            subQuery.multiselect(
-                    registroPresenzeRoot.get("bambino"),
-                    queryBuilder.max(registroPresenzeRoot.get("TimeStamp"))
-            );
-            subQuery.where(queryBuilder.greaterThanOrEqualTo(registroPresenzeRoot.get("TimeStamp"), LocalDateTime.now().toLocalDate().atStartOfDay()));
-            subQuery.groupBy(registroPresenzeRoot.get("bambino"));
-            Iterator<Object[]> objects = session.getSession().createQuery(subQuery).getResultStream().iterator();
-
-            while(objects.hasNext())
-            {
-                Object[] tuple = objects.next();
-
-                CriteriaQuery<RegistroPresenze> criteriaSelectIn = queryBuilder.createQuery(RegistroPresenze.class);
-                Root<RegistroPresenze> criteriaSelectFrom = criteriaSelectIn.from(RegistroPresenze.class);
-                Path<Bambino> bambino = criteriaSelectFrom.get("bambino");
-                Path<LocalDateTime> timestamp = criteriaSelectFrom.get("TimeStamp");
-                criteriaSelectIn.where(queryBuilder.equal(bambino, tuple[0]), queryBuilder.equal(timestamp, tuple[1]));
-                CollectionUtils.addAll(list, session.getSession().createQuery(criteriaSelectIn).getResultStream().iterator());
-            }
-
-
+            CollectionUtils.addAll(list, new RegistroPresenzeDaoImpl(session).getLastPresenze());
             return true;
         });
 

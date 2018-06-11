@@ -57,6 +57,7 @@ public class EditGitaStageController extends NetworkedSubScene implements ISubSc
     @FXML private ListView<Tappa> listTappe;
     @FXML private Button btnAddTappa;
     @FXML private Button btnRemoveTappa;
+    @FXML private Tab tabTappe;
 
     @FXML private Button btnSalva;
     @FXML private Button btnElimina;
@@ -96,6 +97,10 @@ public class EditGitaStageController extends NetworkedSubScene implements ISubSc
                         },
                         true));
             }
+
+            //Non posso inserire tappe ad una gita appena creata
+            if(linkedGita == null || linkedGita.getID() == 0)
+                layoutTabPane.getTabs().remove(tabTappe);
 
             //Tabelle Generali
             printGitaDetails();
