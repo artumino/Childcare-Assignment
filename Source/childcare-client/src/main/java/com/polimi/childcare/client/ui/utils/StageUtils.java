@@ -4,6 +4,7 @@ import com.polimi.childcare.shared.networking.responses.BadRequestResponse;
 import com.polimi.childcare.shared.networking.responses.BaseResponse;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import jdk.nashorn.internal.runtime.options.Option;
 
 import java.util.Optional;
@@ -35,12 +36,18 @@ public class StageUtils
     public static void ShowAlert(Alert.AlertType type, String contentText)
     {
         Alert alert = new Alert(type, contentText);
+        Label label = new Label(contentText);
+        label.setWrapText(true);
+        alert.getDialogPane().setContent(label);
         alert.showAndWait();
     }
 
     public static Optional<ButtonType> ShowAlertWithButtons(Alert.AlertType type, String contentText, ButtonType... buttons)
     {
         Alert alert = new Alert(type, contentText, buttons);
+        Label label = new Label(contentText);
+        label.setWrapText(true);
+        alert.getDialogPane().setContent(label);
         return alert.showAndWait();
     }
 }

@@ -91,8 +91,10 @@ public class BambinoDaoImpl extends HibernateDao<Bambino>
                 bambino.getProvincia() == null ||
                 bambino.getCittadinanza() == null ||
                 bambino.getResidenza() == null ||
-                bambino.getSesso() == null ||
-                bambino.getGenitori().size() == 0)
+                bambino.getSesso() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
+
+        if(bambino.getGenitori().size() == 0)
+            throw new RuntimeException("Errore bambino orfano!");
     }
 }

@@ -30,6 +30,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 public class MensaSubsceneController extends NetworkedSubScene implements ISubSceneController
@@ -135,6 +137,27 @@ public class MensaSubsceneController extends NetworkedSubScene implements ISubSc
             tableMenu.setOnMousePressed(click -> {
                 if(click.isPrimaryButtonDown() && click.getClickCount() == 2 && tableMenu.getSelectionModel().getSelectedItem() != null)
                     ShowMenuDetails(tableMenu.getSelectionModel().getSelectedItem());
+            });
+
+
+            tableMenu.setRowFactory(tv -> new TableRow<Menu>() {
+                @Override
+                public void updateItem(Menu item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (item == null) {
+                        setStyle("");
+                    } else if (item.isRecurringDuringDayOfWeek(Menu.DayOfWeekFlag.fromDayOfWeek(LocalDate.now().getDayOfWeek()))) {
+                        //Gita attiva
+                        setStyle("-fx-background-color: DarkSeaGreen;");
+                    }
+                    else if (item.isRecurringDuringDayOfWeek(Menu.DayOfWeekFlag.fromDayOfWeek(LocalDate.now().plusDays(1).getDayOfWeek()))) {
+                        //Gita attiva
+                        setStyle("-fx-background-color: Gold;");
+                    }
+                    else {
+                        setStyle("");
+                    }
+                }
             });
 
             tableMenu.getColumns().addAll(cMenuName, cRicLun, cRicMar, cRicMer, cRicGio, cRicVen, cRicSab, cRicDom);

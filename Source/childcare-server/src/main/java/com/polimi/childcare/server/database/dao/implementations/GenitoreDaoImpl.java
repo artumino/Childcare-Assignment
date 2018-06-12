@@ -84,14 +84,23 @@ public class GenitoreDaoImpl extends HibernateDao<Genitore>
                 genitore.getSesso() == null)
             throw new RuntimeException("Un campo obbligatorio è null!");
 
-        /*Set<Bambino> bambini = genitore.getBambini();     //TODO: funziona se vuoi usarlo
-        Bambino db;
+        Genitore dbEntity = sessionInstance.getByID(Genitore.class, genitore.getID());
 
-        for (Bambino b : bambini)
+        if(dbEntity != null)
         {
-            db = sessionInstance.getByID(Bambino.class, b.getID());
-            if (db.getGenitori().size() == 1 && db.getGenitori().contains(genitore))
-                throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
-        }*/
+            Set<Bambino> bambini = dbEntity.getBambini();
+            Set<Bambino> detachedBambini = genitore.getBambini();
+            Bambino db;
+
+            for(Bambino bambino : detachedBambini)
+                bambini.remove(bambino);
+
+            //Per tutti i bambini rimossi controllo che non siano orfani
+            for (Bambino b : bambini) {
+                db = sessionInstance.getByID(Bambino.class, b.getID());
+                if (db.getGenitori().size() == 1 && db.getGenitori().contains(dbEntity))
+                    throw new RuntimeException("Operazione illegale, avrei dei bambini orfani!");
+            }
+        }
     }
 }
