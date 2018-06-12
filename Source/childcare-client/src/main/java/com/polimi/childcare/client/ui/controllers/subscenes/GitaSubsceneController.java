@@ -278,6 +278,8 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
         cInizio.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getDataInizio()));
         cFine.setCellValueFactory(p -> new ReadOnlyObjectWrapper<>(p.getValue().getDataFine()));
 
+        cInizio.setSortType(TableColumn.SortType.ASCENDING);
+
         cID.setPrefWidth(75);
         cID.setMinWidth(75);
         cID.setMaxWidth(75);
@@ -287,6 +289,7 @@ public class GitaSubsceneController extends NetworkedSubScene implements ISubSce
             tableGite.getColumns().addAll(cID, cLuogo, cInizio, cFine);
             listGite.comparatorProperty().bind(tableGite.comparatorProperty());
             tableGite.setItems(listGite.list());
+            tableGite.getSortOrder().add(cInizio);
 
             tableGite.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
                 updateGitaButtons(newValue);

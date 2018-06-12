@@ -170,24 +170,31 @@ public class HomeSubsceneController extends NetworkedSubScene implements ISubSce
         cDataInizio.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDataInizio()));
         cDataFine.setCellValueFactory((cellData) -> new ReadOnlyObjectWrapper<>(cellData.getValue().getDataFine()));
 
-        tableGite.setRowFactory(tv -> new TableRow<Gita>() {
-            @Override
-            public void updateItem(Gita item, boolean empty) {
-                super.updateItem(item, empty) ;
-                if (item == null) {
-                    setStyle("");
-                } else if (item.getDataInizio().atStartOfDay().isBefore(LocalDateTime.now().plusDays(1)) &&
-                        item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now().plusDays(1))) {
-                    //Gita attiva
-                    setStyle("-fx-background-color: Gold;");
-                } else {
-                    setStyle("");
-                }
-            }
-        });
 
         if(tableGite != null)
+        {
+
+            cDataInizio.setSortType(TableColumn.SortType.ASCENDING);
+
+            tableGite.setRowFactory(tv -> new TableRow<Gita>() {
+                @Override
+                public void updateItem(Gita item, boolean empty) {
+                    super.updateItem(item, empty) ;
+                    if (item == null) {
+                        setStyle("");
+                    } else if (item.getDataInizio().atStartOfDay().isBefore(LocalDateTime.now().plusDays(1)) &&
+                            item.getDataFine().plusDays(1).atStartOfDay().isAfter(LocalDateTime.now().plusDays(1))) {
+                        //Gita attiva
+                        setStyle("-fx-background-color: Gold;");
+                    } else {
+                        setStyle("");
+                    }
+                }
+            });
+
             tableGite.getColumns().addAll(cID, cLuogo, cDataInizio, cDataFine);
+            tableGite.getSortOrder().add(cDataInizio);
+        }
     }
 
     private void setupTablePasti()
