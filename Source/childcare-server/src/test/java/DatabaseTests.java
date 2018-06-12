@@ -46,6 +46,7 @@ public class DatabaseTests
         ListGenitoriResponse genitoreget = (ListGenitoriResponse) NetworkManager.getInstance().processRequest(new FilteredGenitoriRequest(1,0, true));
 
         bambino1.addGenitore(genitoreget.getPayload().get(0));
+        genitore1.unsafeAddBambino(bambino1);
         bambino1.setPediatra(pediatraget.getPayload().get(0));
         pasto1.setFornitore(fornitoreget.getPayload().get(0));
         pasto1.addReazione(reazioneavversaget.getPayload().get(0));
