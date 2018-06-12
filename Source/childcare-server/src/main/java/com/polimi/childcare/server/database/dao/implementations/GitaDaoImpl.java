@@ -114,8 +114,10 @@ public class GitaDaoImpl extends HibernateDao<Gita>
             }
             else
             {
-                if(gita.getDataInizio().isBefore(g.getDataFine()) && gita.getDataInizio().isAfter(g.getDataInizio()))
+                if((gita.getDataInizio().isBefore(g.getDataFine()) && gita.getDataInizio().isAfter(g.getDataInizio()))
+                        || (gita.getDataInizio().isEqual(g.getDataFine()) && gita.getDataInizio().isAfter(g.getDataInizio())))
                     throw new RuntimeException("Overlapping di Gite!");
+
             }
         }
     }
