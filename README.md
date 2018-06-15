@@ -1,4 +1,4 @@
-# ProgettoIngegneria
+# Childcare Assigment
 [<img align="right" src="https://jenkins.jartum.org/buildStatus/icon?job=ChildCare"/>](https://jenkins.jartum.org/job/ChildCare/)
 
 Software Engineering Assigment 2017-2018 (Politecnico di Milano, Cremona)
